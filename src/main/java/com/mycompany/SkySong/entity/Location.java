@@ -11,24 +11,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "location", uniqueConstraints = @UniqueConstraint(columnNames = "cityName"))
+@Table(name = "location")
 public class Location {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column
+    @Column(name = "city_name", nullable = false)
     String cityName;
 
-    @Column
+    @Column(name = "latitude", nullable = false)
     double latitude;
 
-    @Column
+    @Column(name = "longitude", nullable = false)
     double longitude;
-
-
-
 
 }
