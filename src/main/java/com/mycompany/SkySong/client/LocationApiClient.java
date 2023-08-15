@@ -2,12 +2,15 @@ package com.mycompany.SkySong.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.SkySong.exception.GeocodingException;
+import com.mycompany.SkySong.exception.ValidationException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+
 
 @Component
 public class LocationApiClient {
@@ -19,14 +22,26 @@ public class LocationApiClient {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public JsonNode fetchGeocodingData(String cityName) throws IOException {
+        if (cityName == null || cityName.trim().isEmpty()) {
+            throw new ValidationException(
+                    "City name cannot be null or empty. First you need to specify your location.");
+        }
+
         String apiUrl = String.format(GEOCODING_API_URL_TEMPLATE, cityName, API_KEY);
         Request request = new Request.Builder().url(apiUrl).build();
 
-        try(Response response = client.newCall(request).execute()) {
+        try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                return objectMapper.readTree(response.body().string());
+                JsonNode jsonNode = objectMapper.readTree(response.body().string());
+                if (jsonNode.has("error")) {
+                    throw new GeocodingException("API returned error: " + jsonNode.get("error").asText());
+                }
+                return jsonNode;
+            } else {
+                throw new GeocodingException("Failed to fetch geocoding data. Response code: " + response.code());
             }
+        } catch (IOException e) {
+            throw new GeocodingException("Error communicating with the geocoding API.", e);
         }
-        throw new IOException("Failed to fetch geocoding data.");
     }
 }

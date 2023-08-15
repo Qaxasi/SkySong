@@ -3,6 +3,8 @@ package com.mycompany.SkySong.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mycompany.SkySong.client.LocationApiClient;
 import com.mycompany.SkySong.entity.Location;
+import com.mycompany.SkySong.exception.GeocodingException;
+import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.repository.LocationDAO;
 import com.mycompany.SkySong.service.LocationService;
 import org.json.JSONException;
@@ -21,6 +23,10 @@ public class LocationServiceImpl implements LocationService {
     }
     @Override
     public Location getLocationCoordinatesByCityName(String cityName) {
+        if (cityName == null || cityName.trim().isEmpty()) {
+            throw new ValidationException(
+                    "City name cannot be null or empty. First you need to specify your location.");
+        }
         Location location = locationDAO.findByCityName(cityName);
         if (location != null) {
             return location;
@@ -31,7 +37,7 @@ public class LocationServiceImpl implements LocationService {
             location = parseLocationFromJSON(jsonResponse, cityName);
             location = locationDAO.save(location);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new GeocodingException("Failed to fetch geocoding data for city: " + cityName, e);
         }
         return location;
     }
