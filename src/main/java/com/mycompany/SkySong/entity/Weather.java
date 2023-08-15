@@ -11,21 +11,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "location")
-public class Location {
+@Table(name = "weather")
+public class Weather {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "city_name", nullable = false)
     private String cityName;
 
-    @Column(name = "latitude", nullable = false)
-    private Double latitude;
+    @Column(name = "weather_id", nullable = false)
+    private Integer weatherId;
 
-    @Column(name = "longitude", nullable = false)
-    private Double longitude;
+    @Column(name = "weather", nullable = false)
+    private String weather;
 
+    @Column(name = "description", nullable = false)
+    private String description;
 }
