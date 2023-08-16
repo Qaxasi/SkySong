@@ -19,8 +19,8 @@ public class Weather {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "city_name", nullable = false)
-    private String cityName;
+    @Column(name = "locality_name", nullable = false)
+    private String localityName;
 
     @Column(name = "weather_id", nullable = false)
     private Integer weatherId;

@@ -4,5 +4,5 @@ import com.mycompany.SkySong.entity.Weather;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WeatherDAO extends JpaRepository<Weather, Integer> {
-    Weather findWeatherByCityName(String cityName);
+    Weather findWeatherByLocalityName(String localityName);
 }

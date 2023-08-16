@@ -19,8 +19,8 @@ public class Location {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "city_name", nullable = false)
-    private String cityName;
+    @Column(name = "locality_name", nullable = false)
+    private String localityName;
 
     @Column(name = "latitude", nullable = false)
     private Double latitude;

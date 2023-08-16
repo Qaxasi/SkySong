@@ -15,9 +15,9 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping("{cityName}")
-    public ResponseEntity<Location> getLocationCoordinates(@PathVariable(name = "cityName") String cityName) {
-        Location searchedLocation = locationService.getLocationCoordinatesByCityName(cityName);
+    @GetMapping("{localityName}")
+    public ResponseEntity<Location> getLocationCoordinates(@PathVariable(name = "localityName") String localityName) {
+        Location searchedLocation = locationService.getLocationCoordinatesByLocalityName(localityName);
         return new ResponseEntity<>(searchedLocation, HttpStatus.OK);
     }
 }

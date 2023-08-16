@@ -22,34 +22,34 @@ public class LocationServiceImpl implements LocationService {
         this.locationApiClient = locationApiClient;
     }
     @Override
-    public Location getLocationCoordinatesByCityName(String cityName) {
-        if (cityName == null || cityName.trim().isEmpty()) {
+    public Location getLocationCoordinatesByLocalityName(String localityName) {
+        if (localityName == null || localityName.trim().isEmpty()) {
             throw new ValidationException(
                     "City name cannot be null or empty. First you need to specify your location.");
         }
-        Location location = locationDAO.findByCityName(cityName);
+        Location location = locationDAO.findByLocalityName(localityName);
         if (location != null) {
             return location;
         }
 
         try {
-            JsonNode jsonResponse = locationApiClient.fetchGeocodingData(cityName);
-            location = parseLocationFromJSON(jsonResponse, cityName);
+            JsonNode jsonResponse = locationApiClient.fetchGeocodingData(localityName);
+            location = parseLocationFromJSON(jsonResponse, localityName);
             location = locationDAO.save(location);
         } catch (IOException e) {
-            throw new GeocodingException("Failed to fetch geocoding data for city: " + cityName, e);
+            throw new GeocodingException("Failed to fetch geocoding data for city: " + localityName, e);
         }
         return location;
     }
 
-    private Location parseLocationFromJSON(JsonNode json, String cityName) throws JSONException {
-        JsonNode city = json.get(0);
+    private Location parseLocationFromJSON(JsonNode json, String localityName) throws JSONException {
+        JsonNode locality = json.get(0);
 
-        double lat = city.get("lat").asDouble();
-        double lon = city.get("lon").asDouble();
+        double lat = locality.get("lat").asDouble();
+        double lon = locality.get("lon").asDouble();
 
         Location location = new Location();
-        location.setCityName(cityName);
+        location.setLocalityName(localityName);
         location.setLatitude(lat);
         location.setLongitude(lon);
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.mycompany.SkySong.client.WeatherApiClient;
 import com.mycompany.SkySong.entity.Location;
 import com.mycompany.SkySong.entity.Weather;
-import com.mycompany.SkySong.exception.LocationNotFoundException;
+
 import com.mycompany.SkySong.repository.LocationDAO;
 import com.mycompany.SkySong.repository.WeatherDAO;
 import com.mycompany.SkySong.service.WeatherService;
@@ -29,33 +29,32 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     @Override
-    public Weather getCurrentWeatherByCityName(String cityName) throws IOException {
-        Location location = findLocationByCityName(cityName);
+    public Weather getCurrentWeatherByLocalityName(String localityName) throws IOException {
+        Location location = findLocationByLocalityName(localityName);
         JsonNode rootNode = weatherApiClient.fetchWeatherData(location.getLatitude(), location.getLongitude());
-        return saveOrUpdateWeatherData(rootNode, cityName);
+        return saveOrUpdateWeatherData(rootNode, localityName);
 
     }
 
-    private Location findLocationByCityName(String cityName) {
-        return Optional.ofNullable(locationDAO.findByCityName(cityName))
-                .orElseThrow(() -> new LocationNotFoundException("Location", "city_name", cityName));
+    private Location findLocationByLocalityName(String localityName) {
+        return locationDAO.findByLocalityName(localityName);
     }
 
     @Scheduled(fixedRate = 15 * 60 * 1000)
     private void updateAllWeatherData() throws IOException {
         List<Location> allLocations = locationDAO.findAll();
         for (Location location : allLocations) {
-            getCurrentWeatherByCityName(location.getCityName());
+            getCurrentWeatherByLocalityName(location.getLocalityName());
         }
     }
 
-    private Weather saveOrUpdateWeatherData(JsonNode rootNode, String cityName) {
+    private Weather saveOrUpdateWeatherData(JsonNode rootNode, String localityName) {
         JsonNode currentWeatherNode = rootNode.path("weather").get(0);
-        Weather existingWeather = weatherDAO.findWeatherByCityName(cityName);
+        Weather existingWeather = weatherDAO.findWeatherByLocalityName(localityName);
 
         if (existingWeather == null) {
             existingWeather = new Weather();
-            existingWeather.setCityName(cityName);
+            existingWeather.setLocalityName(localityName);
         }
 
         existingWeather.setWeatherId(currentWeatherNode.path("id").asInt());

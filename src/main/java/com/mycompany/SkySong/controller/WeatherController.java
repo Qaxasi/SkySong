@@ -23,7 +23,7 @@ public class WeatherController {
     @GetMapping("/current/{location}")
     public ResponseEntity<Weather> getCurrentWeatherForLocation(
             @PathVariable(name = "location") String location) throws IOException {
-        Weather weatherForLocation = weatherService.getCurrentWeatherByCityName(location);
+        Weather weatherForLocation = weatherService.getCurrentWeatherByLocalityName(location);
         return new ResponseEntity<>(weatherForLocation, HttpStatus.OK);
 
     }
