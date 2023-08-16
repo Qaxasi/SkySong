@@ -23,15 +23,11 @@ public class LocationServiceImpl implements LocationService {
     }
     @Override
     public Location getLocationCoordinatesByLocalityName(String localityName) {
-        if (localityName == null || localityName.trim().isEmpty()) {
-            throw new ValidationException(
-                    "City name cannot be null or empty. First you need to specify your location.");
-        }
+        validateLocalityName(localityName);
         Location location = locationDAO.findByLocalityName(localityName);
         if (location != null) {
             return location;
         }
-
         try {
             JsonNode jsonResponse = locationApiClient.fetchGeocodingData(localityName);
             location = parseLocationFromJSON(jsonResponse, localityName);
@@ -41,17 +37,27 @@ public class LocationServiceImpl implements LocationService {
         }
         return location;
     }
+    private void validateLocalityName(String localityName) {
+        if (localityName == null || localityName.trim().isEmpty()) {
+            throw new ValidationException(
+                    "Locality name cannot be null or empty. First you need to specify your location.");
+        }
+    }
 
     private Location parseLocationFromJSON(JsonNode json, String localityName) throws JSONException {
-        JsonNode locality = json.get(0);
+        if (json == null || !json.isArray() || json.size() == 0) {
+            throw new JSONException("Unexpected JSON format received from the geocoding API.");
+        }
 
-        double lat = locality.get("lat").asDouble();
-        double lon = locality.get("lon").asDouble();
+        JsonNode locality = json.get(0);
+        if (!locality.has("lat") || !locality.has("lon")) {
+            throw new JSONException("Required fields (lat, lon) are missing in the API response.");
+        }
 
         Location location = new Location();
         location.setLocalityName(localityName);
-        location.setLatitude(lat);
-        location.setLongitude(lon);
+        location.setLatitude(locality.get("lat").asDouble());
+        location.setLongitude(locality.get("lon").asDouble());
 
         return location;
     }
