@@ -21,13 +21,13 @@ public class LocationApiClient {
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public JsonNode fetchGeocodingData(String localityName) throws IOException {
-        if (localityName == null || localityName.trim().isEmpty()) {
+    public JsonNode fetchGeocodingData(String locationName) throws IOException {
+        if (locationName == null || locationName.trim().isEmpty()) {
             throw new ValidationException(
-                    "City name cannot be null or empty. First you need to specify your location.");
+                    "Location name cannot be null or empty. First you need to specify your location.");
         }
 
-        String apiUrl = String.format(GEOCODING_API_URL_TEMPLATE, localityName, API_KEY);
+        String apiUrl = String.format(GEOCODING_API_URL_TEMPLATE, locationName, API_KEY);
         Request request = new Request.Builder().url(apiUrl).build();
 
         try (Response response = client.newCall(request).execute()) {

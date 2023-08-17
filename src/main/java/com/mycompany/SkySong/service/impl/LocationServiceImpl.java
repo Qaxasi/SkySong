@@ -22,43 +22,43 @@ public class LocationServiceImpl implements LocationService {
         this.locationApiClient = locationApiClient;
     }
     @Override
-    public Location getLocationCoordinatesByLocalityName(String localityName) {
-        validateLocalityName(localityName);
-        Location location = locationDAO.findByLocalityName(localityName);
+    public Location getLocationCoordinatesByLocationName(String locationName) {
+        validateLocationName(locationName);
+        Location location = locationDAO.findByLocationName(locationName);
         if (location != null) {
             return location;
         }
         try {
-            JsonNode jsonResponse = locationApiClient.fetchGeocodingData(localityName);
-            location = parseLocationFromJSON(jsonResponse, localityName);
+            JsonNode jsonResponse = locationApiClient.fetchGeocodingData(locationName);
+            location = parseLocationFromJSON(jsonResponse, locationName);
             location = locationDAO.save(location);
         } catch (IOException e) {
-            throw new GeocodingException("Failed to fetch geocoding data for city: " + localityName, e);
+            throw new GeocodingException("Failed to fetch geocoding data for location: " + locationName, e);
         }
         return location;
     }
-    private void validateLocalityName(String localityName) {
-        if (localityName == null || localityName.trim().isEmpty()) {
+    private void validateLocationName(String locationName) {
+        if (locationName == null || locationName.trim().isEmpty()) {
             throw new ValidationException(
-                    "Locality name cannot be null or empty. First you need to specify your location.");
+                    "Location name cannot be null or empty. First you need to specify your location.");
         }
     }
 
-    private Location parseLocationFromJSON(JsonNode json, String localityName) throws JSONException {
+    private Location parseLocationFromJSON(JsonNode json, String locationName) throws JSONException {
         if (json == null || !json.isArray() || json.size() == 0) {
             throw new JSONException("Unexpected JSON format received from the geocoding API.");
         }
 
-        JsonNode locality = json.get(0);
-        if (!locality.has("lat") || !locality.has("lon")) {
+        JsonNode location = json.get(0);
+        if (!location.has("lat") || !location.has("lon")) {
             throw new JSONException("Required fields (lat, lon) are missing in the API response.");
         }
 
-        Location location = new Location();
-        location.setLocalityName(localityName);
-        location.setLatitude(locality.get("lat").asDouble());
-        location.setLongitude(locality.get("lon").asDouble());
+        Location newLocation = new Location();
+        newLocation.setLocationName(locationName);
+        newLocation.setLatitude(location.get("lat").asDouble());
+        newLocation.setLongitude(location.get("lon").asDouble());
 
-        return location;
+        return newLocation;
     }
 }

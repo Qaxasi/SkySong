@@ -33,28 +33,28 @@ public class WeatherServiceImpl implements WeatherService {
     private static final Logger logger = LoggerFactory.getLogger(WeatherServiceImpl.class);
 
     @Override
-    public Weather getCurrentWeatherByLocalityName(String localityName) throws IOException {
-        validateLocalityName(localityName);
+    public Weather getCurrentWeatherByLocationName(String locationName) throws IOException {
+        validateLocationName(locationName);
 
         try {
-            Location location = findLocationByLocalityName(localityName);
+            Location location = findLocationByName(locationName);
             JsonNode rootNode = weatherApiClient.fetchWeatherData(location.getLatitude(), location.getLongitude());
-            return saveOrUpdateWeatherData(rootNode, localityName);
+            return saveOrUpdateWeatherData(rootNode, locationName);
         } catch (Exception e) {
-            throw new WeatherException("Error fetching weather for locality: " + localityName, e);
+            throw new WeatherException("Error fetching weather for location: " + locationName, e);
         }
     }
 
-    private void validateLocalityName(String localityName) {
-        if (localityName == null || localityName.trim().isEmpty()) {
-            throw new ValidationException("Locality name cannot be null. First you need to specify your location");
+    private void validateLocationName(String locationName) {
+        if (locationName == null || locationName.trim().isEmpty()) {
+            throw new ValidationException("Location name cannot be null. First you need to specify your location.");
         }
     }
-    private Location findLocationByLocalityName(String localityName) {
+    private Location findLocationByName(String locationName) {
         try {
-            return locationDAO.findByLocalityName(localityName);
+            return locationDAO.findByLocationName(locationName);
         } catch (Exception e) {
-            throw new LocationNotFoundException("Geocoding not found for locality: " + localityName, e);
+            throw new LocationNotFoundException("Geocoding not found for location: " + locationName, e);
         }
 
     }
@@ -66,14 +66,14 @@ public class WeatherServiceImpl implements WeatherService {
             int retryCount = 3;
             while (retryCount > 0) {
                 try {
-                    getCurrentWeatherByLocalityName(location.getLocalityName());
+                    getCurrentWeatherByLocationName(location.getLocationName());
                     break;
                 } catch (WeatherException e) {
                     retryCount--;
 
                     if (retryCount <= 0) {
-                        logger.error("Error updating weather for locality after multiple retried: {}",
-                                location.getLocalityName(), e);
+                        logger.error("Error updating weather for location after multiple retried: {}",
+                                location.getLocationName(), e);
                     } else {
                         try {
                             Thread.sleep(5000);
@@ -85,20 +85,20 @@ public class WeatherServiceImpl implements WeatherService {
                         }
                     }
                 } catch (LocationNotFoundException e) {
-                    logger.error("Location not found for locality: {}", location.getLocalityName(), e);
+                    logger.error("Location not found for locality: {}", location.getLocationName(), e);
                 }
             }
         }
     }
 
-    private Weather saveOrUpdateWeatherData(JsonNode rootNode, String localityName) {
+    private Weather saveOrUpdateWeatherData(JsonNode rootNode, String locationName) {
         try {
             JsonNode currentWeatherNode = rootNode.path("weather").get(0);
-            Weather existingWeather = weatherDAO.findWeatherByLocalityName(localityName);
+            Weather existingWeather = weatherDAO.findWeatherByLocationName(locationName);
 
             if (existingWeather == null) {
                 existingWeather = new Weather();
-                existingWeather.setLocalityName(localityName);
+                existingWeather.setLocationName(locationName);
             }
 
             existingWeather.setWeatherId(currentWeatherNode.path("id").asInt());
@@ -108,7 +108,7 @@ public class WeatherServiceImpl implements WeatherService {
             return weatherDAO.save(existingWeather);
         } catch (Exception e) {
             throw new WeatherDataSaveException(
-                    "Error saving or updating weather data for locality: " + localityName, e);
+                    "Error saving or updating weather data for location: " + locationName, e);
         }
     }
 }

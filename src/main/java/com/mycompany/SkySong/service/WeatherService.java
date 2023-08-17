@@ -5,7 +5,7 @@ import com.mycompany.SkySong.entity.Weather;
 import java.io.IOException;
 
 public interface WeatherService {
-    Weather getCurrentWeatherByLocalityName(String localityName) throws IOException;
+    Weather getCurrentWeatherByLocationName(String locationName) throws IOException;
 
 
 
