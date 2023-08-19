@@ -2,12 +2,14 @@ package com.mycompany.SkySong.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mycompany.SkySong.client.LocationApiClient;
+import com.mycompany.SkySong.dto.LocationDto;
 import com.mycompany.SkySong.entity.Location;
 import com.mycompany.SkySong.exception.GeocodingException;
 import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.repository.LocationDAO;
 import com.mycompany.SkySong.service.LocationService;
 import org.json.JSONException;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 
@@ -16,17 +18,19 @@ import java.io.IOException;
 public class LocationServiceImpl implements LocationService {
     private LocationDAO locationDAO;
     private LocationApiClient locationApiClient;
+    private ModelMapper modelMapper;
 
-    public LocationServiceImpl(LocationDAO locationDAO, LocationApiClient locationApiClient) {
+    public LocationServiceImpl(LocationDAO locationDAO, LocationApiClient locationApiClient, ModelMapper modelMapper) {
         this.locationDAO = locationDAO;
         this.locationApiClient = locationApiClient;
+        this.modelMapper = modelMapper;
     }
     @Override
-    public Location getLocationCoordinatesByLocationName(String locationName) {
+    public LocationDto getLocationCoordinatesByLocationName(String locationName) {
         validateLocationName(locationName);
         Location location = locationDAO.findByLocationName(locationName);
         if (location != null) {
-            return location;
+            return modelMapper.map(location, LocationDto.class);
         }
         try {
             JsonNode jsonResponse = locationApiClient.fetchGeocodingData(locationName);
@@ -35,7 +39,7 @@ public class LocationServiceImpl implements LocationService {
         } catch (IOException e) {
             throw new GeocodingException("Failed to fetch geocoding data for location: " + locationName, e);
         }
-        return location;
+        return modelMapper.map(location, LocationDto.class);
     }
     private void validateLocationName(String locationName) {
         if (locationName == null || locationName.trim().isEmpty()) {
@@ -50,14 +54,17 @@ public class LocationServiceImpl implements LocationService {
         }
 
         JsonNode location = json.get(0);
-        if (!location.has("lat") || !location.has("lon")) {
-            throw new JSONException("Required fields (lat, lon) are missing in the API response.");
+        if (!location.has("lat") || !location.has("lon") || !location.has("country") ||
+            !location.has("state")) {
+            throw new JSONException("Required fields (lat, lon, country, state) are missing in the API response.");
         }
 
         Location newLocation = new Location();
         newLocation.setLocationName(locationName);
         newLocation.setLatitude(location.get("lat").asDouble());
         newLocation.setLongitude(location.get("lon").asDouble());
+        newLocation.setCountry(location.get("country").asText());
+        newLocation.setState(location.get("state").asText());
 
         return newLocation;
     }

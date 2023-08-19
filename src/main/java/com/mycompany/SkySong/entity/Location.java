@@ -28,4 +28,14 @@ public class Location {
     @Column(name = "longitude", nullable = false)
     private Double longitude;
 
+    @Column(name = "country", nullable = false)
+    private String country;
+
+    @Column(name = "state", nullable = false)
+    private String state;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "weather_id")
+    private Weather weather;
+
 }

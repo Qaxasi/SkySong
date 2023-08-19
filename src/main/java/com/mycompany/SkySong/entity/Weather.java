@@ -30,4 +30,7 @@ public class Weather {
 
     @Column(name = "description", nullable = false)
     private String description;
+
+    @OneToOne(mappedBy = "weather",cascade = CascadeType.ALL)
+    private Location location;
 }

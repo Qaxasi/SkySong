@@ -1,11 +1,11 @@
 package com.mycompany.SkySong.service;
 
-import com.mycompany.SkySong.entity.Weather;
+import com.mycompany.SkySong.dto.WeatherDto;
 
 import java.io.IOException;
 
 public interface WeatherService {
-    Weather getCurrentWeatherByLocationName(String locationName) throws IOException;
+    WeatherDto getCurrentWeatherByLocationName(String locationName) throws IOException;
 
 
 

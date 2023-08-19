@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.controller;
 
+import com.mycompany.SkySong.dto.WeatherDto;
 import com.mycompany.SkySong.entity.Weather;
 import com.mycompany.SkySong.service.WeatherService;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,9 @@ public class WeatherController {
         this.weatherService = weatherService;
     }
     @GetMapping("/current/{location}")
-    public ResponseEntity<Weather> getCurrentWeatherForLocation(
+    public ResponseEntity<WeatherDto> getCurrentWeatherForLocation(
             @PathVariable(name = "location") String location) throws IOException {
-        Weather weatherForLocation = weatherService.getCurrentWeatherByLocationName(location);
+        WeatherDto weatherForLocation = weatherService.getCurrentWeatherByLocationName(location);
         return new ResponseEntity<>(weatherForLocation, HttpStatus.OK);
 
     }

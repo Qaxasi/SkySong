@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.service;
 
-import com.mycompany.SkySong.entity.Location;
-
+import com.mycompany.SkySong.dto.LocationDto;
 public interface LocationService {
-    Location getLocationCoordinatesByLocationName(String locationName);
+    LocationDto getLocationCoordinatesByLocationName(String locationName);
 }
