@@ -2,6 +2,7 @@ package com.mycompany.SkySong.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mycompany.SkySong.client.WeatherApiClient;
+import com.mycompany.SkySong.dto.LocationDto;
 import com.mycompany.SkySong.dto.WeatherDto;
 import com.mycompany.SkySong.entity.Location;
 import com.mycompany.SkySong.entity.Weather;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class WeatherServiceImpl implements WeatherService {
@@ -51,23 +53,23 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     private void validateLocationName(String locationName) {
-        if (locationName == null || locationName.trim().isEmpty()) {
-            throw new ValidationException("Location name cannot be null. First you need to specify your location.");
-        }
+        Optional.ofNullable(locationName)
+                .filter(location -> !location.trim().isEmpty())
+                .orElseThrow(() -> new ValidationException(
+                        "Location name cannot be null. First you need to specify your location."));
     }
     private Location findLocationByName(String locationName) {
-        try {
-            return locationDAO.findByLocationName(locationName);
-        } catch (Exception e) {
-            throw new LocationNotFoundException("Geocoding not found for location: " + locationName, e);
-        }
-
+        return Optional.ofNullable(locationDAO.findByLocationName(locationName))
+                .orElseThrow(() -> new LocationNotFoundException("Geocoding not found for location: " + locationName));
     }
 
     @Scheduled(fixedRate = 15 * 60 * 1000)
     private void updateAllWeatherData() throws IOException {
-        List<Location> allLocations = locationDAO.findAll();
-        for (Location location : allLocations) {
+        List<Location> allEntities = locationDAO.findAll();
+        List<LocationDto> allLocations = allEntities.stream()
+                .map(entity -> modelMapper.map(entity, LocationDto.class))
+                .toList();
+        for (LocationDto location : allLocations) {
             int retryCount = 3;
             while (retryCount > 0) {
                 try {
@@ -106,7 +108,11 @@ public class WeatherServiceImpl implements WeatherService {
             });
 
             mapJsonToWeather(rootNode, existingWeather);
+
             existingWeather.setLocation(location);
+
+            location.setWeather(existingWeather);
+
             Weather savedWeather = weatherDAO.save(existingWeather);
             return modelMapper.map(savedWeather, WeatherDto.class);
         } catch (Exception e) {

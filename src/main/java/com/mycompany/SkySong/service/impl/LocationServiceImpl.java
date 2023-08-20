@@ -2,6 +2,7 @@ package com.mycompany.SkySong.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mycompany.SkySong.client.LocationApiClient;
+
 import com.mycompany.SkySong.dto.LocationDto;
 import com.mycompany.SkySong.entity.Location;
 import com.mycompany.SkySong.exception.GeocodingException;
@@ -9,10 +10,10 @@ import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.repository.LocationDAO;
 import com.mycompany.SkySong.service.LocationService;
 import org.json.JSONException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-
 
 @Service
 public class LocationServiceImpl implements LocationService {
