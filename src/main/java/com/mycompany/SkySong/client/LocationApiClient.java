@@ -16,8 +16,8 @@ import java.io.IOException;
 public class LocationApiClient {
 
     private static final String GEOCODING_API_URL_TEMPLATE =
-            "http://api.openweathermap.org/geo/1.0/direct?q=%s&appid=%s";
-    private final String API_KEY = System.getenv("WEATHER_API_KEY");
+            "http://api.positionstack.com/v1/forward?access_key=%s&query=%s";
+    private final String API_KEY = System.getenv("GEOCODING_API_KEY");
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -27,7 +27,7 @@ public class LocationApiClient {
                     "Location name cannot be null or empty. First you need to specify your location.");
         }
 
-        String apiUrl = String.format(GEOCODING_API_URL_TEMPLATE, locationName, API_KEY);
+        String apiUrl = String.format(GEOCODING_API_URL_TEMPLATE, API_KEY, locationName);
         Request request = new Request.Builder().url(apiUrl).build();
 
         try (Response response = client.newCall(request).execute()) {

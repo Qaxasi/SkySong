@@ -2,7 +2,7 @@ package com.mycompany.SkySong.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.mycompany.SkySong.client.WeatherApiClient;
-import com.mycompany.SkySong.dto.LocationDto;
+import com.mycompany.SkySong.constants.WeatherConstants;
 import com.mycompany.SkySong.dto.WeatherDto;
 import com.mycompany.SkySong.entity.Location;
 import com.mycompany.SkySong.entity.Weather;
@@ -65,12 +65,9 @@ public class WeatherServiceImpl implements WeatherService {
 
     @Scheduled(fixedRate = 15 * 60 * 1000)
     private void updateAllWeatherData() throws IOException {
-        List<Location> allEntities = locationDAO.findAll();
-        List<LocationDto> allLocations = allEntities.stream()
-                .map(entity -> modelMapper.map(entity, LocationDto.class))
-                .toList();
-        for (LocationDto location : allLocations) {
-            int retryCount = 3;
+        List<Location> allLocations =  locationDAO.findAll();
+        for (Location location : allLocations) {
+            int retryCount = WeatherConstants.MAX_RETRIES;
             while (retryCount > 0) {
                 try {
                     getCurrentWeatherByLocationName(location.getLocationName());
@@ -82,19 +79,20 @@ public class WeatherServiceImpl implements WeatherService {
                         logger.error("Error updating weather for location after multiple retried: {}",
                                 location.getLocationName(), e);
                     } else {
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-
-                            logger.error("Interrupted during sleep between retries", ex);
-                            break;
-                        }
+                        sleepBeforeRetry();
                     }
                 } catch (LocationNotFoundException e) {
                     logger.error("Location not found for locality: {}", location.getLocationName(), e);
                 }
             }
+        }
+    }
+    private void sleepBeforeRetry() {
+        try {
+            Thread.sleep(WeatherConstants.RETRY_SLEEP_MILLIS);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            logger.error("Interrupted during sleep between retries", ex);
         }
     }
 
@@ -119,7 +117,6 @@ public class WeatherServiceImpl implements WeatherService {
             throw new WeatherDataSaveException("Error saving or updating weather data for location: " + location.getLocationName(), e);
         }
     }
-
     private void mapJsonToWeather(JsonNode rootNode, Weather existingWeather) {
         JsonNode currentWeather = rootNode.path("weather").get(0);
         existingWeather.setWeatherId(currentWeather.path("id").asInt());
