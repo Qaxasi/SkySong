@@ -2,8 +2,11 @@ package com.mycompany.SkySong.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.SkySong.exception.SpotifyApiException;
 import okhttp3.*;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,6 +19,7 @@ public class SpotifyTokenService {
     private static final String SPOTIFY_CLIENT_SECRET = System.getenv("SPOTIFY_CLIENT_SECRET");
     private static final String SPOTIFY_TOKEN_API_URL_TEMPLATE = "https://accounts.spotify.com/api/token";
     private final OkHttpClient client = new OkHttpClient();
+    private static final Logger logger = LoggerFactory.getLogger(SpotifyTokenService.class);
     private String cachedToken;
     private Instant tokenExpiryTime;
 
@@ -38,16 +42,21 @@ public class SpotifyTokenService {
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new RuntimeException("Failed to get access token. Http response code:" + response.code());
+                logger.error("Failed to get access token. Http response code:" + response.code());
+                throw new SpotifyApiException("Failed to get access token. Http response code:" + response.code());
             }
 
             String responseData = response.body().string();
             JSONObject jsonResponse = new JSONObject(responseData);
 
             cachedToken = jsonResponse.getString("access_token");
-
             tokenExpiryTime = Instant.now().plusSeconds(jsonResponse.getInt("expires_int") - 10);
+
+            logger.info("Successfully retrieved Spotify access token.");
             return cachedToken;
+        } catch (Exception e) {
+            logger.error("Error fetching Spotify access token.", e);
+            throw e;
         }
     }
 }
