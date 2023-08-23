@@ -50,7 +50,7 @@ public class SpotifyTokenService {
             JSONObject jsonResponse = new JSONObject(responseData);
 
             cachedToken = jsonResponse.getString("access_token");
-            tokenExpiryTime = Instant.now().plusSeconds(jsonResponse.getInt("expires_int") - 10);
+            tokenExpiryTime = Instant.now().plusSeconds(jsonResponse.getInt("expires_in") - 10);
 
             logger.info("Successfully retrieved Spotify access token.");
             return cachedToken;
