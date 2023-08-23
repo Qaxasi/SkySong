@@ -2,6 +2,7 @@ package com.mycompany.SkySong.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.SkySong.exception.SpotifyApiException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
