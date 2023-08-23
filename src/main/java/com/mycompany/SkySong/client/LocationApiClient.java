@@ -28,7 +28,9 @@ public class LocationApiClient {
         }
 
         String apiUrl = String.format(GEOCODING_API_URL_TEMPLATE, API_KEY, locationName);
-        Request request = new Request.Builder().url(apiUrl).build();
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
