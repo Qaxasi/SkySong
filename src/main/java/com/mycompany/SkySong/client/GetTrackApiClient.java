@@ -24,7 +24,7 @@ public class GetTrackApiClient {
         this.tokenService = tokenService;
     }
 
-    public JsonNode getTrackInfo(String trackId) throws Exception {
+    public JsonNode getTrackInfo(int trackId) throws Exception {
         String token;
         try {
             token = tokenService.getAccessToken();
