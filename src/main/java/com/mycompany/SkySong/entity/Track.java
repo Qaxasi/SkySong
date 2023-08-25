@@ -36,5 +36,13 @@ public class Track {
     @Column(name = "uri", nullable = false)
     private String uri;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_id", nullable = false)
+    private Artist artist;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "album_id", nullable = false)
+    private Album album;
+
 
 }
