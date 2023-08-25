@@ -10,11 +10,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "artist")
 public class Artist {
 
-    @Column(name = "artist_id")
-    private Integer artistId;
+    @Id
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -23,10 +25,9 @@ public class Artist {
     private String image;
 
     @Column(name = "genres")
-    private String[] genres;
+    private String genres;
 
-
-
-
+    @OneToMany(mappedBy = "track", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Track Track;
 
 }

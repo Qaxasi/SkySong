@@ -37,6 +37,4 @@ public class Album {
 
     @OneToMany(mappedBy = "track", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Track track;
-    
-
 }
