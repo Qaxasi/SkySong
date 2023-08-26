@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.net.URL;
 import java.util.Date;
+import java.util.IdentityHashMap;
 
 @Getter
 @Setter
@@ -17,14 +19,18 @@ import java.util.Date;
 public class Album {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
+    @Column(name = "spotify_album_id")
+    private String spotifyAlbumId;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "release_date")
-    private Date releaseDate;
+    private String releaseDate;
 
     @Column(name = "genres")
     private String genres;
