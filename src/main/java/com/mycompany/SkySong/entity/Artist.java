@@ -15,8 +15,12 @@ import lombok.Setter;
 public class Artist {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
+    @Column(name = "spotify_artist_id")
+    private String spotifyArtistId;
 
     @Column(name = "name")
     private String name;
