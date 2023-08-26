@@ -22,7 +22,7 @@ public class Track {
     private Integer id;
 
     @Column(name = "spotify_track_id")
-    private Integer spotifyTrackId;
+    private String spotifyTrackId;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -30,11 +30,8 @@ public class Track {
     @Column(name = "duration", nullable = false)
     private Integer duration;
 
-    @Column(name = "release_date", nullable = false)
-    private Date release_date;
-
-    @Column(name = "uri", nullable = false)
-    private String uri;
+    @Column(name = "url", nullable = false)
+    private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id", nullable = false)
