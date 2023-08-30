@@ -11,5 +11,4 @@ public class SkySongApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SkySongApplication.class, args);
 	}
-
 }
