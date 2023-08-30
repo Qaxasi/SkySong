@@ -1,6 +1,9 @@
 package com.mycompany.SkySong.service;
 
-import com.mycompany.SkySong.dto.LocationDto;
+import com.mycompany.SkySong.entity.LocationRequest;
+
+import java.io.IOException;
+
 public interface LocationService {
-    LocationDto getLocationCoordinatesByLocationName(String locationName);
+    LocationRequest fetchAndSaveCoordinates(String locationName) throws IOException;
 }
