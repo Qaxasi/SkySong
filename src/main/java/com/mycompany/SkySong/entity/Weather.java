@@ -22,9 +22,6 @@ public class Weather {
     @Column(name = "location_name", nullable = false)
     private String locationName;
 
-    @Column(name = "weather_id", nullable = false)
-    private Integer weatherId;
-
     @Column(name = "weather", nullable = false)
     private String weather;
 
