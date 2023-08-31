@@ -52,8 +52,8 @@ public class LocationServiceImpl implements LocationService {
     private Location mapToLocationEntity(LocationRequest locationRequest) {
         Location location = new Location();
         location.setLocationName(locationRequest.locationName());
-        location.setLat(locationRequest.latitude());
-        location.setLon(locationRequest.longitude());
+        location.setLatitude(locationRequest.latitude());
+        location.setLongitude(locationRequest.longitude());
         location.setState(locationRequest.state());
         location.setCountry(locationRequest.country());
         return location;
