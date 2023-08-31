@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.client;
 
-import com.mycompany.SkySong.entity.Location;
 import com.mycompany.SkySong.entity.LocationRequest;
 import com.mycompany.SkySong.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
