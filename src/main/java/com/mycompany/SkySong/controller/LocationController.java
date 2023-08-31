@@ -1,24 +1,25 @@
 package com.mycompany.SkySong.controller;
 
-import com.mycompany.SkySong.dto.LocationDto;
-import com.mycompany.SkySong.entity.Location;
+import com.mycompany.SkySong.entity.LocationRequest;
 import com.mycompany.SkySong.service.LocationService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/location/coordinates/")
-public class LocationController {
-    private LocationService locationService;
+import java.io.IOException;
 
+@RestController
+@RequestMapping("/api/location/coordinates/")
+public class LocationController {
+    @Autowired
+    private LocationService locationService;
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
     }
 
     @GetMapping("{locationName}")
-    public ResponseEntity<LocationDto> getLocationCoordinates(@PathVariable(name = "locationName") String locationName) {
-        LocationDto searchedLocation = locationService.getLocationCoordinatesByLocationName(locationName);
-        return new ResponseEntity<>(searchedLocation, HttpStatus.OK);
+    public LocationRequest getLocationCoordinates(
+            @PathVariable String locationName) throws IOException {
+        return locationService.fetchAndSaveCoordinates(locationName);
+
     }
 }
