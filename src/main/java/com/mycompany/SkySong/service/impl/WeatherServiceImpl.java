@@ -63,9 +63,8 @@ public class WeatherServiceImpl implements WeatherService {
     private WeatherInfo fetchWeatherInfo(Location location) throws IOException {
         WeatherRequest weatherRequest = weatherApiClient.fetchWeatherData(location.getLatitude(),
                 location.getLongitude());
-        Optional.ofNullable(weatherRequest.weather().get(0))
+         return Optional.ofNullable(weatherRequest.weather().get(0))
                 .orElseThrow(() -> new WeatherException("No weather information available."));
-
     }
     private void createOrUpdateWeatherInDatabase(String locationName, Location location, WeatherInfo weatherInfo) {
 
