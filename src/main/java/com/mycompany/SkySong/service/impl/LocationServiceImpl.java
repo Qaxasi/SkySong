@@ -3,10 +3,10 @@ package com.mycompany.SkySong.service.impl;
 import com.mycompany.SkySong.client.LocationApiClient;
 import com.mycompany.SkySong.entity.Location;
 import com.mycompany.SkySong.entity.LocationRequest;
+import com.mycompany.SkySong.exception.GeocodingException;
 import com.mycompany.SkySong.repository.LocationDAO;
 import com.mycompany.SkySong.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,22 +41,22 @@ public class LocationServiceImpl implements LocationService {
             return locationRequest;
         } catch (IOException e) {
             log.error("Failed to fetch geocoding data", e);
-            throw new ServiceException("Failed to fetch geocoding data", e);
+            throw new GeocodingException("Failed to fetch geocoding data", e);
         } catch (Exception e) {
             log.error("An unexpected error occurred");
-            throw new ServiceException("An unexpected error occurred", e);
+            throw new GeocodingException("An unexpected error occurred", e);
         }
     }
 
     private void validateLocationRequest(LocationRequest locationRequest) {
         if (locationRequest == null) {
-            throw new ServiceException("Received null LocationRequest from API");
+            throw new GeocodingException("No such location found");
         }
     }
 
     private void validateLocationName(String locationName) {
         if (locationName == null || locationName.isEmpty()) {
-            throw new ServiceException("Location name cannot be null or empty");
+            throw new GeocodingException("Location name cannot be null or empty");
         }
     }
 
