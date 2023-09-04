@@ -1,15 +1,12 @@
 package com.mycompany.SkySong.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.SkySong.constants.GeocodingConstants;
 import com.mycompany.SkySong.entity.WeatherRequest;
 import com.mycompany.SkySong.exception.ValidationException;
-import com.mycompany.SkySong.exception.WeatherException;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -18,14 +15,13 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class WeatherApiClient {
-    private static final String WEATHER_API_URL_TEMPLATE =
-            "https://api.openweathermap.org/data/2.5/weather";
-    private final String API_KEY = System.getenv("WEATHER_API_KEY");
+    private final String API_KEY;
     private final WebClient webClient;
-    public WeatherApiClient(WebClient webClient) {
-        this.webClient = WebClient.builder()
-                .baseUrl(WEATHER_API_URL_TEMPLATE)
-                .build();
+    @Autowired
+    public WeatherApiClient(@Qualifier("weather") WebClient webClient,
+                            @Value("${WEATHER_API_KEY}") String API_KEY) {
+        this.webClient = webClient;
+        this.API_KEY = API_KEY;
     }
 
     public WeatherRequest fetchWeatherData(double latitude, double longitude) throws IOException {
