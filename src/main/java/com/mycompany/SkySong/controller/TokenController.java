@@ -1,31 +1,29 @@
 package com.mycompany.SkySong.controller;
 
-import com.mycompany.SkySong.client.SpotifyTokenService;
+import com.mycompany.SkySong.client.SpotifyAuthorizationService;
 import com.mycompany.SkySong.entity.SpotifyAccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api/auth")
 public class TokenController {
-    private final SpotifyTokenService spotifyTokenService;
+    private final SpotifyAuthorizationService spotifyAuthorizationService;
 
     @Autowired
-    public TokenController(SpotifyTokenService spotifyTokenService) {
-        this.spotifyTokenService = spotifyTokenService;
+    public TokenController(SpotifyAuthorizationService spotifyTokenService) {
+        this.spotifyAuthorizationService = spotifyTokenService;
     }
 
     @GetMapping("/token")
     public SpotifyAccessToken fetchToken(@RequestParam String code)  {
-        return spotifyTokenService.getAccessToken(code);
+        return spotifyAuthorizationService.getAccessToken(code);
     }
 
     @GetMapping("/login")
     public RedirectView login() {
-        return new RedirectView(spotifyTokenService.getAuthorizationCodeURL());
+        return new RedirectView(spotifyAuthorizationService.getAuthorizationCodeURL());
     }
 
 }
