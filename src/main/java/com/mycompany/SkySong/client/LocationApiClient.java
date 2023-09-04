@@ -3,28 +3,30 @@ package com.mycompany.SkySong.client;
 import com.mycompany.SkySong.entity.LocationRequest;
 import com.mycompany.SkySong.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Optional;
 
 
 @Component
 @Slf4j
 public class LocationApiClient {
-
-    private static final String GEOCODING_API_URL_TEMPLATE =
-            "http://api.openweathermap.org/geo/1.0/direct";
-    private final String API_KEY = System.getenv("WEATHER_API_KEY");
+    private final String API_KEY;
     private final Duration timeout = Duration.ofSeconds(5);
     private final WebClient webClient;
-
-    public LocationApiClient(WebClient webClient) {
-        this.webClient = WebClient.builder()
-                .baseUrl(GEOCODING_API_URL_TEMPLATE)
-                .build();
+    @Autowired
+    public LocationApiClient(@Qualifier("location") WebClient webClient,
+                             @Value("${WEATHER_API_KEY}") String API_KEY) {
+        this.webClient = webClient;
+        this.API_KEY = API_KEY;
     }
+
     public LocationRequest fetchGeocodingData(String locationName) throws IOException {
         validateLocationName(locationName);
 
@@ -40,10 +42,10 @@ public class LocationApiClient {
                 .doOnError(e -> log.error("An error occurred while fetching geocoding data", e)).block();
     }
     private void validateLocationName(String locationName) {
-        if (locationName == null || locationName.trim().isEmpty()) {
-            throw new ValidationException(
-                    "Location name cannot be null or empty. First you need to specify your location.");
-        }
+        Optional.ofNullable(locationName)
+                .filter(location -> !location.trim().isEmpty())
+                .orElseThrow(() -> new ValidationException(
+                        "Location name cannot be null. First you need to specify your location."));
     }
 }
 
