@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api/auth")
 public class TokenController {
-    private SpotifyTokenService spotifyTokenService;
+    private final SpotifyTokenService spotifyTokenService;
 
     @Autowired
     public TokenController(SpotifyTokenService spotifyTokenService) {
@@ -18,7 +19,13 @@ public class TokenController {
     }
 
     @GetMapping("/token")
-    public SpotifyAccessToken fetchToken() throws Exception {
-        return spotifyTokenService.getAccessToken();
+    public SpotifyAccessToken fetchToken(@RequestParam String code)  {
+        return spotifyTokenService.getAccessToken(code);
     }
+
+    @GetMapping("/login")
+    public RedirectView login() {
+        return new RedirectView(spotifyTokenService.getAuthorizationCodeURL());
+    }
+
 }
