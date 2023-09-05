@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.music.authorization.AuthorizationController;
+package com.mycompany.SkySong.music.authorization.controller;
 
-import com.mycompany.SkySong.music.authorization.AuthorizationController.AuthorizationService.SpotifyAuthorizationService;
-import com.mycompany.SkySong.music.authorization.AuthorizationController.entity.SpotifyAccessToken;
+import com.mycompany.SkySong.music.authorization.service.SpotifyAuthorizationService;
+import com.mycompany.SkySong.music.authorization.entity.SpotifyAccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
