@@ -8,11 +8,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/api/auth")
-public class TokenController {
+public class AuthorizationController {
     private final SpotifyAuthorizationService spotifyAuthorizationService;
 
     @Autowired
-    public TokenController(SpotifyAuthorizationService spotifyTokenService) {
+    public AuthorizationController(SpotifyAuthorizationService spotifyTokenService) {
         this.spotifyAuthorizationService = spotifyTokenService;
     }
 

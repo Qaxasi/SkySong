@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.weather.WeatherEntity;
+package com.mycompany.SkySong.weather.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

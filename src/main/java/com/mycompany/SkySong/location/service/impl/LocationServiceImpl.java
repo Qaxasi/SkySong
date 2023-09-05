@@ -1,11 +1,11 @@
-package com.mycompany.SkySong.location.LocationService.impl;
+package com.mycompany.SkySong.location.service.impl;
 
-import com.mycompany.SkySong.location.LocationClient.LocationApiClient;
-import com.mycompany.SkySong.location.LocationRepository.LocationDAO;
-import com.mycompany.SkySong.location.LocationEntity.Location;
-import com.mycompany.SkySong.location.LocationEntity.LocationRequest;
+import com.mycompany.SkySong.location.client.LocationApiClient;
+import com.mycompany.SkySong.location.repository.LocationDAO;
+import com.mycompany.SkySong.location.entity.Location;
+import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.exception.GeocodingException;
-import com.mycompany.SkySong.location.LocationService.LocationService;
+import com.mycompany.SkySong.location.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

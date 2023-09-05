@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.location.LocationClient;
+package com.mycompany.SkySong.location.client;
 
-import com.mycompany.SkySong.location.LocationEntity.LocationRequest;
+import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.IdentityHashMap;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,7 +33,7 @@ public class Album {
     private String name;
 
     @Column(name = "release_date")
-    private String releaseDate;
+    private LocalDate releaseDate;
 
     @Column(name = "genres")
     private String genres;
@@ -41,6 +44,6 @@ public class Album {
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "track", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Track track;
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    private List<Track> tracks = new ArrayList<>();
 }

@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.location.LocationEntity;
+package com.mycompany.SkySong.location.entity;
 
-import com.mycompany.SkySong.weather.WeatherEntity.Weather;
+import com.mycompany.SkySong.weather.entity.Weather;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

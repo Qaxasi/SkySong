@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.weather.WeatherClient;
+package com.mycompany.SkySong.weather.client;
 
-import com.mycompany.SkySong.location.LocationConstants.GeocodingConstants;
-import com.mycompany.SkySong.weather.WeatherEntity.WeatherRequest;
+import com.mycompany.SkySong.location.constants.GeocodingConstants;
+import com.mycompany.SkySong.weather.entity.WeatherRequest;
 import com.mycompany.SkySong.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

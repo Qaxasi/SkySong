@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.weather.WeatherController;
+package com.mycompany.SkySong.weather.controller;
 
-import com.mycompany.SkySong.weather.WeatherEntity.WeatherInfo;
-import com.mycompany.SkySong.weather.WeatherService.WeatherService;
+import com.mycompany.SkySong.weather.entity.WeatherInfo;
+import com.mycompany.SkySong.weather.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

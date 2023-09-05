@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.dto;
+package com.mycompany.SkySong.exception;
 
 import java.util.Date;
 

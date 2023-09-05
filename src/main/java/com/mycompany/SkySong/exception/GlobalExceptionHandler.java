@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.exception;
 
-import com.mycompany.SkySong.dto.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

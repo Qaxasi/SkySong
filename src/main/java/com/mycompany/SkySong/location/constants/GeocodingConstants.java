@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.location.LocationConstants;
+package com.mycompany.SkySong.location.constants;
 
 public class GeocodingConstants {
 

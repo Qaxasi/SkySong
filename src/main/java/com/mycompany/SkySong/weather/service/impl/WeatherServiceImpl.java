@@ -1,16 +1,16 @@
-package com.mycompany.SkySong.weather.WeatherService.impl;
+package com.mycompany.SkySong.weather.service.impl;
 
-import com.mycompany.SkySong.weather.WeatherClient.WeatherApiClient;
-import com.mycompany.SkySong.weather.WeatherConstants.WeatherConstants;
-import com.mycompany.SkySong.location.LocationEntity.Location;
-import com.mycompany.SkySong.weather.WeatherEntity.Weather;
-import com.mycompany.SkySong.weather.WeatherEntity.WeatherInfo;
-import com.mycompany.SkySong.weather.WeatherEntity.WeatherRequest;
+import com.mycompany.SkySong.weather.client.WeatherApiClient;
+import com.mycompany.SkySong.weather.constants.WeatherConstants;
+import com.mycompany.SkySong.location.entity.Location;
+import com.mycompany.SkySong.weather.entity.Weather;
+import com.mycompany.SkySong.weather.entity.WeatherInfo;
+import com.mycompany.SkySong.weather.entity.WeatherRequest;
 import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.exception.WeatherException;
-import com.mycompany.SkySong.location.LocationRepository.LocationDAO;
-import com.mycompany.SkySong.weather.WeatherRepository.WeatherDAO;
-import com.mycompany.SkySong.weather.WeatherService.WeatherService;
+import com.mycompany.SkySong.location.repository.LocationDAO;
+import com.mycompany.SkySong.weather.repository.WeatherDAO;
+import com.mycompany.SkySong.weather.service.WeatherService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;

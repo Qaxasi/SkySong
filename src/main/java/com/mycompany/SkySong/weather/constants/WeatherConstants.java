@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.weather.WeatherConstants;
+package com.mycompany.SkySong.weather.constants;
 
 public class WeatherConstants {
     public static final int MAX_RETRIES = 3;

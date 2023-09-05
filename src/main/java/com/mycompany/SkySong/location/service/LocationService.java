@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.location.LocationService;
+package com.mycompany.SkySong.location.service;
 
-import com.mycompany.SkySong.location.LocationEntity.LocationRequest;
+import com.mycompany.SkySong.location.entity.LocationRequest;
 
 import java.io.IOException;
 

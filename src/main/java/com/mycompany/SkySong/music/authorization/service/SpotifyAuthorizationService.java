@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.music.authorization.AuthorizationController.AuthorizationService;
+package com.mycompany.SkySong.music.authorization.service;
 
-import com.mycompany.SkySong.music.authorization.AuthorizationController.entity.SpotifyAccessToken;
-import com.mycompany.SkySong.music.authorization.AuthorizationController.entity.TokenRequest;
+import com.mycompany.SkySong.music.authorization.entity.SpotifyAccessToken;
+import com.mycompany.SkySong.music.authorization.entity.TokenRequest;
 import com.mycompany.SkySong.exception.AuthorizationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

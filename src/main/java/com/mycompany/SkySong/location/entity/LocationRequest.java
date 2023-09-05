@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.location.LocationEntity;
+package com.mycompany.SkySong.location.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

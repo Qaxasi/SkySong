@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.weather.WeatherRepository;
+package com.mycompany.SkySong.weather.repository;
 
-import com.mycompany.SkySong.weather.WeatherEntity.Weather;
+import com.mycompany.SkySong.weather.entity.Weather;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WeatherDAO extends JpaRepository<Weather, Integer> {

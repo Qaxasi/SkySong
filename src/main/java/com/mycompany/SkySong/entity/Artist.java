@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -31,7 +34,7 @@ public class Artist {
     @Column(name = "genres")
     private String genres;
 
-    @OneToMany(mappedBy = "track", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Track Track;
+    @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
+    private List<Track> tracks = new ArrayList<>();
 
 }
