@@ -19,7 +19,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Component
 @Slf4j
 public class SpotifyAuthorizationService {
-    private static final String AUTH_URI = "https://accounts.spotify.com/login";
+    private static final String AUTH_URI = "https://accounts.spotify.com/authorize";
     private static final String GRANT_TYPE = "authorization_code";
     private final String spotifyClientId;
     private final String spotifyClientSecret;
