@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,7 +41,30 @@ class SpotifyAuthenticationService {
     static void afterAll() throws IOException {
         mockWebServer.close();
     }
-    
+    @Test
+    void getAccessTokenShouldSendRequestWithEncodedCredentialsInHeader() throws InterruptedException {
+        final var expectedToken =
+                "{" +
+                        "\"access_token\": \"TEST_TOKEN\"," +
+                        "\"token_type\": \"Bearer\"," +
+                        "\"expires_in\": 3600" +
+                        "}";
+
+        final var encodedCredentials = Base64.getEncoder()
+                .encodeToString(("clientId:testClientSecret").getBytes());
+        final var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(expectedToken)
+                .setResponseCode(200);
+        mockWebServer.enqueue(mockResponse);
+
+        service.getAccessToken("test-auth-code");
+
+        final var recordRequest = mockWebServer.takeRequest();
+        assertEquals("Basic " + encodedCredentials, recordRequest.getHeaders().get("Authorization"));
+
+    }
+
     @Test
     void getAccessTokenShouldSendPostRequest() throws InterruptedException {
         final var expectedToken =
@@ -60,8 +84,6 @@ class SpotifyAuthenticationService {
         final var recordedRequest = mockWebServer.takeRequest();
         assertEquals("POST", recordedRequest.getMethod());
     }
-
-
 
 
 
