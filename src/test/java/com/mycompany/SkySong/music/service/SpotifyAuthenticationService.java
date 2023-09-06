@@ -1,16 +1,20 @@
 package com.mycompany.SkySong.music.service;
 
 import com.mycompany.SkySong.music.authorization.service.SpotifyAuthorizationService;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 
-class SpotifyAuthenticationServiceTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class SpotifyAuthenticationService {
     private SpotifyAuthorizationService service;
     private static MockWebServer mockWebServer;
     private final String clientSecret = "testClientSecret";
@@ -36,5 +40,31 @@ class SpotifyAuthenticationServiceTest {
     static void afterAll() throws IOException {
         mockWebServer.close();
     }
+    
+    @Test
+    void getAccessTokenShouldSendPostRequest() throws InterruptedException {
+        final var expectedToken =
+                "{" +
+                        "\"access_token\": \"TEST_TOKEN\"," +
+                        "\"token_type\": \"Bearer\"," +
+                        "\"expires_in\": 3600" +
+                        "}";
+        final var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(expectedToken)
+                .setResponseCode(200);
+        mockWebServer.enqueue(mockResponse);
+
+        service.getAccessToken("test-auth-code");
+
+        final var recordedRequest = mockWebServer.takeRequest();
+        assertEquals("POST", recordedRequest.getMethod());
+    }
+
+
+
+
+
+
 
 }
