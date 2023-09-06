@@ -1,12 +1,16 @@
 package com.mycompany.SkySong.music.service;
 
+import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
 import com.mycompany.SkySong.music.authorization.service.SpotifyAuthorizationService;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -14,11 +18,14 @@ import java.io.IOException;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
+
 
 class SpotifyAuthenticationService {
     private SpotifyAuthorizationService service;
     private static MockWebServer mockWebServer;
     private final String clientSecret = "testClientSecret";
+    private WebClient webClient;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -28,7 +35,7 @@ class SpotifyAuthenticationService {
 
     @BeforeEach
     void setup() {
-        final var webClient = WebClient.builder()
+        webClient = WebClient.builder()
                 .baseUrl(String.format("http://localhost:%s/token", mockWebServer.getPort()))
                 .defaultHeaders(header -> header.setContentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .build();
@@ -40,6 +47,14 @@ class SpotifyAuthenticationService {
     @AfterAll
     static void afterAll() throws IOException {
         mockWebServer.close();
+    }
+
+    @Test
+    void getAccessTokenShouldThrowAuthorizationException() {
+        final var mockResponse = new MockResponse().setResponseCode(401);
+        mockWebServer.enqueue(mockResponse);
+
+        assertThrows(AuthorizationException.class, () -> service.getAccessToken("authCode"));
     }
     @Test
     void getAccessTokenShouldSendRequestWithEncodedCredentialsInHeader() throws InterruptedException {
@@ -99,8 +114,8 @@ class SpotifyAuthenticationService {
         final var authorizationURL = service.getAuthorizationCodeURL();
         assertNotNull(authorizationURL);
         assertTrue(authorizationURL.startsWith("https://accounts.spotify.com/authorize"));
-
     }
+
 
 
 
