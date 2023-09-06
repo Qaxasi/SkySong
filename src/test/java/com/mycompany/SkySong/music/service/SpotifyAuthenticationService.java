@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SpotifyAuthenticationService {
     private SpotifyAuthorizationService service;
@@ -84,6 +85,16 @@ class SpotifyAuthenticationService {
         final var recordedRequest = mockWebServer.takeRequest();
         assertEquals("POST", recordedRequest.getMethod());
     }
+
+    @Test
+    void authorizationUrlShouldContainAllNecessaryParams() {
+        final var authorizationUrl = service.getAuthorizationCodeURL();
+        assertTrue(authorizationUrl.contains("client_id" ));
+        assertTrue(authorizationUrl.contains("response_type"));
+        assertTrue(authorizationUrl.contains("redirect_uri"));
+        assertTrue(authorizationUrl.contains("scope"));
+    }
+
 
 
 
