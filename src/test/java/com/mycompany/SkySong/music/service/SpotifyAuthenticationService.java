@@ -13,8 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
 import java.util.Base64;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SpotifyAuthenticationService {
     private SpotifyAuthorizationService service;
@@ -93,6 +92,14 @@ class SpotifyAuthenticationService {
         assertTrue(authorizationUrl.contains("response_type"));
         assertTrue(authorizationUrl.contains("redirect_uri"));
         assertTrue(authorizationUrl.contains("scope"));
+    }
+
+    @Test
+    void shouldReturnAuthorizationCodeURL() {
+        final var authorizationURL = service.getAuthorizationCodeURL();
+        assertNotNull(authorizationURL);
+        assertTrue(authorizationURL.startsWith("https://accounts.spotify.com/authorize"));
+
     }
 
 
