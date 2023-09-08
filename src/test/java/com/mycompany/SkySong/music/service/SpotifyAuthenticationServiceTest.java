@@ -4,13 +4,12 @@ import com.mycompany.SkySong.music.authorization.exception.AuthorizationExceptio
 import com.mycompany.SkySong.music.authorization.service.SpotifyAuthorizationService;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.apache.tomcat.websocket.AuthenticationException;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -18,8 +17,6 @@ import java.io.IOException;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
 
 class SpotifyAuthenticationService {
     private SpotifyAuthorizationService service;
@@ -115,11 +112,4 @@ class SpotifyAuthenticationService {
         assertNotNull(authorizationURL);
         assertTrue(authorizationURL.startsWith("https://accounts.spotify.com/authorize"));
     }
-
-
-
-
-
-
-
 }
