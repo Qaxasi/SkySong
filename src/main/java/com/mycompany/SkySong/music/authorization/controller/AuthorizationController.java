@@ -15,15 +15,14 @@ public class AuthorizationController {
     public AuthorizationController(SpotifyAuthorizationService spotifyTokenService) {
         this.spotifyAuthorizationService = spotifyTokenService;
     }
-
-    @GetMapping("/token")
-    public SpotifyAccessToken fetchToken(@RequestParam String code)  {
-        return spotifyAuthorizationService.getAccessToken(code);
-    }
-
     @GetMapping("/login")
     public RedirectView login() {
         return new RedirectView(spotifyAuthorizationService.getAuthorizationCodeURL());
+    }
+
+    @GetMapping("/token")
+    public SpotifyAccessToken fetchToken(@RequestParam String code)  {
+        return spotifyAuthorizationService.fetchAccessToken(code);
     }
 
 }
