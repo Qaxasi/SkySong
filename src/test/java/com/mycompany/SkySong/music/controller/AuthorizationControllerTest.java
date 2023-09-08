@@ -43,6 +43,31 @@ class AuthorizationControllerTest {
                 .andExpect(status().is3xxRedirection());
         verify(spotifyAuthorizationService).getAuthorizationCodeURL();
     }
+
+    @Test
+    void shouldReturnValidTokenWhenAuthCodeProvided() throws Exception {
+        final var authorizationCode = "test-code";
+        final SpotifyAccessToken expectedAccessToken = new SpotifyAccessToken(
+                "test-token",
+                "refresh-test-token",
+                3600,
+                "test-scope");
+        when(spotifyAuthorizationService.fetchAccessToken(anyString())).thenReturn(expectedAccessToken);
+        final String expectedBody = "{" +
+                "\"access_token\":\"test-token\"," +
+                "\"refresh_token\":\"refresh-test-token\"," +
+                "\"expires_in\":3600," +
+                "\"scope\":\"test-scope\"" +
+                "}";
+        mockMvc.perform(
+                        get("/api/auth/token")
+                                .param("code", authorizationCode)
+                )
+                .andExpect(content().contentType("application/json"))
+                .andExpect(content().json(expectedBody))
+                .andExpect(status().is2xxSuccessful());
+        verify(spotifyAuthorizationService).fetchAccessToken(authorizationCode);
+    }
 }
 
 
