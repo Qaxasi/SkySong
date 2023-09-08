@@ -34,6 +34,15 @@ class AuthorizationControllerTest {
                 .andExpect(status().isUnauthorized());
         verify(spotifyAuthorizationService).getAuthorizationCodeURL();
     }
+    @Test
+    void shouldReturnRedirectViewAndStatusRedirectionWithAuthorizationCodeURLFetchedFromService() throws Exception {
+        String authorizationCodeURL = "https://accounts.spotify.com/authorize?someParams";
+        when(spotifyAuthorizationService.getAuthorizationCodeURL()).thenReturn(authorizationCodeURL);
+        mockMvc.perform(get("/api/auth/login"))
+                .andExpect(redirectedUrl(authorizationCodeURL))
+                .andExpect(status().is3xxRedirection());
+        verify(spotifyAuthorizationService).getAuthorizationCodeURL();
+    }
 }
 
 
