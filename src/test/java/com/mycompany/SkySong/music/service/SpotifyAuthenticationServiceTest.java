@@ -18,7 +18,7 @@ import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SpotifyAuthenticationService {
+class SpotifyAuthenticationServiceTest {
     private SpotifyAuthorizationService service;
     private static MockWebServer mockWebServer;
     private final String clientSecret = "testClientSecret";
@@ -51,7 +51,7 @@ class SpotifyAuthenticationService {
         final var mockResponse = new MockResponse().setResponseCode(401);
         mockWebServer.enqueue(mockResponse);
 
-        assertThrows(AuthorizationException.class, () -> service.getAccessToken("authCode"));
+        assertThrows(AuthorizationException.class, () -> service.fetchAccessToken("authCode"));
     }
     @Test
     void getAccessTokenShouldSendRequestWithEncodedCredentialsInHeader() throws InterruptedException {
@@ -70,7 +70,7 @@ class SpotifyAuthenticationService {
                 .setResponseCode(200);
         mockWebServer.enqueue(mockResponse);
 
-        service.getAccessToken("test-auth-code");
+        service.fetchAccessToken("test-auth-code");
 
         final var recordRequest = mockWebServer.takeRequest();
         assertEquals("Basic " + encodedCredentials, recordRequest.getHeaders().get("Authorization"));
@@ -91,7 +91,7 @@ class SpotifyAuthenticationService {
                 .setResponseCode(200);
         mockWebServer.enqueue(mockResponse);
 
-        service.getAccessToken("test-auth-code");
+        service.fetchAccessToken("test-auth-code");
 
         final var recordedRequest = mockWebServer.takeRequest();
         assertEquals("POST", recordedRequest.getMethod());
