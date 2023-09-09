@@ -2,6 +2,7 @@ package com.mycompany.SkySong.location.client;
 
 import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.music.authorization.service.SpotifyAuthorizationService;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,6 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static reactor.core.publisher.Mono.when;
 
 class LocationApiClientTest {
 
@@ -48,6 +50,14 @@ class LocationApiClientTest {
 
         assertThrows(ValidationException.class, () -> locationApiClient.fetchGeocodingData(" "));
     }
+    @Test
+    void fetchGeocodingDataServerError() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(500));
+
+        assertThrows(IllegalArgumentException.class, () -> locationApiClient.fetchGeocodingData(
+                "Server Error"));
+    }
+
 
 
 }
