@@ -46,8 +46,10 @@ class SpotifyAuthenticationServiceTest {
         mockWebServer.close();
     }
 
+
+
     @Test
-    void getAccessTokenShouldThrowAuthorizationException() {
+    void shouldThrowAuthorizationExceptionWhenFetchingAccessTokenFails() {
         final var mockResponse = new MockResponse().setResponseCode(401);
         mockWebServer.enqueue(mockResponse);
 
