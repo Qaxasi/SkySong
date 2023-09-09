@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.exception;
+package com.mycompany.SkySong.location.exception;
 
 public class GeocodingException extends RuntimeException {
     public GeocodingException(String message) {
