@@ -36,4 +36,17 @@ class LocationControllerTest {
         verify(locationService).fetchAndSaveCoordinates(anyString());
 
     }
+
+    @Test
+    void shouldReturnGeocodingLocation() throws Exception {
+        String locationName = "Kraków";
+
+        mockMvc.perform(get("/api/location/coordinates/" + locationName)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is2xxSuccessful());
+
+        verify(locationService).fetchAndSaveCoordinates(locationName);
+    }
+
+    
 }
