@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -45,18 +46,28 @@ class LocationApiClientTest {
 
 
     @Test
-    void fetchGeocodingDataInvalidLocationName() {
+    void shouldThrowValidationExceptionWhenFetchingGeocodingDataWithInvalidName() {
         assertThrows(ValidationException.class, () -> locationApiClient.fetchGeocodingData(null));
 
         assertThrows(ValidationException.class, () -> locationApiClient.fetchGeocodingData(" "));
     }
     @Test
-    void fetchGeocodingDataServerError() {
+    void shouldThrowServerErrorInTheMethodFetchGeocodingData() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(500));
 
-        assertThrows(IllegalArgumentException.class, () -> locationApiClient.fetchGeocodingData(
+        assertThrows(IOException.class, () -> locationApiClient.fetchGeocodingData(
                 "Server Error"));
     }
+
+    @Test
+    void shouldThrowClientErrorInTheMethodFetchGeocodingData() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(400));
+
+        assertThrows(IOException.class, () -> locationApiClient.fetchGeocodingData(
+                "Client Error"));
+    }
+
+
 
 
 
