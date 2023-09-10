@@ -62,4 +62,13 @@ class LocationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+    @Test
+    void shouldReturnBadRequestWhenLocationNameIsNull() throws Exception {
+        when(locationService.fetchAndSaveCoordinates(null))
+                .thenThrow(new LocationNotGiven("Location name cannot be null"));
+
+        mockMvc.perform(get("/api/location/coordinates/")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }
