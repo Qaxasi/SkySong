@@ -1,25 +1,22 @@
 package com.mycompany.SkySong.location.controller;
 
-import com.mycompany.SkySong.exception.ValidationException;
+import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.location.exception.LocationException;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
 import com.mycompany.SkySong.location.service.LocationService;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(LocationController.class)
@@ -41,7 +38,7 @@ class LocationControllerTest {
     }
 
     @Test
-    void shouldReturnGeocodingLocation() throws Exception {
+    void shouldReturnStatusSuccessful() throws Exception {
         String locationName = "Kraków";
 
         mockMvc.perform(get("/api/location/coordinates/" + locationName)
@@ -70,5 +67,22 @@ class LocationControllerTest {
         mockMvc.perform(get("/api/location/coordinates/")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnLocationDetailsForTestedCityWhenFetched() throws Exception {
+        LocationRequest locationRequest = new LocationRequest("Kielce", 50.85403585,
+                20.609914352101452, "PL", "Świętokrzyskie Voivodeship");
+
+        when(locationService.fetchAndSaveCoordinates("Kielce")).thenReturn(locationRequest);
+
+        mockMvc.perform(get("/api/location/coordinates/Kielce")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Kielce"))
+                .andExpect(jsonPath("$.lat").value(50.85403585))
+                .andExpect(jsonPath("$.lon").value(20.609914352101452))
+                .andExpect(jsonPath("$.country").value("PL"))
+                .andExpect(jsonPath("$.state").value("Świętokrzyskie Voivodeship"));
     }
 }
