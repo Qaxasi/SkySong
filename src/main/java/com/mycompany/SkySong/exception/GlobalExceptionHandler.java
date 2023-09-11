@@ -18,8 +18,14 @@ import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
-
+    @ExceptionHandler(TooManyRequestException.class)
+    @ResponseStatus(value = HttpStatus.TOO_MANY_REQUESTS)
+    public ResponseEntity<ErrorDetails> tooManyRequestsProblem(TooManyRequestException ex,
+                                                               WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.TOO_MANY_REQUESTS);
+    }
     @ExceptionHandler(LocationNotGiven.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorDetails> handleLocationNotGiven(ValidationException ex,
