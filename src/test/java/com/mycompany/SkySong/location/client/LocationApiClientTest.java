@@ -2,6 +2,7 @@ package com.mycompany.SkySong.location.client;
 
 import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.location.entity.LocationRequest;
+import com.mycompany.SkySong.location.exception.LocationNotGiven;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
@@ -91,12 +92,11 @@ class LocationApiClientTest {
         assertEquals("Świętokrzyskie Voivodeship", locationRequest.state());
     }
 
-
     @Test
-    void shouldThrowValidationExceptionWhenFetchingGeocodingDataWithInvalidName() {
-        assertThrows(ValidationException.class, () -> locationApiClient.fetchGeocodingData(null));
+    void shouldThrowLocationNotGivenExceptionWhenFetchingGeocodingDataWithInvalidName() {
+        assertThrows(LocationNotGiven.class, () -> locationApiClient.fetchGeocodingData(null));
 
-        assertThrows(ValidationException.class, () -> locationApiClient.fetchGeocodingData(" "));
+        assertThrows(LocationNotGiven.class, () -> locationApiClient.fetchGeocodingData(""));
     }
     @Test
     void shouldThrowServerErrorInTheMethodFetchGeocodingData() {
