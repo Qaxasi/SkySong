@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.location.client;
 
+import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
@@ -101,11 +102,11 @@ class LocationApiClientTest {
         assertThrows(LocationNotGiven.class, () -> locationApiClient.fetchGeocodingData(""));
     }
     @Test
-    void shouldThrowServerErrorInTheMethodFetchGeocodingData() {
-        mockWebServer.enqueue(new MockResponse().setResponseCode(500));
+    void shouldThrowAuthorizationExceptionInTheMethodFetchGeocodingData() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(401));
 
-        assertThrows(IOException.class, () -> locationApiClient.fetchGeocodingData(
-                "Server Error"));
+        assertThrows(AuthorizationException.class, () -> locationApiClient.fetchGeocodingData(
+                "Location"));
     }
 
     @Test
