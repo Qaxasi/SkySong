@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.location.client;
 
 import com.mycompany.SkySong.exception.ValidationException;
+import com.mycompany.SkySong.location.entity.LocationRequest;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -40,6 +43,31 @@ class LocationApiClientTest {
         mockWebServer.close();
     }
 
+    @Test
+    void fetchGeocodingDataShouldSendGetRequest() throws IOException, InterruptedException {
+        final var expectedBody =
+                "{" +
+                        "\"locationName\": \"Kielce\"," +
+                        "\"latitude\": \"50.85403585\"," +
+                        "\"longitude\": \"20.609914352101452\"," +
+                        "\"country\": \"PL\"," +
+                        "\"state\": \"Świętokrzyskie Voivodeship\"" +
+                        "}";
+
+        final var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(expectedBody)
+                .setResponseCode(200);
+
+        mockWebServer.enqueue(mockResponse);
+        locationApiClient.fetchGeocodingData("Kielce");
+
+        final var recordedRequest = mockWebServer.takeRequest();
+        assertEquals("GET", recordedRequest.getMethod());
+    }
+
+
+
 
     @Test
     void shouldThrowValidationExceptionWhenFetchingGeocodingDataWithInvalidName() {
@@ -62,9 +90,4 @@ class LocationApiClientTest {
         assertThrows(IOException.class, () -> locationApiClient.fetchGeocodingData(
                 "Client Error"));
     }
-
-
-
-
-
 }
