@@ -15,7 +15,6 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 class LocationApiClientTest {
 
     private LocationApiClient locationApiClient;
@@ -42,7 +41,6 @@ class LocationApiClientTest {
     static void afterAll() throws IOException {
         mockWebServer.close();
     }
-
     @Test
     void fetchGeocodingDataShouldSendGetRequest() throws IOException, InterruptedException {
         final var expectedBody =
@@ -66,7 +64,32 @@ class LocationApiClientTest {
         assertEquals("GET", recordedRequest.getMethod());
     }
 
+    @Test
+    void shouldFetchGeocodingDataForLocation() throws IOException {
+        final var expectedBody =
+                "{" +
+                        "\"name\": \"Kielce\"," +
+                        "\"lat\": 50.85403585," +
+                        "\"lon\": 20.609914352101452," +
+                        "\"country\": \"PL\"," +
+                        "\"state\": \"Świętokrzyskie Voivodeship\"" +
+                        "}";
 
+        final var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(expectedBody)
+                .setResponseCode(200);
+
+        mockWebServer.enqueue(mockResponse);
+
+        LocationRequest locationRequest = locationApiClient.fetchGeocodingData("Kielce");
+
+        assertEquals("Kielce", locationRequest.locationName());
+        assertEquals(50.85403585, locationRequest.latitude());
+        assertEquals(20.609914352101452, locationRequest.longitude());
+        assertEquals("PL", locationRequest.country());
+        assertEquals("Świętokrzyskie Voivodeship", locationRequest.state());
+    }
 
 
     @Test
