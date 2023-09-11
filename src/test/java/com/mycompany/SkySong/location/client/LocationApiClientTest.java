@@ -3,6 +3,7 @@ package com.mycompany.SkySong.location.client;
 import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
+import com.mycompany.SkySong.location.exception.TooManyRequestException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 
 class LocationApiClientTest {
 
@@ -107,10 +109,9 @@ class LocationApiClientTest {
     }
 
     @Test
-    void shouldThrowClientErrorInTheMethodFetchGeocodingData() {
-        mockWebServer.enqueue(new MockResponse().setResponseCode(400));
+    void shouldThrowToManyRequestErrorInTheMethodFetchGeocodingData() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(429));
 
-        assertThrows(IOException.class, () -> locationApiClient.fetchGeocodingData(
-                "Client Error"));
+        assertThrows(TooManyRequestException.class, () -> locationApiClient.fetchGeocodingData("Location"));
     }
 }
