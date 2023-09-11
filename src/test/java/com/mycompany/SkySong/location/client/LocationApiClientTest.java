@@ -15,9 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LocationApiClientTest {
 
@@ -114,5 +112,22 @@ class LocationApiClientTest {
         mockWebServer.enqueue(new MockResponse().setResponseCode(429));
 
         assertThrows(TooManyRequestException.class, () -> locationApiClient.fetchGeocodingData("Location"));
+    }
+    @Test
+    void shouldHandleMissingFields() throws IOException {
+        final var expectedBody = "{\"name\": \"Kielce\"}";
+        final var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(expectedBody)
+                .setResponseCode(200);
+        mockWebServer.enqueue(mockResponse);
+
+        LocationRequest locationRequest = locationApiClient.fetchGeocodingData("Kielce");
+
+        assertEquals("Kielce", locationRequest.locationName());
+        assertNull(locationRequest.latitude());
+        assertNull(locationRequest.longitude());
+        assertNull(locationRequest.country());
+        assertNull(locationRequest.state());
     }
 }
