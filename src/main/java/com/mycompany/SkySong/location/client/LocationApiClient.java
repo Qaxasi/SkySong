@@ -1,14 +1,18 @@
 package com.mycompany.SkySong.location.client;
 
+import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.exception.ValidationException;
+import com.mycompany.SkySong.location.exception.LocationNotGiven;
+import com.mycompany.SkySong.location.exception.TooManyRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -30,39 +34,40 @@ public class LocationApiClient {
     }
 
     public LocationRequest fetchGeocodingData(String locationName) throws IOException {
-       try {
-           validateLocationName(locationName);
-           return webClient.get()
-                   .uri(uriBuilder -> uriBuilder
-                           .queryParam("q", locationName)
-                           .queryParam("appid", API_KEY)
-                           .build())
-                   .retrieve()
-                   .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
-                       log.error("4xx error while fetching geocoding data, status code: {}", clientResponse.statusCode());
-                       return Mono.error(new IllegalArgumentException("Invalid request parameters"));
-                   })
-                   .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> {
-                       log.error("5xx error while fetching geocoding data, status code: {}", clientResponse.statusCode());
-                       return Mono.error(new IllegalArgumentException("Server error occurred"));
-                   })
-                   .bodyToFlux(LocationRequest.class)
-                   .next()
-                   .timeout(timeout)
-                   .doOnError(e -> log.error("An error occurred while fetching geocoding data", e)).block();
-       } catch (ValidationException ex) {
-           log.error("Validation Exception: {}", ex.getMessage());
-           throw ex;
-       } catch (Exception e) {
-           log.error("General Exception: {}", e.getMessage());
-           throw new IOException("Failed to fetch geocoding data",e);
-       }
+        try {
+            validateLocationName(locationName);
+            return webClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .queryParam("q", locationName)
+                            .queryParam("appid", API_KEY)
+                            .build())
+                    .exchangeToFlux(clientResponse -> {
+                        HttpStatusCode status = clientResponse.statusCode();
+                        if (status.equals(HttpStatus.TOO_MANY_REQUESTS)) {
+                            log.error("Exceeded number of allowed calls to Geocoding API. Please try again later: {}",
+                                    clientResponse.statusCode());
+                            return Flux.error(new TooManyRequestException(
+                                    "Exceeded number of allowed calls to Geocoding API. Please try again later."));
+                        } else if (status.equals(HttpStatus.UNAUTHORIZED)) {
+                            log.error("Invalid authorization token");
+                            return Flux.error(new AuthorizationException("Invalid authorization token"));
+                        }
+                        return clientResponse.bodyToFlux(LocationRequest.class);
+                    })
+                    .next()
+                    .timeout(timeout)
+                    .doOnError(e -> log.error("An error occurred while fetching geocoding data", e))
+                    .block();
+        } catch (LocationNotGiven e) {
+            log.error("LocationNotGiven Exception: {}", e.getMessage());
+            throw e;
+        }
     }
     private void validateLocationName(String locationName) {
         Optional.ofNullable(locationName)
                 .filter(location -> !location.trim().isEmpty())
-                .orElseThrow(() -> new ValidationException(
-                        "Location name cannot be null. First you need to specify your location."));
+                .orElseThrow(() -> new LocationNotGiven(
+                        "Location name cannot be null or empty. First you need to specify your location."));
     }
 }
 
