@@ -68,7 +68,7 @@ class LocationApiClientTest {
     }
 
     @Test
-    void shouldFetchGeocodingDataForLocation() throws IOException {
+    void shouldCorrectlyMapApiResponseToLocationRequest() throws IOException {
         final var expectedBody =
                 "{" +
                         "\"name\": \"Kielce\"," +
