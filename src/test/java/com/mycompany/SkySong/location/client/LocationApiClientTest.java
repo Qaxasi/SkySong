@@ -49,8 +49,8 @@ class LocationApiClientTest {
         final var expectedBody =
                 "{" +
                         "\"locationName\": \"Kielce\"," +
-                        "\"latitude\": \"50.85403585\"," +
-                        "\"longitude\": \"20.609914352101452\"," +
+                        "\"latitude\": 50.85403585," +
+                        "\"longitude\": 20.609914352101452," +
                         "\"country\": \"PL\"," +
                         "\"state\": \"Świętokrzyskie Voivodeship\"" +
                         "}";
@@ -119,7 +119,7 @@ class LocationApiClientTest {
     void shouldThrowServerIsUnavailableExceptionInTheMethodFetchGeocodingData() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(503));
 
-        assertThrows(ServerIsUnavailable.class, () -> locationApiClient.fetchGeocodingData("Location"));
+        assertThrows(ServerIsUnavailable.class, () -> locationApiClient.fetchGeocodingData("Kielce"));
     }
-  
+
 }
