@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -105,7 +107,20 @@ class LocationApiClientTest {
         assertTrue(recordedRequest.getPath().contains("q=Kielce"));
         assertTrue(recordedRequest.getPath().contains("appid=" + clientSecret));
     }
-
+    @Test
+    void shouldThrowExceptionForSlowResponses() {
+        final var mockResponse = new MockResponse()
+                .setBody("{}")
+                .setResponseCode(200)
+                .setBodyDelay(6, TimeUnit.SECONDS);
+        mockWebServer.enqueue(mockResponse);
+        Exception exception = assertThrows(Exception.class,
+                () -> locationApiClient.fetchGeocodingData("Location"));
+        if (!(exception instanceof TimeoutException)) {
+            Throwable cause = exception.getCause();
+            assertTrue(cause instanceof TimeoutException);
+        }
+    }
 
     @Test
     void shouldThrowLocationNotGivenExceptionWhenFetchingGeocodingDataWithInvalidName() {
