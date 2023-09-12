@@ -2,16 +2,17 @@ package com.mycompany.SkySong.location.client;
 
 import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ServerIsUnavailable;
-import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
 import com.mycompany.SkySong.location.exception.TooManyRequestException;
+import com.mycompany.SkySong.weather.client.WeatherApiClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
@@ -93,6 +94,19 @@ class LocationApiClientTest {
         assertEquals("PL", locationRequest.country());
         assertEquals("Świętokrzyskie Voivodeship", locationRequest.state());
     }
+
+    @Test
+    void shouldSendRequestToCorrectURI() throws InterruptedException, IOException {
+        final var mockResponse = new MockResponse()
+                .setResponseCode(200);
+        mockWebServer.enqueue(mockResponse);
+        locationApiClient.fetchGeocodingData("Kielce");
+
+        final var recordedRequest = mockWebServer.takeRequest();
+        assertTrue(recordedRequest.getPath().contains("q=Kielce"));
+        assertTrue(recordedRequest.getPath().contains("appid="));
+    }
+
 
     @Test
     void shouldThrowLocationNotGivenExceptionWhenFetchingGeocodingDataWithInvalidName() {
