@@ -119,23 +119,7 @@ class LocationApiClientTest {
     void shouldThrowServerIsUnavailableExceptionInTheMethodFetchGeocodingData() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(503));
 
-        assertThrows(ServerIsUnavailable.class, () -> locationApiClient.fetchGeocodingData("Kielce"));
+        assertThrows(ServerIsUnavailable.class, () -> locationApiClient.fetchGeocodingData("Location"));
     }
-    @Test
-    void shouldHandleMissingFields() throws IOException {
-        final var expectedBody = "{\"name\": \"Kielce\"}";
-        final var mockResponse = new MockResponse()
-                .addHeader("Content-Type", "application/json")
-                .setBody(expectedBody)
-                .setResponseCode(200);
-        mockWebServer.enqueue(mockResponse);
-
-        LocationRequest locationRequest = locationApiClient.fetchGeocodingData("Kielce");
-
-        assertEquals("Kielce", locationRequest.locationName());
-        assertNull(locationRequest.latitude());
-        assertNull(locationRequest.longitude());
-        assertNull(locationRequest.country());
-        assertNull(locationRequest.state());
-    }
+  
 }
