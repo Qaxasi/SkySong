@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.location.client;
 
 import com.mycompany.SkySong.exception.AuthorizationException;
+import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
@@ -99,6 +100,7 @@ class LocationApiClientTest {
 
         assertThrows(LocationNotGiven.class, () -> locationApiClient.fetchGeocodingData(""));
     }
+
     @Test
     void shouldThrowAuthorizationExceptionInTheMethodFetchGeocodingData() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(401));
@@ -112,6 +114,12 @@ class LocationApiClientTest {
         mockWebServer.enqueue(new MockResponse().setResponseCode(429));
 
         assertThrows(TooManyRequestException.class, () -> locationApiClient.fetchGeocodingData("Location"));
+    }
+    @Test
+    void shouldThrowServerIsUnavailableExceptionInTheMethodFetchGeocodingData() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(503));
+
+        assertThrows(ServerIsUnavailable.class, () -> locationApiClient.fetchGeocodingData("Kielce"));
     }
     @Test
     void shouldHandleMissingFields() throws IOException {
