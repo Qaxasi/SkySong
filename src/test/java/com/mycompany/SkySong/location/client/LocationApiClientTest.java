@@ -94,7 +94,6 @@ class LocationApiClientTest {
         assertEquals("PL", locationRequest.country());
         assertEquals("Świętokrzyskie Voivodeship", locationRequest.state());
     }
-
     @Test
     void shouldSendRequestToCorrectURI() throws InterruptedException, IOException {
         final var mockResponse = new MockResponse()
@@ -104,7 +103,7 @@ class LocationApiClientTest {
 
         final var recordedRequest = mockWebServer.takeRequest();
         assertTrue(recordedRequest.getPath().contains("q=Kielce"));
-        assertTrue(recordedRequest.getPath().contains("appid="));
+        assertTrue(recordedRequest.getPath().contains("appid=" + clientSecret));
     }
 
 
