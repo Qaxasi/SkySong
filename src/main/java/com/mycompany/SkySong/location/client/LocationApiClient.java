@@ -1,9 +1,10 @@
 package com.mycompany.SkySong.location.client;
 
 import com.mycompany.SkySong.exception.AuthorizationException;
+import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
-import com.mycompany.SkySong.location.exception.TooManyRequestException;
+import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -46,11 +46,15 @@ public class LocationApiClient {
                         if (status.equals(HttpStatus.TOO_MANY_REQUESTS)) {
                             log.error("Exceeded number of allowed calls to Geocoding API. Please try again later: {}",
                                     clientResponse.statusCode());
-                            return Flux.error(new TooManyRequestException(
+                            return Flux.error(new TooManyRequestsException(
                                     "Exceeded number of allowed calls to Geocoding API. Please try again later."));
                         } else if (status.equals(HttpStatus.UNAUTHORIZED)) {
                             log.error("Invalid authorization token");
                             return Flux.error(new AuthorizationException("Invalid authorization token"));
+                        } else if (status.equals(HttpStatus.SERVICE_UNAVAILABLE)) {
+                            log.error("Server is unavailable");
+                            return Flux.error(new ServerIsUnavailable(
+                                    "Failed to fetch geocoding data. Please try again later"));
                         }
                         return clientResponse.bodyToFlux(LocationRequest.class);
                     })
