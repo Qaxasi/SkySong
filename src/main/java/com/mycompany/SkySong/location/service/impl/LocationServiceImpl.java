@@ -1,10 +1,12 @@
 package com.mycompany.SkySong.location.service.impl;
 
+import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.location.client.LocationApiClient;
+import com.mycompany.SkySong.location.exception.LocationNotGiven;
 import com.mycompany.SkySong.location.repository.LocationDAO;
 import com.mycompany.SkySong.location.entity.Location;
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.exception.GeocodingException;
+import com.mycompany.SkySong.location.exception.LocationException;
 import com.mycompany.SkySong.location.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -33,31 +36,26 @@ public class LocationServiceImpl implements LocationService {
 
         try {
             LocationRequest locationRequest = locationApiClient.fetchGeocodingData(locationName);
-
             validateLocationRequest(locationRequest);
-
             saveLocationIfNotExist(locationName, locationRequest);
-
             return locationRequest;
-        } catch (IOException e) {
-            log.error("Failed to fetch geocoding data", e);
-            throw new GeocodingException("Failed to fetch geocoding data", e);
         } catch (Exception e) {
             log.error("An unexpected error occurred");
-            throw new GeocodingException("An unexpected error occurred", e);
+            throw new LocationException("An unexpected error occurred", e);
         }
     }
 
     private void validateLocationRequest(LocationRequest locationRequest) {
         if (locationRequest == null) {
-            throw new GeocodingException("No such location found");
+            throw new LocationException("No such location found");
         }
     }
 
     private void validateLocationName(String locationName) {
-        if (locationName == null || locationName.isEmpty()) {
-            throw new GeocodingException("Location name cannot be null or empty");
-        }
+        Optional.ofNullable(locationName)
+                .filter(location -> !location.trim().isEmpty())
+                .orElseThrow(() -> new LocationNotGiven(
+                        "Location name cannot be null or empty. First you need to specify your location."));
     }
 
     private void saveLocationIfNotExist(String locationName, LocationRequest locationRequest) {
@@ -66,7 +64,6 @@ public class LocationServiceImpl implements LocationService {
             saveLocation(locationRequest);
         }
     }
-
     private void saveLocation(LocationRequest locationRequest) {
         Location location = mapToLocationEntity(locationRequest);
         locationDAO.save(location);
