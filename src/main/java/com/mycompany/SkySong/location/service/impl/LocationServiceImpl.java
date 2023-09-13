@@ -2,6 +2,7 @@ package com.mycompany.SkySong.location.service.impl;
 
 import com.mycompany.SkySong.exception.ValidationException;
 import com.mycompany.SkySong.location.client.LocationApiClient;
+import com.mycompany.SkySong.location.exception.LocationNotFound;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
 import com.mycompany.SkySong.location.repository.LocationDAO;
 import com.mycompany.SkySong.location.entity.Location;
@@ -47,7 +48,7 @@ public class LocationServiceImpl implements LocationService {
 
     private void validateLocationRequest(LocationRequest locationRequest) {
         if (locationRequest == null) {
-            throw new LocationException("No such location found");
+            throw new LocationNotFound("The specified location could not be found in our data source.");
         }
     }
 
