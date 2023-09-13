@@ -4,15 +4,13 @@ import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
-import com.mycompany.SkySong.location.exception.TooManyRequestException;
-import com.mycompany.SkySong.weather.client.WeatherApiClient;
+import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
@@ -36,7 +34,7 @@ class LocationApiClientTest {
     @BeforeEach
     void setup() {
         webClient = WebClient.builder()
-                .baseUrl(String.format("http://localhost:%s/api/location/coordinates/locationName",
+                .baseUrl(String.format("http://localhost:%s/api/location/coordinates/",
                         mockWebServer.getPort()))
                 .defaultHeaders(header -> header.setContentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .build();
@@ -51,11 +49,11 @@ class LocationApiClientTest {
     void fetchGeocodingDataShouldSendGetRequest() throws IOException, InterruptedException {
         final var expectedBody =
                 "{" +
-                        "\"locationName\": \"Kielce\"," +
-                        "\"latitude\": 50.85403585," +
-                        "\"longitude\": 20.609914352101452," +
-                        "\"country\": \"PL\"," +
-                        "\"state\": \"Świętokrzyskie Voivodeship\"" +
+                        "\"name\": \"Test-Location\"," +
+                        "\"lat\": 50.12345," +
+                        "\"lon\": 20.12345," +
+                        "\"country\": \"Test-Country\"," +
+                        "\"state\": \"Test-State\"" +
                         "}";
 
         final var mockResponse = new MockResponse()
@@ -64,7 +62,7 @@ class LocationApiClientTest {
                 .setResponseCode(200);
 
         mockWebServer.enqueue(mockResponse);
-        locationApiClient.fetchGeocodingData("Kielce");
+        locationApiClient.fetchGeocodingData("Test-Location");
 
         final var recordedRequest = mockWebServer.takeRequest();
         assertEquals("GET", recordedRequest.getMethod());
@@ -74,11 +72,11 @@ class LocationApiClientTest {
     void shouldCorrectlyMapApiResponseToLocationRequest() throws IOException {
         final var expectedBody =
                 "{" +
-                        "\"name\": \"Kielce\"," +
-                        "\"lat\": 50.85403585," +
-                        "\"lon\": 20.609914352101452," +
-                        "\"country\": \"PL\"," +
-                        "\"state\": \"Świętokrzyskie Voivodeship\"" +
+                        "\"name\": \"Test-Location\"," +
+                        "\"lat\": 50.12345," +
+                        "\"lon\": 20.12345," +
+                        "\"country\": \"Test-Country\"," +
+                        "\"state\": \"Test-State\"" +
                         "}";
 
         final var mockResponse = new MockResponse()
@@ -88,13 +86,13 @@ class LocationApiClientTest {
 
         mockWebServer.enqueue(mockResponse);
 
-        LocationRequest locationRequest = locationApiClient.fetchGeocodingData("Kielce");
+        LocationRequest locationRequest = locationApiClient.fetchGeocodingData("Test-Location");
 
-        assertEquals("Kielce", locationRequest.locationName());
-        assertEquals(50.85403585, locationRequest.latitude());
-        assertEquals(20.609914352101452, locationRequest.longitude());
-        assertEquals("PL", locationRequest.country());
-        assertEquals("Świętokrzyskie Voivodeship", locationRequest.state());
+        assertEquals("Test-Location", locationRequest.locationName());
+        assertEquals(50.12345, locationRequest.latitude());
+        assertEquals(20.12345, locationRequest.longitude());
+        assertEquals("Test-Country", locationRequest.country());
+        assertEquals("Test-State", locationRequest.state());
     }
     @Test
     void shouldSendRequestToCorrectURI() throws InterruptedException, IOException {
@@ -141,7 +139,7 @@ class LocationApiClientTest {
     void shouldThrowToManyRequestErrorInTheMethodFetchGeocodingData() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(429));
 
-        assertThrows(TooManyRequestException.class, () ->
+        assertThrows(TooManyRequestsException.class, () ->
                 locationApiClient.fetchGeocodingData("Test-Location"));
     }
     @Test
