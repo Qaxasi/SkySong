@@ -101,10 +101,10 @@ class LocationApiClientTest {
         final var mockResponse = new MockResponse()
                 .setResponseCode(200);
         mockWebServer.enqueue(mockResponse);
-        locationApiClient.fetchGeocodingData("Kielce");
+        locationApiClient.fetchGeocodingData("Test-Location");
 
         final var recordedRequest = mockWebServer.takeRequest();
-        assertTrue(recordedRequest.getPath().contains("q=Kielce"));
+        assertTrue(recordedRequest.getPath().contains("q=Test-Location"));
         assertTrue(recordedRequest.getPath().contains("appid=" + clientSecret));
     }
     @Test
@@ -115,7 +115,7 @@ class LocationApiClientTest {
                 .setBodyDelay(6, TimeUnit.SECONDS);
         mockWebServer.enqueue(mockResponse);
         Exception exception = assertThrows(Exception.class,
-                () -> locationApiClient.fetchGeocodingData("Location"));
+                () -> locationApiClient.fetchGeocodingData("Test-Location"));
         if (!(exception instanceof TimeoutException)) {
             Throwable cause = exception.getCause();
             assertTrue(cause instanceof TimeoutException);
@@ -134,20 +134,22 @@ class LocationApiClientTest {
         mockWebServer.enqueue(new MockResponse().setResponseCode(401));
 
         assertThrows(AuthorizationException.class, () -> locationApiClient.fetchGeocodingData(
-                "Location"));
+                "Test-Location"));
     }
 
     @Test
     void shouldThrowToManyRequestErrorInTheMethodFetchGeocodingData() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(429));
 
-        assertThrows(TooManyRequestException.class, () -> locationApiClient.fetchGeocodingData("Location"));
+        assertThrows(TooManyRequestException.class, () ->
+                locationApiClient.fetchGeocodingData("Test-Location"));
     }
     @Test
     void shouldThrowServerIsUnavailableExceptionInTheMethodFetchGeocodingData() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(503));
 
-        assertThrows(ServerIsUnavailable.class, () -> locationApiClient.fetchGeocodingData("Kielce"));
+        assertThrows(ServerIsUnavailable.class, () ->
+                locationApiClient.fetchGeocodingData("Test-Location"));
     }
 
 }
