@@ -1,11 +1,13 @@
 package com.mycompany.SkySong.exception;
 
 import com.mycompany.SkySong.location.exception.LocationException;
+import com.mycompany.SkySong.location.exception.LocationNotFound;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
-import com.mycompany.SkySong.location.exception.TooManyRequestException;
+import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
 import com.mycompany.SkySong.weather.exception.WeatherDataSaveException;
 import com.mycompany.SkySong.weather.exception.WeatherException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,9 +20,9 @@ import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(TooManyRequestException.class)
+    @ExceptionHandler(TooManyRequestsException.class)
     @ResponseStatus(value = HttpStatus.TOO_MANY_REQUESTS)
-    public ResponseEntity<ErrorDetails> tooManyRequestsProblem(TooManyRequestException ex,
+    public ResponseEntity<ErrorDetails> tooManyRequestsProblem(TooManyRequestsException ex,
                                                                WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 webRequest.getDescription(false));
@@ -42,7 +44,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
-
+    }
+    @ExceptionHandler(LocationNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorDetails> handleLocationNotFound(ValidationException ex,
+                                                               WebRequest webRequest) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
 
