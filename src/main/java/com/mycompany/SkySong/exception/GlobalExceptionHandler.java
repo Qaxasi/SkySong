@@ -31,11 +31,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(ServerIsUnavailable.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    public ResponseEntity<ErrorDetails> handleServerIsUnavailable(ValidationException ex,
-                                                                  WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-                webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
+    public ResponseEntity<ErrorResponse> handleServerIsUnavailable() {
+        ErrorResponse errorResponse = new ErrorResponse("Failed to fetch geocoding data. Please try again later");
+        return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
     @ExceptionHandler(LocationNotGiven.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
