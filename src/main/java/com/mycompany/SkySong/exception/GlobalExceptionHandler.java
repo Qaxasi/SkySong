@@ -1,13 +1,14 @@
 package com.mycompany.SkySong.exception;
 
-import com.mycompany.SkySong.location.exception.LocationException;
+import com.mycompany.SkySong.config.ErrorResponse;
+import com.mycompany.SkySong.config.ErrorResponseBuilder;
 import com.mycompany.SkySong.location.exception.LocationNotFound;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
+import com.mycompany.SkySong.location.exception.LocationServiceException;
 import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
 import com.mycompany.SkySong.weather.exception.WeatherDataSaveException;
 import com.mycompany.SkySong.weather.exception.WeatherException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,15 +29,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.TOO_MANY_REQUESTS);
     }
-    @ExceptionHandler(LocationNotGiven.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorDetails> handleLocationNotGiven(ValidationException ex,
-                                                               WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-                webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-
-    }
     @ExceptionHandler(ServerIsUnavailable.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public ResponseEntity<ErrorDetails> handleServerIsUnavailable(ValidationException ex,
@@ -45,14 +37,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
     }
-    @ExceptionHandler(LocationNotFound.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorDetails> handleLocationNotFound(ValidationException ex,
-                                                               WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-                webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(LocationNotGiven.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleLocationNotGiven() {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Location name cannot be null or empty. First you need to specify your location.");
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+
 
 
 
@@ -74,14 +67,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(LocationException.class)
+
+
+    @ExceptionHandler(LocationServiceException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorDetails> handleGeocodingException(LocationException ex,
+    public ResponseEntity<ErrorDetails> handleGeocodingException(LocationServiceException ex,
                                                                  WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
     @ExceptionHandler(WeatherException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ErrorDetails> handleWeatherException(WeatherException ex,
