@@ -22,12 +22,11 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(TooManyRequestsException.class)
-    @ResponseStatus(value = HttpStatus.TOO_MANY_REQUESTS)
-    public ResponseEntity<ErrorDetails> tooManyRequestsProblem(TooManyRequestsException ex,
-                                                               WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-                webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.TOO_MANY_REQUESTS);
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    public ResponseEntity<ErrorResponse> tooManyRequestsProblem() {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Exceeded number of allowed calls to Geocoding API. Please try again later.");
+        return new ResponseEntity<>(errorResponse, HttpStatus.TOO_MANY_REQUESTS);
     }
     @ExceptionHandler(ServerIsUnavailable.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
