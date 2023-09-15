@@ -18,11 +18,6 @@ public class LocationController {
     public LocationController(LocationService locationService) {
         this.locationService = locationService;
     }
-
-    @GetMapping
-    public void handleErrorWhenLocationIsNotGiven() {
-        throw new LocationNotGiven();
-    }
     @GetMapping("{locationName}")
     public LocationRequest fetchLocationCoordinates(
             @PathVariable String locationName) throws IOException {
