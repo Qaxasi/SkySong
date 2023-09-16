@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.config;
 
-public class ApiErrorBuilder {
-    public static ApiError createFromGeneralException(Exception exception) {
-        return new ApiError(exception.getMessage());
+public class ErrorResponseBuilder {
+    public static ErrorResponse createFromGeneralException(Exception exception) {
+        return new ErrorResponse(exception.getMessage());
     }
 
 }
