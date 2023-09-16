@@ -2,10 +2,7 @@ package com.mycompany.SkySong.exception;
 
 import com.mycompany.SkySong.config.ErrorResponse;
 import com.mycompany.SkySong.config.ErrorResponseBuilder;
-import com.mycompany.SkySong.location.exception.LocationNotFound;
-import com.mycompany.SkySong.location.exception.LocationNotGiven;
-import com.mycompany.SkySong.location.exception.LocationServiceException;
-import com.mycompany.SkySong.location.exception.TooManyRequestsException;
+import com.mycompany.SkySong.location.exception.*;
 import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
 import com.mycompany.SkySong.weather.exception.WeatherDataSaveException;
 import com.mycompany.SkySong.weather.exception.WeatherException;
@@ -30,9 +27,14 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(ServerIsUnavailable.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    public ResponseEntity<ErrorResponse> handleServerIsUnavailable() {
-        ErrorResponse errorResponse = new ErrorResponse("Failed to fetch geocoding data. Please try again later");
-        return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
+    public ErrorResponse handleServerIsUnavailable(final ServerIsUnavailable exception) {
+        return ErrorResponseBuilder.createFromGeneralException(exception);
+    }
+
+    @ExceptionHandler(WebClientException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleWebClientException(final WebClientException exception) {
+        return ErrorResponseBuilder.createFromGeneralException(exception);
     }
     @ExceptionHandler(LocationNotGiven.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
