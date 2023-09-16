@@ -9,24 +9,24 @@ import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
 import com.mycompany.SkySong.weather.exception.WeatherDataSaveException;
 import com.mycompany.SkySong.weather.exception.WeatherException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
     @ExceptionHandler(TooManyRequestsException.class)
     @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
-    public ResponseEntity<ErrorResponse> tooManyRequestsProblem() {
-        ErrorResponse errorResponse = new ErrorResponse(
-                "Exceeded number of allowed calls to Geocoding API. Please try again later.");
-        return new ResponseEntity<>(errorResponse, HttpStatus.TOO_MANY_REQUESTS);
+    public ErrorResponse handleTooManyRequestsException(final TooManyRequestsException exception) {
+        return ErrorResponseBuilder.createFromGeneralException(exception);
     }
     @ExceptionHandler(ServerIsUnavailable.class)
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
@@ -36,12 +36,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(LocationNotGiven.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleLocationNotGiven() {
-        ErrorResponse errorResponse = new ErrorResponse(
-                "Location name cannot be null or empty. First you need to specify your location.");
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> handleLocationNotGivenException(final LocationNotGiven exception) {
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
+       return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
 
 
 
