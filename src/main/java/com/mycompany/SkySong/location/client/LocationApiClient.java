@@ -3,7 +3,7 @@ package com.mycompany.SkySong.location.client;
 import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.location.exception.LocationNotGiven;
+import com.mycompany.SkySong.location.exception.LocationClientException;
 import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.time.Duration;
-import java.util.Optional;
 
 
 @Component
@@ -33,9 +31,8 @@ public class LocationApiClient {
         this.API_KEY = API_KEY;
     }
 
-    public LocationRequest fetchGeocodingData(String locationName) throws IOException {
+    public LocationRequest fetchGeocodingData(String locationName) {
         try {
-            validateLocationName(locationName);
             return webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("q", locationName)
@@ -60,18 +57,11 @@ public class LocationApiClient {
                     })
                     .next()
                     .timeout(timeout)
-                    .doOnError(e -> log.error("An error occurred while fetching geocoding data", e))
                     .block();
-        } catch (LocationNotGiven e) {
-            log.error("LocationNotGiven Exception: {}", e.getMessage());
-            throw e;
+        } catch (Exception e) {
+            log.error("An error occurred while fetching geocoding data: {}", e.getMessage());
+            throw new LocationClientException("An error occurred while fetching geocoding data", e);
         }
-    }
-    private void validateLocationName(String locationName) {
-        Optional.ofNullable(locationName)
-                .filter(location -> !location.trim().isEmpty())
-                .orElseThrow(() -> new LocationNotGiven(
-                        "Location name cannot be null or empty. First you need to specify your location."));
     }
 }
 
