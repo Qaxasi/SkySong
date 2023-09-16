@@ -27,6 +27,12 @@ public class LocationApiClient {
     @Autowired
     public LocationApiClient(@Qualifier("location") WebClient webClient,
                              @Value("${WEATHER_API_KEY}") String API_KEY) {
+        if (webClient == null) {
+            throw new IllegalArgumentException("WebClient cannot be null");
+        }
+        if (API_KEY == null || API_KEY.isEmpty()) {
+            throw new IllegalArgumentException("API_KEY cannot be null or empty");
+        }
         this.webClient = webClient;
         this.API_KEY = API_KEY;
     }
