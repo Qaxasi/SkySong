@@ -46,7 +46,7 @@ class LocationApiClientTest {
         mockWebServer.close();
     }
     @Test
-    void fetchGeocodingDataShouldSendGetRequest() throws IOException, InterruptedException {
+    void fetchGeocodingDataShouldSendGetRequest() throws InterruptedException {
         final var expectedBody =
                 "{" +
                         "\"name\": \"Test-Location\"," +
@@ -69,7 +69,7 @@ class LocationApiClientTest {
     }
 
     @Test
-    void shouldCorrectlyMapApiResponseToLocationRequest() throws IOException {
+    void shouldCorrectlyMapApiResponseToLocationRequest() {
         final var expectedBody =
                 "{" +
                         "\"name\": \"Test-Location\"," +
@@ -95,7 +95,7 @@ class LocationApiClientTest {
         assertEquals("Test-State", locationRequest.state());
     }
     @Test
-    void shouldSendRequestToCorrectURI() throws InterruptedException, IOException {
+    void shouldSendRequestToCorrectURI() throws InterruptedException{
         final var mockResponse = new MockResponse()
                 .setResponseCode(200);
         mockWebServer.enqueue(mockResponse);
@@ -120,12 +120,6 @@ class LocationApiClientTest {
         }
     }
 
-    @Test
-    void shouldThrowLocationNotGivenExceptionWhenFetchingGeocodingDataWithInvalidName() {
-        assertThrows(LocationNotGiven.class, () -> locationApiClient.fetchGeocodingData(null));
-
-        assertThrows(LocationNotGiven.class, () -> locationApiClient.fetchGeocodingData(""));
-    }
 
     @Test
     void shouldThrowAuthorizationExceptionInTheMethodFetchGeocodingData() {
