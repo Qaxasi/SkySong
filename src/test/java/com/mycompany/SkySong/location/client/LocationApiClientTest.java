@@ -3,7 +3,6 @@ package com.mycompany.SkySong.location.client;
 import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.location.exception.LocationNotGiven;
 import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
