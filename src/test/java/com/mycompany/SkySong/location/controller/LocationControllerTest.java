@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.location.controller;
 
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.location.exception.LocationException;
 import com.mycompany.SkySong.location.exception.LocationNotGiven;
+import com.mycompany.SkySong.location.exception.LocationServiceException;
 import com.mycompany.SkySong.location.service.LocationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.io.IOException;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,8 +28,8 @@ class LocationControllerTest {
     @Test
     void shouldReturnLocationExceptionDuringFetchAndSaveCoordinates() throws Exception {
         when(locationService.fetchAndSaveCoordinates(anyString())).thenThrow(
-                new LocationException("Location Exception"));
-        mockMvc.perform(get("/api/location/coordinates/Warszawa"))
+                new LocationServiceException("Location Exception"));
+        mockMvc.perform(get("/api/v1/location/coordinates/City"))
                 .andExpect(status().is5xxServerError());
         verify(locationService).fetchAndSaveCoordinates(anyString());
 
@@ -41,7 +39,7 @@ class LocationControllerTest {
     void shouldReturnStatusSuccessful() throws Exception {
         String locationName = "Kraków";
 
-        mockMvc.perform(get("/api/location/coordinates/" + locationName)
+        mockMvc.perform(get("/api/v1/location/coordinates/" + locationName)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
 
@@ -53,7 +51,7 @@ class LocationControllerTest {
         String locationName = "";
 
         when(locationService.fetchAndSaveCoordinates(locationName))
-                .thenThrow(new LocationNotGiven("Location name cannot be empty"));
+                .thenThrow(new LocationNotGiven("a"));
 
         mockMvc.perform(get("/api/location/coordinates/" + locationName)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -62,7 +60,7 @@ class LocationControllerTest {
     @Test
     void shouldReturnBadRequestWhenLocationNameIsNull() throws Exception {
         when(locationService.fetchAndSaveCoordinates(null))
-                .thenThrow(new LocationNotGiven("Location name cannot be null"));
+                .thenThrow(new LocationNotGiven("a"));
 
         mockMvc.perform(get("/api/location/coordinates/")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -76,7 +74,7 @@ class LocationControllerTest {
 
         when(locationService.fetchAndSaveCoordinates("Kielce")).thenReturn(locationRequest);
 
-        mockMvc.perform(get("/api/location/coordinates/Kielce")
+        mockMvc.perform(get("/api/v1/location/coordinates/Kielce")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Kielce"))
@@ -85,4 +83,5 @@ class LocationControllerTest {
                 .andExpect(jsonPath("$.country").value("PL"))
                 .andExpect(jsonPath("$.state").value("Świętokrzyskie Voivodeship"));
     }
+
 }
