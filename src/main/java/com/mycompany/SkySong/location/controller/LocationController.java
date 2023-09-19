@@ -1,10 +1,8 @@
 package com.mycompany.SkySong.location.controller;
 
-import com.mycompany.SkySong.config.ErrorResponse;
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.location.exception.LocationNotGiven;
+import com.mycompany.SkySong.location.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.location.service.LocationService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +22,7 @@ public class LocationController {
     public LocationRequest fetchLocationCoordinates(
             @PathVariable(required = false) String locationName) throws IOException {
         if (locationName == null || locationName.isEmpty()) {
-            throw new LocationNotGiven(
+            throw new NullOrEmptyInputException(
                     "Location name cannot be null or empty. First you need to specify your location.");
         }
         return locationService.fetchAndSaveCoordinates(locationName);
