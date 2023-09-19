@@ -36,6 +36,20 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleWebClientException(final WebClientException exception) {
         return ErrorResponseBuilder.createFromGeneralException(exception);
     }
+    @ExceptionHandler(AuthorizationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleAuthorizationException(final AuthorizationException exception) {
+        return ErrorResponseBuilder.createFromGeneralException(exception);
+    }
+
+
+
+
+
+
+
+
+
     @ExceptionHandler(LocationNotGiven.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleLocationNotGivenException(final LocationNotGiven exception) {
@@ -92,13 +106,4 @@ public class GlobalExceptionHandler {
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    @ExceptionHandler(AuthorizationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<ErrorDetails> handleAuthorizationException(AuthorizationException ex,
-                                                                     WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-                webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
-    }
-
 }
