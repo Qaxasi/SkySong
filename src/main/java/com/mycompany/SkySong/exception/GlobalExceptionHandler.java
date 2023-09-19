@@ -6,11 +6,8 @@ import com.mycompany.SkySong.location.exception.*;
 import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
 import com.mycompany.SkySong.weather.exception.WeatherDataSaveException;
 import com.mycompany.SkySong.weather.exception.WeatherException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -41,30 +38,11 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleAuthorizationException(final AuthorizationException exception) {
         return ErrorResponseBuilder.createFromGeneralException(exception);
     }
-
-
-
-
-
-
-
-
-
-    @ExceptionHandler(LocationNotGiven.class)
+    @ExceptionHandler(NullOrEmptyInputException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleLocationNotGivenException(final LocationNotGiven exception) {
-        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
-       return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    public ErrorResponse handleNullOrEmptyInputException(final NullOrEmptyInputException exception) {
+        return ErrorResponseBuilder.createFromGeneralException(exception);
     }
-
-
-
-
-
-
-
-
-
 
 
 
