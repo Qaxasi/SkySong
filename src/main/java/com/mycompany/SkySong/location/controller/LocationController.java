@@ -12,7 +12,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/v1/location/coordinates/")
 public class LocationController {
-    private LocationService locationService;
+    private final LocationService locationService;
 
     @Autowired
     public LocationController(LocationService locationService) {
