@@ -4,12 +4,14 @@ import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.location.exception.TooManyRequestsException;
+import com.mycompany.SkySong.location.exception.WebClientException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
@@ -143,4 +145,11 @@ class LocationApiClientTest {
                 locationApiClient.fetchGeocodingData("Test-Location"));
     }
 
+    @Test
+    void shouldThrowWebClientExceptionInTheMethodFetchGeocodingData() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(500));
+
+        assertThrows(WebClientException.class, () ->
+                locationApiClient.fetchGeocodingData("Test-Location"));
+    }
 }
