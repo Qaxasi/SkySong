@@ -70,19 +70,18 @@ public class LocationApiClient {
         private Flux<LocationRequest> handleClientResponse(ClientResponse clientResponse) {
             HttpStatusCode status = clientResponse.statusCode();
             if (status.equals(HttpStatus.TOO_MANY_REQUESTS)) {
-                log.error("Exceeded number of allowed calls to Geocoding API: {}",
-                        clientResponse.statusCode());
+                log.error("Exceeded number of allowed calls to Geocoding API: {}", clientResponse.statusCode());
                 return Flux.error(new TooManyRequestsException(
                         "Exceeded number of allowed calls to Geocoding API. Please try again later."));
             } else if (status.equals(HttpStatus.UNAUTHORIZED)) {
-                log.error("Invalid authorization token");
+                log.error("Invalid authorization token: {}", clientResponse.statusCode());
                 return Flux.error(new AuthorizationException("Invalid authorization token."));
             } else if (status.equals(HttpStatus.SERVICE_UNAVAILABLE)) {
-                log.error("Server is unavailable");
+                log.error("Server is unavailable: {}", clientResponse.statusCode());
                 return Flux.error(new ServerIsUnavailable(
                         "Failed to fetch geocoding data. Please try again later."));
             } else if (status.equals(HttpStatus.INTERNAL_SERVER_ERROR)) {
-                log.error("An error occurred while fetching geocoding data.");
+                log.error("An error occurred while fetching geocoding data: {}", clientResponse.statusCode());
                 return Flux.error(new WebClientException(
                         "An error occurred while fetching geocoding data."));
             }
