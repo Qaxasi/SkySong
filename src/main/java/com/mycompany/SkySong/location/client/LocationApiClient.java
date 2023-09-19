@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.location.client;
 
-import ch.qos.logback.core.net.server.Client;
 import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.location.entity.LocationRequest;
@@ -41,27 +40,7 @@ public class LocationApiClient {
                             .queryParam("q", locationName)
                             .queryParam("appid", API_KEY)
                             .build())
-                    .exchangeToFlux(clientResponse -> {
-                        HttpStatusCode status = clientResponse.statusCode();
-                        if (status.equals(HttpStatus.TOO_MANY_REQUESTS)) {
-                            log.error("Exceeded number of allowed calls to Geocoding API: {}",
-                                    clientResponse.statusCode());
-                            return Flux.error(new TooManyRequestsException(
-                                    "Exceeded number of allowed calls to Geocoding API. Please try again later."));
-                        } else if (status.equals(HttpStatus.UNAUTHORIZED)) {
-                            log.error("Invalid authorization token");
-                            return Flux.error(new AuthorizationException("Invalid authorization token."));
-                        } else if (status.equals(HttpStatus.SERVICE_UNAVAILABLE)) {
-                            log.error("Server is unavailable");
-                            return Flux.error(new ServerIsUnavailable(
-                                    "Failed to fetch geocoding data. Please try again later."));
-                        } else if (status.equals(HttpStatus.INTERNAL_SERVER_ERROR)) {
-                            log.error("An error occurred while fetching geocoding data.");
-                            return Flux.error(new WebClientException(
-                                    "An error occurred while fetching geocoding data."));
-                        }
-                        return clientResponse.bodyToFlux(LocationRequest.class);
-                    })
+                    .exchangeToFlux(this::handleClientResponse)
                     .next()
                     .timeout(timeout)
                     .block();
