@@ -36,7 +36,7 @@ public class LocationApiClient {
     }
 
     public LocationRequest fetchGeocodingData(String locationName) {
-        return webClient.get()
+        LocationRequest locationRequest =  webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("q", locationName)
                             .queryParam("appid", API_KEY)
@@ -45,6 +45,9 @@ public class LocationApiClient {
                     .next()
                     .timeout(timeout)
                     .block();
+
+        validateLocationRequest(locationRequest);
+        return locationRequest;
         }
 
         private Flux<LocationRequest> handleClientResponse(ClientResponse clientResponse) {
@@ -68,8 +71,8 @@ public class LocationApiClient {
             return clientResponse.bodyToFlux(LocationRequest.class);
         }
         private void validateLocationRequest(LocationRequest locationRequest) {
-        if (locationRequest == null) {
-            throw new DataNotFoundException("The specified location could not be found in our data source.");
+            if (locationRequest == null) {
+                throw new DataNotFoundException("The specified location could not be found in our data source.");
         }
     }
 }
