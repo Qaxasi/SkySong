@@ -63,7 +63,7 @@ class LocationControllerTest {
 
         mockMvc.perform(get("/api/v1/location/coordinates/")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
