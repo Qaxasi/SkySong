@@ -53,7 +53,7 @@ class LocationControllerTest {
         when(locationService.fetchAndSaveCoordinates(locationName))
                 .thenThrow(new NullOrEmptyInputException("Test"));
 
-        mockMvc.perform(get("/api/location/coordinates/" + locationName)
+        mockMvc.perform(get("/api/v1/location/coordinates/" + locationName)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
