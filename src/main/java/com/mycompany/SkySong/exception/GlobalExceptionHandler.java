@@ -2,7 +2,6 @@ package com.mycompany.SkySong.exception;
 
 import com.mycompany.SkySong.config.ErrorResponse;
 import com.mycompany.SkySong.config.ErrorResponseBuilder;
-import com.mycompany.SkySong.location.exception.*;
 import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
 import com.mycompany.SkySong.weather.exception.WeatherDataSaveException;
 import com.mycompany.SkySong.weather.exception.WeatherException;
