@@ -51,7 +51,7 @@ class LocationControllerTest {
         String locationName = "";
 
         when(locationService.fetchAndSaveCoordinates(locationName))
-                .thenThrow(new NullOrEmptyInputException("a"));
+                .thenThrow(new NullOrEmptyInputException("Test"));
 
         mockMvc.perform(get("/api/location/coordinates/" + locationName)
                         .contentType(MediaType.APPLICATION_JSON))
