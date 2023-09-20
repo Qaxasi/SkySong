@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.location.controller;
 
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.location.exception.LocationNotGiven;
+import com.mycompany.SkySong.location.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.location.exception.LocationServiceException;
 import com.mycompany.SkySong.location.service.LocationService;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class LocationControllerTest {
 
     @Test
     void shouldReturnStatusSuccessful() throws Exception {
-        String locationName = "Kraków";
+        String locationName = "Test-Location";
 
         mockMvc.perform(get("/api/v1/location/coordinates/" + locationName)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -51,7 +51,7 @@ class LocationControllerTest {
         String locationName = "";
 
         when(locationService.fetchAndSaveCoordinates(locationName))
-                .thenThrow(new LocationNotGiven("a"));
+                .thenThrow(new NullOrEmptyInputException("a"));
 
         mockMvc.perform(get("/api/location/coordinates/" + locationName)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -60,7 +60,7 @@ class LocationControllerTest {
     @Test
     void shouldReturnBadRequestWhenLocationNameIsNull() throws Exception {
         when(locationService.fetchAndSaveCoordinates(null))
-                .thenThrow(new LocationNotGiven("a"));
+                .thenThrow(new NullOrEmptyInputException("a"));
 
         mockMvc.perform(get("/api/location/coordinates/")
                         .contentType(MediaType.APPLICATION_JSON))
