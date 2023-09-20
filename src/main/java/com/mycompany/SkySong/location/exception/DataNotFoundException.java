@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.location.exception;
 
-public class LocationNotFound extends RuntimeException {
+public class DataNotFoundException extends RuntimeException {
 
-    public LocationNotFound(String message) {
+    public DataNotFoundException(String message) {
         super(message);
     }
 }
