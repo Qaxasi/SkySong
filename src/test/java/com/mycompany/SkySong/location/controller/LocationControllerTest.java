@@ -60,7 +60,7 @@ class LocationControllerTest {
     @Test
     void shouldReturnBadRequestWhenLocationNameIsNull() throws Exception {
         when(locationService.fetchAndSaveCoordinates(null))
-                .thenThrow(new NullOrEmptyInputException("a"));
+                .thenThrow(new NullOrEmptyInputException("Test-Error"));
 
         mockMvc.perform(get("/api/location/coordinates/")
                         .contentType(MediaType.APPLICATION_JSON))
