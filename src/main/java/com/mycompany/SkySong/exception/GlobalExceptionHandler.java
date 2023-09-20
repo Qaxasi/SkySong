@@ -43,6 +43,11 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleNullOrEmptyInputException(final NullOrEmptyInputException exception) {
         return ErrorResponseBuilder.createFromGeneralException(exception);
     }
+    @ExceptionHandler(DataNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleDataNotFoundException(final DataNotFoundException exception) {
+        return ErrorResponseBuilder.createFromGeneralException(exception);
+    }
 
 
 
