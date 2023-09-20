@@ -3,6 +3,7 @@ package com.mycompany.SkySong.location.client;
 import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.location.entity.LocationRequest;
+import com.mycompany.SkySong.location.exception.DataNotFoundException;
 import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import com.mycompany.SkySong.location.exception.WebClientException;
 import okhttp3.mockwebserver.MockResponse;
@@ -96,8 +97,20 @@ class LocationApiClientTest {
     }
     @Test
     void shouldSendRequestToCorrectURI() throws InterruptedException{
+        final var expectedBody =
+                "{" +
+                        "\"name\": \"Test-Location\"," +
+                        "\"lat\": 50.12345," +
+                        "\"lon\": 20.12345," +
+                        "\"country\": \"Test-Country\"," +
+                        "\"state\": \"Test-State\"" +
+                        "}";
+
         final var mockResponse = new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(expectedBody)
                 .setResponseCode(200);
+
         mockWebServer.enqueue(mockResponse);
         locationApiClient.fetchGeocodingData("Test-Location");
 
