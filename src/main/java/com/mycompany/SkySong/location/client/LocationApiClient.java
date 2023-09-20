@@ -3,6 +3,7 @@ package com.mycompany.SkySong.location.client;
 import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.exception.ServerIsUnavailable;
 import com.mycompany.SkySong.location.entity.LocationRequest;
+import com.mycompany.SkySong.location.exception.DataNotFoundException;
 import com.mycompany.SkySong.location.exception.TooManyRequestsException;
 import com.mycompany.SkySong.location.exception.WebClientException;
 import lombok.extern.slf4j.Slf4j;
@@ -66,5 +67,10 @@ public class LocationApiClient {
             }
             return clientResponse.bodyToFlux(LocationRequest.class);
         }
+        private void validateLocationRequest(LocationRequest locationRequest) {
+        if (locationRequest == null) {
+            throw new DataNotFoundException("The specified location could not be found in our data source.");
+        }
+    }
 }
 
