@@ -52,10 +52,9 @@ class LocationControllerTest {
 
         when(locationService.fetchAndSaveCoordinates(locationName))
                 .thenThrow(new NullOrEmptyInputException("Test-Error"));
-
         mockMvc.perform(get("/api/v1/location/coordinates/" + locationName)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
     @Test
     void shouldReturnBadRequestWhenLocationNameIsNull() throws Exception {
