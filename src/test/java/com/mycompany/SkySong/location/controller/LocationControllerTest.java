@@ -68,19 +68,19 @@ class LocationControllerTest {
 
     @Test
     void shouldReturnLocationDetailsForTestedCityWhenFetched() throws Exception {
-        LocationRequest locationRequest = new LocationRequest("Kielce", 50.85403585,
-                20.609914352101452, "PL", "Świętokrzyskie Voivodeship");
+        LocationRequest locationRequest = new LocationRequest("Test-Location", 50.12345,
+                20.12345, "Test-Country", "Test-State");
 
-        when(locationService.fetchAndSaveCoordinates("Kielce")).thenReturn(locationRequest);
+        when(locationService.fetchAndSaveCoordinates("Test-Location")).thenReturn(locationRequest);
 
-        mockMvc.perform(get("/api/v1/location/coordinates/Kielce")
+        mockMvc.perform(get("/api/v1/location/coordinates/Test-Location")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Kielce"))
-                .andExpect(jsonPath("$.lat").value(50.85403585))
-                .andExpect(jsonPath("$.lon").value(20.609914352101452))
-                .andExpect(jsonPath("$.country").value("PL"))
-                .andExpect(jsonPath("$.state").value("Świętokrzyskie Voivodeship"));
+                .andExpect(jsonPath("$.name").value("Test-Location"))
+                .andExpect(jsonPath("$.lat").value(50.12345))
+                .andExpect(jsonPath("$.lon").value(20.12345))
+                .andExpect(jsonPath("$.country").value("Test-Country"))
+                .andExpect(jsonPath("$.state").value("Test-State"));
     }
 
 }
