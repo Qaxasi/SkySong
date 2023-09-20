@@ -132,8 +132,14 @@ class LocationApiClientTest {
             assertTrue(cause instanceof TimeoutException);
         }
     }
+    @Test
+    void shouldThrowDataNotFoundExceptionInMethodFetchGeocodingData() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(404));
 
+        assertThrows(DataNotFoundException.class,
+                () -> locationApiClient.fetchGeocodingData("Test-Location"));
 
+    }
     @Test
     void shouldThrowAuthorizationExceptionInTheMethodFetchGeocodingData() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(401));
