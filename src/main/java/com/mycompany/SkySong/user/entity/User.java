@@ -56,4 +56,10 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "genres_id", referencedColumnName = "id"))
     private Set<Genres> dislikedGenres = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_favorite_artist",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id"))
+    private Set<Artist> preferredArtist = new HashSet<>();
 }
