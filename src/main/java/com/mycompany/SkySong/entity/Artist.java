@@ -37,7 +37,10 @@ public class Artist {
     private String genres;
 
     @ManyToMany(mappedBy = "preferredArtist")
-    private Set<User> usersWhoPreferThisArtist ;
+    private Set<User> usersWhoPreferThisArtist;
+
+    @ManyToMany(mappedBy = "dislikedArtist")
+    private Set<User> usersWHoDislikedThisArtist;
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
     private List<Track> tracks = new ArrayList<>();
