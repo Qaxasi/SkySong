@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.entity;
 
+import com.mycompany.SkySong.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,6 +35,9 @@ public class Artist {
 
     @Column(name = "genres")
     private String genres;
+
+    @ManyToMany(mappedBy = "preferredArtist")
+    private Set<User> usersWhoPreferThisArtist ;
 
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
     private List<Track> tracks = new ArrayList<>();
