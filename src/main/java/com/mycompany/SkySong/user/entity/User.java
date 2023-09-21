@@ -2,6 +2,8 @@ package com.mycompany.SkySong.user.entity;
 
 import com.mycompany.SkySong.entity.Artist;
 import com.mycompany.SkySong.entity.Genres;
+import com.mycompany.SkySong.location.entity.Location;
+import com.mycompany.SkySong.location.entity.LocationRequest;
 import com.mycompany.SkySong.role.entity.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,5 +34,8 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Location location;
 
 }
