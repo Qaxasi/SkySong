@@ -1,11 +1,7 @@
 package com.mycompany.SkySong.location.client;
 
-import com.mycompany.SkySong.exception.AuthorizationException;
-import com.mycompany.SkySong.exception.ServerIsUnavailable;
+import com.mycompany.SkySong.exception.*;
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.location.exception.DataNotFoundException;
-import com.mycompany.SkySong.location.exception.TooManyRequestsException;
-import com.mycompany.SkySong.location.exception.WebClientException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
