@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.location.service.impl;
 
 
+import com.mycompany.SkySong.exception.LocationServiceException;
 import com.mycompany.SkySong.location.client.LocationApiClient;
 
 import com.mycompany.SkySong.location.repository.LocationDAO;
@@ -40,7 +41,7 @@ public class LocationServiceImpl implements LocationService {
             return locationRequest;
         } catch (Exception e) {
             log.error("An unexpected error occurred");
-            throw new LocationException("An unexpected error occurred", e);
+            throw new LocationServiceException("An unexpected error occurred", e);
         }
     }
     private void saveLocationIfNotExist(String locationName, LocationRequest locationRequest) {
