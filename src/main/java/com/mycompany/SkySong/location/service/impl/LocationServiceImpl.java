@@ -30,7 +30,6 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    @Transactional
     public LocationRequest fetchAndSaveCoordinates(String locationName) throws IOException {
         try {
             LocationRequest locationRequest = locationApiClient.fetchGeocodingData(locationName);
