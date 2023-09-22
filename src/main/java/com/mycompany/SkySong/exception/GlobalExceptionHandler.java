@@ -2,9 +2,6 @@ package com.mycompany.SkySong.exception;
 
 import com.mycompany.SkySong.config.ErrorResponse;
 import com.mycompany.SkySong.config.ErrorResponseBuilder;
-import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
-import com.mycompany.SkySong.weather.exception.WeatherDataSaveException;
-import com.mycompany.SkySong.weather.exception.WeatherException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -66,24 +63,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ErrorDetails> handleGeocodingException(LocationServiceException ex,
                                                                  WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-                webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-
-    @ExceptionHandler(WeatherException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorDetails> handleWeatherException(WeatherException ex,
-                                                         WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
-                webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    @ExceptionHandler(WeatherDataSaveException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorDetails> handleWeatherDataSaveException(WeatherDataSaveException ex,
-                                                                       WebRequest webRequest) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
