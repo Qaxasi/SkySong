@@ -18,22 +18,21 @@ public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
     @Column(name = "location_name", nullable = false)
     private String locationName;
 
-    @Column(name = "latitude", nullable = false)
+    @Column(nullable = false)
     private Double latitude;
 
-    @Column(name = "longitude", nullable = false)
+    @Column(nullable = false)
     private Double longitude;
 
-    @Column(name = "country", nullable = false)
+    @Column(nullable = false)
     private String country;
 
-    @Column(name = "state", nullable = false)
+    @Column(nullable = false)
     private String state;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -42,8 +41,5 @@ public class Location {
 
     @OneToOne(mappedBy = "location")
     private User user;
-
-
-
 
 }
