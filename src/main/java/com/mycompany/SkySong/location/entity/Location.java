@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.location.entity;
 
+import com.mycompany.SkySong.user.entity.User;
 import com.mycompany.SkySong.weather.entity.Weather;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,5 +39,11 @@ public class Location {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "weather_id")
     private Weather weather;
+
+    @OneToOne(mappedBy = "location")
+    private User user;
+
+
+
 
 }
