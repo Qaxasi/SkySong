@@ -49,13 +49,7 @@ public class LocationServiceImpl implements LocationService {
             throw new LocationNotFound("The specified location could not be found in our data source.");
         }
     }
-
-    private void validateLocationName(String locationName) {
-        Optional.ofNullable(locationName)
-                .filter(location -> !location.trim().isEmpty())
-                .orElseThrow(() -> new LocationNotGiven(
-                        "Location name cannot be null or empty. First you need to specify your location."));
-    }
+    
 
     private void saveLocationIfNotExist(String locationName, LocationRequest locationRequest) {
         Location existingLocation = locationDAO.findLocationByLocationName(locationName);
