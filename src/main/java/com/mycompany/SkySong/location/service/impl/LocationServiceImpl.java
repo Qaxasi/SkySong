@@ -1,13 +1,11 @@
 package com.mycompany.SkySong.location.service.impl;
 
-import com.mycompany.SkySong.exception.ValidationException;
+
 import com.mycompany.SkySong.location.client.LocationApiClient;
-import com.mycompany.SkySong.location.exception.LocationNotFound;
-import com.mycompany.SkySong.location.exception.LocationNotGiven;
+
 import com.mycompany.SkySong.location.repository.LocationDAO;
 import com.mycompany.SkySong.location.entity.Location;
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.location.exception.LocationException;
 import com.mycompany.SkySong.location.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
