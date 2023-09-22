@@ -43,14 +43,6 @@ public class LocationServiceImpl implements LocationService {
             throw new LocationException("An unexpected error occurred", e);
         }
     }
-
-    private void validateLocationRequest(LocationRequest locationRequest) {
-        if (locationRequest == null) {
-            throw new LocationNotFound("The specified location could not be found in our data source.");
-        }
-    }
-    
-
     private void saveLocationIfNotExist(String locationName, LocationRequest locationRequest) {
         Location existingLocation = locationDAO.findLocationByLocationName(locationName);
         if (existingLocation == null) {
