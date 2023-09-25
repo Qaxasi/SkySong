@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LocationDAO extends JpaRepository<Location, Integer> {
     Location findLocationByLocationName(String locationName);
+    Location saveLocationIfNotExist(String locationName);
 
 }
