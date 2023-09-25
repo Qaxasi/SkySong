@@ -22,7 +22,7 @@ public class AuthorizationController {
 
     @GetMapping("/token")
     public SpotifyAccessToken fetchToken(@RequestParam String code)  {
-        return spotifyAuthorizationService.fetchAccessToken(code);
+        return spotifyAuthorizationService.getAccessToken(code);
     }
 
 }
