@@ -46,7 +46,7 @@ public class SpotifyAuthorizationService {
                     .bodyToMono(SpotifyAccessToken.class)
                     .block();
         } catch (Exception e) {
-            throw new AuthorizationException("Failed to get access token from Spotify", e);
+            throw new AuthorizationException("Failed to get access token from Spotify");
         }
     }
 
