@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.location.controller;
 
+import com.mycompany.SkySong.exception.LocationServiceException;
+import com.mycompany.SkySong.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.location.entity.LocationRequest;
-import com.mycompany.SkySong.location.exception.NullOrEmptyInputException;
-import com.mycompany.SkySong.location.exception.LocationServiceException;
 import com.mycompany.SkySong.location.service.LocationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
