@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.music.controller;
 
+import com.mycompany.SkySong.exception.AuthorizationException;
 import com.mycompany.SkySong.music.authorization.controller.AuthorizationController;
 import com.mycompany.SkySong.music.authorization.entity.SpotifyAccessToken;
-import com.mycompany.SkySong.music.authorization.exception.AuthorizationException;
 import com.mycompany.SkySong.music.authorization.service.SpotifyAuthorizationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ class AuthorizationControllerTest {
                 "refresh-test-token",
                 3600,
                 "test-scope");
-        when(spotifyAuthorizationService.fetchAccessToken(anyString())).thenReturn(expectedAccessToken);
+        when(spotifyAuthorizationService.getAccessToken(anyString())).thenReturn(expectedAccessToken);
         final String expectedBody = "{" +
                 "\"access_token\":\"test-token\"," +
                 "\"refresh_token\":\"refresh-test-token\"," +
@@ -66,7 +66,7 @@ class AuthorizationControllerTest {
                 .andExpect(content().contentType("application/json"))
                 .andExpect(content().json(expectedBody))
                 .andExpect(status().is2xxSuccessful());
-        verify(spotifyAuthorizationService).fetchAccessToken(authorizationCode);
+        verify(spotifyAuthorizationService).getAccessToken(authorizationCode);
     }
 }
 
