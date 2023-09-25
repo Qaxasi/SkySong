@@ -33,22 +33,16 @@ public class LocationServiceImpl implements LocationService {
     public LocationRequest fetchAndSaveCoordinates(String locationName) throws IOException {
         try {
             LocationRequest locationRequest = locationApiClient.fetchGeocodingData(locationName);
-            saveLocationIfNotExist(locationName, locationRequest);
+            saveLocation(locationRequest);
             return locationRequest;
         } catch (Exception e) {
             log.error("An unexpected error occurred");
             throw new LocationServiceException("An unexpected error occurred", e);
         }
     }
-    private void saveLocationIfNotExist(String locationName, LocationRequest locationRequest) {
-        Location existingLocation = locationDAO.findLocationByLocationName(locationName);
-        if (existingLocation == null) {
-            saveLocation(locationRequest);
-        }
-    }
     private void saveLocation(LocationRequest locationRequest) {
         Location location = mapToLocationEntity(locationRequest);
-        locationDAO.save(location);
+        locationDAO.saveLocationIfNotExist(location.getLocationName());
         log.info("Successfully saved the location {}", location.getLocationName());
     }
     private Location mapToLocationEntity(LocationRequest locationRequest) {
