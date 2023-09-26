@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.service.impl;
 
 import com.mycompany.SkySong.service.AuthService;
-import com.mycompany.SkySong.user.entity.LoginResponse;
+import com.mycompany.SkySong.user.entity.LoginRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,9 +17,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(LoginResponse loginResponse) {
+    public String login(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginResponse.usernameOrEmail(), loginResponse.password()));
+                loginRequest.usernameOrEmail(), loginRequest.password()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
