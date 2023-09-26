@@ -1,4 +1,8 @@
 package com.mycompany.SkySong.config;
 
-public class SecurityConfig { 
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SecurityConfig {
 }
