@@ -23,6 +23,6 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User Logged-in successfully";
+        return "Successfully logged in.";
     }
 }
