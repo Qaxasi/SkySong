@@ -2,6 +2,8 @@ package com.mycompany.SkySong.controller;
 
 import com.mycompany.SkySong.service.AuthService;
 import com.mycompany.SkySong.user.entity.LoginRequest;
+import com.mycompany.SkySong.user.entity.RegisterRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +25,11 @@ public class AuthController {
         String response = authService.login(loginRequest);
         return ResponseEntity.ok(response);
 
+    }
+    @PostMapping({"/register", "/signup"})
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+        String response = authService.register(registerRequest);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 }
