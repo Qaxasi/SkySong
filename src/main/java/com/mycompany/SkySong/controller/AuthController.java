@@ -26,7 +26,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
 
     }
-    @PostMapping({"/register", "/signup"})
+    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
         String response = authService.register(registerRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
