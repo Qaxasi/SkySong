@@ -33,4 +33,8 @@ public class JwtTokenProvider {
 
         return token;
     }
+    private Key key() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    }
+
 }
