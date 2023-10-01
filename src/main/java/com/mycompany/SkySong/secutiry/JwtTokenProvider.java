@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.secutiry;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.mycompany.SkySong.ex.TokenException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -48,4 +50,21 @@ public class JwtTokenProvider {
         return username;
     }
 
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(key())
+                    .build()
+                    .parse(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            throw new TokenException("Expired JWT token");
+        } catch (MalformedJwtException e) {
+            throw new TokenException("Invalid JWT token");
+        } catch (UnsupportedJwtException e) {
+            throw new TokenException("Unsupported JWT token");
+        } catch (IllegalArgumentException e) {
+            throw new TokenException("JWT claims string is empty");
+        }
+    }
 }
