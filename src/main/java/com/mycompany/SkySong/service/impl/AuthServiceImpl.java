@@ -3,9 +3,10 @@ package com.mycompany.SkySong.service.impl;
 import com.mycompany.SkySong.ex.RegisterException;
 import com.mycompany.SkySong.role.entity.Role;
 import com.mycompany.SkySong.role.repository.RoleDAO;
+import com.mycompany.SkySong.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.service.AuthService;
-import com.mycompany.SkySong.user.entity.LoginRequest;
-import com.mycompany.SkySong.user.entity.RegisterRequest;
+import com.mycompany.SkySong.dto.LoginRequest;
+import com.mycompany.SkySong.dto.RegisterRequest;
 import com.mycompany.SkySong.user.entity.User;
 import com.mycompany.SkySong.user.repository.UserDAO;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,13 +25,17 @@ public class AuthServiceImpl implements AuthService {
     private UserDAO userDAO;
     private RoleDAO roleDAO;
     private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
 
     public AuthServiceImpl(AuthenticationManager authenticationManager,
-                           UserDAO userDAO, RoleDAO roleDAO, PasswordEncoder passwordEncoder) {
+                           UserDAO userDAO, RoleDAO roleDAO,
+                           PasswordEncoder passwordEncoder,
+                           JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
