@@ -9,6 +9,7 @@ import com.mycompany.SkySong.dto.LoginRequest;
 import com.mycompany.SkySong.dto.RegisterRequest;
 import com.mycompany.SkySong.user.entity.User;
 import com.mycompany.SkySong.user.repository.UserDAO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
     private AuthenticationManager authenticationManager;
@@ -40,14 +42,19 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String login(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.usernameOrEmail(), loginRequest.password()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginRequest.usernameOrEmail(), loginRequest.password()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtTokenProvider.generateToken(authentication);
+            String token = jwtTokenProvider.generateToken(authentication);
 
-        return token;
+            return token;
+        } catch (Exception e) {
+            log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
+            throw e;
+        }
     }
 
     @Override
