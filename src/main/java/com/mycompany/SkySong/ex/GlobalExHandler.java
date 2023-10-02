@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.ex;
 
+import org.antlr.v4.runtime.Token;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExHandler {
 
-    @ExceptionHandler(RegisterException.class)
+    @ExceptionHandler({RegisterException.class, TokenException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleRegisterException(final RegisterException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
