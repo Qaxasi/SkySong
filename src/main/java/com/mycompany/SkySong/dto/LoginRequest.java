@@ -1,7 +1,6 @@
-package com.mycompany.SkySong.user.entity;
+package com.mycompany.SkySong.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public record LoginRequest(@JsonProperty("usernameOrEmail") String usernameOrEmail,
-                           @JsonProperty("password") String password) {
+public record LoginRequest(
+        String usernameOrEmail,
+        String password) {
 }
