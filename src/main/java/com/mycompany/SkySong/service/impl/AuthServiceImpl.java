@@ -73,10 +73,11 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerRequest.email());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
 
-        Set<Role> roles = new HashSet<>();
-        Role userRole = roleDAO.findByName("ROLE_USER").get();
-        roles.add(userRole);
-        user.setRoles(roles);
+
+        Role userRole = roleDAO.findByName("ROLE_USER")
+                .orElseThrow(() -> new RegisterException("User role not set in the system!"));
+
+        user.setRoles(Set.of(userRole));
 
         userDAO.save(user);
 
