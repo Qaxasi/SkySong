@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.controller;
 
+import com.mycompany.SkySong.dto.JWTAuthResponse;
 import com.mycompany.SkySong.service.AuthService;
 import com.mycompany.SkySong.dto.LoginRequest;
 import com.mycompany.SkySong.dto.RegisterRequest;
@@ -22,11 +23,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String response = authService.login(loginRequest);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginRequest loginRequest) {
+        String token = authService.login(loginRequest);
 
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return ResponseEntity.ok(jwtAuthResponse);
     }
+
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest) {
         String response = authService.register(registerRequest);
