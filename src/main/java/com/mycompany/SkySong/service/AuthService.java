@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.service;
 
-import com.mycompany.SkySong.user.entity.LoginRequest;
-import com.mycompany.SkySong.user.entity.RegisterRequest;
+import com.mycompany.SkySong.dto.LoginRequest;
+import com.mycompany.SkySong.dto.RegisterRequest;
 
 public interface AuthService {
     String login(LoginRequest loginRequest);
