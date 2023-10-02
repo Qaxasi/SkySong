@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.service.impl;
 
+import com.mycompany.SkySong.dto.RegistrationResponse;
 import com.mycompany.SkySong.ex.RegisterException;
 import com.mycompany.SkySong.role.entity.Role;
 import com.mycompany.SkySong.role.repository.RoleDAO;
@@ -58,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String register(RegisterRequest registerRequest) {
+    public RegistrationResponse register(RegisterRequest registerRequest) {
 
         if (userDAO.existsByUsername(registerRequest.username())) {
             throw new RegisterException("Username is already exists!.");
@@ -81,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
 
         userDAO.save(user);
 
-        return "User registered successfully";
+        return new RegistrationResponse(true, "User registered successfully");
 
     }
 }
