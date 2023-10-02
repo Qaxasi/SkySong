@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.controller;
 
 import com.mycompany.SkySong.service.AuthService;
-import com.mycompany.SkySong.user.entity.LoginRequest;
-import com.mycompany.SkySong.user.entity.RegisterRequest;
+import com.mycompany.SkySong.dto.LoginRequest;
+import com.mycompany.SkySong.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
