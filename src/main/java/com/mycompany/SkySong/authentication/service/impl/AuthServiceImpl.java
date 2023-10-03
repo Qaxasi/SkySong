@@ -1,13 +1,13 @@
-package com.mycompany.SkySong.service.impl;
+package com.mycompany.SkySong.authentication.service.impl;
 
-import com.mycompany.SkySong.dto.RegistrationResponse;
+import com.mycompany.SkySong.authentication.service.AuthService;
+import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
 import com.mycompany.SkySong.ex.RegisterException;
 import com.mycompany.SkySong.role.entity.Role;
 import com.mycompany.SkySong.role.repository.RoleDAO;
 import com.mycompany.SkySong.secutiry.JwtTokenProvider;
-import com.mycompany.SkySong.service.AuthService;
-import com.mycompany.SkySong.dto.LoginRequest;
-import com.mycompany.SkySong.dto.RegisterRequest;
+import com.mycompany.SkySong.authentication.dto.LoginRequest;
+import com.mycompany.SkySong.authentication.dto.RegisterRequest;
 import com.mycompany.SkySong.user.entity.User;
 import com.mycompany.SkySong.user.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -60,13 +60,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public RegistrationResponse register(RegisterRequest registerRequest) {
 
-        if (userDAO.existsByUsername(registerRequest.username())) {
-            throw new RegisterException("Username is already exists!.");
-        }
-
-        if (userDAO.existsByEmail(registerRequest.email())) {
-            throw new RegisterException("Email is already exists!.");
-        }
+        validateRegistrationRequest(registerRequest);
 
         User user = new User();
         user.setUsername(registerRequest.username());
@@ -83,5 +77,14 @@ public class AuthServiceImpl implements AuthService {
 
         return new RegistrationResponse(true, "User registered successfully");
 
+    }
+    private void validateRegistrationRequest(RegisterRequest registerRequest) {
+        if (userDAO.existsByUsername(registerRequest.username())) {
+            throw new RegisterException("Username is already exists!.");
+        }
+
+        if (userDAO.existsByEmail(registerRequest.email())) {
+            throw new RegisterException("Email is already exists!.");
+        }
     }
 }
