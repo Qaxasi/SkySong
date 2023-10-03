@@ -62,16 +62,7 @@ public class AuthServiceImpl implements AuthService {
 
         validateRegistrationRequest(registerRequest);
 
-        User user = new User();
-        user.setUsername(registerRequest.username());
-        user.setEmail(registerRequest.email());
-        user.setPassword(passwordEncoder.encode(registerRequest.password()));
-
-
-        Role userRole = roleDAO.findByName("ROLE_USER")
-                .orElseThrow(() -> new RegisterException("User role not set in the system!"));
-
-        user.setRoles(Set.of(userRole));
+        User user = createUserFromRequest(registerRequest);
 
         userDAO.save(user);
 
@@ -86,5 +77,18 @@ public class AuthServiceImpl implements AuthService {
         if (userDAO.existsByEmail(registerRequest.email())) {
             throw new RegisterException("Email is already exists!.");
         }
+    }
+    private User createUserFromRequest(RegisterRequest registerRequest) {
+        User user = new User();
+        user.setUsername(registerRequest.username());
+        user.setEmail(registerRequest.email());
+        user.setPassword(passwordEncoder.encode(registerRequest.password()));
+
+
+        Role userRole = roleDAO.findByName("ROLE_USER")
+                .orElseThrow(() -> new RegisterException("User role not set in the system!"));
+
+        user.setRoles(Set.of(userRole));
+        return user;
     }
 }
