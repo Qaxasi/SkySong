@@ -1,6 +1,8 @@
-package com.mycompany.SkySong.dto;
+package com.mycompany.SkySong.authentication.dto;
+
+import jakarta.validation.constraints.NotNull;
 
 public record LoginRequest(
-        String usernameOrEmail,
-        String password) {
+        @NotNull String usernameOrEmail,
+        @NotNull String password) {
 }
