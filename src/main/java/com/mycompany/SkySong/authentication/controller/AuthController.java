@@ -2,7 +2,7 @@ package com.mycompany.SkySong.controller;
 
 import com.mycompany.SkySong.dto.JWTAuthResponse;
 import com.mycompany.SkySong.dto.RegistrationResponse;
-import com.mycompany.SkySong.service.AuthService;
+import com.mycompany.SkySong.authentication.service.AuthService;
 import com.mycompany.SkySong.dto.LoginRequest;
 import com.mycompany.SkySong.dto.RegisterRequest;
 import jakarta.validation.Valid;
