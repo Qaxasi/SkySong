@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.secutiry;
+package com.mycompany.SkySong.secutiry.service;
 
 import com.mycompany.SkySong.user.entity.User;
 import com.mycompany.SkySong.user.repository.UserDAO;
