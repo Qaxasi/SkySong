@@ -1,15 +1,7 @@
-package com.mycompany.SkySong.dto;
+package com.mycompany.SkySong.authentication.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class JWTAuthResponse {
-    private String accessToken;
-    private String tokenType = "Bearer";
+public record JWTAuthResponse(String accessToken, String tokenType) {
+    public JWTAuthResponse(String accessToken) {
+        this(accessToken, "Bearer");
+    }
 }
