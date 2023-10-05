@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.secutiry;
+package com.mycompany.SkySong.authentication.secutiry;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

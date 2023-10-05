@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.exception;
+package com.mycompany.SkySong.authentication.exception;
 
 public class TokenException extends RuntimeException {
     public TokenException(String message) {

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.exception;
+package com.mycompany.SkySong.authentication.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

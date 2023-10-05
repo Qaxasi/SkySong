@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.config;
+package com.mycompany.SkySong.authentication.config;
 
 
-import com.mycompany.SkySong.secutiry.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.secutiry.JwtAuthenticationFilter;
+import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
+import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

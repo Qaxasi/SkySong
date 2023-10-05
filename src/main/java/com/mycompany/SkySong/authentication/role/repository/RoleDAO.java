@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.role.repository;
+package com.mycompany.SkySong.authentication.role.repository;
 
-import com.mycompany.SkySong.role.entity.Role;
+import com.mycompany.SkySong.authentication.role.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

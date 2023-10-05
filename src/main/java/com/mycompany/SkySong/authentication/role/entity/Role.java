@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.role.entity;
+package com.mycompany.SkySong.authentication.role.entity;
 
-import com.mycompany.SkySong.user.entity.User;
+import com.mycompany.SkySong.authentication.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

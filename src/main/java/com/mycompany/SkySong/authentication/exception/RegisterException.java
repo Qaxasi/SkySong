@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.exception;
+package com.mycompany.SkySong.authentication.exception;
 
 public class RegisterException extends RuntimeException {
     public RegisterException(String message) {
