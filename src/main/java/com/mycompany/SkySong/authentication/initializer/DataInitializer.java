@@ -42,7 +42,20 @@ public class DataInitializer {
 
         };
     }
+    public void initAdminAccount() {
+        String adminUsername = "admin";
+        if (!userDAO.existsByUsername(adminUsername)) {
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setEmail("admin@gmail.com");
+            admin.setPassword(passwordEncoder.encode("Admin12345*"));
+
+            Role adminRole = roleDAO.findByName(UserRole.ROLE_ADMIN.toString())
+                    .orElseThrow(() -> new RuntimeException("Admin role not found"));
+
+            admin.setRoles(Set.of(adminRole));
+            userDAO.save(admin);
+        }
+    }
 
 }
-
-
