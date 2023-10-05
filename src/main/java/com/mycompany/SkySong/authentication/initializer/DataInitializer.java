@@ -26,7 +26,7 @@ public class DataInitializer {
     }
 
     @Bean
-    public CommandLineRunner setupDefaultRoles(RoleDAO roleDAO) {
+    public CommandLineRunner setupDefaultRoles() {
         return args -> {
             Role userRole = roleDAO.findByName(UserRole.ROLE_USER.name())
                     .orElseGet(() -> {
@@ -39,6 +39,7 @@ public class DataInitializer {
                         return roleDAO.save(newAdminRole);
                     });
 
+            initAdminAccount();
 
         };
     }
