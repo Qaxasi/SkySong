@@ -2,7 +2,7 @@ package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.service.AuthService;
 import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
-import com.mycompany.SkySong.ex.RegisterException;
+import com.mycompany.SkySong.exception.RegisterException;
 import com.mycompany.SkySong.role.entity.Role;
 import com.mycompany.SkySong.role.repository.RoleDAO;
 import com.mycompany.SkySong.secutiry.JwtTokenProvider;

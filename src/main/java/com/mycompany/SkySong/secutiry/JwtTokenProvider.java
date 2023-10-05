@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.secutiry;
 
-import com.mycompany.SkySong.ex.TokenException;
+import com.mycompany.SkySong.exception.TokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
