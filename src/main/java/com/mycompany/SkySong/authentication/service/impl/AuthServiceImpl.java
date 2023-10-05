@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
+import com.mycompany.SkySong.authentication.role.entity.UserRole;
 import com.mycompany.SkySong.authentication.service.AuthService;
 import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
@@ -84,8 +85,7 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerRequest.email());
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
 
-
-        Role userRole = roleDAO.findByName("ROLE_USER")
+        Role userRole = roleDAO.findByName(UserRole.ROLE_USER.toString())
                 .orElseThrow(() -> new RegisterException("User role not set in the system!"));
 
         user.setRoles(Set.of(userRole));
