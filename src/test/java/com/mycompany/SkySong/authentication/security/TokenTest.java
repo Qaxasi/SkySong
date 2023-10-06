@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.security;
 
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,7 @@ public class TokenTest {
     public void setUp() {
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
-        jwtTokenProvider = new JwtTokenProvider(base64Secret, 100000L);
+        jwtTokenProvider = new JwtTokenProvider(base64Secret, 10L);
     }
     @Test
     void shouldGenerateValidTokenForGivenAuthentication() {
@@ -46,4 +47,9 @@ public class TokenTest {
         String token = jwtTokenProvider.generateToken(mockAuth);
         assertTrue(jwtTokenProvider.validateToken(token));
     }
+    @Test
+    void shouldThrowExceptionForExpiredToken() {
+
+    }
+
 }
