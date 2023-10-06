@@ -57,4 +57,12 @@ public class TokenTest {
         assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(token));
     }
 
+    @Test
+    void shouldThrowTokenExceptionForMalformedToken() {
+        String malformedToken = "not-valid-token";
+
+        assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(malformedToken));
+    }
+ 
+
 }
