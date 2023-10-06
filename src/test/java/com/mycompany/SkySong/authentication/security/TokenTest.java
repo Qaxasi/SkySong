@@ -39,4 +39,11 @@ public class TokenTest {
         assertNotNull(token);
 
     }
+    @Test
+    void shouldValidateTokenGeneratedForGivenAuthentication() {
+        when(mockAuth.getName()).thenReturn("testUser");
+
+        String token = jwtTokenProvider.generateToken(mockAuth);
+        assertTrue(jwtTokenProvider.validateToken(token));
+    }
 }
