@@ -63,6 +63,14 @@ public class TokenTest {
 
         assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(malformedToken));
     }
- 
+    @Test
+    void shouldThrowTokenExceptionForEmptyClaims() {
+        String emptyClaimsToken = "";
+
+        assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(emptyClaimsToken));
+    }
+
+
+
 
 }
