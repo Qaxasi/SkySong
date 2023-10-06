@@ -31,4 +31,12 @@ public class TokenTest {
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
         jwtTokenProvider = new JwtTokenProvider(base64Secret, 100000L);
     }
+    @Test
+    void shouldGenerateValidTokenForGivenAuthentication() {
+        when(mockAuth.getName()).thenReturn("testUser");
+
+        String token = jwtTokenProvider.generateToken(mockAuth);
+        assertNotNull(token);
+
+    }
 }
