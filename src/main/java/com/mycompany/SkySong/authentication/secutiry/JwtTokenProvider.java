@@ -18,6 +18,11 @@ public class JwtTokenProvider {
     @Value("${app-jwt-expiration-milliseconds}")
     private long jwtExpirationDate;
 
+    public JwtTokenProvider(String jwtSecret, long jwtExpirationDate) {
+        this.jwtSecret = jwtSecret;
+        this.jwtExpirationDate = jwtExpirationDate;
+    }
+
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
 
