@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.security;
 
+import com.mycompany.SkySong.authentication.exception.TokenException;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,7 +31,7 @@ public class TokenTest {
     public void setUp() {
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
-        jwtTokenProvider = new JwtTokenProvider(base64Secret, 10L);
+        jwtTokenProvider = new JwtTokenProvider(base64Secret, 100L);
     }
     @Test
     void shouldGenerateValidTokenForGivenAuthentication() {
@@ -48,8 +49,12 @@ public class TokenTest {
         assertTrue(jwtTokenProvider.validateToken(token));
     }
     @Test
-    void shouldThrowExceptionForExpiredToken() {
+    void shouldThrowExceptionForExpiredToken() throws InterruptedException {
+        when(mockAuth.getName()).thenReturn("testUser");
 
+        String token = jwtTokenProvider.generateToken(mockAuth);
+        Thread.sleep(101);
+        assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(token));
     }
 
 }
