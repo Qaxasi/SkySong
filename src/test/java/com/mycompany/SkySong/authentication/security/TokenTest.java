@@ -41,7 +41,6 @@ public class TokenTest {
 
         String token = jwtTokenProvider.generateToken(mockAuth);
         assertNotNull(token);
-
     }
     @Test
     void shouldValidateTokenGeneratedForGivenAuthentication() {
@@ -50,6 +49,17 @@ public class TokenTest {
         String token = jwtTokenProvider.generateToken(mockAuth);
         assertTrue(jwtTokenProvider.validateToken(token));
     }
+
+    @Test
+    void shouldRetrieveUsernameFromValidToken() {
+        when(mockAuth.getName()).thenReturn("testUser");
+
+        String token = jwtTokenProvider.generateToken(mockAuth);
+        String retrieveUsername = jwtTokenProvider.getUsername(token);
+
+        assertEquals("testUser", retrieveUsername);
+    }
+
     @Test
     void shouldThrowExceptionForExpiredToken() throws InterruptedException {
         when(mockAuth.getName()).thenReturn("testUser");
@@ -80,8 +90,4 @@ public class TokenTest {
 
         assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(unsupportedToken));
     }
-
-
-
-
 }
