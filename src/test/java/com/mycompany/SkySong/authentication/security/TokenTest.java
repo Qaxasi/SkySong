@@ -3,6 +3,7 @@ package com.mycompany.SkySong.authentication.security;
 import com.mycompany.SkySong.authentication.exception.TokenException;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Base64;
+import java.util.Date;
 
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,6 +70,15 @@ public class TokenTest {
         String emptyClaimsToken = "";
 
         assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(emptyClaimsToken));
+    }
+    @Test
+    void shouldThrowTokenExceptionForInvalidAlgorithm() {
+        String unsupportedToken = Jwts.builder()
+                .setSubject("testUser")
+                .setExpiration(new Date(System.currentTimeMillis() + 100L))
+                .compact();
+
+        assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(unsupportedToken));
     }
 
 
