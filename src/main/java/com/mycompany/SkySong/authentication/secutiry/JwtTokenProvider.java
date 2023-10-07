@@ -14,9 +14,9 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
     @Value("${JWT_SECRET}")
-    private String jwtSecret;
+    private final String jwtSecret;
     @Value("${app-jwt-expiration-milliseconds}")
-    private long jwtExpirationDate;
+    private final long jwtExpirationDate;
 
     public JwtTokenProvider(String jwtSecret, long jwtExpirationDate) {
         this.jwtSecret = jwtSecret;
