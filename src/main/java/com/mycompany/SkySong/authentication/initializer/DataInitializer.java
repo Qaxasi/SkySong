@@ -28,12 +28,12 @@ public class DataInitializer {
     @Bean
     public CommandLineRunner setupDefaultRoles() {
         return args -> {
-            Role userRole = roleDAO.findByName(UserRole.ROLE_USER.name())
+            Role userRole = roleDAO.findByName(UserRole.ROLE_USER)
                     .orElseGet(() -> {
                         Role newUserRole = new Role(UserRole.ROLE_USER);
                         return roleDAO.save(newUserRole);
                     });
-            Role adminRole = roleDAO.findByName(UserRole.ROLE_ADMIN.name())
+            Role adminRole = roleDAO.findByName(UserRole.ROLE_ADMIN)
                     .orElseGet(() -> {
                         Role newAdminRole = new Role(UserRole.ROLE_ADMIN);
                         return roleDAO.save(newAdminRole);
@@ -51,7 +51,7 @@ public class DataInitializer {
             admin.setEmail("admin@gmail.com");
             admin.setPassword(passwordEncoder.encode("Admin12345*"));
 
-            Role adminRole = roleDAO.findByName(UserRole.ROLE_ADMIN.toString())
+            Role adminRole = roleDAO.findByName(UserRole.ROLE_ADMIN)
                     .orElseThrow(() -> new RuntimeException("Admin role not found"));
 
             admin.setRoles(Set.of(adminRole));
