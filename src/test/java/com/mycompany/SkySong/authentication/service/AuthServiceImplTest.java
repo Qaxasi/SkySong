@@ -64,7 +64,8 @@ public class AuthServiceImplTest {
         user.setUsername("testUsername");
         user.setPassword("testPassword");
 
-        when(authenticationManager.authenticate(any())).thenThrow(new BadCredentialsException("Niepoprawne dane uwierzytelniające"));
+        when(authenticationManager.authenticate(any())).thenThrow(
+                new BadCredentialsException("Incorrect credentials"));
 
         assertThrows(BadCredentialsException.class, () ->
                 authService.login(new LoginRequest("testUsername", "wrongPassword")));
