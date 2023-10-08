@@ -13,14 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -57,4 +57,18 @@ public class AuthServiceImplTest {
 
         assertEquals("validToken", token);
     }
+
+    @Test
+    void shouldThrowExceptionWhenLoggingWithInvalidPassword() {
+        User user = new User();
+        user.setUsername("testUsername");
+        user.setPassword("testPassword");
+
+        when(authenticationManager.authenticate(any())).thenThrow(new BadCredentialsException("Niepoprawne dane uwierzytelniające"));
+
+        assertThrows(BadCredentialsException.class, () ->
+                authService.login(new LoginRequest("testUsername", "wrongPassword")));
+
+    }
+
 }
