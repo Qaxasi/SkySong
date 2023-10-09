@@ -98,7 +98,7 @@ public class AuthServiceImplTest {
     @Test
     void shouldReturnSuccessResponseWhenRegisterNewUserWithUniqueData() {
         RegisterRequest request = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword");
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
 
         when(userDAO.existsByUsername(request.username())).thenReturn(false);
         when(userDAO.existsByEmail(request.email())).thenReturn(false);
