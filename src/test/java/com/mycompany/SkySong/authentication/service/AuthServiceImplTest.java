@@ -24,7 +24,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import jakarta.validation.Validator
+import jakarta.validation.Validator;
 import java.util.Optional;
 import java.util.Set;
 
@@ -133,6 +133,16 @@ public class AuthServiceImplTest {
         assertThrows(RegisterException.class, () -> authService.register(request));
     }
 
+    @Test
+    void shouldThrowExceptionWhenNewUserTryRegisterWithInvalidEmailFormat() {
+        RegisterRequest request = new RegisterRequest(
+                "testUsername", "testInvalidEmail", "testPassword");
+
+        Set<ConstraintViolation<RegisterRequest>> violations = validator.validate(request);
+
+        assertFalse(violations.isEmpty());
+        assertTrue(violations.stream().anyMatch(violation -> "email".equals(violation.getPropertyPath().toString())));
+    }
 
 
 }
