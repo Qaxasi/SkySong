@@ -3,6 +3,7 @@ package com.mycompany.SkySong.authentication.service;
 import com.mycompany.SkySong.authentication.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
+import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.role.entity.Role;
 import com.mycompany.SkySong.authentication.role.entity.UserRole;
 import com.mycompany.SkySong.authentication.role.repository.RoleDAO;
@@ -104,6 +105,17 @@ public class AuthServiceImplTest {
         assertTrue(response.success());
         assertEquals("User registered successfully", response.message());
         verify(userDAO, times(1)).save(any(User.class));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNewUserTryRegisterWithExistingUsername() {
+        RegisterRequest request = new RegisterRequest(
+                "testExistingUsername", "testEmail@gmail.com", "testPassword");
+
+        when(userDAO.existsByUsername(request.username())).thenReturn(true);
+
+        assertThrows(RegisterException.class, () -> authService.register(request));
+
     }
 
 
