@@ -55,14 +55,12 @@ public class AuthServiceImplTest {
     }
     @Test
     void shouldReturnValidTokenWhenGivenValidCredentials() {
-        User validUser = new User();
-        validUser.setUsername("testUsername");
-        validUser.setPassword("testPassword@123");
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(authentication);
         when(jwtTokenProvider.generateToken(authentication)).thenReturn("validToken");
 
-        String token = authService.login(new LoginRequest("testUsername", "testPassword@123"));
+        String token = authService.login(loginRequest);
 
         assertEquals("validToken", token);
     }
