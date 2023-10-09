@@ -150,7 +150,7 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenNewUserTryRegisterWithInvalidEmailFormat() {
+    void shouldDetectInvalidEmailFormatWhileValidatingRegistrationRequest() {
         RegisterRequest request = new RegisterRequest(
                 "testUsername", "testInvalidEmail", "testPassword@123");
 
