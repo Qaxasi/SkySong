@@ -116,6 +116,7 @@ public class AuthServiceImplTest {
         when(userDAO.existsByUsername(request.username())).thenReturn(true);
 
         assertThrows(RegisterException.class, () -> authService.register(request));
+        verify(userDAO, times(0)).save(any(User.class));
 
     }
     @Test
@@ -127,6 +128,7 @@ public class AuthServiceImplTest {
         when(userDAO.existsByEmail(request.email())).thenReturn(true);
 
         assertThrows(RegisterException.class, () -> authService.register(request));
+        verify(userDAO, times(0)).save(any(User.class));
     }
     @Test
     void shouldDetectInvalidUsernameFormatWhileValidatingRegistrationRequest() {
