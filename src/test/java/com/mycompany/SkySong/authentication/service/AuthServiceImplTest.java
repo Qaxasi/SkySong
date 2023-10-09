@@ -1,6 +1,10 @@
 package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.dto.LoginRequest;
+import com.mycompany.SkySong.authentication.dto.RegisterRequest;
+import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
+import com.mycompany.SkySong.authentication.role.entity.Role;
+import com.mycompany.SkySong.authentication.role.entity.UserRole;
 import com.mycompany.SkySong.authentication.role.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.impl.AuthServiceImpl;
@@ -22,7 +26,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceImplTest {
@@ -83,6 +87,23 @@ public class AuthServiceImplTest {
 
         assertThrows(BadCredentialsException.class, () ->
                 authService.login(new LoginRequest("wrongEmail@gmail.com", "testPassword")));
+    }
+
+    @Test
+    void shouldReturnSuccessResponseWhenRegisterNewUserWithUniqueData() {
+        RegisterRequest request = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword");
+
+        when(userDAO.existsByUsername(request.username())).thenReturn(false);
+        when(userDAO.existsByEmail(request.email())).thenReturn(false);
+        when(passwordEncoder.encode(request.password())).thenReturn("hashedPassword");
+        when(roleDAO.findByName(UserRole.ROLE_USER)).thenReturn(Optional.of(new Role(UserRole.ROLE_USER)));
+
+        RegistrationResponse response = authService.register(request);
+
+        assertTrue(response.success());
+        assertEquals("User registered successfully", response.message());
+        verify(userDAO, times(1)).save(any(User.class));
     }
 
 
