@@ -122,10 +122,13 @@ public class AuthServiceImplTest {
         RegisterRequest request = new RegisterRequest(
                 "testUsername", "testExistingEmail@gmail.com", "testPassword");
 
+        when(userDAO.existsByUsername(request.username())).thenReturn(false);
         when(userDAO.existsByEmail(request.email())).thenReturn(true);
 
         assertThrows(RegisterException.class, () -> authService.register(request));
     }
+
+
 
 
 }
