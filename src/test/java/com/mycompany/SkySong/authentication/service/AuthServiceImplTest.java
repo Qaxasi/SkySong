@@ -68,15 +68,13 @@ public class AuthServiceImplTest {
 
     @Test
     void shouldThrowExceptionWhenLoggingWithInvalidPassword() {
-        User user = new User();
-        user.setUsername("testUsername");
-        user.setPassword("testPassword@123");
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testWrongPassword@123");
 
         when(authenticationManager.authenticate(any())).thenThrow(
                 new BadCredentialsException("Incorrect credentials"));
 
         assertThrows(BadCredentialsException.class, () ->
-                authService.login(new LoginRequest("testUsername", "wrongPassword")));
+                authService.login(loginRequest));
 
     }
 
