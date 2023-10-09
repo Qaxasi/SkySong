@@ -14,15 +14,16 @@ import com.mycompany.SkySong.authentication.user.repository.UserDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.xml.validation.Validator;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,6 +45,8 @@ public class AuthServiceImplTest {
     private AuthenticationManager authenticationManager;
     @Mock
     private Authentication authentication;
+    @Autowired
+    private Validator validator;
 
     @BeforeEach
     public void setUp() {
@@ -127,7 +130,6 @@ public class AuthServiceImplTest {
 
         assertThrows(RegisterException.class, () -> authService.register(request));
     }
-
 
 
 
