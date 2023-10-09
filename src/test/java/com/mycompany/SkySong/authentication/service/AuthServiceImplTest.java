@@ -132,6 +132,22 @@ public class AuthServiceImplTest {
 
         assertThrows(RegisterException.class, () -> authService.register(request));
     }
+    @Test
+    void shouldThrowExceptionWhenNewUserTryRegisterWithInvalidUsernameFormat() {
+        RegisterRequest request = new RegisterRequest(
+                "invalid%Username", "testEmail@gmail.com", "testPassword@123");
+
+        Set<ConstraintViolation<RegisterRequest>> violations = validator.validate(request);
+
+        assertFalse(violations.isEmpty());
+        assertTrue(violations.stream().anyMatch(violation ->
+                "username".equals(violation.getPropertyPath().toString())));
+        assertFalse(violations.stream().anyMatch(violation ->
+                "email".equals(violation.getPropertyPath().toString())));
+        assertFalse(violations.stream().anyMatch(violation ->
+                "password".equals(violation.getPropertyPath().toString())));
+
+    }
 
     @Test
     void shouldThrowExceptionWhenNewUserTryRegisterWithInvalidEmailFormat() {
