@@ -72,7 +72,7 @@ public class AuthServiceImplTest {
     void shouldThrowExceptionWhenLoggingWithInvalidPassword() {
         User user = new User();
         user.setUsername("testUsername");
-        user.setPassword("testPassword");
+        user.setPassword("testPassword@123");
 
         when(authenticationManager.authenticate(any())).thenThrow(
                 new BadCredentialsException("Incorrect credentials"));
@@ -86,13 +86,13 @@ public class AuthServiceImplTest {
     void shouldThrowExceptionWhenLoggingWithInvalidUsernameOrEmail() {
         User user = new User();
         user.setEmail("testEmail@gmail.com");
-        user.setPassword("testPassword");
+        user.setPassword("testPassword@123");
 
         when(authenticationManager.authenticate(any())).thenThrow(
                 new BadCredentialsException("Incorrect credentials"));
 
         assertThrows(BadCredentialsException.class, () ->
-                authService.login(new LoginRequest("wrongEmail@gmail.com", "testPassword")));
+                authService.login(new LoginRequest("wrongEmail@gmail.com", "testPassword@123")));
     }
 
     @Test
