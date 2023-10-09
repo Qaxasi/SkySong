@@ -133,7 +133,7 @@ public class AuthServiceImplTest {
         assertThrows(RegisterException.class, () -> authService.register(request));
     }
     @Test
-    void shouldThrowExceptionWhenNewUserTryRegisterWithInvalidUsernameFormat() {
+    void shouldDetectInvalidUsernameFormatWhileValidatingRegistrationRequest() {
         RegisterRequest request = new RegisterRequest(
                 "invalid%Username", "testEmail@gmail.com", "testPassword@123");
 
