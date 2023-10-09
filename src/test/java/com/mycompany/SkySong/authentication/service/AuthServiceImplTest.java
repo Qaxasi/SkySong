@@ -11,6 +11,8 @@ import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.impl.AuthServiceImpl;
 import com.mycompany.SkySong.authentication.user.entity.User;
 import com.mycompany.SkySong.authentication.user.repository.UserDAO;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,9 +24,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.xml.validation.Validator;
+import jakarta.validation.Validator
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,8 +47,6 @@ public class AuthServiceImplTest {
     private AuthenticationManager authenticationManager;
     @Mock
     private Authentication authentication;
-    @Autowired
-    private Validator validator;
 
     @BeforeEach
     public void setUp() {
