@@ -82,7 +82,7 @@ public class AuthServiceImplTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenLoggingWithInvalidUsernameOrEmail() {
+    void shouldThrowExceptionWhenLoggingWithInvalidUsername() {
         User user = new User();
         user.setEmail("testEmail@gmail.com");
         user.setPassword("testPassword@123");
