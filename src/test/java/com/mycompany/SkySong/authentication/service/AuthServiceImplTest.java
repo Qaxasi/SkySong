@@ -47,10 +47,12 @@ public class AuthServiceImplTest {
     private AuthenticationManager authenticationManager;
     @Mock
     private Authentication authentication;
+    private Validator validator;
 
     @BeforeEach
     public void setUp() {
         authService = new AuthServiceImpl(authenticationManager, userDAO, roleDAO, passwordEncoder, jwtTokenProvider);
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
     @Test
     void shouldReturnValidTokenWhenGivenValidCredentials() {
