@@ -5,15 +5,19 @@ import com.mycompany.SkySong.authentication.role.entity.UserRole;
 import com.mycompany.SkySong.authentication.role.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.user.entity.User;
 import com.mycompany.SkySong.authentication.user.repository.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
 
 @Configuration
+@Profile("!test")
 public class DataInitializer {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
@@ -44,10 +48,10 @@ public class DataInitializer {
         };
     }
     public void initAdminAccount() {
-        String adminUsername = "admin";
+        String adminUsername = "Admin";
         if (!userDAO.existsByUsername(adminUsername)) {
             User admin = new User();
-            admin.setUsername("admin");
+            admin.setUsername("Admin");
             admin.setEmail("admin@gmail.com");
             admin.setPassword(passwordEncoder.encode("Admin12345*"));
 
