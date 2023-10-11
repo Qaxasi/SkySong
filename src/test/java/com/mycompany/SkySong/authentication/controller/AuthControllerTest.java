@@ -63,5 +63,16 @@ public class AuthControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().string("Incorrect username/email or password"));
     }
+    @Test
+    void shouldReturnUnauthorizedForInvalidEmailLogin() throws Exception {
+        final var requestBody =
+                "{\"usernameOrEmail\": \"testInvalidEmail@gmail.com\",\"password\": \"testPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Incorrect username/email or password"));
+    }
 
 }
