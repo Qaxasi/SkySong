@@ -54,7 +54,7 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.tokenType").exists());
     }
     @Test
-    void shouldReturnUnauthorizedForInvalidUsernameLogin() throws Exception {
+    void shouldReturnUnauthorizedAndErrorMessageForInvalidUsernameLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
 
         mockMvc.perform(post("/api/v1/auth/login")
@@ -64,7 +64,7 @@ public class AuthControllerTest {
                 .andExpect(content().string("Incorrect username/email or password"));
     }
     @Test
-    void shouldReturnUnauthorizedForInvalidEmailLogin() throws Exception {
+    void shouldReturnUnauthorizedAndErrorMessageForInvalidEmailLogin() throws Exception {
         final var requestBody =
                 "{\"usernameOrEmail\": \"testInvalidEmail@gmail.com\",\"password\": \"testPassword@123\"}";
 
