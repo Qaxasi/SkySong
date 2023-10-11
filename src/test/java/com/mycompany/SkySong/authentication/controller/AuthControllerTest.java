@@ -75,7 +75,7 @@ public class AuthControllerTest {
                 .andExpect(content().string("Incorrect username/email or password"));
     }
     @Test
-    void shouldReturnUnauthorizedAndErrorMessageForInvalidPasswordLogin() throws Exception {
+    void shouldReturnUnauthorizedAndErrorMessageForInvalidPasswordLoginWhenEmailIsCorrect() throws Exception {
         final var requestBody =
                 "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
 
