@@ -33,7 +33,7 @@ public class AuthControllerTest {
         ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/user-data.sql"));
     }
     @Test
-    void shouldProvideAccessTokenAndTokenTypeOnSuccessfulLogin() throws Exception {
+    void shouldProvideAccessTokenAndTokenTypeOnSuccessfulEmailLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
 
         mockMvc.perform(post("/api/v1/auth/login")
@@ -43,5 +43,6 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.accessToken").exists())
                 .andExpect(jsonPath("$.tokenType").exists());
     }
+   
 
 }
