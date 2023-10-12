@@ -124,5 +124,22 @@ public class AuthControllerTest {
                         "The password field cannot be empty"));
     }
 
+    @Test
+    void shouldReturnBadRequestForEmptyUsernameAndPasswordDuringLogin() throws Exception {
+        final var requestBody =  "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Validation failed"))
+                .andExpect(jsonPath("$.errors").exists())
+                .andExpect(jsonPath("$.errors.usernameOrEmail").value(
+                        "The usernameOrEmail field cannot be empty"))
+                .andExpect(jsonPath("$.errors.password").value(
+                        "The password field cannot be empty"));
+    }
+
+
 
 }
