@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
-import org.h2.tools.Script;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +8,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.sql.DataSource;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class AuthControllerTest {
+public class AuthControllerLoginTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -30,7 +30,16 @@ public class AuthControllerTest {
     @BeforeEach
     void init() throws Exception {
         ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/user-data.sql"));
+        ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/role-data.sql"));
     }
+    @AfterEach
+    void cleanup() throws Exception {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.update("DELETE FROM user_roles");
+        jdbcTemplate.update("DELETE FROM users");
+        jdbcTemplate.update("DELETE FROM roles");
+    }
+
     @Test
     void shouldProvideAccessTokenAndTokenTypeOnSuccessfulEmailLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
@@ -126,7 +135,7 @@ public class AuthControllerTest {
 
     @Test
     void shouldReturnBadRequestForEmptyUsernameAndPasswordDuringLogin() throws Exception {
-        final var requestBody =  "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
+        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -139,7 +148,4 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.errors.password").value(
                         "The password field cannot be empty"));
     }
-
-
-
 }
