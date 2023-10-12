@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.sql.DataSource;
 
+import java.sql.Connection;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,15 +31,14 @@ public class AuthControllerLoginTest {
 
     @BeforeEach
     void init() throws Exception {
-        ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/user-data.sql"));
-        ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/role-data.sql"));
+        try(Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/user-data.sql"));
+        }
     }
     @AfterEach
     void cleanup() throws Exception {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
-        jdbcTemplate.update("DELETE FROM roles");
     }
 
     @Test
