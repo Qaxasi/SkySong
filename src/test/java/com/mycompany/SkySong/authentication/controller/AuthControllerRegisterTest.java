@@ -18,8 +18,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -58,5 +57,18 @@ public class AuthControllerRegisterTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.message").value("User registered successfully"));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenUserTryRegisterWithExistingUsername() throws Exception {
+        final var requestBody =
+                "{\"username\": \"testUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
+                        "\"password\": \"testPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Username is already exists!."));
     }
 }
