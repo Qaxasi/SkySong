@@ -37,7 +37,6 @@ public class AuthControllerTestRegister {
             ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/role-data.sql"));
             ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/user-data.sql"));
         }
-
     }
     @AfterEach
     void cleanup() throws Exception {
@@ -45,5 +44,19 @@ public class AuthControllerTestRegister {
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
+    }
+
+    @Test
+    void shouldSuccessfullyRegisterUserWithUniqueCredentials() throws Exception {
+        final var requestBody =
+                "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
+                        "\"password\": \"testPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("User registered successfully"));
     }
 }
