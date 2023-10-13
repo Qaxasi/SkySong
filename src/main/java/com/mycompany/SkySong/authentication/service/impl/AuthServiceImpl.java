@@ -63,24 +63,12 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public RegistrationResponse register(RegisterRequest registerRequest) {
-
-        validateRegistrationRequest(registerRequest);
-
         User user = createUserFromRequest(registerRequest);
 
         userDAO.save(user);
 
         return new RegistrationResponse(true, "User registered successfully");
 
-    }
-    private void validateRegistrationRequest(RegisterRequest registerRequest) {
-        if (userDAO.existsByUsername(registerRequest.username())) {
-            throw new RegisterException("Username is already exists!.");
-        }
-
-        if (userDAO.existsByEmail(registerRequest.email())) {
-            throw new RegisterException("Email is already exists!.");
-        }
     }
     private User createUserFromRequest(RegisterRequest registerRequest) {
         User user = new User();
