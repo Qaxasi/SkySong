@@ -35,12 +35,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
-        if (request.getRequestURI().equals("/api/v1/auth/register") ||
-                request.getRequestURI().equals("/api/v1/auth/login")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String token = getTokenFromRequest(request);
 
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
