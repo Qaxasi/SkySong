@@ -15,8 +15,9 @@ public record RegisterRequest(@Pattern(regexp = "^[a-zA-Z0-9]*$",
                               @NotEmpty(message = "The email field cannot be empty")
                               String email,
                               @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
-                                      message = "The password must contain an least 8 characters, including " +
-                                              "uppercase letters, lowercase letters, numbers, and special characters.")
+                                      message = "Invalid password format. The password must contain an least 8 " +
+                                                "characters, including uppercase letters, lowercase letters, numbers," +
+                                                " and special characters.")
                               @NotNull(message = "The password field cannot be null")
                               @NotEmpty(message = "The password field cannot be empty")
                               String password) {
