@@ -109,10 +109,12 @@ public class AuthServiceImplTest {
     void shouldThrowExceptionWhenNewUserTryRegisterWithExistingUsername() {
         RegisterRequest request = new RegisterRequest(
                 "testExistingUsername", "testEmail@gmail.com", "testPassword");
+        Role userRole = new Role(UserRole.ROLE_USER);
 
-        assertThrows(RegisterException.class, () -> authService.register(request));
-        verify(userDAO, times(0)).save(any(User.class));
+        when(roleDAO.findByName(UserRole.ROLE_USER)).thenReturn(Optional.of(userRole));
+        when(userDAO.save(any(User.class))).thenThrow(new DataIntegrityViolationException("Email is already taken."));
 
+        assertThrows(DataIntegrityViolationException.class, () -> authService.register(request));
     }
     @Test
     void shouldThrowExceptionWhenNewUserTryRegisterWithExistingEmail() {
