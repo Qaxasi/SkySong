@@ -96,7 +96,7 @@ public class AuthControllerRegisterTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors.username").value(
-                        "The username can contain only letter and numbers."));
+                        "Invalid username format. The username can contain only letter and numbers."));
     }
 
     @Test
