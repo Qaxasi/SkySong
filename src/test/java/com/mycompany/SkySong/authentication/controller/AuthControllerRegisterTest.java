@@ -69,7 +69,7 @@ public class AuthControllerRegisterTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Username is already exists!."));
+                .andExpect(content().string("The provided username is already taken."));
     }
     @Test
     void shouldReturnBadRequestWhenUserTryRegisterWithExistingEmail() throws Exception {
@@ -81,7 +81,6 @@ public class AuthControllerRegisterTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Email is already exists!."));
+                .andExpect(content().string("The provided email is already taken."));
     }
-
 }
