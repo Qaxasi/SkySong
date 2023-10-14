@@ -10,7 +10,8 @@ public record RegisterRequest(@Pattern(regexp = "^[a-zA-Z0-9]*$",
                               @NotNull(message = "The username field cannot be null.")
                               @NotEmpty(message = "The username field cannot be empty.")
                               String username,
-                              @Email(message = "Invalid email address format.")
+                              @Email(message = "Invalid email address format. The email should follow the standard" +
+                                      " format (e.g., user@example.com).")
                               @NotNull(message = "The email field cannot be null")
                               @NotEmpty(message = "The email field cannot be empty")
                               String email,
