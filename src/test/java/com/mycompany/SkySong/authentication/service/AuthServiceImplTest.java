@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -94,8 +95,6 @@ public class AuthServiceImplTest {
         RegisterRequest request = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
-        when(userDAO.existsByUsername(request.username())).thenReturn(false);
-        when(userDAO.existsByEmail(request.email())).thenReturn(false);
         when(passwordEncoder.encode(request.password())).thenReturn("hashedPassword");
         when(roleDAO.findByName(UserRole.ROLE_USER)).thenReturn(Optional.of(new Role(UserRole.ROLE_USER)));
 
@@ -111,8 +110,6 @@ public class AuthServiceImplTest {
         RegisterRequest request = new RegisterRequest(
                 "testExistingUsername", "testEmail@gmail.com", "testPassword");
 
-        when(userDAO.existsByUsername(request.username())).thenReturn(true);
-
         assertThrows(RegisterException.class, () -> authService.register(request));
         verify(userDAO, times(0)).save(any(User.class));
 
@@ -121,12 +118,12 @@ public class AuthServiceImplTest {
     void shouldThrowExceptionWhenNewUserTryRegisterWithExistingEmail() {
         RegisterRequest request = new RegisterRequest(
                 "testUsername", "testExistingEmail@gmail.com", "testPassword");
+        Role userRole = new Role(UserRole.ROLE_USER);
 
-        when(userDAO.existsByUsername(request.username())).thenReturn(false);
-        when(userDAO.existsByEmail(request.email())).thenReturn(true);
+        when(roleDAO.findByName(UserRole.ROLE_USER)).thenReturn(Optional.of(userRole));
+        when(userDAO.save(any(User.class))).thenThrow(new DataIntegrityViolationException("Email is already taken."));
 
-        assertThrows(RegisterException.class, () -> authService.register(request));
-        verify(userDAO, times(0)).save(any(User.class));
+        assertThrows(DataIntegrityViolationException.class, () -> authService.register(request));
     }
     @Test
     void shouldDetectInvalidUsernameFormatWhileValidatingRegistrationRequest() {
