@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record RegisterRequest(@Pattern(regexp = "^[a-zA-Z0-9]*$",
-                              message = "The username can contain only letter and numbers.")
+                              message = "Invalid username format. The username can contain only letter and numbers.")
                               @NotNull(message = "The username field cannot be null.")
                               @NotEmpty(message = "The username field cannot be empty.")
                               String username,
