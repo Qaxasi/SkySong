@@ -115,8 +115,17 @@ public class AuthControllerRegisterTest {
 
     @Test
     void shouldReturnBadRequestWhenUserTryRegisterWithInvalidPasswordFormat() throws Exception {
+        final var requestBody =
+                "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
+                        "\"password\": \"test-invalid-password-format\"}";
 
+        mockMvc.perform(post("/api/v1/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Validation failed"))
+                .andExpect(jsonPath("$.errors.password").value(
+                        "Invalid password format. The password must contain an least 8 characters," +
+                                " including uppercase letters, lowercase letters, numbers, and special characters."));
     }
-
-
 }
