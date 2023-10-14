@@ -87,7 +87,7 @@ public class AuthControllerRegisterTest {
     @Test
     void shouldReturnBadRequestWhenUserTryRegisterWithInvalidUsernameFormat() throws Exception {
         final var requestBody =
-                "{\"username\": \"test-invalid-username-format\", \"email\": \"testEmail@gmail.com\", " +
+                "{\"username\": \"test-invalid-username-format\", \"email\": \"testUniqueEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
         mockMvc.perform(post("/api/v1/auth/register")
@@ -113,5 +113,10 @@ public class AuthControllerRegisterTest {
                 .andExpect(jsonPath("$.errors.email").value("Invalid email address format."));
     }
 
-    
+    @Test
+    void shouldReturnBadRequestWhenUserTryRegisterWithInvalidPasswordFormat() throws Exception {
+
+    }
+
+
 }
