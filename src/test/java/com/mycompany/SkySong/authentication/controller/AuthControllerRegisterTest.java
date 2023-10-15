@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.sql.DataSource;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,8 +34,8 @@ public class AuthControllerRegisterTest {
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/role-data.sql"));
-            ScriptUtils.executeSqlScript(dataSource.getConnection(), new ClassPathResource("data_sql/user-data.sql"));
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/user-data.sql"));
         }
     }
     @AfterEach
@@ -110,7 +111,8 @@ public class AuthControllerRegisterTest {
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Validation failed"))
-                .andExpect(jsonPath("$.errors.email").value("Invalid email address format."));
+                .andExpect(jsonPath("$.errors.email").value("Invalid email address format. " +
+                        "The email should follow the standard format (e.g., user@example.com)."));
     }
 
     @Test
