@@ -34,7 +34,6 @@ public class GlobalExHandler {
         });
 
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "Validation failed");
         response.put("errors", errors);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
