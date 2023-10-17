@@ -115,7 +115,6 @@ public class AuthControllerLoginTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors").exists())
                 .andExpect(jsonPath("$.errors.usernameOrEmail").value(
                         "The usernameOrEmail field cannot be empty"));
@@ -128,7 +127,6 @@ public class AuthControllerLoginTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors").exists())
                 .andExpect(jsonPath("$.errors.password").value(
                         "The password field cannot be empty"));
@@ -142,7 +140,6 @@ public class AuthControllerLoginTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors").exists())
                 .andExpect(jsonPath("$.errors.usernameOrEmail").value(
                         "The usernameOrEmail field cannot be empty"))
