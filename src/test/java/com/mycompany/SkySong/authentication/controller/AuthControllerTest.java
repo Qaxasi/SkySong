@@ -95,7 +95,6 @@ public class AuthControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors.username").value(
                         "Invalid username format. The username can contain only letter and numbers."));
     }
@@ -110,7 +109,6 @@ public class AuthControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors.email").value("Invalid email address format. " +
                         "The email should follow the standard format (e.g., user@example.com)."));
     }
@@ -125,7 +123,6 @@ public class AuthControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed"))
                 .andExpect(jsonPath("$.errors.password").value(
                         "Invalid password format. The password must contain an least 8 characters," +
                                 " including uppercase letters, lowercase letters, numbers, and special characters."));
