@@ -99,7 +99,7 @@ public class AuthControllerTest {
                 .andExpect(status().isUnauthorized());
     }
     @Test
-    void shouldReturnUnauthorizedAndErrorMessageForInvalidPasswordLoginWhenUsernameIsCorrect() throws Exception {
+    void shouldReturnUnauthorizedStatusForInvalidPasswordLoginWhenUsernameIsCorrect() throws Exception {
         final var requestBody =
                 "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testWrongPassword@123\"}";
 
