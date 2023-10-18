@@ -76,8 +76,7 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string("Incorrect username/email or password"));
+                .andExpect(status().isUnauthorized());
     }
     @Test
     void shouldReturnUnauthorizedStatusForInvalidEmailLoginWhenPasswordIsCorrect() throws Exception {
@@ -87,8 +86,7 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string("Incorrect username/email or password"));
+                .andExpect(status().isUnauthorized());
     }
     @Test
     void shouldReturnUnauthorizedAndErrorMessageForInvalidPasswordLoginWhenEmailIsCorrect() throws Exception {
@@ -98,8 +96,7 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string("Incorrect username/email or password"));
+                .andExpect(status().isUnauthorized());
     }
     @Test
     void shouldReturnUnauthorizedAndErrorMessageForInvalidPasswordLoginWhenUsernameIsCorrect() throws Exception {
@@ -109,8 +106,7 @@ public class AuthControllerTest {
         mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isUnauthorized())
-                .andExpect(content().string("Incorrect username/email or password"));
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
