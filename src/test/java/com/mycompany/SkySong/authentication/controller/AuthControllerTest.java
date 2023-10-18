@@ -48,7 +48,7 @@ public class AuthControllerTest {
 
     // Login tests
     @Test
-    void shouldProvideAccessTokenAndTokenTypeOnSuccessfulEmailLogin() throws Exception {
+    void shouldRespondWithOkStatusAndHaveCorrectFieldNamesOnSuccessfulEmailLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
 
         mockMvc.perform(post("/api/v1/auth/login")
@@ -59,7 +59,7 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.tokenType").exists());
     }
     @Test
-    void shouldProvideAccessTokenAndTokenTypeOnSuccessfulUsernameLogin() throws Exception {
+    void shouldRespondWithOkStatusCodeAndHaveCorrectFieldNamesOnSuccessfulUsernameLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
         mockMvc.perform(post("/api/v1/auth/login")
@@ -70,7 +70,7 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.tokenType").exists());
     }
     @Test
-    void shouldReturnUnauthorizedAndErrorMessageForInvalidUsernameLoginWhenPasswordIsCorrect() throws Exception {
+    void shouldReturnUnauthorizedStatusForInvalidUsernameLoginWhenPasswordIsCorrect() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
 
         mockMvc.perform(post("/api/v1/auth/login")
@@ -80,7 +80,7 @@ public class AuthControllerTest {
                 .andExpect(content().string("Incorrect username/email or password"));
     }
     @Test
-    void shouldReturnUnauthorizedAndErrorMessageForInvalidEmailLoginWhenPasswordIsCorrect() throws Exception {
+    void shouldReturnUnauthorizedStatusForInvalidEmailLoginWhenPasswordIsCorrect() throws Exception {
         final var requestBody =
                 "{\"usernameOrEmail\": \"testInvalidEmail@gmail.com\",\"password\": \"testPassword@123\"}";
 
