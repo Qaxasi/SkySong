@@ -46,6 +46,114 @@ public class AuthControllerTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
 
+    // Login tests
+    @Test
+    void shouldProvideAccessTokenAndTokenTypeOnSuccessfulEmailLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").exists())
+                .andExpect(jsonPath("$.tokenType").exists());
+    }
+    @Test
+    void shouldProvideAccessTokenAndTokenTypeOnSuccessfulUsernameLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").exists())
+                .andExpect(jsonPath("$.tokenType").exists());
+    }
+    @Test
+    void shouldReturnUnauthorizedAndErrorMessageForInvalidUsernameLoginWhenPasswordIsCorrect() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Incorrect username/email or password"));
+    }
+    @Test
+    void shouldReturnUnauthorizedAndErrorMessageForInvalidEmailLoginWhenPasswordIsCorrect() throws Exception {
+        final var requestBody =
+                "{\"usernameOrEmail\": \"testInvalidEmail@gmail.com\",\"password\": \"testPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Incorrect username/email or password"));
+    }
+    @Test
+    void shouldReturnUnauthorizedAndErrorMessageForInvalidPasswordLoginWhenEmailIsCorrect() throws Exception {
+        final var requestBody =
+                "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Incorrect username/email or password"));
+    }
+    @Test
+    void shouldReturnUnauthorizedAndErrorMessageForInvalidPasswordLoginWhenUsernameIsCorrect() throws Exception {
+        final var requestBody =
+                "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testWrongPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string("Incorrect username/email or password"));
+    }
+
+    @Test
+    void shouldReturnBadRequestForEmptyUsernameOrEmailDuringLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"testWrongPassword@123\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors").exists())
+                .andExpect(jsonPath("$.errors.usernameOrEmail").value(
+                        "The usernameOrEmail field cannot be empty"));
+    }
+    @Test
+    void shouldReturnBadRequestForEmptyPasswordDuringLogin() throws Exception {
+        final var requestBody =  "{\"usernameOrEmail\": \"testUsername\",\"password\": \"\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors").exists())
+                .andExpect(jsonPath("$.errors.password").value(
+                        "The password field cannot be empty"));
+    }
+
+    @Test
+    void shouldReturnBadRequestForEmptyUsernameAndPasswordDuringLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
+
+        mockMvc.perform(post("/api/v1/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors").exists())
+                .andExpect(jsonPath("$.errors.usernameOrEmail").value(
+                        "The usernameOrEmail field cannot be empty"))
+                .andExpect(jsonPath("$.errors.password").value(
+                        "The password field cannot be empty"));
+    }
+
+    //Register test
     @Test
     void shouldSuccessfullyRegisterUserWithUniqueCredentials() throws Exception {
         final var requestBody =
