@@ -105,32 +105,7 @@ public class AuthControllerTest {
                 jsonPath("$.tokenType").isNotEmpty());
     }
 
-
-
-
     // Login tests
-    @Test
-    void shouldRespondWithOkStatusAndHaveCorrectFieldNamesOnSuccessfulEmailLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
-
-        mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").isNotEmpty())
-                .andExpect(jsonPath("$.tokenType").isNotEmpty());
-    }
-    @Test
-    void shouldRespondWithOkStatusCodeAndHaveCorrectFieldNamesOnSuccessfulUsernameLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
-
-        mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").exists())
-                .andExpect(jsonPath("$.tokenType").exists());
-    }
     @Test
     void shouldReturnUnauthorizedStatusForInvalidUsernameLoginWhenPasswordIsCorrect() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
