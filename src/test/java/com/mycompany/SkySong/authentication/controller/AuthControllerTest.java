@@ -66,6 +66,13 @@ public class AuthControllerTest {
         }
     }
 
+    private ResultActions assertPostReturns(String endpoint, String requestBody) throws Exception {
+        return mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody));
+    }
+
+
     // Login-endpoint tests
     @Test
     void shouldRespondWithOkStatusOnSuccessfulEmailLogin() throws Exception {
@@ -93,8 +100,8 @@ public class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.accessToken").exists())
-                .andExpect(jsonPath("$.tokenType").exists());
+                .andExpect(jsonPath("$.accessToken").isNotEmpty())
+                .andExpect(jsonPath("$.tokenType").isNotEmpty());
     }
     @Test
     void shouldRespondWithOkStatusCodeAndHaveCorrectFieldNamesOnSuccessfulUsernameLogin() throws Exception {
