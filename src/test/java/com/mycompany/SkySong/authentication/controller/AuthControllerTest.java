@@ -68,7 +68,7 @@ public class AuthControllerTest {
         }
     }
 
-    private ResultActions asserFieldReturns(String endpoint, String requestBody,
+    private ResultActions asserFieldsReturns(String endpoint, String requestBody,
                                             ResultMatcher... matchers) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
