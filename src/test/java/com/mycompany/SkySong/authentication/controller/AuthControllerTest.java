@@ -110,6 +110,14 @@ public class AuthControllerTest {
 
         assertStatusReturns("/api/v1/auth/login", requestBody, 401);
     }
+    @Test
+    void shouldReturnUnauthorizedStatusForInvalidPasswordLogin() throws Exception {
+        final var requestBody =
+                "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
+
+        assertStatusReturns("/api/v1/auth/login", requestBody, 401);
+    }
+
 
     // Login tests
 
