@@ -12,11 +12,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import javax.sql.DataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -52,6 +54,18 @@ public class AuthControllerTest {
                 .content(requestBody))
                 .andExpect(status().is(expectedStatusCode));
     }
+
+    private void assertJsonReturns(String endpoint, String requestBody, Map<String,
+            Object> jsonPathExpectations) throws Exception {
+        ResultActions actions = mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody));
+
+        for (Map.Entry<String, Object> expectation : jsonPathExpectations.entrySet()) {
+            actions.andExpect(jsonPath(expectation.getKey()).value(expectation.getValue()));
+        }
+    }
+
 
     // Login tests
     @Test
