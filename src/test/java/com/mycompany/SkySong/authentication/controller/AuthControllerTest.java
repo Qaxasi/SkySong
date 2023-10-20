@@ -118,7 +118,7 @@ public class AuthControllerTest {
         assertStatusReturns("/api/v1/auth/login", requestBody, 401);
     }
     @Test
-    void shouldReturnBadRequestForEmptyUsernameAndPasswordLogin() throws Exception {
+    void shouldReturnBadRequestForEmptyCredentialsLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
         assertStatusReturns("/api/v1/auth/login", requestBody, 400);
