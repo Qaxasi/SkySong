@@ -104,6 +104,12 @@ public class AuthControllerTest {
                 jsonPath("$.accessToken").isNotEmpty(),
                 jsonPath("$.tokenType").isNotEmpty());
     }
+    @Test
+    void shouldReturnUnauthorizedStatusForInvalidLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
+
+        assertStatusReturns("/api/v1/auth/login", requestBody, 401);
+    }
 
     // Login tests
     @Test
