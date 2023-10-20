@@ -74,6 +74,12 @@ public class AuthControllerTest {
         assertStatusReturns("/api/v1/auth/login", requestBody, 200);
 
     }
+    @Test
+    void shouldRespondWithOkStatusOnSuccessfulUsernameLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+
+        assertStatusReturns("/api/v1/auth/login", requestBody, 200);
+    }
 
 
 
