@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import javax.sql.DataSource;
+import javax.xml.transform.Result;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -66,10 +67,13 @@ public class AuthControllerTest {
         }
     }
 
-    private ResultActions assertPostReturns(String endpoint, String requestBody) throws Exception {
-        return mockMvc.perform(post(endpoint)
+    private void asserFieldReturns(String endpoint, String requestBody) throws Exception {
+        ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody));
+
+        actions.andExpect(jsonPath("$.accessToken").isNotEmpty())
+                .andExpect(jsonPath("$.tokenType").isNotEmpty());
     }
 
 
