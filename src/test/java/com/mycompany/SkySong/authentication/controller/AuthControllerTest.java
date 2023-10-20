@@ -46,6 +46,13 @@ public class AuthControllerTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
 
+    private void assertStatusReturns(String endpoint, String requestBody, int expectedStatusCode) throws Exception {
+        mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().is(expectedStatusCode));
+    }
+
     // Login tests
     @Test
     void shouldRespondWithOkStatusAndHaveCorrectFieldNamesOnSuccessfulEmailLogin() throws Exception {
