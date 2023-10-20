@@ -95,6 +95,16 @@ public class AuthControllerTest {
         assertStatusReturns("/api/v1/auth/login", requestBody, 200);
     }
 
+    @Test
+    void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+
+        asserFieldsReturns("/api/v1/auth/login",
+                requestBody,
+                jsonPath("$.accessToken").isNotEmpty(),
+                jsonPath("$.tokenType").isNotEmpty());
+    }
+
 
 
 
