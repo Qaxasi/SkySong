@@ -13,6 +13,7 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import javax.sql.DataSource;
 import javax.xml.transform.Result;
@@ -67,15 +68,17 @@ public class AuthControllerTest {
         }
     }
 
-    private void asserFieldReturns(String endpoint, String requestBody) throws Exception {
+    private ResultActions asserFieldReturns(String endpoint, String requestBody,
+                                            ResultMatcher... matchers) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody));
 
-        actions.andExpect(jsonPath("$.accessToken").isNotEmpty())
-                .andExpect(jsonPath("$.tokenType").isNotEmpty());
+        for (ResultMatcher matcher : matchers) {
+            actions.andExpect(matcher);
+        }
+        return actions;
     }
-
 
     // Login-endpoint tests
     @Test
