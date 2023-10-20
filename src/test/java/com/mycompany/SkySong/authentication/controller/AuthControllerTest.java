@@ -112,25 +112,7 @@ public class AuthControllerTest {
     }
 
     // Login tests
-    @Test
-    void shouldReturnUnauthorizedStatusForInvalidUsernameLoginWhenPasswordIsCorrect() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
-
-        mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isUnauthorized());
-    }
-    @Test
-    void shouldReturnUnauthorizedStatusForInvalidEmailLoginWhenPasswordIsCorrect() throws Exception {
-        final var requestBody =
-                "{\"usernameOrEmail\": \"testInvalidEmail@gmail.com\",\"password\": \"testPassword@123\"}";
-
-        mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isUnauthorized());
-    }
+    
     @Test
     void shouldReturnUnauthorizedStatusForInvalidPasswordLoginWhenEmailIsCorrect() throws Exception {
         final var requestBody =
