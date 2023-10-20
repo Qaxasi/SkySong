@@ -66,6 +66,17 @@ public class AuthControllerTest {
         }
     }
 
+    // Login-endpoint tests
+    @Test
+    void shouldRespondWithOkStatusOnSuccessfulEmailLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
+
+        assertStatusReturns("/api/v1/auth/login", requestBody, 200);
+
+    }
+
+
+
 
     // Login tests
     @Test
