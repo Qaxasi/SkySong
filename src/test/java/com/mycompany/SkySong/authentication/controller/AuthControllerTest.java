@@ -117,30 +117,14 @@ public class AuthControllerTest {
 
         assertStatusReturns("/api/v1/auth/login", requestBody, 401);
     }
+    @Test
+    void shouldReturnBadRequestForEmptyUsernameAndPasswordLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
+        assertStatusReturns("/api/v1/auth/login", requestBody, 400);
+    }
 
     // Login tests
-
-    @Test
-    void shouldReturnUnauthorizedStatusForInvalidPasswordLoginWhenEmailIsCorrect() throws Exception {
-        final var requestBody =
-                "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
-
-        mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isUnauthorized());
-    }
-    @Test
-    void shouldReturnUnauthorizedStatusForInvalidPasswordLoginWhenUsernameIsCorrect() throws Exception {
-        final var requestBody =
-                "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testWrongPassword@123\"}";
-
-        mockMvc.perform(post("/api/v1/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isUnauthorized());
-    }
 
     @Test
     void shouldReturnBadRequestForEmptyUsernameOrEmailDuringLogin() throws Exception {
