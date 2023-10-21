@@ -208,5 +208,15 @@ public class AuthControllerTest {
         assertStatusReturns("/api/v1/auth/register", requestBody, 400);
     }
 
+    @Test
+    void shouldReturnCorrectErrorMessageWhenTryRegisterWithEmptyCredentials() throws Exception {
+        final var requestBody =
+                "{\"username\": \"\", \"email\": \"\", " +
+                        "\"password\": \"\"}";
 
+        assertJsonReturns("/api/v1/auth/register", requestBody,
+                Map.of("$.errors.username", "The username field cannot be empty.",
+                        "$.errors.email","The email field cannot be empty",
+                        "$.errors.password", "The password field cannot be empty"));
+    }
 }
