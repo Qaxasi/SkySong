@@ -66,8 +66,8 @@ public class AuthControllerTest {
         }
     }
 
-    private void asserFieldsReturns(String endpoint, String requestBody,
-                                    ResultMatcher... matchers) throws Exception {
+    private void assertFieldsReturns(String endpoint, String requestBody,
+                                     ResultMatcher... matchers) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody));
@@ -96,7 +96,7 @@ public class AuthControllerTest {
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
-        asserFieldsReturns("/api/v1/auth/login",
+        assertFieldsReturns("/api/v1/auth/login",
                 requestBody,
                 jsonPath("$.accessToken").isNotEmpty(),
                 jsonPath("$.tokenType").isNotEmpty());
