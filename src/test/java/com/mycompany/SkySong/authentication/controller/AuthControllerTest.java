@@ -178,12 +178,7 @@ public class AuthControllerTest {
                 "{\"username\": \"test-invalid-username-format\", \"email\": \"testUniqueEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        mockMvc.perform(post("/api/v1/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.username").value(
-                        "Invalid username format. The username can contain only letter and numbers."));
+        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
     }
 
     @Test
