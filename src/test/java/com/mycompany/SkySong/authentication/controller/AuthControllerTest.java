@@ -131,6 +131,12 @@ public class AuthControllerTest {
                 Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
     }
+    @Test
+    void shouldReturnBadRequestForMalformedLoginRequestBody() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"";
+
+        assertStatusReturns("/api/v1/auth/login", requestBody, 400);
+    }
 
     //Register test
     @Test
