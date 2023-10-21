@@ -198,4 +198,15 @@ public class AuthControllerTest {
 
        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
     }
+
+    @Test
+    void shouldReturnBadRequestForMalformedRegisterRequestBody() throws Exception {
+        final var requestBody =
+                "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
+                        "\"password\": \"testPassword@123\"";
+
+        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
+    }
+
+
 }
