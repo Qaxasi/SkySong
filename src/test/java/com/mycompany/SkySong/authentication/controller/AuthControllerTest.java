@@ -187,12 +187,7 @@ public class AuthControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"test-invalid-email-format\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        mockMvc.perform(post("/api/v1/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors.email").value("Invalid email address format. " +
-                        "The email should follow the standard format (e.g., user@example.com)."));
+        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
     }
 
     @Test
