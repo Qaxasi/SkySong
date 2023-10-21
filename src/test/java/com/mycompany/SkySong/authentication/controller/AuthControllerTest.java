@@ -16,10 +16,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import javax.sql.DataSource;
-import javax.xml.transform.Result;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -68,8 +66,8 @@ public class AuthControllerTest {
         }
     }
 
-    private ResultActions asserFieldsReturns(String endpoint, String requestBody,
-                                            ResultMatcher... matchers) throws Exception {
+    private void asserFieldsReturns(String endpoint, String requestBody,
+                                    ResultMatcher... matchers) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody));
@@ -77,7 +75,6 @@ public class AuthControllerTest {
         for (ResultMatcher matcher : matchers) {
             actions.andExpect(matcher);
         }
-        return actions;
     }
 
     // Login-endpoint tests
