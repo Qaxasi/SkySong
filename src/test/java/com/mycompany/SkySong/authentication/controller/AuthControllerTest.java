@@ -135,14 +135,24 @@ public class AuthControllerTest {
         assertStatusReturns("/api/v1/auth/login", requestBody, 400);
     }
 
-    //Register-endpoint test
 
+    //Register-endpoint test
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
         assertStatusReturns("/api/v1/auth/register", requestBody, 201);
+    }
+    @Test
+    void shouldHaveCorrectFieldsNamesOnSuccessfulRegistration() throws Exception {
+        final var requestBody =
+                "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
+                        "\"password\": \"testPassword@123\"}";
+        assertFieldsReturns("/api/v1/auth/register",
+                requestBody,
+                jsonPath("$.success").isNotEmpty(),
+                jsonPath("$.message").isNotEmpty());
     }
 
     @Test
