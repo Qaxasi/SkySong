@@ -161,11 +161,7 @@ public class AuthControllerTest {
                 "{\"username\": \"testUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        mockMvc.perform(post("/api/v1/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("The provided username is already taken."));
+        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
     }
     @Test
     void shouldReturnBadRequestWhenUserTryRegisterWithExistingEmail() throws Exception {
