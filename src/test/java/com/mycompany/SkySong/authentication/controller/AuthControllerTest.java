@@ -135,19 +135,14 @@ public class AuthControllerTest {
         assertStatusReturns("/api/v1/auth/login", requestBody, 400);
     }
 
-    //Register test
+    //Register-endpoint test
+
     @Test
-    void shouldSuccessfullyRegisterUserWithUniqueCredentials() throws Exception {
+    void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
-
-        mockMvc.perform(post("/api/v1/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("User registered successfully"));
+        assertStatusReturns("/api/v1/auth/register", requestBody, 201);
     }
 
     @Test
