@@ -80,6 +80,13 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    private void validateEmail(RegisterRequest registerRequest) {
+        if (registerRequest.email().matches(ValidationPatterns.EMAIL_PATTERN)) {
+            throw new RegisterException("Invalid email address format. The email should follow " +
+                    "the standard format (e.g., user@example.com).");
+        }
+    }
+
     private void checkForExistingCredentials(RegisterRequest registerRequest) {
         if (userDAO.existsByUsername(registerRequest.username())) {
             throw new RegisterException("Username is already exist!.");
