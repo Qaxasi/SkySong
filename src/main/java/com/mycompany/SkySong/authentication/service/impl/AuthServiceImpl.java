@@ -2,7 +2,7 @@ package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.constants.ValidationPatterns;
 import com.mycompany.SkySong.authentication.role.entity.UserRole;
-import com.mycompany.SkySong.authentication.service.AuthService;
+import com.mycompany.SkySong.authentication.service.LoginService;
 import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.role.entity.Role;
@@ -26,7 +26,7 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements LoginService {
     private final AuthenticationManager authenticationManager;
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
@@ -42,23 +42,6 @@ public class AuthServiceImpl implements AuthService {
         this.roleDAO = roleDAO;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
-    }
-
-    @Override
-    public String login(LoginRequest loginRequest) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    loginRequest.usernameOrEmail(), loginRequest.password()));
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            String token = jwtTokenProvider.generateToken(authentication);
-
-            return token;
-        } catch (AuthenticationException e) {
-            log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
-            throw e;
-        }
     }
 
     @Transactional
