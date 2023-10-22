@@ -6,5 +6,5 @@ import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
 
 public interface AuthService {
     String login(LoginRequest loginRequest);
-    RegistrationResponse register(RegisterRequest registerRequest);
+
 }
