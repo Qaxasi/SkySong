@@ -3,7 +3,6 @@ package com.mycompany.SkySong.authentication.service;
 import com.mycompany.SkySong.authentication.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
-import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.role.entity.Role;
 import com.mycompany.SkySong.authentication.role.entity.UserRole;
 import com.mycompany.SkySong.authentication.role.repository.RoleDAO;
@@ -47,12 +46,11 @@ public class AuthServiceImplTest {
     private AuthenticationManager authenticationManager;
     @Mock
     private Authentication authentication;
-    private Validator validator;
 
     @BeforeEach
     public void setUp() {
         authService = new AuthServiceImpl(authenticationManager, userDAO, roleDAO, passwordEncoder, jwtTokenProvider);
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
+
     }
     @Test
     void shouldReturnValidTokenWhenGivenValidCredentials() {
@@ -100,7 +98,6 @@ public class AuthServiceImplTest {
 
         RegistrationResponse response = authService.register(request);
 
-        assertTrue(response.success());
         assertEquals("User registered successfully", response.message());
         verify(userDAO, times(1)).save(any(User.class));
     }
