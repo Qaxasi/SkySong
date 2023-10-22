@@ -31,12 +31,6 @@ import static org.mockito.Mockito.*;
 public class LoginRegisterImplTest {
     private AuthServiceImpl authService;
     @Mock
-    private UserDAO userDAO;
-    @Mock
-    private RoleDAO roleDAO;
-    @Mock
-    private PasswordEncoder passwordEncoder;
-    @Mock
     private JwtTokenProvider jwtTokenProvider;
     @Mock
     private AuthenticationManager authenticationManager;
