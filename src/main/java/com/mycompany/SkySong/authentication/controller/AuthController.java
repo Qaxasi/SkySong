@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-
     private final LoginService loginService;
     private final RegistrationService registrationService;
     public AuthController(LoginService loginService, RegistrationService registrationService) {
@@ -24,14 +23,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JWTAuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        String token = authService.login(loginRequest);
+        String token = loginService.login(loginRequest);
         JWTAuthResponse jwtAuthResponse = new JWTAuthResponse(token);
         return ResponseEntity.ok(jwtAuthResponse);
     }
 
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        RegistrationResponse registrationResponse = authService.register(registerRequest);
+        RegistrationResponse registrationResponse = registrationService.register(registerRequest);
         return new ResponseEntity<>(registrationResponse, HttpStatus.CREATED);
     }
 }
