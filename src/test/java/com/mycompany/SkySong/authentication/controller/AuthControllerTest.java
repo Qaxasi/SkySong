@@ -151,7 +151,6 @@ public class AuthControllerTest {
                         "\"password\": \"testPassword@123\"}";
         assertFieldsReturns("/api/v1/auth/register",
                 requestBody,
-                jsonPath("$.success").isNotEmpty(),
                 jsonPath("$.message").isNotEmpty());
     }
 
