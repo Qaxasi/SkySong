@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class RegisterServiceImpl implements RegistrationService {
+public class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
     private final PasswordEncoder passwordEncoder;
