@@ -74,6 +74,12 @@ public class AuthServiceImpl implements AuthService {
         return new RegistrationResponse("User registered successfully");
 
     }
+
+    private void validateCredentials(RegisterRequest registerRequest) {
+        validateUsername(registerRequest);
+        validateEmail(registerRequest);
+        validatePassword(registerRequest);
+    }
     private void validateUsername(RegisterRequest registerRequest) {
         if (registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
             throw new RegisterException("Invalid username format. The username can contain only letter and numbers.");
@@ -92,7 +98,6 @@ public class AuthServiceImpl implements AuthService {
                     " including uppercase letters, lowercase letters, numbers, and special characters.");
         }
     }
-
     private void checkForExistingCredentials(RegisterRequest registerRequest) {
         checkForExistingUsername(registerRequest);
         checkForExistingEmail(registerRequest);
