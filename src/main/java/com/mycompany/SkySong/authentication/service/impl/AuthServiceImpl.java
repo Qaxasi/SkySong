@@ -107,6 +107,12 @@ public class AuthServiceImpl implements AuthService {
             throw new RegisterException("Email is already exist!.");
         }
     }
+
+    private void checkForExistingEmail(RegisterRequest registerRequest) {
+        if (userDAO.existsByEmail(registerRequest.email())) {
+            throw new RegisterException("Email is already exist!.");
+        }
+    }
     private User createUserFromRequest(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.username());
