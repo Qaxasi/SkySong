@@ -86,7 +86,6 @@ public class AuthServiceImpl implements AuthService {
                     "the standard format (e.g., user@example.com).");
         }
     }
-
     private void validatePassword(RegisterRequest registerRequest) {
         if (registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
             throw new RegisterException("Invalid password format. The password must contain an least 8 characters," +
@@ -98,6 +97,12 @@ public class AuthServiceImpl implements AuthService {
         if (userDAO.existsByUsername(registerRequest.username())) {
             throw new RegisterException("Username is already exist!.");
         }
+        if (userDAO.existsByEmail(registerRequest.email())) {
+            throw new RegisterException("Email is already exist!.");
+        }
+    }
+
+    private void checkForExistingUsername(RegisterRequest registerRequest) {
         if (userDAO.existsByEmail(registerRequest.email())) {
             throw new RegisterException("Email is already exist!.");
         }
