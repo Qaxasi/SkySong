@@ -82,19 +82,19 @@ public class AuthServiceImpl implements AuthService {
         validatePassword(registerRequest);
     }
     private void validateUsername(RegisterRequest registerRequest) {
-        if (registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
+        if (!registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
             throw new RegisterException("Invalid username format. The username can contain only letter and numbers.");
         }
     }
 
     private void validateEmail(RegisterRequest registerRequest) {
-        if (registerRequest.email().matches(ValidationPatterns.EMAIL_PATTERN)) {
+        if (!registerRequest.email().matches(ValidationPatterns.EMAIL_PATTERN)) {
             throw new RegisterException("Invalid email address format. The email should follow " +
                     "the standard format (e.g., user@example.com).");
         }
     }
     private void validatePassword(RegisterRequest registerRequest) {
-        if (registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
+        if (!registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
             throw new RegisterException("Invalid password format. The password must contain an least 8 characters," +
                     " including uppercase letters, lowercase letters, numbers, and special characters.");
         }
