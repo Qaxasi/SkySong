@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
+import com.mycompany.SkySong.authentication.constants.ValidationPatterns;
 import com.mycompany.SkySong.authentication.role.entity.UserRole;
 import com.mycompany.SkySong.authentication.service.AuthService;
 import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
@@ -73,6 +74,12 @@ public class AuthServiceImpl implements AuthService {
         return new RegistrationResponse("User registered successfully");
 
     }
+    private void validateUsername(RegisterRequest registerRequest) {
+        if (registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
+            throw new RegisterException("Invalid username format. The username can contain only letter and numbers.");
+        }
+    }
+
     private void checkForExistingCredentials(RegisterRequest registerRequest) {
         if (userDAO.existsByUsername(registerRequest.username())) {
             throw new RegisterException("Username is already exist!.");
