@@ -63,6 +63,9 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public RegistrationResponse register(RegisterRequest registerRequest) {
+
+        checkForExistingCredentials(registerRequest);
+
         User user = createUserFromRequest(registerRequest);
 
         userDAO.save(user);
