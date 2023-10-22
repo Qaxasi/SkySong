@@ -33,7 +33,7 @@ public class RegisterServiceImpl implements RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthServiceImpl(UserDAO userDAO, RoleDAO roleDAO,
+    public RegistrationService(UserDAO userDAO, RoleDAO roleDAO,
                            PasswordEncoder passwordEncoder,
                            JwtTokenProvider jwtTokenProvider) {
         this.userDAO = userDAO;
