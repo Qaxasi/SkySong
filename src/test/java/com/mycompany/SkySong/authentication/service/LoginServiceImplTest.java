@@ -1,34 +1,23 @@
 package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.dto.LoginRequest;
-import com.mycompany.SkySong.authentication.dto.RegisterRequest;
-import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
-import com.mycompany.SkySong.authentication.role.entity.Role;
-import com.mycompany.SkySong.authentication.role.entity.UserRole;
-import com.mycompany.SkySong.authentication.role.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
-import com.mycompany.SkySong.authentication.user.entity.User;
-import com.mycompany.SkySong.authentication.user.repository.UserDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class LoginRegisterImplTest {
+public class LoginServiceImplTest {
     private AuthServiceImpl authService;
     @Mock
     private JwtTokenProvider jwtTokenProvider;
