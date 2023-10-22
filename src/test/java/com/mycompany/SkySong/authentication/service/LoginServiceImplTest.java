@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.service.impl.LoginServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class LoginServiceImplTest {
     private AuthServiceImpl authService;
+    private LoginServiceImpl loginService;
     @Mock
     private JwtTokenProvider jwtTokenProvider;
     @Mock
