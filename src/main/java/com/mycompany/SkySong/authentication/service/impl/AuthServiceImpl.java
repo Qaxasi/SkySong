@@ -10,6 +10,7 @@ import com.mycompany.SkySong.authentication.role.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.dto.RegisterRequest;
+import com.mycompany.SkySong.authentication.service.RegistrationService;
 import com.mycompany.SkySong.authentication.user.entity.User;
 import com.mycompany.SkySong.authentication.user.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class AuthServiceImpl implements LoginService {
+public class RegisterServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
     private final PasswordEncoder passwordEncoder;
