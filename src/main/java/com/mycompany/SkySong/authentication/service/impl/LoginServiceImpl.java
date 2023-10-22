@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -23,7 +24,14 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String login(LoginRequest loginRequest) {
-        return null;
+        try {
+            Authentication authentication = authenticationUser(loginRequest);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return jwtTokenProvider.generateToken(authentication);
+        } catch (AuthenticationException e) {
+            log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
+            throw e;
+        }
     }
 
     private Authentication authenticationUser(LoginRequest loginRequest) {
