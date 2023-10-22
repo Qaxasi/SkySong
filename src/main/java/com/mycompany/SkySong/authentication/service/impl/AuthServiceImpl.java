@@ -87,6 +87,13 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    private void validatePassword(RegisterRequest registerRequest) {
+        if (registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
+            throw new RegisterException("Invalid password format. The password must contain an least 8 characters," +
+                    " including uppercase letters, lowercase letters, numbers, and special characters.");
+        }
+    }
+
     private void checkForExistingCredentials(RegisterRequest registerRequest) {
         if (userDAO.existsByUsername(registerRequest.username())) {
             throw new RegisterException("Username is already exist!.");
