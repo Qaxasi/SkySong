@@ -27,17 +27,14 @@ import java.util.Set;
 @Slf4j
 @Service
 public class AuthServiceImpl implements LoginService {
-    private final AuthenticationManager authenticationManager;
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager,
-                           UserDAO userDAO, RoleDAO roleDAO,
+    public AuthServiceImpl(UserDAO userDAO, RoleDAO roleDAO,
                            PasswordEncoder passwordEncoder,
                            JwtTokenProvider jwtTokenProvider) {
-        this.authenticationManager = authenticationManager;
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.passwordEncoder = passwordEncoder;
