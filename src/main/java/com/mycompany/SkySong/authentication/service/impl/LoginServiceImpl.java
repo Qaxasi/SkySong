@@ -21,6 +21,11 @@ public class LoginServiceImpl implements LoginService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Override
+    public String login(LoginRequest loginRequest) {
+        return null;
+    }
+
     private Authentication authenticationUser(LoginRequest loginRequest) {
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
