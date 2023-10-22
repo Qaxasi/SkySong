@@ -67,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
 
         userDAO.save(user);
 
-        return new RegistrationResponse(true, "User registered successfully");
+        return new RegistrationResponse("User registered successfully");
 
     }
     private User createUserFromRequest(RegisterRequest registerRequest) {
