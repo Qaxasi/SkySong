@@ -65,6 +65,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public RegistrationResponse register(RegisterRequest registerRequest) {
 
+        validateCredentials(registerRequest);
+
         checkForExistingCredentials(registerRequest);
 
         User user = createUserFromRequest(registerRequest);
@@ -74,7 +76,6 @@ public class AuthServiceImpl implements AuthService {
         return new RegistrationResponse("User registered successfully");
 
     }
-
     private void validateCredentials(RegisterRequest registerRequest) {
         validateUsername(registerRequest);
         validateEmail(registerRequest);
