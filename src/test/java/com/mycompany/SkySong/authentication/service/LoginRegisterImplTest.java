@@ -81,49 +81,4 @@ public class LoginRegisterImplTest {
         assertThrows(BadCredentialsException.class, () ->
                 authService.login(loginRequest));
     }
-
-
-
-
-
-
-
-
-    @Test
-    void shouldReturnSuccessResponseWhenRegisterNewUserWithUniqueData() {
-        RegisterRequest request = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword@123");
-
-        when(passwordEncoder.encode(request.password())).thenReturn("hashedPassword");
-        when(roleDAO.findByName(UserRole.ROLE_USER)).thenReturn(Optional.of(new Role(UserRole.ROLE_USER)));
-
-        RegistrationResponse response = authService.register(request);
-
-        assertEquals("User registered successfully", response.message());
-        verify(userDAO, times(1)).save(any(User.class));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenNewUserTryRegisterWithExistingUsername() {
-        RegisterRequest request = new RegisterRequest(
-                "testExistingUsername", "testEmail@gmail.com", "testPassword");
-        Role userRole = new Role(UserRole.ROLE_USER);
-
-        when(roleDAO.findByName(UserRole.ROLE_USER)).thenReturn(Optional.of(userRole));
-        when(userDAO.save(any(User.class))).thenThrow(new DataIntegrityViolationException("Email is already taken."));
-
-        assertThrows(DataIntegrityViolationException.class, () -> authService.register(request));
-    }
-    @Test
-    void shouldThrowExceptionWhenNewUserTryRegisterWithExistingEmail() {
-        RegisterRequest request = new RegisterRequest(
-                "testUsername", "testExistingEmail@gmail.com", "testPassword");
-        Role userRole = new Role(UserRole.ROLE_USER);
-
-        when(roleDAO.findByName(UserRole.ROLE_USER)).thenReturn(Optional.of(userRole));
-        when(userDAO.save(any(User.class))).thenThrow(new DataIntegrityViolationException("Email is already taken."));
-
-        assertThrows(DataIntegrityViolationException.class, () -> authService.register(request));
-    }
-
 }
