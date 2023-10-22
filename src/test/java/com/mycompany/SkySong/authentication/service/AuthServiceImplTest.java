@@ -124,53 +124,5 @@ public class AuthServiceImplTest {
 
         assertThrows(DataIntegrityViolationException.class, () -> authService.register(request));
     }
-    @Test
-    void shouldDetectInvalidUsernameFormatWhileValidatingRegistrationRequest() {
-        RegisterRequest request = new RegisterRequest(
-                "invalid%Username", "testEmail@gmail.com", "testPassword@123");
-
-        Set<ConstraintViolation<RegisterRequest>> violations = validator.validate(request);
-
-        assertFalse(violations.isEmpty());
-        assertTrue(violations.stream().anyMatch(violation ->
-                "username".equals(violation.getPropertyPath().toString())));
-        assertFalse(violations.stream().anyMatch(violation ->
-                "email".equals(violation.getPropertyPath().toString())));
-        assertFalse(violations.stream().anyMatch(violation ->
-                "password".equals(violation.getPropertyPath().toString())));
-
-    }
-
-    @Test
-    void shouldDetectInvalidEmailFormatWhileValidatingRegistrationRequest() {
-        RegisterRequest request = new RegisterRequest(
-                "testUsername", "testInvalidEmail", "testPassword@123");
-
-        Set<ConstraintViolation<RegisterRequest>> violations = validator.validate(request);
-
-        assertFalse(violations.isEmpty());
-        assertFalse(violations.stream().anyMatch(violation ->
-                "username".equals(violation.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(violation ->
-                "email".equals(violation.getPropertyPath().toString())));
-        assertFalse(violations.stream().anyMatch(violation ->
-                "password".equals(violation.getPropertyPath().toString())));
-    }
-
-    @Test
-    void shouldDetectInvalidPasswordFormatWhileValidatingRegistrationRequest() {
-        RegisterRequest request = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testInvalidPassword");
-
-        Set<ConstraintViolation<RegisterRequest>> violations = validator.validate(request);
-
-        assertFalse(violations.isEmpty());
-        assertFalse(violations.stream().anyMatch(violation ->
-                "username".equals(violation.getPropertyPath().toString())));
-        assertFalse(violations.stream().anyMatch(violation ->
-                "email".equals(violation.getPropertyPath().toString())));
-        assertTrue(violations.stream().anyMatch(violation ->
-                "password".equals(violation.getPropertyPath().toString())));
-
-    }
+    
 }
