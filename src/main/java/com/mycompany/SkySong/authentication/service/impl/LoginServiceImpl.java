@@ -5,6 +5,7 @@ import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -28,9 +29,9 @@ public class LoginServiceImpl implements LoginService {
             Authentication authentication = authenticationUser(loginRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return jwtTokenProvider.generateToken(authentication);
-        } catch (AuthenticationException e) {
+        } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
-            throw e;
+            throw new BadCredentialsException("Incorrect username/email or password");
         }
     }
 
