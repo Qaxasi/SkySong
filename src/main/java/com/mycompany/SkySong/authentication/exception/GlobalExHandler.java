@@ -5,10 +5,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
@@ -22,6 +24,12 @@ public class GlobalExHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleRegisterException(final RegisterException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseBody
+    public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username/email or password");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
