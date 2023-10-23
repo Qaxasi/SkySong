@@ -19,7 +19,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class LoginServiceImplTest {
-    private AuthServiceImpl authService;
     private LoginServiceImpl loginService;
     @Mock
     private JwtTokenProvider jwtTokenProvider;
