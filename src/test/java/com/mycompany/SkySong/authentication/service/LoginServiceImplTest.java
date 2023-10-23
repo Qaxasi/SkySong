@@ -29,7 +29,7 @@ public class LoginServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        authService = new AuthServiceImpl(authenticationManager, userDAO, roleDAO, passwordEncoder, jwtTokenProvider);
+        loginService = new LoginServiceImpl(authenticationManager, jwtTokenProvider);
 
     }
     @Test
