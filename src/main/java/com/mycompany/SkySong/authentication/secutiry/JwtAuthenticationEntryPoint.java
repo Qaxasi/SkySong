@@ -21,10 +21,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         log.error("Unauthorized error: {}", authException.getMessage());
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        if (authException instanceof BadCredentialsException) {
-            response.getWriter().write("Incorrect username/email or password");
-        } else {
-            response.getWriter().write(authException.getMessage());
+        response.getWriter().write(authException.getMessage());
         }
-    }
 }
