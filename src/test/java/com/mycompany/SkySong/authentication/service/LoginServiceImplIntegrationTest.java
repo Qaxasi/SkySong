@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.dto.LoginRequest;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import org.h2.security.auth.AuthenticationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,14 +18,15 @@ import org.springframework.test.context.ActiveProfiles;
 import javax.sql.DataSource;
 import java.sql.Connection;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class LoginServiceImplIntegrationTest {
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private DataSource dataSource;
     @BeforeEach
@@ -41,4 +43,13 @@ public class LoginServiceImplIntegrationTest {
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
     }
+    @Test
+    void shouldReturnValidTokenAfterSuccessfulLogin() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
+
+        String token = loginService.login(loginRequest);
+
+        assertTrue(jwtTokenProvider.validateToken(token));
+    }
+
 }
