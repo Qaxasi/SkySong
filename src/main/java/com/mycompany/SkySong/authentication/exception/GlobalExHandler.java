@@ -27,9 +27,8 @@ public class GlobalExHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    @ResponseBody
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username/email or password");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
