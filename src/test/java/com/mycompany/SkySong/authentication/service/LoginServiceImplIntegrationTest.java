@@ -2,17 +2,14 @@ package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
-import org.h2.security.auth.AuthenticationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
@@ -51,5 +48,21 @@ public class LoginServiceImplIntegrationTest {
 
         assertTrue(jwtTokenProvider.validateToken(token));
     }
+    @Test
+    void shouldReturnCorrectUserFromToken() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
+
+        String token = loginService.login(loginRequest);
+
+        String username = jwtTokenProvider.getSubjectFromToken(token);
+
+        assertEquals(loginRequest.usernameOrEmail(), username);
+    }
+
+
+
+
+
+
 
 }
