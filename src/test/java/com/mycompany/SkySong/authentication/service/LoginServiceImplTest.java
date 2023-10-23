@@ -52,7 +52,7 @@ public class LoginServiceImplTest {
                 new BadCredentialsException("Incorrect credentials"));
 
         assertThrows(BadCredentialsException.class, () ->
-                authService.login(loginRequest));
+                loginService.login(loginRequest));
 
     }
     @Test
@@ -63,6 +63,6 @@ public class LoginServiceImplTest {
                 new BadCredentialsException("Incorrect credentials"));
 
         assertThrows(BadCredentialsException.class, () ->
-                authService.login(loginRequest));
+                loginService.login(loginRequest));
     }
 }
