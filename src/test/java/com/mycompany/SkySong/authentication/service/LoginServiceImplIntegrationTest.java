@@ -41,7 +41,7 @@ public class LoginServiceImplIntegrationTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
-    void shouldValidTokenAfterSuccessfulLogin() {
+    void shouldReturnValidTokenAfterSuccessfulLogin() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
