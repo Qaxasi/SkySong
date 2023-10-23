@@ -41,7 +41,7 @@ public class LoginServiceImplIntegrationTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
-    void shouldReturnValidTokenAfterSuccessfulLogin() {
+    void shouldValidTokenAfterSuccessfulLogin() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
@@ -49,7 +49,7 @@ public class LoginServiceImplIntegrationTest {
         assertTrue(jwtTokenProvider.validateToken(token));
     }
     @Test
-    void shouldReturnCorrectUserFromToken() {
+    void shouldContainCorrectUserInToken() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
