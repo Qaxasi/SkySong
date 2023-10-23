@@ -40,7 +40,7 @@ public class LoginServiceImplTest {
                 .thenReturn(authentication);
         when(jwtTokenProvider.generateToken(authentication)).thenReturn("validToken");
 
-        String token = authService.login(loginRequest);
+        String token = loginService.login(loginRequest);
 
         assertEquals("validToken", token);
     }
