@@ -3,6 +3,7 @@ package com.mycompany.SkySong.authentication.service;
 import com.mycompany.SkySong.authentication.exception.TokenException;
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.config.Elements.JWT;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -107,6 +109,17 @@ public class LoginServiceImplIntegrationTest {
 
         assertEquals(loginRequest.usernameOrEmail(), username);
     }
+    @Test
+    void shouldReturnTokenWithExpirationTime() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
+
+        String token = loginService.login(loginRequest);
+
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+
+        assertNotNull(claims.getExpiration());
+    }
+
     @Test
     void shouldBecomeInvalidTokenAfterDelay() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
