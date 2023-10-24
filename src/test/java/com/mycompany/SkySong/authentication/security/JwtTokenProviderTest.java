@@ -58,7 +58,17 @@ public class JwtTokenProviderTest {
 
         assertEquals("testUser", retrieveUsername);
     }
+    @Test
+    void shouldRetrieveExpirationTimeFromToken() {
+        String expectedUser = "testUser";
 
+        when(mockAuth.getName()).thenReturn(expectedUser);
+
+        String token = jwtTokenProvider.generateToken(mockAuth);
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+
+        assertNotNull(claims.getExpiration());
+    }
     @Test
     void shouldThrowExceptionForExpiredToken() throws InterruptedException {
         when(mockAuth.getName()).thenReturn("testUser");
