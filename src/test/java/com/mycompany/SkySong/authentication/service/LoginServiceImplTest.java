@@ -45,7 +45,7 @@ public class LoginServiceImplTest {
         assertEquals("validToken", token);
     }
     @Test
-    void shouldThrowExceptionWhenLoggingWithInvalidPassword() {
+    void shouldThrowExceptionWhenLoggingWithInvalidCredentials() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testWrongPassword@123");
 
         when(authenticationManager.authenticate(any())).thenThrow(
@@ -55,7 +55,7 @@ public class LoginServiceImplTest {
                 loginService.login(loginRequest));
 
     }
-   
+
     @Test
     void shouldInvokeGenerateTokenWithProperAuthenticationAfterSuccessfulLogin() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
