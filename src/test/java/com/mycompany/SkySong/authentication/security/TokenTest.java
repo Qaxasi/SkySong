@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.security;
 
 import com.mycompany.SkySong.authentication.exception.TokenException;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -52,7 +53,8 @@ public class TokenTest {
         when(mockAuth.getName()).thenReturn("testUser");
 
         String token = jwtTokenProvider.generateToken(mockAuth);
-        String retrieveUsername = jwtTokenProvider.getSubjectFromToken(token);
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        String retrieveUsername = claims.getSubject();
 
         assertEquals("testUser", retrieveUsername);
     }
