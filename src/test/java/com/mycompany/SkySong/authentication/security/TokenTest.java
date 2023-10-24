@@ -52,7 +52,7 @@ public class TokenTest {
         when(mockAuth.getName()).thenReturn("testUser");
 
         String token = jwtTokenProvider.generateToken(mockAuth);
-        String retrieveUsername = jwtTokenProvider.getUsername(token);
+        String retrieveUsername = jwtTokenProvider.getSubjectFromToken(token);
 
         assertEquals("testUser", retrieveUsername);
     }
