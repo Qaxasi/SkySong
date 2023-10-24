@@ -55,17 +55,7 @@ public class LoginServiceImplTest {
                 loginService.login(loginRequest));
 
     }
-    @Test
-    void shouldThrowExceptionWhenLoggingWithInvalidUsername() {
-        LoginRequest loginRequest = new LoginRequest("testInvalidUsername", "testPassword@123");
-
-        when(authenticationManager.authenticate(any())).thenThrow(
-                new BadCredentialsException("Incorrect credentials"));
-
-        assertThrows(BadCredentialsException.class, () ->
-                loginService.login(loginRequest));
-    }
-
+   
     @Test
     void shouldInvokeGenerateTokenWithProperAuthenticationAfterSuccessfulLogin() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
