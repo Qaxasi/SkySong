@@ -108,7 +108,7 @@ public class LoginServiceImplIntegrationTest {
         assertEquals(loginRequest.usernameOrEmail(), username);
     }
     @Test
-    void shouldBecomeInvalidAfterDelay() {
+    void shouldBecomeInvalidTokenAfterDelay() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         try {
