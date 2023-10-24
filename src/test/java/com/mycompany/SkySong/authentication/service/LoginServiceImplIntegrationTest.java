@@ -134,4 +134,12 @@ public class LoginServiceImplIntegrationTest {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
+    @Test
+    void shouldAuthenticateWhenLoginWithValidCredentials() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
+
+        loginService.login(loginRequest);
+
+        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+    }
 }
