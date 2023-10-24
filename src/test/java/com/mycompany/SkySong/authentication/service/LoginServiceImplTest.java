@@ -46,7 +46,8 @@ public class LoginServiceImplTest {
     }
     @Test
     void shouldThrowExceptionWhenLoggingWithInvalidCredentials() {
-        LoginRequest loginRequest = new LoginRequest("testUsername", "testWrongPassword@123");
+        LoginRequest loginRequest = new LoginRequest(
+                "testWrongUsername", "testWrongPassword@123");
 
         when(authenticationManager.authenticate(any())).thenThrow(
                 new BadCredentialsException("Incorrect credentials"));
