@@ -18,6 +18,7 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
+import static org.hibernate.validator.internal.util.Contracts.assertNotEmpty;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,6 +40,7 @@ public class JwtTokenProviderTest {
 
         String token = jwtTokenProvider.generateToken(mockAuth);
         assertNotNull(token);
+        assertFalse(token.isEmpty());
     }
     @Test
     void shouldValidateTokenGeneratedForGivenAuthentication() {
