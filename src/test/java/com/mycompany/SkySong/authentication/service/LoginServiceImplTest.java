@@ -12,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -66,5 +68,16 @@ public class LoginServiceImplTest {
         loginService.login(loginRequest);
 
         verify(jwtTokenProvider).generateToken(authentication);
+    }
+    @Test
+    void shouldSetAuthenticationInContextAfterSuccessfulLogin() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(authentication);
+
+        loginService.login(loginRequest);
+
+        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
