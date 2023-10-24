@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.exception.TokenException;
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import org.junit.jupiter.api.AfterEach;
@@ -10,7 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
@@ -27,6 +31,8 @@ public class LoginServiceImplIntegrationTest {
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private AuthenticationManager authenticationManager;
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
@@ -99,5 +105,23 @@ public class LoginServiceImplIntegrationTest {
         String username = jwtTokenProvider.getSubjectFromToken(token);
 
         assertEquals(loginRequest.usernameOrEmail(), username);
+    }
+    @Test
+    void shouldBecomeInvalidAfterDelay() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.usernameOrEmail(), loginRequest.password()));
+
+            String token = jwtTokenProvider.generateToken(authentication);
+
+            Thread.sleep(1000 + 1000);
+
+            assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(token));
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
