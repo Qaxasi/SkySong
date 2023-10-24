@@ -1,16 +1,16 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
-import com.mycompany.SkySong.authentication.constants.ValidationPatterns;
-import com.mycompany.SkySong.authentication.role.entity.UserRole;
-import com.mycompany.SkySong.authentication.dto.RegistrationResponse;
+import com.mycompany.SkySong.authentication.utils.constants.ValidationPatterns;
+import com.mycompany.SkySong.authentication.model.entity.UserRole;
+import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
-import com.mycompany.SkySong.authentication.role.entity.Role;
-import com.mycompany.SkySong.authentication.role.repository.RoleDAO;
+import com.mycompany.SkySong.authentication.model.entity.Role;
+import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
-import com.mycompany.SkySong.authentication.dto.RegisterRequest;
+import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.service.RegistrationService;
-import com.mycompany.SkySong.authentication.user.entity.User;
-import com.mycompany.SkySong.authentication.user.repository.UserDAO;
+import com.mycompany.SkySong.authentication.model.entity.User;
+import com.mycompany.SkySong.authentication.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

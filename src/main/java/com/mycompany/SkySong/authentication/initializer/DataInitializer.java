@@ -1,17 +1,15 @@
 package com.mycompany.SkySong.authentication.initializer;
 
-import com.mycompany.SkySong.authentication.role.entity.Role;
-import com.mycompany.SkySong.authentication.role.entity.UserRole;
-import com.mycompany.SkySong.authentication.role.repository.RoleDAO;
-import com.mycompany.SkySong.authentication.user.entity.User;
-import com.mycompany.SkySong.authentication.user.repository.UserDAO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mycompany.SkySong.authentication.model.entity.Role;
+import com.mycompany.SkySong.authentication.model.entity.UserRole;
+import com.mycompany.SkySong.authentication.repository.RoleDAO;
+import com.mycompany.SkySong.authentication.model.entity.User;
+import com.mycompany.SkySong.authentication.repository.UserDAO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 

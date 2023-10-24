@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.authentication.constants;
+package com.mycompany.SkySong.authentication.utils.constants;
 
 public class ValidationPatterns {
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9]+$";

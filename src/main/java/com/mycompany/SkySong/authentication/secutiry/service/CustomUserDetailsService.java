@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.authentication.secutiry.service;
 
-import com.mycompany.SkySong.authentication.user.entity.User;
-import com.mycompany.SkySong.authentication.user.repository.UserDAO;
+import com.mycompany.SkySong.authentication.model.entity.User;
+import com.mycompany.SkySong.authentication.repository.UserDAO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

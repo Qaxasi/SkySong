@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.authentication.dto;
+package com.mycompany.SkySong.authentication.model.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 public record RegisterRequest(@NotEmpty(message = "The username field cannot be empty.")

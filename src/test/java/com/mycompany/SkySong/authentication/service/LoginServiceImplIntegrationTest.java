@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.service;
 
-import com.mycompany.SkySong.authentication.dto.LoginRequest;
+import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

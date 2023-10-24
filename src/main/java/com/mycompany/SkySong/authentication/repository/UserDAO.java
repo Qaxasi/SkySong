@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.authentication.user.repository;
+package com.mycompany.SkySong.authentication.repository;
 
-import com.mycompany.SkySong.authentication.user.entity.User;
+import com.mycompany.SkySong.authentication.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
