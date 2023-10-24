@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
@@ -48,6 +49,17 @@ public class LoginServiceImplIntegrationTest {
         String token = loginService.login(loginRequest);
 
         assertTrue(jwtTokenProvider.validateToken(token));
+    }
+
+    @Test
+    void shouldReturnErrorAndCorrectErrorMessageAfterLoginWithWrongUsername() {
+        LoginRequest loginRequest = new LoginRequest("testWrongUsername", "testPassword@123");
+
+        Exception exception = assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
+
+        String expectedMessage = "Incorrect username/email or password";
+
+        assertEquals(expectedMessage, exception.getMessage());
     }
     @Test
     void shouldContainCorrectUserInToken() {
