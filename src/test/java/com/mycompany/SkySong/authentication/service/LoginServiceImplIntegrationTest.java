@@ -70,7 +70,6 @@ public class LoginServiceImplIntegrationTest {
 
         assertEquals(expectedMessage, exception.getMessage());
     }
-
     @Test
     void shouldReturnErrorAndCorrectErrorMessageAfterLoginWithWrongPasswordWhenUsernameIsCorrect() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testWrongPassword@123");
@@ -79,6 +78,17 @@ public class LoginServiceImplIntegrationTest {
         String expectedMessage = "Incorrect username/email or password";
 
         assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
+    void shouldReturnErrorAndCorrectErrorMessageAfterLoginWithWrongPasswordWhenEmailIsCorrect() {
+        LoginRequest loginRequest = new LoginRequest(
+                "testEmail@gmail.com", "testWrongPassword@123");
+
+        Exception exception = assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
+        String expectedMessage = "Incorrect username/email or password";
+
+        assertEquals(expectedMessage, exception.getMessage());
+
     }
     @Test
     void shouldContainCorrectUserInToken() {
