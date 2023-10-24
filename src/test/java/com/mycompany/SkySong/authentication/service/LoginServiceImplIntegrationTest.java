@@ -104,8 +104,8 @@ public class LoginServiceImplIntegrationTest {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
-
-        String username = jwtTokenProvider.getSubjectFromToken(token);
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        String username = claims.getSubject();
 
         assertEquals(loginRequest.usernameOrEmail(), username);
     }
@@ -114,7 +114,6 @@ public class LoginServiceImplIntegrationTest {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
-
         Claims claims = jwtTokenProvider.getClaimsFromToken(token);
 
         assertNotNull(claims.getExpiration());
