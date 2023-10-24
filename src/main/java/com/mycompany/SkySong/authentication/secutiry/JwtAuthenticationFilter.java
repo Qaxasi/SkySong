@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.secutiry;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,7 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
-            String username = jwtTokenProvider.getSubjectFromToken(token);
+            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+
+            String username = claims.getSubject();
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
