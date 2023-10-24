@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TokenTest {
+public class JwtTokenProviderTest {
     private JwtTokenProvider jwtTokenProvider;
     @Mock
     private Authentication mockAuth;
