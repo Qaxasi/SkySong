@@ -33,7 +33,7 @@ public class LoginServiceImplTest {
 
     }
     @Test
-    void shouldLoginSuccessfullyWhenLoginWithValidCredentials() {
+    void shouldReturnTokenAfterSuccessfullyLoginWhenLoginWithValidCredentials() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
