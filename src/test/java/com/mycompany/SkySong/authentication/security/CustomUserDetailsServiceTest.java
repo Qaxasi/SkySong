@@ -30,7 +30,7 @@ public class CustomUserDetailsServiceTest {
         customUserDetailsService = new CustomUserDetailsService(userDAO);
     }
     @Test
-    void shouldReturnCorrectUsernameAndPasswordWhenLoggingWithUsername() {
+    void shouldReturnCorrectUserDetailsWhenLoggingWithUsername() {
         Set<Role> roles = Set.of(new Role(UserRole.ROLE_USER));
         User testUser = new User("testUsername", "testEmail@gmail.com", "testPassword@123", roles);
 
