@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.authentication.security;
 
+import com.mycompany.SkySong.authentication.exception.TokenException;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.secutiry.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -83,6 +85,17 @@ public class JwtAuthenticationFilterTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
+    }
+    @Test
+    void shouldReturnUnauthorizedForExpiredToken() throws ServletException, IOException {
+        String token = "expiredToken";
+
+        when(request.getHeader("Authorization")).thenReturn("Bearer: " + token);
+        when(jwtTokenProvider.validateToken(token)).thenThrow(new TokenException("Token expired"));
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
 }
