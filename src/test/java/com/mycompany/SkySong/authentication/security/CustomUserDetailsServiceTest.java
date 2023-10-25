@@ -70,6 +70,8 @@ public class CustomUserDetailsServiceTest {
     void shouldThrowExceptionWhenLoadingMissingUserByEmail() {
         when(userDAO.findByEmail("testEmail@gmail.com")).thenReturn(Optional.empty());
 
+        //In our implementation, the email can serve as the username
+
         assertThrows(UsernameNotFoundException.class,
                 () -> customUserDetailsService.loadUserByUsername("testEmail@gmail.com"));
     }
