@@ -29,4 +29,17 @@ public class CustomUserDetailsServiceTest {
     void setUp() {
         customUserDetailsService = new CustomUserDetailsService(userDAO);
     }
+    @Test
+    void shouldReturnCorrectUsernameAndPasswordWhenLoggingWithUsername() {
+        Set<Role> roles = Set.of(new Role(UserRole.ROLE_USER));
+        User testUser = new User("testUsername", "testEmail@gmail.com", "testPassword@123", roles);
+
+        when(userDAO.findByUsername("testUsername")).thenReturn(Optional.of(testUser));
+
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
+
+        assertEquals("testUsername", userDetails.getUsername());
+        assertEquals("testPassword@123", userDetails.getPassword());
+    }
+
 }
