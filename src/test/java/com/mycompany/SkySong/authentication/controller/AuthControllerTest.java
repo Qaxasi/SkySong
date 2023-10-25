@@ -36,8 +36,8 @@ public class AuthControllerTest {
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
             ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/user-data.sql"));
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
         }
     }
     @AfterEach
