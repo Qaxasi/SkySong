@@ -11,12 +11,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -54,6 +57,14 @@ public class CustomUserDetailsServiceTest {
 
         assertEquals("testEmail@gmail.com", userDetails.getUsername());
         assertEquals("testPassword@123", userDetails.getPassword());
+    }
+    @Test
+    void shouldThrowExceptionWhenLoadingMissingUserByUsername() {
+        when(userDAO.findByUsername("testUsername")).thenReturn(Optional.empty());
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> customUserDetailsService.loadUserByUsername("testUsername"));
+
     }
 
 }
