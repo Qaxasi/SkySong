@@ -41,5 +41,19 @@ public class CustomUserDetailsServiceTest {
         assertEquals("testUsername", userDetails.getUsername());
         assertEquals("testPassword@123", userDetails.getPassword());
     }
+    @Test
+    void shouldReturnCorrectUserDetailsWhenLoggingWithEmail() {
+        Set<Role> roles = Set.of(new Role(UserRole.ROLE_USER));
+        User testUser = new User("testUsername", "testEmail@gmail.com", "testPassword@123", roles);
+
+        when(userDAO.findByEmail("testEmail@gmail.com")).thenReturn(Optional.of(testUser));
+
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("testEmail@gmail.com");
+
+        //In our implementation, the email can serve as the username
+
+        assertEquals("testEmail@gmail.com", userDetails.getUsername());
+        assertEquals("testPassword@123", userDetails.getPassword());
+    }
 
 }
