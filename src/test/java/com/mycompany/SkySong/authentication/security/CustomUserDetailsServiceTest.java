@@ -66,5 +66,12 @@ public class CustomUserDetailsServiceTest {
                 () -> customUserDetailsService.loadUserByUsername("testUsername"));
 
     }
+    @Test
+    void shouldThrowExceptionWhenLoadingMissingUserByEmail() {
+        when(userDAO.findByEmail("testEmail@gmail.com")).thenReturn(Optional.empty());
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> customUserDetailsService.loadUserByUsername("testEmail@gmail.com"));
+    }
 
 }
