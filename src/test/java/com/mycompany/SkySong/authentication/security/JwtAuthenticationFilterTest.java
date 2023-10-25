@@ -63,6 +63,13 @@ public class JwtAuthenticationFilterTest {
 
         verify(filterChain).doFilter(request, response);
     }
+    @Test
+    void shouldNotProcessRequestWithMalformedToken() throws ServletException, IOException {
+        when(request.getHeader("Authorization")).thenReturn("MalformedToken");
 
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
 
 }
