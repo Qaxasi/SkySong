@@ -32,5 +32,18 @@ public class JwtAuthenticationEntryPointTest {
     void setUp() {
         jwtAuthenticationEntryPoint = new JwtAuthenticationEntryPoint();
     }
+    @Test
+    void shouldRespondWitUnauthorizedAndJsonOnAuthFailure() throws IOException, ServletException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
 
+        when(response.getWriter()).thenReturn(printWriter);
+        when(authenticationException.getMessage()).thenReturn("Incorrect credentials");
+
+        jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
+
+        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        verify(response).setContentType("application/json");
+        verify(authenticationException).getMessage();
+    }
 }
