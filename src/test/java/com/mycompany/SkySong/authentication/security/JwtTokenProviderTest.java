@@ -35,7 +35,7 @@ public class JwtTokenProviderTest {
         jwtTokenProvider = new JwtTokenProvider(base64Secret, 1000L);
     }
     @Test
-    void shouldGenerateValidTokenForGivenAuthentication() {
+    void shouldGenerateTokenForGivenAuthentication() {
         when(mockAuth.getName()).thenReturn("testUser");
 
         String token = jwtTokenProvider.generateToken(mockAuth);
