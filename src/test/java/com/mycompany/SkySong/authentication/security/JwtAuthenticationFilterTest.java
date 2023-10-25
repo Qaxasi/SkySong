@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -51,6 +52,14 @@ public class JwtAuthenticationFilterTest {
         when(customUserDetailsService.loadUserByUsername("username")).thenReturn(mock(UserDetails.class));
 
         jwtAuthenticationFilter.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+    @Test
+    void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
+        when(request.getHeader("Authorization")).thenReturn(null);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
     }
