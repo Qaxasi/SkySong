@@ -55,6 +55,19 @@ public class JwtAuthenticationFilterTest {
 
         verify(filterChain).doFilter(request, response);
     }
+
+    @Test
+    void shouldNotAuthorizeWithInvalidToken() throws ServletException, IOException {
+        String token = "invalidToken";
+
+        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
+        when(jwtTokenProvider.validateToken(token)).thenReturn(false);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+        verify(customUserDetailsService, never()).loadUserByUsername(anyString());
+    }
     @Test
     void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
         when(request.getHeader("Authorization")).thenReturn(null);
