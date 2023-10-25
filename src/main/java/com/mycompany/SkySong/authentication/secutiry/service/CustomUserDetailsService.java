@@ -20,6 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userDAO = userDAO;
     }
 
+    // This method loads a user by either username or email
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
         User user = userDAO.findByUsername(usernameOrEmail)
