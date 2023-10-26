@@ -3,6 +3,7 @@ package com.mycompany.SkySong.authentication.service;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
+import com.mycompany.SkySong.authentication.service.impl.RegistrationServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import java.sql.Connection;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class RegistrationServiceIntegrationTest {
+    private RegistrationServiceImpl registrationService;
     @Autowired
     private UserDAO userDAO;
     @Autowired
