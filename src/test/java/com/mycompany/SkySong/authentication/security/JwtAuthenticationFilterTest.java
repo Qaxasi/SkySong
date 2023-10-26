@@ -117,4 +117,16 @@ public class JwtAuthenticationFilterTest {
 
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
+    @Test
+    void shouldReturnUnauthorizedForUnexpectedExceptionDuringTokenValidation() throws ServletException, IOException {
+        String token = "token";
+
+        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
+        when(jwtTokenProvider.validateToken(token)).thenThrow(
+                new RuntimeException("Unexpected error processing the request"));
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    }
 }
