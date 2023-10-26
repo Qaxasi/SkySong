@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.security;
 
 import com.mycompany.SkySong.authentication.exception.TokenException;
+import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.secutiry.service.CustomUserDetailsService;
@@ -16,8 +17,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -90,7 +93,7 @@ public class JwtAuthenticationFilterTest {
     void shouldReturnUnauthorizedForExpiredToken() throws ServletException, IOException {
         String token = "expiredToken";
 
-        when(request.getHeader("Authorization")).thenReturn("Bearer: " + token);
+        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
         when(jwtTokenProvider.validateToken(token)).thenThrow(new TokenException("Token expired"));
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
