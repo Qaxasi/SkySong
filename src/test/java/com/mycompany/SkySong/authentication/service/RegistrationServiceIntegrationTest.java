@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
+import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.impl.RegistrationServiceImpl;
@@ -18,10 +19,16 @@ import org.springframework.test.context.ActiveProfiles;
 import javax.management.relation.RoleResult;
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class RegistrationServiceIntegrationTest {
+
     private RegistrationServiceImpl registrationService;
     @Autowired
     private UserDAO userDAO;
@@ -45,5 +52,18 @@ public class RegistrationServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
+    }
+    @Test
+    void shouldRegisterUserAndSaveToDatabase() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        registrationService.register(registerRequest);
+
+        Optional<User> registeredUser = userDAO.findByUsername(registerRequest.username());
+
+        assertTrue(registeredUser.isPresent());
+        assertEquals(registerRequest.username(), registeredUser.get().getUsername());
+        assertEquals(registerRequest.email(), registeredUser.get().getEmail());
     }
 }
