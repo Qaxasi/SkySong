@@ -1,6 +1,8 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
+import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
@@ -21,8 +23,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -65,5 +66,18 @@ public class RegistrationServiceIntegrationTest {
         assertTrue(registeredUser.isPresent());
         assertEquals(registerRequest.username(), registeredUser.get().getUsername());
         assertEquals(registerRequest.email(), registeredUser.get().getEmail());
+    }
+    @Test
+    void shouldThrowExceptionWhenUserTryRegisterWithExistUsername() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        long userCountBefore = userDAO.count();
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+
+        long userCountAfter = userDAO.count();
+
+        assertEquals(userCountBefore, userCountAfter);
     }
 }
