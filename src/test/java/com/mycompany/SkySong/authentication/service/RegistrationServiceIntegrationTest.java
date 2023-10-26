@@ -102,5 +102,19 @@ public class RegistrationServiceIntegrationTest {
 
         assertFalse(userDAO.existsByUsername(registerRequest.username()));
     }
+    @Test
+    void shouldCheckPasswordHashingOnRegistration() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        RegistrationResponse response = registrationService.register(registerRequest);
+        assertEquals("User registered successfully", response.message());
+
+        Optional<User> user = userDAO.findByUsername(registerRequest.username());
+        assertTrue(user.isPresent());
+        String encodedPasswordInDB = user.get().getPassword();
+        assertNotEquals(registerRequest.password(), encodedPasswordInDB);
+        assertTrue(passwordEncoder.matches(registerRequest.password(), encodedPasswordInDB));
+    }
 
 }
