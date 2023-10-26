@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.model.entity.Role;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -48,7 +50,17 @@ public class RegistrationServiceImplTest {
         String expectedMessage = "User registered successfully";
         assertEquals(response.message(), expectedMessage);
     }
+    @Test
+    void shouldThrowExceptionWithCorrectMessageWhenTryRegisterWithExistUsername() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "existUsername", "testEmail@gmail.com", "testPassword@123");
 
+        when(userDAO.existsByUsername(registerRequest.username())).thenReturn(true);
+
+        assertThatExceptionOfType(RegisterException.class)
+                .isThrownBy(() -> registrationService.register(registerRequest))
+                .withMessage("Username is already exist!.");
+    }
 
 
 }
