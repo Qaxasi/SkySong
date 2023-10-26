@@ -1,12 +1,10 @@
 package com.mycompany.SkySong.authentication.security;
 
 import com.mycompany.SkySong.authentication.exception.TokenException;
-import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.secutiry.service.CustomUserDetailsService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,10 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.IOException;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
