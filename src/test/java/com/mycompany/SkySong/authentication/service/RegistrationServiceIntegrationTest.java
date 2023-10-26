@@ -93,5 +93,14 @@ public class RegistrationServiceIntegrationTest {
 
         assertEquals(userCountBefore, userCountAfter);
     }
+    @Test
+    void shouldThrowExceptionWhenUserTryRegisterWithInvalidPasswordFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUser", "testUniqueEmail@gmail.com", "invalidPassword");
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+
+        assertFalse(userDAO.existsByUsername(registerRequest.username()));
+    }
 
 }
