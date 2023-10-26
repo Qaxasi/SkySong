@@ -129,4 +129,13 @@ public class JwtAuthenticationFilterTest {
 
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
+    @Test
+    void shouldNotProcessRequestWithBearerPrefixOnly() throws ServletException, IOException {
+        when(request.getHeader("Authorization")).thenReturn("Bearer ");
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+        verify(response, never()).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    }
 }
