@@ -24,15 +24,13 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
 
     public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO,
-                           PasswordEncoder passwordEncoder,
-                           JwtTokenProvider jwtTokenProvider) {
+                           PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
+
     }
 
     @Transactional
