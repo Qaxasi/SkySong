@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.secutiry;
 
+import com.mycompany.SkySong.authentication.exception.TokenException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,27 +35,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NotNull HttpServletResponse response,
                                     @NotNull FilterChain filterChain) throws ServletException, IOException {
 
-        log.info("JwtFilter - processing request to {}", request.getRequestURI());
+        try {
+            log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
-        String token = getTokenFromRequest(request);
+            String token = getTokenFromRequest(request);
 
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+                Claims claims = jwtTokenProvider.getClaimsFromToken(token);
 
-            String username = claims.getSubject();
+                String username = claims.getSubject();
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
 
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            log.error("Error processing the request", e);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
-
-        filterChain.doFilter(request, response);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
