@@ -28,7 +28,7 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class RegistrationServiceIntegrationTest {
-
+    @Autowired
     private RegistrationServiceImpl registrationService;
     @Autowired
     private UserDAO userDAO;
