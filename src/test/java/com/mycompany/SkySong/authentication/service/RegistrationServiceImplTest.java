@@ -36,7 +36,7 @@ public class RegistrationServiceImplTest {
         registrationService = new RegistrationServiceImpl(userDAO, roleDAO, passwordEncoder);
     }
     @Test
-    void shouldSuccessfullyRegisterNewUserWithValidCredentials() {
+    void shouldReturnCorrectMessageAfterSuccessfullyRegisterNewUserWithValidCredentials() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
@@ -73,6 +73,13 @@ public class RegistrationServiceImplTest {
                 .isThrownBy(() -> registrationService.register(registerRequest))
                 .withMessage("Email is already exist!.");
     }
+    @Test
+    void shouldThrowRegisterExceptionWithCorrectMessageForInvalidUsernameFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "invalidUsernameFormat#", "testEmail@gmail.com", "testPassword@123");
 
-
+        assertThatExceptionOfType(RegisterException.class)
+                .isThrownBy(() -> registrationService.register(registerRequest))
+                .withMessage("Invalid username format. The username can contain only letter and numbers.");
+    }
 }
