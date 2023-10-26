@@ -59,6 +59,7 @@ public class JwtAuthenticationFilterTest {
         jwtAuthenticationFilter.doFilter(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
+        verify(response, never()).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
     @Test
@@ -72,6 +73,7 @@ public class JwtAuthenticationFilterTest {
 
         verify(filterChain).doFilter(request, response);
         verify(customUserDetailsService, never()).loadUserByUsername(anyString());
+        verify(response, never()).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
     @Test
     void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
@@ -80,6 +82,7 @@ public class JwtAuthenticationFilterTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
+        verify(response, never()).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
     @Test
     void shouldNotProcessRequestWithMalformedToken() throws ServletException, IOException {
@@ -88,6 +91,7 @@ public class JwtAuthenticationFilterTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
+        verify(response, never()).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
     @Test
     void shouldReturnUnauthorizedForExpiredToken() throws ServletException, IOException {
