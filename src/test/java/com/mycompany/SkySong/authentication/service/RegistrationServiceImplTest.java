@@ -82,4 +82,14 @@ public class RegistrationServiceImplTest {
                 .isThrownBy(() -> registrationService.register(registerRequest))
                 .withMessage("Invalid username format. The username can contain only letter and numbers.");
     }
+    @Test
+    void shouldThrowExceptionWithCorrectMessageForInvalidEmailFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "invalidEmail", "testPassword@123");
+
+        assertThatExceptionOfType(RegisterException.class)
+                .isThrownBy(() -> registrationService.register(registerRequest))
+                .withMessage("Invalid email address format. The email should follow the " +
+                        "standard format (e.g., user@example.com).");
+    }
 }
