@@ -100,5 +100,22 @@ public class JwtAuthenticationFilterTest {
 
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
+    @Test
+    void shouldNotAuthorizeWhenUserNotFound() throws ServletException, IOException {
+        String token = "validTokenButNoUser";
 
+        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
+        when(jwtTokenProvider.validateToken(token)).thenReturn(true);
+
+        Claims mockClaims = mock(Claims.class);
+        when(mockClaims.getSubject()).thenReturn("unknownUser");
+        when(jwtTokenProvider.getClaimsFromToken(token)).thenReturn(mockClaims);
+
+        when(customUserDetailsService.loadUserByUsername("unknownUser")).thenThrow(
+                new UsernameNotFoundException("User not found"));
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    }
 }
