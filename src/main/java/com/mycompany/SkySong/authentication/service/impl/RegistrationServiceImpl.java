@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
+import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.utils.constants.ValidationPatterns;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
@@ -12,6 +13,7 @@ import com.mycompany.SkySong.authentication.service.RegistrationService;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,11 +44,12 @@ public class RegistrationServiceImpl implements RegistrationService {
         checkForExistingCredentials(registerRequest);
 
         User user = createUserFromRequest(registerRequest);
-
-        userDAO.save(user);
-
+        try {
+            userDAO.save(user);
+        } catch (DataAccessException ex) {
+            throw new DatabaseException("An error occurred while processing your request. Please try again later.");
+        }
         return new RegistrationResponse("User registered successfully");
-
     }
     private void validateCredentials(RegisterRequest registerRequest) {
         validateUsername(registerRequest);
