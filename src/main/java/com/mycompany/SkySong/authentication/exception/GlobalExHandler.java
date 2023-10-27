@@ -21,7 +21,6 @@ import java.util.Map;
 public class GlobalExHandler {
 
     @ExceptionHandler({RegisterException.class, TokenException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleRegisterException(final RegisterException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
@@ -34,8 +33,6 @@ public class GlobalExHandler {
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, Object> errors = new HashMap<>();
@@ -50,8 +47,6 @@ public class GlobalExHandler {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
         String errorMessage = "Invalid JSON format: " + exception.getMessage();
