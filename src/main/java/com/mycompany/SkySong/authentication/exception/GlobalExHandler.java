@@ -53,21 +53,4 @@ public class GlobalExHandler {
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 
     }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
-        String errorMessage = ex.getLocalizedMessage();
-        log.info("errorMessage - " + errorMessage);
-
-        boolean isUsernameError = errorMessage.contains("Duplicate entry") && !errorMessage.contains("@");
-        boolean isEmailError = errorMessage.contains("Duplicate entry") && errorMessage.contains("@");
-
-        if (isUsernameError) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The provided username is already taken.");
-        } else if (isEmailError) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The provided email is already taken.");
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                "The entered data is already in use. Please choose different data.");
-    }
 }
