@@ -113,6 +113,15 @@ public class RegistrationServiceIntegrationTest {
         assertFalse(userDAO.existsByUsername(registerRequest.email()));
     }
     @Test
+    void shouldThrowExceptionWhenUserTryRegisterWithInvalidUsernameFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "invalid%username", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+
+        assertFalse(userDAO.existsByUsername(registerRequest.username()));
+    }
+    @Test
     void shouldCheckPasswordHashingOnRegistration() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
