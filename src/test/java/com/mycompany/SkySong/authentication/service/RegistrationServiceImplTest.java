@@ -184,7 +184,7 @@ public class RegistrationServiceImplTest {
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
         when(roleDAO.findByName(any())).thenReturn(Optional.of(new Role()));
-        when(userDAO.save(any())).thenThrow(new DatabaseException("Database error"));
+        when(userDAO.save(any())).thenThrow(new DataIntegrityViolationException("Database error"));
 
         assertThrows(DatabaseException.class, () -> registrationService.register(registerRequest));
     }
