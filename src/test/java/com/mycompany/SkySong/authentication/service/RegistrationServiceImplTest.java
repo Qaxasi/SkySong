@@ -76,6 +76,18 @@ public class RegistrationServiceImplTest {
                 .withMessage("Email is already exist!.");
     }
     @Test
+    void shouldThrowErrorMessageForInvalidPasswordFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "invalidPassword");
+
+        Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Invalid password format. The password must contain an least 8 characters, " +
+                "including uppercase letters, lowercase letters, numbers, and special characters.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
     void shouldThrowRegisterExceptionForInvalidUsernameFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "invalidUsernameFormat#", "testEmail@gmail.com", "testPassword@123");
