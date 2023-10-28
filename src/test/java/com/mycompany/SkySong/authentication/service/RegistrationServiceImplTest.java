@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
@@ -173,5 +174,15 @@ public class RegistrationServiceImplTest {
         String expectedMessage = "There was an issue during registration. Please try again later.";
 
         assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
+    void shouldThrowExceptionWhenDatabaseErrorOccurs() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(roleDAO.findByName(any())).thenReturn(Optional.of(new Role()));
+        when(userDAO.save(any())).thenThrow(new DatabaseException("Database error"));
+
+        assertThrows(DatabaseException.class, () -> registrationService.register(registerRequest));
     }
 }
