@@ -94,7 +94,14 @@ public class RegistrationServiceImpl implements RegistrationService {
         User user = new User();
         user.setUsername(registerRequest.username());
         user.setEmail(registerRequest.email());
-        user.setPassword(passwordEncoder.encode(registerRequest.password()));
+
+        try {
+            user.setPassword(passwordEncoder.encode(registerRequest.password()));
+        } catch (Exception ex) {
+            log.error("Error encoding the password");
+            throw new RegisterException("There was an issue during password encoding. Please try again later.");
+        }
+
 
         Role userRole = roleDAO.findByName(UserRole.ROLE_USER)
                 .orElseThrow(() -> {
