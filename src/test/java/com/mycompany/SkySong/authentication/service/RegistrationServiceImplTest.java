@@ -4,6 +4,7 @@ import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.model.entity.Role;
+import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.impl.RegistrationServiceImpl;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -91,5 +93,14 @@ public class RegistrationServiceImplTest {
                 .isThrownBy(() -> registrationService.register(registerRequest))
                 .withMessage("Invalid email address format. The email should follow the " +
                         "standard format (e.g., user@example.com).");
+    }
+    @Test
+    void shouldThrowExceptionWhenRoleNotSetInTheDatabase() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(roleDAO.findByName(any())).thenReturn(Optional.empty());
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
 }
