@@ -103,6 +103,13 @@ public class RegistrationServiceImplTest {
         assertEquals(expectedMessage, exception.getMessage());
     }
     @Test
+    void shouldThrowExceptionWhenPasswordIsToShort() {
+        RegisterRequest registerRequest =
+                new RegisterRequest("testUsername", "testEmail@gmail.com", "Test@2");
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
     void shouldThrowExceptionForInvalidPasswordFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "invalidPassword");
