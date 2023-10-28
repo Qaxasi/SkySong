@@ -95,28 +95,13 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new RegisterException("Email is already exist!.");
         }
     }
-
     private User createUserFromRequest(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.username());
         user.setEmail(registerRequest.email());
+        user.setPassword(encodePassword(registerRequest.password()));
+        user.setRoles(Set.of(getUserRole()));
 
-        try {
-            user.setPassword(passwordEncoder.encode(registerRequest.password()));
-        } catch (Exception ex) {
-            log.error("Error encoding the password");
-            throw new ServiceFailureException("There was an issue during password encoding. Please try again later.");
-        }
-
-
-        Role userRole = roleDAO.findByName(UserRole.ROLE_USER)
-                .orElseThrow(() -> {
-                    log.error("User role not set in the system!");
-                    return new ServiceFailureException(
-                            "There was an issue during registration. Please try again later.");
-                });
-
-        user.setRoles(Set.of(userRole));
         return user;
     }
     private String encodePassword(String password) {
