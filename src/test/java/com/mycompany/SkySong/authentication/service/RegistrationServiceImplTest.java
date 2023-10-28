@@ -124,6 +124,13 @@ public class RegistrationServiceImplTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldThrowExceptionWhenPasswordDoesNotHaveNumber() {
+        RegisterRequest registerRequest =
+                new RegisterRequest("testUsername", "testEmail@gmail.com", "TESTPASS@ONE");
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
     void shouldThrowExceptionForInvalidPasswordFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "invalidPassword");
