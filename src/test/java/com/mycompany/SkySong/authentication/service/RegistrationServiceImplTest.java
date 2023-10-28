@@ -95,7 +95,7 @@ public class RegistrationServiceImplTest {
         assertEquals(expectedMessage, exception.getMessage());
     }
     @Test
-    void shouldThrowRegisterExceptionForInvalidUsernameFormat() {
+    void shouldThrowExceptionForInvalidUsernameFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "invalidUsernameFormat#", "testEmail@gmail.com", "testPassword@123");
 
@@ -113,7 +113,7 @@ public class RegistrationServiceImplTest {
         assertEquals(expectedMessage, exception.getMessage());
     }
     @Test
-    void shouldThrowExceptionWithCorrectMessageForInvalidEmailFormat() {
+    void shouldThrowExceptionForInvalidEmailFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "invalidEmail", "testPassword@123");
 
