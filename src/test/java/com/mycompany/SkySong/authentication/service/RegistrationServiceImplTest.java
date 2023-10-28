@@ -195,4 +195,18 @@ public class RegistrationServiceImplTest {
 
         assertThrows(ServiceFailureException.class, () -> registrationService.register(registerRequest));
     }
+    @Test
+    void shouldThrowErrorMessageWhenPasswordEncodingFails() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(passwordEncoder.encode(registerRequest.password())).thenThrow(
+                new ServiceFailureException("Service error"));
+        Exception exception = assertThrows(ServiceFailureException.class,
+                () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "There was an issue during password encoding. Please try again later.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
 }
