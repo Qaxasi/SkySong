@@ -76,6 +76,13 @@ public class RegistrationServiceImplTest {
                 .withMessage("Email is already exist!.");
     }
     @Test
+    void shouldThrowExceptionForInvalidPasswordFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "invalidPassword");
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
     void shouldThrowErrorMessageForInvalidPasswordFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "invalidPassword");
