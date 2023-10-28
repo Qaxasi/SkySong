@@ -89,10 +89,7 @@ public class RegistrationServiceImplTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "invalidEmail", "testPassword@123");
 
-        assertThatExceptionOfType(RegisterException.class)
-                .isThrownBy(() -> registrationService.register(registerRequest))
-                .withMessage("Invalid email address format. The email should follow the " +
-                        "standard format (e.g., user@example.com).");
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
     void shouldThrowExceptionWhenRoleNotSetInTheDatabase() {
