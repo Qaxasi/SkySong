@@ -103,4 +103,15 @@ public class RegistrationServiceImplTest {
 
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
+    @Test
+    void shouldThrowCorrectErrorMessageWhenRoleNotSetInTheDatabase() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "There was an issue during registration. Please try again later.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
 }
