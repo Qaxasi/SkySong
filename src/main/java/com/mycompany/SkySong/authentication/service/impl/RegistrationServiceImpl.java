@@ -128,4 +128,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         }
     }
+    private Role getUserRole() {
+        return roleDAO.findByName(UserRole.ROLE_USER)
+                .orElseThrow(() -> {
+                    log.error("User role not set in the system!");
+                    return new ServiceFailureException(
+                            "There was an issue during registration. Please try again later.");
+                });
+    }
 }
