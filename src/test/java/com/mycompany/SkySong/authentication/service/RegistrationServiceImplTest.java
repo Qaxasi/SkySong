@@ -187,6 +187,22 @@ public class RegistrationServiceImplTest {
         assertThrows(DatabaseException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldThrowErrorMessageWhenDatabaseErrorOccurs() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(roleDAO.findByName(any())).thenReturn(Optional.of(new Role()));
+        when(userDAO.save(any())).thenThrow(new DatabaseException(
+                "An error occurred while processing your request. Please try again later."));
+
+        Exception exception = assertThrows(DatabaseException.class, () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "An error occurred while processing your request. Please try again later.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+
+    }
+    @Test
     void shouldThrowExceptionWhenPasswordEncodingFails() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
