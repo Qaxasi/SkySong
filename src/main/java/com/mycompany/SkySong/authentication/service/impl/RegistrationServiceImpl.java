@@ -29,7 +29,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO,
-                           PasswordEncoder passwordEncoder) {
+                                   PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.passwordEncoder = passwordEncoder;
@@ -52,11 +52,13 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         return new RegistrationResponse("User registered successfully");
     }
+
     private void validateCredentials(RegisterRequest registerRequest) {
         validateUsername(registerRequest);
         validateEmail(registerRequest);
         validatePassword(registerRequest);
     }
+
     private void validateUsername(RegisterRequest registerRequest) {
         if (!registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
             throw new RegisterException("Invalid username format. The username can contain only letter and numbers.");
@@ -69,12 +71,14 @@ public class RegistrationServiceImpl implements RegistrationService {
                     "the standard format (e.g., user@example.com).");
         }
     }
+
     private void validatePassword(RegisterRequest registerRequest) {
         if (!registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
             throw new RegisterException("Invalid password format. The password must contain an least 8 characters," +
                     " including uppercase letters, lowercase letters, numbers, and special characters.");
         }
     }
+
     private void checkForExistingCredentials(RegisterRequest registerRequest) {
         checkForExistingUsername(registerRequest);
         checkForExistingEmail(registerRequest);
@@ -91,6 +95,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new RegisterException("Email is already exist!.");
         }
     }
+
     private User createUserFromRequest(RegisterRequest registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.username());
@@ -113,5 +118,14 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         user.setRoles(Set.of(userRole));
         return user;
+    }
+    private String encodePassword(String password) {
+        try {
+            return passwordEncoder.encode(password);
+        } catch (Exception ex) {
+            log.error("Error encoding the password");
+            throw new ServiceFailureException("There was an issue during password encoding. Please try again later.");
+
+        }
     }
 }
