@@ -23,7 +23,7 @@ public class GlobalExHandler {
     }
     @ExceptionHandler(ServiceFailureException.class)
     public ResponseEntity<String> handleServiceFailureException(final ServiceFailureException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<String> handleDatabaseException(final DatabaseException exception) {
