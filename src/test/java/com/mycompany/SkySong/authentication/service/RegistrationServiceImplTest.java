@@ -92,6 +92,18 @@ public class RegistrationServiceImplTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldThrowCorrectErrorMessageForInvalidEmailFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "invalidEmail", "testPassword@123");
+
+        Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Invalid email address format." +
+                " The email should follow the standard format (e.g., user@example.com).";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
     void shouldThrowExceptionWhenRoleNotSetInTheDatabase() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
