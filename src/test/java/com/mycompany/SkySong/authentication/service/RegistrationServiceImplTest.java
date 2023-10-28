@@ -117,6 +117,13 @@ public class RegistrationServiceImplTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldThrowExceptionWhenPasswordDoesNotHaveLowercaseLetter() {
+        RegisterRequest registerRequest =
+                new RegisterRequest("testUsername", "testEmail@gmail.com", "TESTPASS@123");
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
     void shouldThrowExceptionForInvalidPasswordFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "invalidPassword");
