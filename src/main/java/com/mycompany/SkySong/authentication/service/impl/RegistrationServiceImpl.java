@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
+import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
 import com.mycompany.SkySong.authentication.utils.constants.ValidationPatterns;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
@@ -99,14 +100,15 @@ public class RegistrationServiceImpl implements RegistrationService {
             user.setPassword(passwordEncoder.encode(registerRequest.password()));
         } catch (Exception ex) {
             log.error("Error encoding the password");
-            throw new RegisterException("There was an issue during password encoding. Please try again later.");
+            throw new ServiceFailureException("There was an issue during password encoding. Please try again later.");
         }
 
 
         Role userRole = roleDAO.findByName(UserRole.ROLE_USER)
                 .orElseThrow(() -> {
                     log.error("User role not set in the system!");
-                    return new RegisterException("There was an issue during registration. Please try again later.");
+                    return new ServiceFailureException(
+                            "There was an issue during registration. Please try again later.");
                 });
 
         user.setRoles(Set.of(userRole));
