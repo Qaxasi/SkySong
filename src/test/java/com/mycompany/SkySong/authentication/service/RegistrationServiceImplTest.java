@@ -92,7 +92,7 @@ public class RegistrationServiceImplTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
-    void shouldThrowCorrectErrorMessageForInvalidEmailFormat() {
+    void shouldThrowErrorMessageForInvalidEmailFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "invalidEmail", "testPassword@123");
 
@@ -113,7 +113,7 @@ public class RegistrationServiceImplTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
-    void shouldThrowCorrectErrorMessageWhenRoleNotSetInTheDatabase() {
+    void shouldThrowErrorMessageWhenRoleNotSetInTheDatabase() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
