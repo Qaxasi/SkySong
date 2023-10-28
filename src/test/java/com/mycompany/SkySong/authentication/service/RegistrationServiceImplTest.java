@@ -2,10 +2,10 @@ package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
+import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.model.entity.Role;
-import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.impl.RegistrationServiceImpl;
@@ -18,10 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -184,5 +185,14 @@ public class RegistrationServiceImplTest {
         when(userDAO.save(any())).thenThrow(new DatabaseException("Database error"));
 
         assertThrows(DatabaseException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
+    void shouldThrowExceptionWhenPasswordEncodingFails() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(passwordEncoder.encode(any())).thenThrow(new ServiceFailureException("Service error"));
+
+        assertThrows(ServiceFailureException.class, () -> registrationService.register(registerRequest));
     }
 }
