@@ -76,13 +76,11 @@ public class RegistrationServiceImplTest {
                 .withMessage("Email is already exist!.");
     }
     @Test
-    void shouldThrowRegisterExceptionWithCorrectMessageForInvalidUsernameFormat() {
+    void shouldThrowRegisterExceptionForInvalidUsernameFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "invalidUsernameFormat#", "testEmail@gmail.com", "testPassword@123");
 
-        assertThatExceptionOfType(RegisterException.class)
-                .isThrownBy(() -> registrationService.register(registerRequest))
-                .withMessage("Invalid username format. The username can contain only letter and numbers.");
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
     void shouldThrowErrorMessageForInvalidUsernameFormat() {
