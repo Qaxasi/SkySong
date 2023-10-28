@@ -85,6 +85,17 @@ public class RegistrationServiceImplTest {
                 .withMessage("Invalid username format. The username can contain only letter and numbers.");
     }
     @Test
+    void shouldThrowErrorMessageForInvalidUsernameFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "invalidUsernameFormat#", "testEmail@gmail.com", "testPassword@123");
+
+        Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Invalid username format. The username can contain only letter and numbers.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
     void shouldThrowExceptionWithCorrectMessageForInvalidEmailFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "invalidEmail", "testPassword@123");
