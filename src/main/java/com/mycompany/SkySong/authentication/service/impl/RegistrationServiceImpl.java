@@ -97,7 +97,10 @@ public class RegistrationServiceImpl implements RegistrationService {
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
 
         Role userRole = roleDAO.findByName(UserRole.ROLE_USER)
-                .orElseThrow(() -> new RegisterException("User role not set in the system!"));
+                .orElseThrow(() -> {
+                    log.error("User role not set in the system!");
+                    return new RegisterException("There was an issue during registration. Please try again later.");
+                });
 
         user.setRoles(Set.of(userRole));
         return user;
