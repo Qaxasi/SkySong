@@ -165,14 +165,15 @@ public class RegistrationServiceImplTest {
 
         when(roleDAO.findByName(any())).thenReturn(Optional.empty());
 
-        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+        assertThrows(ServiceFailureException.class, () -> registrationService.register(registerRequest));
     }
     @Test
     void shouldThrowErrorMessageWhenRoleNotSetInTheDatabase() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
-        Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+        Exception exception = assertThrows(ServiceFailureException.class,
+                () -> registrationService.register(registerRequest));
 
         String expectedMessage = "There was an issue during registration. Please try again later.";
 
