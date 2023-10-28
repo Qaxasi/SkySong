@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -192,15 +194,13 @@ public class RegistrationServiceImplTest {
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
         when(roleDAO.findByName(any())).thenReturn(Optional.of(new Role()));
-        when(userDAO.save(any())).thenThrow(new DatabaseException(
-                "An error occurred while processing your request. Please try again later."));
+        when(userDAO.save(any())).thenThrow(new DataIntegrityViolationException("Database error"));
 
         Exception exception = assertThrows(DatabaseException.class, () -> registrationService.register(registerRequest));
 
         String expectedMessage = "An error occurred while processing your request. Please try again later.";
 
         assertEquals(expectedMessage, exception.getMessage());
-
     }
     @Test
     void shouldThrowExceptionWhenPasswordEncodingFails() {
