@@ -21,6 +21,10 @@ public class GlobalExHandler {
     public ResponseEntity<String> handleRegisterException(final RegisterException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(ServiceFailureException.class)
+    public ResponseEntity<String> handleServiceFailureException(final ServiceFailureException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)
+    }
     @ExceptionHandler(DatabaseException.class)
     public ResponseEntity<String> handleDatabaseException(final DatabaseException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
