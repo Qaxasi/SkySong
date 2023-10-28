@@ -64,6 +64,19 @@ public class RegistrationServiceImplTest {
                 .withMessage("Username is already exist!.");
     }
     @Test
+    void shouldThrowErrorMessageWhenTryRegisterWithExistUsername() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "existUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(userDAO.existsByUsername(registerRequest.username())).thenReturn(true);
+
+        Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Username is already exist!.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
     void shouldThrowExceptionWhenTryRegisterWithExistingEmail() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "existEmai@gmail.com", "testPassword@123");
