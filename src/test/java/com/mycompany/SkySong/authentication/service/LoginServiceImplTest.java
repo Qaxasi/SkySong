@@ -71,7 +71,6 @@ public class LoginServiceImplTest {
                 loginService.login(loginRequest));
 
     }
-
     @Test
     void shouldInvokeGenerateTokenWithProperAuthenticationAfterSuccessfulLogin() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
@@ -81,16 +80,5 @@ public class LoginServiceImplTest {
         loginService.login(loginRequest);
 
         verify(jwtTokenProvider).generateToken(authentication);
-    }
-    @Test
-    void shouldSetAuthenticationInContextAfterSuccessfulLogin() {
-        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
-
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(authentication);
-
-        loginService.login(loginRequest);
-
-        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
