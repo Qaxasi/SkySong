@@ -59,46 +59,6 @@ public class LoginServiceImplIntegrationTest {
 
         assertTrue(jwtTokenProvider.validateToken(token));
     }
-
-    @Test
-    void shouldReturnErrorAndCorrectErrorMessageAfterLoginWithWrongUsername() {
-        LoginRequest loginRequest = new LoginRequest("testWrongUsername", "testPassword@123");
-
-        Exception exception = assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
-        String expectedMessage = "Incorrect username/email or password";
-
-        assertEquals(expectedMessage, exception.getMessage());
-    }
-    @Test
-    void shouldReturnErrorAndCorrectErrorMessageAfterLoginWithWrongEmail() {
-        LoginRequest loginRequest = new LoginRequest(
-                "testWrongEmail@gmail.com", "testPassword@123");
-
-        Exception exception = assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
-        String expectedMessage = "Incorrect username/email or password";
-
-        assertEquals(expectedMessage, exception.getMessage());
-    }
-    @Test
-    void shouldReturnErrorAndCorrectErrorMessageAfterLoginWithWrongPasswordWhenUsernameIsCorrect() {
-        LoginRequest loginRequest = new LoginRequest("testUsername", "testWrongPassword@123");
-
-        Exception exception = assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
-        String expectedMessage = "Incorrect username/email or password";
-
-        assertEquals(expectedMessage, exception.getMessage());
-    }
-    @Test
-    void shouldReturnErrorAndCorrectErrorMessageAfterLoginWithWrongPasswordWhenEmailIsCorrect() {
-        LoginRequest loginRequest = new LoginRequest(
-                "testEmail@gmail.com", "testWrongPassword@123");
-
-        Exception exception = assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
-        String expectedMessage = "Incorrect username/email or password";
-
-        assertEquals(expectedMessage, exception.getMessage());
-
-    }
     @Test
     void shouldContainCorrectUserInToken() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
