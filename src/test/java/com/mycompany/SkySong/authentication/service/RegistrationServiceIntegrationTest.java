@@ -56,7 +56,7 @@ public class RegistrationServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
-    void shouldRegisterUserAndSaveToDatabase() {
+    void shouldRegisterUserWithCorrectAttributesAndSaveToDatabase() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
