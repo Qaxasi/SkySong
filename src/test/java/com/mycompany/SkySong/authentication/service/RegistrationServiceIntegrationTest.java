@@ -98,6 +98,22 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldNotIncrementUserCountWhenEmailRegistrationFails() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
+
+        long userCountBefore = userDAO.count();
+
+        try {
+            registrationService.register(registerRequest);
+        } catch (RegisterException ignored) {
+        }
+
+        long userCountAfter = userDAO.count();
+
+        assertEquals(userCountBefore, userCountAfter);
+    }
+    @Test
     void shouldThrowExceptionWhenUserTryRegisterWithInvalidPasswordFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUser", "testUniqueEmail@gmail.com", "invalidPassword");
