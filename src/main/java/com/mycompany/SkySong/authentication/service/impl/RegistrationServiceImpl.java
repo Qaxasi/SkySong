@@ -24,7 +24,7 @@ import java.util.Set;
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
-    private ValidationService validationService;
+    private final ValidationService validationService;
     private final PasswordEncoder passwordEncoder;
 
     public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO, ValidationService validationService,
