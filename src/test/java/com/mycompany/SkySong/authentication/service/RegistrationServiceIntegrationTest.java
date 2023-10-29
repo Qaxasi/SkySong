@@ -75,7 +75,7 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
-    void shouldNotAddNewUserWhenRegistrationFailed() {
+    void shouldNotIncrementUserCountWhenUsernameRegistrationFails() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
