@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
@@ -66,6 +67,19 @@ public class RegistrationServiceIntegrationTest {
         assertTrue(registeredUser.isPresent());
         assertEquals(registerRequest.username(), registeredUser.get().getUsername());
         assertEquals(registerRequest.email(), registeredUser.get().getEmail());
+    }
+    @Test
+    void shouldIncrementUserCountByOneWhenUserSuccessfullyRegistered() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        long userCountBefore = userDAO.count();
+
+        registrationService.register(registerRequest);
+
+        long userCountAfter = userDAO.count();
+
+        assertThat(userCountAfter).isEqualTo(userCountBefore + 1);
     }
     @Test
     void shouldThrowExceptionWhenUserTryRegisterWithExistUsername() {
