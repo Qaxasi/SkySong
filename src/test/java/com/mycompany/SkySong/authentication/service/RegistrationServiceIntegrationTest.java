@@ -75,6 +75,22 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldNotAddNewUserWhenRegistrationFailed() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        long userCountBefore = userDAO.count();
+
+        try {
+            registrationService.register(registerRequest);
+        } catch (RegisterException ignored) {
+        }
+
+        long userCountAfter = userDAO.count();
+
+        assertEquals(userCountBefore, userCountAfter);
+    }
+    @Test
     void shouldThrowExceptionWhenUserTryRegisterWithExistEmail() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
