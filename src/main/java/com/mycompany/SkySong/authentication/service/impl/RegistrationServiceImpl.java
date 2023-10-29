@@ -68,8 +68,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private void validateEmail(RegisterRequest registerRequest) {
         if (!registerRequest.email().matches(ValidationPatterns.EMAIL_PATTERN)) {
-            throw new RegisterException("Invalid email address format. The email should follow " +
-                    "the standard format (e.g., user@example.com).");
+            throw new RegisterException("Invalid email address format. The email should follow the standard " +
+                    "format (e.g., user@example.com) and be between 6 to 30 characters long.");
         }
     }
 
