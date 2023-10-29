@@ -14,6 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class ValidationServiceTest {
     private ValidationService validationService;
+    @BeforeEach
+    void setUp() {
+        validationService = new ValidationService();
+    }
 
     @Test
     void shouldThrowExceptionWhenPasswordIsToShort() {
