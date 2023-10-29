@@ -61,7 +61,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private void validateUsername(RegisterRequest registerRequest) {
         if (!registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
-            throw new RegisterException("Invalid username format. The username can contain only letter and numbers.");
+            throw new RegisterException("Invalid username format. The username can contain only letters and numbers, " +
+                    "and should be between 3 to 20 characters long.");
         }
     }
 
