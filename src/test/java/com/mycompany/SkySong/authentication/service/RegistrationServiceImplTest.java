@@ -164,9 +164,9 @@ public class RegistrationServiceImplTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
-    void shouldThrowExceptionForInvalidUsernameFormat() {
+    void shouldThrowExceptionWhenUsernameContainSpecialCharacter() {
         RegisterRequest registerRequest = new RegisterRequest(
-                "invalidUsernameFormat#", "testEmail@gmail.com", "testPassword@123");
+                "test#Username", "testEmail@gmail.com", "testPassword@123");
 
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
