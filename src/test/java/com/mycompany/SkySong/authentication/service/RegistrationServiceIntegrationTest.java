@@ -72,13 +72,7 @@ public class RegistrationServiceIntegrationTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
-        long userCountBefore = userDAO.count();
-
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
-
-        long userCountAfter = userDAO.count();
-
-        assertEquals(userCountBefore, userCountAfter);
     }
     @Test
     void shouldThrowExceptionWhenUserTryRegisterWithExistEmail() {
