@@ -6,7 +6,7 @@ import com.mycompany.SkySong.authentication.utils.constants.ValidationPatterns;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserValidationService {
+public class ValidationService {
     public void validateCredentials(RegisterRequest registerRequest) {
         validateUsername(registerRequest);
         validateEmail(registerRequest);

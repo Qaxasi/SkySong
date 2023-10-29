@@ -2,7 +2,6 @@ package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
-import com.mycompany.SkySong.authentication.utils.constants.ValidationPatterns;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
@@ -25,10 +24,10 @@ import java.util.Set;
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
-    private UserValidationService validationService;
+    private ValidationService validationService;
     private final PasswordEncoder passwordEncoder;
 
-    public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO, UserValidationService validationService,
+    public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO, ValidationService validationService,
                                    PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
