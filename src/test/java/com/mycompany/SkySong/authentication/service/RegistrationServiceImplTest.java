@@ -157,6 +157,13 @@ public class RegistrationServiceImplTest {
         assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldThrowExceptionWhenUsernameIsToLong() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testVeryLongUsernameFormat", "testEmail@gmail.com", "testPassword@123");
+
+        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
     void shouldThrowExceptionForInvalidUsernameFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "invalidUsernameFormat#", "testEmail@gmail.com", "testPassword@123");
