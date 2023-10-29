@@ -47,7 +47,7 @@ public class LoginServiceImplTest {
         assertEquals("validToken", token);
     }
     @Test
-    void shouldReturnErrorMessageAfterLoginWithWrongCredentials() {
+    void shouldReturnErrorMessageAfterLoginWithInvalidCredentials() {
         LoginRequest loginRequest = new LoginRequest("testWrongUsername", "testPassword@123");
 
         when(authenticationManager.authenticate(any())).thenThrow(
