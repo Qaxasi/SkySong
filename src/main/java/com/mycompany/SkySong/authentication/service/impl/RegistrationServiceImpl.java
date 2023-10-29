@@ -40,7 +40,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public RegistrationResponse register(RegisterRequest registerRequest) {
 
-        validateCredentials(registerRequest);
+        validationService.validateCredentials(registerRequest);
 
         checkForExistingCredentials(registerRequest);
 
