@@ -9,6 +9,7 @@ import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.impl.RegistrationServiceImpl;
+import com.mycompany.SkySong.authentication.service.impl.ValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,11 +36,13 @@ public class RegistrationServiceImplTest {
     @Mock
     private RoleDAO roleDAO;
     @Mock
+    private ValidationService validationService;
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
-        registrationService = new RegistrationServiceImpl(userDAO, roleDAO, passwordEncoder);
+        registrationService = new RegistrationServiceImpl(userDAO, roleDAO, validationService, passwordEncoder);
     }
     @Test
     void shouldReturnCorrectMessageAfterSuccessfullyRegisterNewUserWithValidCredentials() {
