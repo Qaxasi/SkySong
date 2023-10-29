@@ -25,14 +25,15 @@ import java.util.Set;
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
+    private UserValidationService validationService;
     private final PasswordEncoder passwordEncoder;
 
-    public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO,
+    public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO, UserValidationService validationService,
                                    PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
+        this.validationService = validationService;
         this.passwordEncoder = passwordEncoder;
-
     }
 
     @Transactional
