@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserValidationService {
-    private void validateCredentials(RegisterRequest registerRequest) {
+    public void validateCredentials(RegisterRequest registerRequest) {
         validateUsername(registerRequest);
         validateEmail(registerRequest);
         validatePassword(registerRequest);
