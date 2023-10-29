@@ -159,7 +159,7 @@ public class RegistrationServiceImplTest {
     @Test
     void shouldThrowErrorMessageForInvalidUsernameFormat() {
         RegisterRequest registerRequest = new RegisterRequest(
-                "invalidUsernameFormat#", "testEmail@gmail.com", "testPassword@123");
+                "invalidUsername#", "testEmail@gmail.com", "testPassword@123");
 
         Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
 
