@@ -163,7 +163,8 @@ public class RegistrationServiceImplTest {
 
         Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
 
-        String expectedMessage = "Invalid username format. The username can contain only letter and numbers.";
+        String expectedMessage = "Invalid username format. The username can contain only letters and numbers," +
+                " and should be between 3 to 20 characters long.";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
