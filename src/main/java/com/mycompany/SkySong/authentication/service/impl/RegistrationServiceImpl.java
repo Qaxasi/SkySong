@@ -8,7 +8,6 @@ import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
-import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.service.RegistrationService;
 import com.mycompany.SkySong.authentication.model.entity.User;
