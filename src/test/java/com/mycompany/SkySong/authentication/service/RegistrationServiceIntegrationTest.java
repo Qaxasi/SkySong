@@ -69,6 +69,15 @@ public class RegistrationServiceIntegrationTest {
         assertEquals(registerRequest.email(), registeredUser.get().getEmail());
     }
     @Test
+    void shouldCheckExistenceOfRegisteredUserInDatabase() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        registrationService.register(registerRequest);
+
+        assertTrue(userDAO.existsByUsername(registerRequest.username()));
+    }
+    @Test
     void shouldIncrementUserCountByOneWhenUserSuccessfullyRegistered() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
