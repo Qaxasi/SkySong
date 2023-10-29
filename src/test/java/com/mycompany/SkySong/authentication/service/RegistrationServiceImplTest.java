@@ -182,8 +182,8 @@ public class RegistrationServiceImplTest {
 
         Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
 
-        String expectedMessage = "Invalid email address format." +
-                " The email should follow the standard format (e.g., user@example.com).";
+        String expectedMessage = "Invalid email address format. The email should follow the standard " +
+                "format (e.g., user@example.com) and be between 6 to 30 characters long.";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
