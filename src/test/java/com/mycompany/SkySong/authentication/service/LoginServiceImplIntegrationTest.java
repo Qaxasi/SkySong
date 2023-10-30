@@ -66,6 +66,12 @@ public class LoginServiceImplIntegrationTest {
         assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
     }
     @Test
+    void shouldThrowExceptionWhenUsernameLoginWithInvalidPassword() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "invalidPassword@123");
+
+        assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
+    }
+    @Test
     void shouldContainCorrectUserInToken() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
