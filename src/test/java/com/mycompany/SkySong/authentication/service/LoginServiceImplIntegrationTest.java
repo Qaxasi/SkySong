@@ -60,7 +60,7 @@ public class LoginServiceImplIntegrationTest {
         assertTrue(jwtTokenProvider.validateToken(token));
     }
     @Test
-    void shouldThrowExceptionWhenLoggingWithInvalidPassword() {
+    void shouldThrowExceptionWhenEmailLoggingWithInvalidPassword() {
         LoginRequest loginRequest = new LoginRequest("testEmail@gmail.com", "invalidPassword@123");
 
         assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
