@@ -8,7 +8,7 @@ public class DeleteServiceImpl implements DeleteService {
     @Autowired
     private UserDAO userDAO;
     @Override
-    public String deleteUser(int userId) {
+    public String deleteUser(long userId) {
         return null;
     }
 }
