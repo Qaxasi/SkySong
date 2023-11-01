@@ -59,7 +59,7 @@ public class SecurityConfig {
                                 ).permitAll()
                                 .requestMatchers(
                                         new AntPathRequestMatcher("/api/v1/users/**", HttpMethod.DELETE.name())
-                                ).hasRole("ADMIN")
+                                ).hasRole("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
