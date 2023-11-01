@@ -16,7 +16,10 @@ import java.util.Map;
 @Slf4j
 @ControllerAdvice
 public class GlobalExHandler {
-
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFoundException(final UserNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
     @ExceptionHandler({RegisterException.class, TokenException.class})
     public ResponseEntity<String> handleRegisterException(final RegisterException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
