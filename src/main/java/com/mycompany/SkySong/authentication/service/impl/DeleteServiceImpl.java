@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 public class DeleteServiceImpl implements DeleteService {
-    @Autowired
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
+
+    public DeleteServiceImpl(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
     @Override
     public DeleteResponse deleteUser(long userId) {
 
