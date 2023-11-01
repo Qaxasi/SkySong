@@ -6,6 +6,7 @@ import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
@@ -52,10 +54,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(
-                                        new MvcRequestMatcher(mvcHandlerMappingIntrospector, "/api/v1/**"),
                                         new MvcRequestMatcher(mvcHandlerMappingIntrospector, "/api/v1/auth/register"),
                                         new MvcRequestMatcher(mvcHandlerMappingIntrospector, "/api/v1/auth/login")
                                 ).permitAll()
+                                .requestMatchers(
+                                        new AntPathRequestMatcher("/api/v1/users/**", HttpMethod.DELETE.name())
+                                ).hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
