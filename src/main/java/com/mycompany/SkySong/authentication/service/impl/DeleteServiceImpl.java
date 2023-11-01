@@ -5,9 +5,6 @@ import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.DeleteService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Optional;
 
 public class DeleteServiceImpl implements DeleteService {
     private final UserDAO userDAO;
