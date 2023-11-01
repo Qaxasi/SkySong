@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
+
 public interface DeleteService {
-    String deleteUser(long userId);
+    DeleteResponse deleteUser(long userId);
 }
