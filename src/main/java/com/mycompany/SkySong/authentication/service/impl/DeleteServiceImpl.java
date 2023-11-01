@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
+import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
@@ -17,13 +18,10 @@ public class DeleteServiceImpl implements DeleteService {
     @Override
     public DeleteResponse deleteUser(long userId) {
 
-        Optional<User> user = userDAO.findById(userId);
+        User user = userDAO.findById(userId).orElseThrow(() -> new UserNotFoundException(
+                "User with ID: " + userId + " does not exist."));
 
-        if (user.isPresent()) {
-            userDAO.delete(user.get());
-            return new DeleteResponse("User deleted successfully.");
-        } else {
-            return new DeleteResponse("User with ID: " + userId + " does not exist.");
-        }
+        userDAO.delete(user);
+        return new DeleteResponse("User with ID: " + userId + " does not exist.");
     }
 }
