@@ -76,67 +76,6 @@ public class RegistrationControllerTest {
             actions.andExpect(matcher);
         }
     }
-
-    // Login-endpoint tests
-    @Test
-    void shouldRespondWithOkStatusOnSuccessfulEmailLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
-
-        assertStatusReturns("/api/v1/auth/login", requestBody, 200);
-
-    }
-    @Test
-    void shouldRespondWithOkStatusOnSuccessfulUsernameLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
-
-        assertStatusReturns("/api/v1/auth/login", requestBody, 200);
-    }
-
-    @Test
-    void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
-
-        assertFieldsReturns("/api/v1/auth/login",
-                requestBody,
-                jsonPath("$.accessToken").isNotEmpty(),
-                jsonPath("$.tokenType").isNotEmpty());
-    }
-    @Test
-    void shouldReturnUnauthorizedStatusForInvalidUsernameLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
-
-        assertStatusReturns("/api/v1/auth/login", requestBody, 401);
-    }
-    @Test
-    void shouldReturnUnauthorizedStatusForInvalidPasswordLogin() throws Exception {
-        final var requestBody =
-                "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
-
-        assertStatusReturns("/api/v1/auth/login", requestBody, 401);
-    }
-    @Test
-    void shouldReturnBadRequestForEmptyCredentialsLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
-
-        assertStatusReturns("/api/v1/auth/login", requestBody, 400);
-    }
-    @Test
-    void shouldReturnCorrectErrorMessageWhenLoginWithEmptyCredentials() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
-
-        assertJsonReturns("/api/v1/auth/login", requestBody,
-                Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
-                        "$.errors.password", "The password field cannot be empty"));
-    }
-    @Test
-    void shouldReturnBadRequestForMalformedLoginRequestBody() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"";
-
-        assertStatusReturns("/api/v1/auth/login", requestBody, 400);
-    }
-
-
-    //Register-endpoint test
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
