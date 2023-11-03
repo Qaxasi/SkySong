@@ -1,10 +1,7 @@
 package com.mycompany.SkySong.authentication.controller;
 
-import com.mycompany.SkySong.authentication.model.dto.JWTAuthResponse;
-import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
-import com.mycompany.SkySong.authentication.service.LoginService;
 import com.mycompany.SkySong.authentication.service.RegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class AuthController {
+public class RegistrationController {
     private final RegistrationService registrationService;
-    public AuthController(RegistrationService registrationService) {
+    public RegistrationController(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
     @PostMapping("/register")
