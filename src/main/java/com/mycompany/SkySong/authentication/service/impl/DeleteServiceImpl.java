@@ -21,6 +21,6 @@ public class DeleteServiceImpl implements DeleteService {
                 "User with ID: " + userId + " does not exist."));
 
         userDAO.delete(user);
-        return new DeleteResponse("User with ID: " + userId + " does not exist.");
+        return new DeleteResponse("User with ID: " + userId + " deleted successfully.");
     }
 }
