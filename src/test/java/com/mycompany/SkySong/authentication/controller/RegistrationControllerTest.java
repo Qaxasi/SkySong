@@ -47,35 +47,6 @@ public class RegistrationControllerTest {
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
     }
-
-    private void assertStatusReturns(String endpoint, String requestBody, int expectedStatusCode) throws Exception {
-        mockMvc.perform(post(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody))
-                .andExpect(status().is(expectedStatusCode));
-    }
-
-    private void assertJsonReturns(String endpoint, String requestBody, Map<String,
-            Object> jsonPathExpectations) throws Exception {
-        ResultActions actions = mockMvc.perform(post(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody));
-
-        for (Map.Entry<String, Object> expectation : jsonPathExpectations.entrySet()) {
-            actions.andExpect(jsonPath(expectation.getKey()).value(expectation.getValue()));
-        }
-    }
-
-    private void assertFieldsReturns(String endpoint, String requestBody,
-                                     ResultMatcher... matchers) throws Exception {
-        ResultActions actions = mockMvc.perform(post(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestBody));
-
-        for (ResultMatcher matcher : matchers) {
-            actions.andExpect(matcher);
-        }
-    }
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
