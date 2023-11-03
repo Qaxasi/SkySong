@@ -1,6 +1,8 @@
 package com.mycompany.SkySong.testsupport.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
@@ -11,14 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AssertControllerUtils {
-    private void assertStatusReturns(String endpoint, String requestBody, int expectedStatusCode) throws Exception {
+    public static void assertStatusReturns(MockMvc mockMvc, String endpoint, String requestBody, int expectedStatusCode) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().is(expectedStatusCode));
     }
 
-    private void assertJsonReturns(String endpoint, String requestBody, Map<String,
+    public static void assertJsonReturns(MockMvc mockMvc, String endpoint, String requestBody, Map<String,
             Object> jsonPathExpectations) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -29,7 +31,7 @@ public class AssertControllerUtils {
         }
     }
 
-    private void assertFieldsReturns(String endpoint, String requestBody,
+    public static void assertFieldsReturns(MockMvc mockMvc, String endpoint, String requestBody,
                                      ResultMatcher... matchers) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
