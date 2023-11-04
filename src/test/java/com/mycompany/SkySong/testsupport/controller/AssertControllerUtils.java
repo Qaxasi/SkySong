@@ -24,7 +24,7 @@ public class AssertControllerUtils {
                 .andExpect(status().is(expectedStatusCode));
     }
 
-    public static void assertJsonReturns(MockMvc mockMvc, String endpoint, String requestBody, Map<String,
+    public static void assertPostJsonReturns(MockMvc mockMvc, String endpoint, String requestBody, Map<String,
             Object> jsonPathExpectations) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)

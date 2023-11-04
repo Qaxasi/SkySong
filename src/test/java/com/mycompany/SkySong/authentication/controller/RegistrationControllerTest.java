@@ -126,7 +126,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"\", \"email\": \"\", " +
                         "\"password\": \"\"}";
 
-        AssertControllerUtils.assertJsonReturns(mockMvc, "/api/v1/users/register", requestBody,
+        AssertControllerUtils.assertPostJsonReturns(mockMvc, "/api/v1/users/register", requestBody,
                 Map.of("$.errors.username", "The username field cannot be empty.",
                         "$.errors.email","The email field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
