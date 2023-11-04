@@ -9,8 +9,7 @@ import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class AssertControllerUtils {
     public static void assertPostStatusReturns(MockMvc mockMvc, String endpoint, String requestBody, int expectedStatusCode) throws Exception {
@@ -33,6 +32,11 @@ public class AssertControllerUtils {
         for (Map.Entry<String, Object> expectation : jsonPathExpectations.entrySet()) {
             actions.andExpect(jsonPath(expectation.getKey()).value(expectation.getValue()));
         }
+    }
+    public static void assertDeleteResponse(MockMvc mockMvc, String endpoint, String expectedMessage) throws Exception {
+        mockMvc.perform(delete(endpoint))
+                .andExpect(content().string(expectedMessage));
+
     }
 
     public static void assertPostFieldsReturns(MockMvc mockMvc, String endpoint, String requestBody,
