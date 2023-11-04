@@ -45,7 +45,7 @@ public class LoginControllerTest {
     void shouldRespondWithOkStatusOnSuccessfulEmailLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertStatusReturns(
+        AssertControllerUtils.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 200);
 
     }
@@ -53,7 +53,7 @@ public class LoginControllerTest {
     void shouldRespondWithOkStatusOnSuccessfulUsernameLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertStatusReturns(
+        AssertControllerUtils.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 200);
     }
 
@@ -70,7 +70,7 @@ public class LoginControllerTest {
     void shouldReturnUnauthorizedStatusForInvalidUsernameLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertStatusReturns(
+        AssertControllerUtils.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 401);
     }
     @Test
@@ -78,14 +78,14 @@ public class LoginControllerTest {
         final var requestBody =
                 "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
 
-        AssertControllerUtils.assertStatusReturns(
+        AssertControllerUtils.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 401);
     }
     @Test
     void shouldReturnBadRequestForEmptyCredentialsLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
-        AssertControllerUtils.assertStatusReturns(
+        AssertControllerUtils.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 400);
     }
     @Test
@@ -100,7 +100,7 @@ public class LoginControllerTest {
     void shouldReturnBadRequestForMalformedLoginRequestBody() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"";
 
-        AssertControllerUtils.assertStatusReturns(
+        AssertControllerUtils.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 400);
     }
 
