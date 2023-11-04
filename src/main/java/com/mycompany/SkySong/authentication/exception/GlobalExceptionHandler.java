@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @ControllerAdvice
-public class GlobalExHandler {
+public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(final UserNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
