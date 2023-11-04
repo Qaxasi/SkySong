@@ -46,7 +46,7 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
 
         AssertControllerUtils.assertStatusReturns(
-                mockMvc,"/api/v1/auth/login", requestBody, 200);
+                mockMvc,"/api/v1/users/login", requestBody, 200);
 
     }
     @Test
@@ -54,14 +54,14 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
         AssertControllerUtils.assertStatusReturns(
-                mockMvc,"/api/v1/auth/login", requestBody, 200);
+                mockMvc,"/api/v1/users/login", requestBody, 200);
     }
 
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertFieldsReturns(mockMvc,"/api/v1/auth/login",
+        AssertControllerUtils.assertFieldsReturns(mockMvc,"/api/v1/users/login",
                 requestBody,
                 jsonPath("$.accessToken").isNotEmpty(),
                 jsonPath("$.tokenType").isNotEmpty());
@@ -71,7 +71,7 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
 
         AssertControllerUtils.assertStatusReturns(
-                mockMvc,"/api/v1/auth/login", requestBody, 401);
+                mockMvc,"/api/v1/users/login", requestBody, 401);
     }
     @Test
     void shouldReturnUnauthorizedStatusForInvalidPasswordLogin() throws Exception {
@@ -79,20 +79,20 @@ public class LoginControllerTest {
                 "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
 
         AssertControllerUtils.assertStatusReturns(
-                mockMvc,"/api/v1/auth/login", requestBody, 401);
+                mockMvc,"/api/v1/users/login", requestBody, 401);
     }
     @Test
     void shouldReturnBadRequestForEmptyCredentialsLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
         AssertControllerUtils.assertStatusReturns(
-                mockMvc,"/api/v1/auth/login", requestBody, 400);
+                mockMvc,"/api/v1/users/login", requestBody, 400);
     }
     @Test
     void shouldReturnCorrectErrorMessageWhenLoginWithEmptyCredentials() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
-        AssertControllerUtils.assertJsonReturns(mockMvc,"/api/v1/auth/login", requestBody,
+        AssertControllerUtils.assertJsonReturns(mockMvc,"/api/v1/users/login", requestBody,
                 Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
     }
@@ -101,7 +101,7 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"";
 
         AssertControllerUtils.assertStatusReturns(
-                mockMvc,"/api/v1/auth/login", requestBody, 400);
+                mockMvc,"/api/v1/users/login", requestBody, 400);
     }
 
 }
