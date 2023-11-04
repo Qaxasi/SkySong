@@ -56,7 +56,7 @@ public class RegistrationControllerTest {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
-        AssertControllerUtils.assertFieldsReturns(mockMvc,"/api/v1/users/register",
+        AssertControllerUtils.assertPostFieldsReturns(mockMvc,"/api/v1/users/register",
                 requestBody,
                 jsonPath("$.message").isNotEmpty());
     }

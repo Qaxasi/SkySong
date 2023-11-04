@@ -35,8 +35,8 @@ public class AssertControllerUtils {
         }
     }
 
-    public static void assertFieldsReturns(MockMvc mockMvc, String endpoint, String requestBody,
-                                     ResultMatcher... matchers) throws Exception {
+    public static void assertPostFieldsReturns(MockMvc mockMvc, String endpoint, String requestBody,
+                                               ResultMatcher... matchers) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody));

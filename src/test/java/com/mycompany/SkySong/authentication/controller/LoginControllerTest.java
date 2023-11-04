@@ -61,7 +61,7 @@ public class LoginControllerTest {
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertFieldsReturns(mockMvc,"/api/v1/users/login",
+        AssertControllerUtils.assertPostFieldsReturns(mockMvc,"/api/v1/users/login",
                 requestBody,
                 jsonPath("$.accessToken").isNotEmpty(),
                 jsonPath("$.tokenType").isNotEmpty());
