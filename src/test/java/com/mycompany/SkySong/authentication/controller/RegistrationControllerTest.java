@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
+import com.mycompany.SkySong.testsupport.controller.AssertControllerUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class RegistrationControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -52,14 +52,15 @@ public class RegistrationControllerTest {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
-        assertStatusReturns("/api/v1/auth/register", requestBody, 201);
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+                requestBody, 201);
     }
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulRegistration() throws Exception {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
-        assertFieldsReturns("/api/v1/auth/register",
+        AssertControllerUtils.assertFieldsReturns(mockMvc,"/api/v1/auth/register",
                 requestBody,
                 jsonPath("$.message").isNotEmpty());
     }
@@ -70,7 +71,8 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+                requestBody, 400);
     }
     @Test
     void shouldReturnBadRequestWhenUserTryRegisterWithExistingEmail() throws Exception {
@@ -78,7 +80,8 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+                requestBody, 400);
     }
 
     @Test
@@ -87,7 +90,8 @@ public class RegistrationControllerTest {
                 "{\"username\": \"test-invalid-username-format\", \"email\": \"testUniqueEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+                requestBody, 400);
     }
 
     @Test
@@ -96,7 +100,8 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"test-invalid-email-format\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+                requestBody, 400);
     }
 
     @Test
@@ -105,7 +110,8 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"test-invalid-password-format\"}";
 
-       assertStatusReturns("/api/v1/auth/register", requestBody, 400);
+       AssertControllerUtils.assertStatusReturns(mockMvc, "/api/v1/auth/register",
+               requestBody, 400);
     }
 
     @Test
@@ -114,7 +120,8 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"";
 
-        assertStatusReturns("/api/v1/auth/register", requestBody, 400);
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+                requestBody, 400);
     }
 
     @Test
@@ -123,7 +130,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"\", \"email\": \"\", " +
                         "\"password\": \"\"}";
 
-        assertJsonReturns("/api/v1/auth/register", requestBody,
+        AssertControllerUtils.assertJsonReturns(mockMvc, "/api/v1/auth/register", requestBody,
                 Map.of("$.errors.username", "The username field cannot be empty.",
                         "$.errors.email","The email field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
