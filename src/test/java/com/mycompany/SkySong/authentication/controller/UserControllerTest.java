@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -37,5 +38,13 @@ public class UserControllerTest {
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
+    }
+    @Test
+    @WithMockUser(roles="ADMIN")
+    void shouldReturnStatusOkWhenUserDeletedGivenValidUserId() throws Exception{
+        long userId = 1L;
+
+        AssertControllerUtils.assertDeleteStatusReturns(
+                mockMvc, "/api/v1/users/" + userId, 200);
     }
 }
