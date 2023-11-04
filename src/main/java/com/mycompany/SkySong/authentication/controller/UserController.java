@@ -21,7 +21,7 @@ public class UserController {
     @DeleteMapping({"/","/{userId}"})
     public ResponseEntity<DeleteResponse> delete(@PathVariable(required = false) Long userId) {
         if (userId == null) {
-            throw new NullOrEmptyInputException("User ID cannot be empty");
+            throw new NullOrEmptyInputException("User ID is required and cannot be empty.");
         }
         DeleteResponse deleteResponse = deleteService.deleteUser(userId);
         return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
