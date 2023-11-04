@@ -83,6 +83,13 @@ public class UserControllerTest {
         String invalidUserId = "invalidFormat";
         String expectedMessage = "Invalid input data format";
 
-        AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/" + invalidUserId,expectedMessage);
+        AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/" + invalidUserId, expectedMessage);
+    }
+    @Test
+    @WithMockUser(roles="ADMIN")
+    void shouldReturnCorrectMessageOnUserDeletionWithNoUserId() throws Exception {
+        String expectedMessage = "User ID is required and cannot be empty.";
+
+        AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/", expectedMessage);
     }
 }
