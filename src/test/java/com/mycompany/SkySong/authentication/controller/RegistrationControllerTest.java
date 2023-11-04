@@ -52,7 +52,7 @@ public class RegistrationControllerTest {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
-        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 201);
     }
     @Test
@@ -60,7 +60,7 @@ public class RegistrationControllerTest {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
-        AssertControllerUtils.assertFieldsReturns(mockMvc,"/api/v1/auth/register",
+        AssertControllerUtils.assertFieldsReturns(mockMvc,"/api/v1/users/register",
                 requestBody,
                 jsonPath("$.message").isNotEmpty());
     }
@@ -71,7 +71,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
     @Test
@@ -80,7 +80,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -90,7 +90,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"test-invalid-username-format\", \"email\": \"testUniqueEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -100,7 +100,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"test-invalid-email-format\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -110,7 +110,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"test-invalid-password-format\"}";
 
-       AssertControllerUtils.assertStatusReturns(mockMvc, "/api/v1/auth/register",
+       AssertControllerUtils.assertStatusReturns(mockMvc, "/api/v1/users/register",
                requestBody, 400);
     }
 
@@ -120,7 +120,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"";
 
-        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/auth/register",
+        AssertControllerUtils.assertStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -130,7 +130,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"\", \"email\": \"\", " +
                         "\"password\": \"\"}";
 
-        AssertControllerUtils.assertJsonReturns(mockMvc, "/api/v1/auth/register", requestBody,
+        AssertControllerUtils.assertJsonReturns(mockMvc, "/api/v1/users/register", requestBody,
                 Map.of("$.errors.username", "The username field cannot be empty.",
                         "$.errors.email","The email field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
