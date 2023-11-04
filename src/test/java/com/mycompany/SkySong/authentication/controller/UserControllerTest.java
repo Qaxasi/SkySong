@@ -47,4 +47,13 @@ public class UserControllerTest {
         AssertControllerUtils.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 200);
     }
+    @Test
+    @WithMockUser(roles="ADMIN")
+    void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
+        long userId = 10L;
+
+        AssertControllerUtils.assertDeleteStatusReturns(
+                mockMvc, "/api/v1/users/" + userId, 404);
+    }
+
 }
