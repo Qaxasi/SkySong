@@ -69,5 +69,13 @@ public class UserControllerTest {
         AssertControllerUtils.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + invalidUserId, 400);
     }
+    @Test
+    @WithMockUser(roles="USER")
+    void shouldReturnStatusUnauthorizedWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
+        long userId = 1L;
+
+        AssertControllerUtils.assertDeleteStatusReturns(
+                mockMvc, "/api/v1/users/" + userId, 401);
+    }
 
 }
