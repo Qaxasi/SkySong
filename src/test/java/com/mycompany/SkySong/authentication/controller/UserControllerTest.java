@@ -61,5 +61,13 @@ public class UserControllerTest {
         AssertControllerUtils.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/", 400);
     }
+    @Test
+    @WithMockUser(roles="ADMIN")
+    void shouldReturnBadRequestWhenUserDeletionGivenInvalidUserIdFormat() throws Exception {
+        String invalidUserId = "invalidFormat";
+
+        AssertControllerUtils.assertDeleteStatusReturns(
+                mockMvc, "/api/v1/users/" + invalidUserId, 400);
+    }
 
 }
