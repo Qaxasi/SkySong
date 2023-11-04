@@ -75,7 +75,7 @@ public class UserControllerTest {
         long userId = 1L;
 
         AssertControllerUtils.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, 401);
+                mockMvc, "/api/v1/users/" + userId, 403);
     }
     @Test
     @WithMockUser(roles="ADMIN")
