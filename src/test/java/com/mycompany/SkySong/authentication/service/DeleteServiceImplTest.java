@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.impl.DeleteServiceImpl;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +16,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -39,5 +44,18 @@ public class DeleteServiceImplTest {
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
+    }
+
+    @Test
+    void shouldDeleteUserWhenUserIdExists() {
+        long userId = 1L;
+
+        Optional<User> userBeforeDeletion = userDAO.findById(userId);
+        assertTrue(userBeforeDeletion.isPresent());
+
+        deleteService.deleteUser(userId);
+
+        Optional<User> userAfterDeletion = userDAO.findById(userId);
+        assertFalse(userAfterDeletion.isPresent());
     }
 }
