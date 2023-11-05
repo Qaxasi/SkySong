@@ -72,7 +72,7 @@ public class UserControllerTest {
     }
     @Test
     @WithMockUser(roles="USER")
-    void shouldReturnStatusUnauthorizedWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
+    void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
         long userId = 1L;
 
         AssertControllerUtils.assertDeleteStatusReturns(
@@ -88,7 +88,7 @@ public class UserControllerTest {
     }
     @Test
     @WithMockUser(roles="ADMIN")
-    void shouldReturnCorrectMessageOnUserDeletionWithInvalidIdFormat() throws Exception {
+    void shouldReturnMessageOnUserDeletionWithInvalidIdFormat() throws Exception {
         String invalidUserId = "invalidFormat";
         String expectedMessage = "Invalid input data format";
 
@@ -96,7 +96,7 @@ public class UserControllerTest {
     }
     @Test
     @WithMockUser(roles="ADMIN")
-    void shouldReturnCorrectMessageOnUserDeletionWithNoUserId() throws Exception {
+    void shouldReturnMessageOnUserDeletionWithNoUserId() throws Exception {
         String expectedMessage = "User ID is required and cannot be empty.";
 
         AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/", expectedMessage);
@@ -108,5 +108,4 @@ public class UserControllerTest {
         AssertControllerUtils.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 401);
     }
-
 }
