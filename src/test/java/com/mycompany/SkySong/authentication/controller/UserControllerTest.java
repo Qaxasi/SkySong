@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -76,6 +77,14 @@ public class UserControllerTest {
 
         AssertControllerUtils.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 403);
+    }
+    @Test
+    @WithMockUser(roles = "USER")
+    void shouldReturnErrorMessageWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
+        long userId = 1L;
+
+        AssertControllerUtils.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
+                Map.of("$.error", "You do not have permission to perform this operation"));
     }
     @Test
     @WithMockUser(roles="ADMIN")
