@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,5 +45,16 @@ public class DeleteServiceImplTest {
         String expectedMessage = "User with ID: " + userId + " deleted successfully.";
 
         assertEquals(expectedMessage, response.message());
+    }
+    @Test
+    void shouldThrowErrorMessageWhenUserDoesNotExist() {
+        long userId = 1L;
+        when(userDAO.findById(userId)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(UserNotFoundException.class, () -> deleteService.deleteUser(userId));
+
+        String expectedMessage = "User with ID: " + userId + " does not exist.";
+
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }
