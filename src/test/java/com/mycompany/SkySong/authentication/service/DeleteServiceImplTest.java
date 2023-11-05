@@ -1,8 +1,10 @@
 package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.repository.UserDAO;
+import com.mycompany.SkySong.authentication.service.impl.DeleteServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +20,8 @@ import java.sql.Connection;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class DeleteServiceImplTest {
+    @Autowired
+    private DeleteServiceImpl deleteService;
     @Autowired
     private DataSource dataSource;
     @Autowired
