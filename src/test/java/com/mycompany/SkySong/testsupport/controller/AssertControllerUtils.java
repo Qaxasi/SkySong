@@ -33,6 +33,15 @@ public class AssertControllerUtils {
             actions.andExpect(jsonPath(expectation.getKey()).value(expectation.getValue()));
         }
     }
+    public static void assertDeleteJsonReturns(MockMvc mockMvc, String endpoint, Map<String,
+            Object> jsonPathExpectations) throws Exception {
+        ResultActions actions = mockMvc.perform(delete(endpoint)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        for (Map.Entry<String, Object> expectation : jsonPathExpectations.entrySet()) {
+            actions.andExpect(jsonPath(expectation.getKey()).value(expectation.getValue()));
+        }
+    }
     public static void assertDeleteResponse(MockMvc mockMvc, String endpoint, String expectedMessage) throws Exception {
         mockMvc.perform(delete(endpoint))
                 .andExpect(content().string(expectedMessage));
