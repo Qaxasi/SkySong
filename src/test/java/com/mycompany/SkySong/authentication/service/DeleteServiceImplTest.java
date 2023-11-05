@@ -27,4 +27,21 @@ public class DeleteServiceImplTest {
     void init() {
         deleteService = new DeleteServiceImpl(userDAO);
     }
+    @Test
+    void shouldReturnSuccessMessageOnValidUserIdDeletion() {
+        Role role = new Role(UserRole.ROLE_USER);
+        Set<Role> roles = Set.of(role);
+        User user = new User(1, "testUsername", "testEmail@gmail.com",
+                "testPassword@123", roles);
+
+        long userId = 1L;
+
+        when(userDAO.findById(userId)).thenReturn(Optional.of(user));
+
+        DeleteResponse response = deleteService.deleteUser(userId);
+
+        String expectedMessage = "User with ID: " + userId + " deleted successfully.";
+
+        assertEquals(expectedMessage, response.message());
+    }
 }
