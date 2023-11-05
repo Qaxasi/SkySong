@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class DeleteServiceImplTest {
     @Autowired
@@ -45,7 +44,6 @@ public class DeleteServiceImplTest {
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
     }
-
     @Test
     void shouldDeleteUserWhenUserIdExists() {
         long userId = 1L;
