@@ -111,7 +111,8 @@ public class UserControllerTest {
     @Test
     void shouldReturnMessageWhenDeletingUserWithoutBeingAuthenticated() throws Exception {
         long userId = 1L;
-        String expectedMessage = "Unauthorized access. Please log in.";
-        AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/" + userId, expectedMessage);
+
+        AssertControllerUtils.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
+                Map.of("$.error", "Unauthorized access. Please log in."));
     }
 }
