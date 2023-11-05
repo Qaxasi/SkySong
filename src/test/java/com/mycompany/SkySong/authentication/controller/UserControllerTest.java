@@ -101,4 +101,12 @@ public class UserControllerTest {
 
         AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/", expectedMessage);
     }
+    @Test
+    void shouldReturnUnauthorizedWhenDeletingUserWithoutBeingAuthenticated() throws Exception {
+        long userId = 1L;
+
+        AssertControllerUtils.assertDeleteStatusReturns(
+                mockMvc, "/api/v1/users/" + userId, 401);
+    }
+
 }
