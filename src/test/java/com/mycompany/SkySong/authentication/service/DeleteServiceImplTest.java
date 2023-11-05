@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.impl.DeleteServiceImpl;
@@ -12,14 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -55,5 +56,15 @@ public class DeleteServiceImplTest {
 
         Optional<User> userAfterDeletion = userDAO.findById(userId);
         assertFalse(userAfterDeletion.isPresent());
+    }
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldThrowUserNotFoundExceptionWhenUserIdDoesNotExist() {
+        long notExistUserId = 10L;
+
+        Optional<User> user = userDAO.findById(notExistUserId);
+        assertFalse(user.isPresent());
+
+        assertThrows(UserNotFoundException.class, () -> deleteService.deleteUser(notExistUserId));
     }
 }
