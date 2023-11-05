@@ -58,7 +58,6 @@ public class DeleteServiceImplTest {
         assertFalse(userAfterDeletion.isPresent());
     }
     @Test
-    @WithMockUser(roles = "ADMIN")
     void shouldThrowUserNotFoundExceptionWhenUserIdDoesNotExist() {
         long notExistUserId = 10L;
 
