@@ -1,11 +1,9 @@
 package com.mycompany.SkySong.authentication.security;
 
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
