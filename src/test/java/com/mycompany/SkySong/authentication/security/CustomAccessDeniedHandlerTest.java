@@ -3,6 +3,8 @@ package com.mycompany.SkySong.authentication.security;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,7 +19,8 @@ public class CustomAccessDeniedHandlerTest {
     private HttpServletResponse httpServletResponse;
     @Mock
     private AccessDeniedException accessDeniedException;
-
-
-
+    @BeforeEach
+    void setUp() {
+        customAccessDeniedHandler = new CustomAccessDeniedHandler();
+    }
 }
