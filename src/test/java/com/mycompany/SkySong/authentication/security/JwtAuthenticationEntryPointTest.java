@@ -17,8 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -70,5 +69,21 @@ public class JwtAuthenticationEntryPointTest {
         String jsonResponse = stringWriter.toString();
 
         assertDoesNotThrow(() -> new JSONObject(jsonResponse));
+    }
+    @Test
+    void shouldReturnMessageOnAuthFailure() throws IOException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        when(response.getWriter()).thenReturn(printWriter);
+
+        jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
+
+        printWriter.flush();
+        String jsonResponse = stringWriter.toString();
+
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+
+        assertEquals("Unauthorized access. Please log in.", jsonObject.getString("error"));
     }
 }
