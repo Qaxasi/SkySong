@@ -24,10 +24,10 @@ public class DeleteServiceImpl implements DeleteService {
         try {
             return userDAO.findById(userId).map(user -> {
                 userDAO.delete(user);
-                log.error("User with ID {} deleted successfully", userId);
+                log.info("User with ID {} deleted successfully", userId);
                 return new DeleteResponse("User with ID: " + userId + " deleted successfully.");
             }).orElseThrow(() -> {
-                log.error("User with ID {} does not exist", userId);
+                log.info("User with ID {} does not exist", userId);
                 return new UserNotFoundException(
                         "User with ID: " + userId + " does not exist."
                 );
