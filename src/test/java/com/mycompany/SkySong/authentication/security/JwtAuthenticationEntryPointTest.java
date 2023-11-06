@@ -57,4 +57,18 @@ public class JwtAuthenticationEntryPointTest {
 
         verify(response).setContentType("application/json");
     }
+    @Test
+    void shouldReturnValidJsonOnAuthFailure() throws IOException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        when(response.getWriter()).thenReturn(printWriter);
+
+        jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
+
+        printWriter.flush();
+        String jsonResponse = stringWriter.toString();
+
+        assertDoesNotThrow(() -> new JSONObject(jsonResponse));
+    }
 }
