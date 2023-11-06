@@ -12,9 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -71,5 +73,27 @@ public class DeleteServiceImplIntegrationTest {
         assertFalse(user.isPresent());
 
         assertThrows(UserNotFoundException.class, () -> deleteService.deleteUser(notExistUserId));
+    }
+    @Test
+    void shouldRollbackTransactionWhenErrorOccursAfterDelete() {
+        Role role = new Role(UserRole.ROLE_USER);
+        Set<Role> roles = Set.of(role);
+        User user = new User(2,"testUniqueUsername", "testUniqueEmail@gmail.com",
+                "testPassword@123", roles);
+
+        User savedUser = userDAO.save(user);
+        long userId = savedUser.getId();
+
+        assertTrue(userDAO.existsById(userId));
+
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+            transactionTemplate.execute(status -> {
+                deleteService.deleteUser(userId);
+                throw new DataIntegrityViolationException("Forced failure after delete operation");
+            });
+        });
+
+        assertTrue(userDAO.existsById(userId));
     }
 }
