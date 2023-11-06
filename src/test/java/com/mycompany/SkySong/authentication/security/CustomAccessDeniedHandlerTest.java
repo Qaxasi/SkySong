@@ -33,5 +33,8 @@ public class CustomAccessDeniedHandlerTest {
     @BeforeEach
     void setUp() {
         customAccessDeniedHandler = new CustomAccessDeniedHandler();
+
+        stringWriter = new StringWriter();
+        printWriter = new PrintWriter(stringWriter);
     }
 }
