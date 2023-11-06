@@ -86,5 +86,13 @@ public class CustomUserDetailsServiceTest {
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
     }
+    @Test
+    void shouldThrowExceptionWhenUsernameNotFound() {
+        String username = "nonExistingUser";
+
+        when(userDAO.findByUsername(username)).thenReturn(Optional.empty());
+
+        assertThrows(UsernameNotFoundException.class, () -> customUserDetailsService.loadUserByUsername(username));
+    }
 
 }
