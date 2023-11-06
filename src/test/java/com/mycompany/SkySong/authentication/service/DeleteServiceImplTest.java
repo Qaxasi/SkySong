@@ -68,7 +68,7 @@ public class DeleteServiceImplTest {
                 "testPassword@123", roles);
 
         when(userDAO.findById(userId)).thenReturn(Optional.of(mockUser));
-        doThrow(new DatabaseException("Database error")).when(userDAO).delete(mockUser);
+        doThrow(new DatabaseException("Simulated database error")).when(userDAO).delete(mockUser);
 
         assertThrows(DatabaseException.class, () -> deleteService.deleteUser(userId));
     }
@@ -81,7 +81,7 @@ public class DeleteServiceImplTest {
                 "testPassword@123", roles);
 
         when(userDAO.findById(userId)).thenReturn(Optional.of(mockUser));
-        doThrow(new DataAccessException("Database error") {}).when(userDAO).delete(mockUser);
+        doThrow(new DataAccessException("Simulated database error") {}).when(userDAO).delete(mockUser);
 
         Exception exception = assertThrows(DatabaseException.class, () -> deleteService.deleteUser(userId));
 
