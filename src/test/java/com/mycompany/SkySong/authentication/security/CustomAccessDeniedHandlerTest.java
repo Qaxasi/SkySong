@@ -14,11 +14,11 @@ import org.springframework.security.access.AccessDeniedException;
 public class CustomAccessDeniedHandlerTest {
     private CustomAccessDeniedHandler customAccessDeniedHandler;
     @Mock
-    private HttpServletRequest httpServletRequest;
+    private HttpServletRequest request;
     @Mock
-    private HttpServletResponse httpServletResponse;
+    private HttpServletResponse response;
     @Mock
-    private AccessDeniedException accessDeniedException;
+    private AccessDeniedException exception;
     @BeforeEach
     void setUp() {
         customAccessDeniedHandler = new CustomAccessDeniedHandler();
