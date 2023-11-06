@@ -6,6 +6,7 @@ import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.DeleteService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DeleteServiceImpl implements DeleteService {
@@ -14,6 +15,7 @@ public class DeleteServiceImpl implements DeleteService {
     public DeleteServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
+    @Transactional
     @Override
     public DeleteResponse deleteUser(long userId) {
 
