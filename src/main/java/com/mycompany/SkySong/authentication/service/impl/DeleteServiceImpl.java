@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class DeleteServiceImpl implements DeleteService {
     private final UserDAO userDAO;
 
@@ -21,8 +22,10 @@ public class DeleteServiceImpl implements DeleteService {
     public DeleteResponse deleteUser(long userId) {
         return userDAO.findById(userId).map(user -> {
             userDAO.delete(user);
+            log.error("User with ID {} deleted successfully", userId);
             return new DeleteResponse("User with ID: " + userId + " deleted successfully.");
         }).orElseThrow(() -> {
+            log.error("User with ID {} does not exist", userId);
             return new UserNotFoundException(
                     "User with ID: " + userId + " does not exist."
             );
