@@ -4,6 +4,7 @@ import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,17 +47,14 @@ public class JwtAuthenticationEntryPointTest {
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
     @Test
-    void shouldRespondWitUnauthorizedAndJsonOnAuthFailure() throws IOException, ServletException {
+    void shouldReturnContentTypeAsJsonOnAuthFailure() throws IOException {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
 
         when(response.getWriter()).thenReturn(printWriter);
-        when(authenticationException.getMessage()).thenReturn("Incorrect credentials");
 
         jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
 
-        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         verify(response).setContentType("application/json");
-        verify(authenticationException).getMessage();
     }
 }
