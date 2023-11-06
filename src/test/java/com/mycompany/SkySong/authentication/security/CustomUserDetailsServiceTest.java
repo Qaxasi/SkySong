@@ -94,5 +94,13 @@ public class CustomUserDetailsServiceTest {
 
         assertThrows(UsernameNotFoundException.class, () -> customUserDetailsService.loadUserByUsername(username));
     }
+    @Test
+    void shouldThrowExceptionWhenUserWithEmailNotFound() {
+        String email = "nonExistingEmail";
+
+        when(userDAO.findByEmail(email)).thenReturn(Optional.empty());
+
+        assertThrows(UsernameNotFoundException.class, () -> customUserDetailsService.loadUserByUsername(email));
+    }
 
 }
