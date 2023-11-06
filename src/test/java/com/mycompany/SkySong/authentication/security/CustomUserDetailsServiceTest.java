@@ -102,5 +102,18 @@ public class CustomUserDetailsServiceTest {
 
         assertThrows(UsernameNotFoundException.class, () -> customUserDetailsService.loadUserByUsername(email));
     }
+    @Test
+    void shouldReturnExceptionMessageWhenUserWithUsernameNotFound() {
+        String username = "nonExistingUser";
+
+        when(userDAO.findByUsername(username)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(UsernameNotFoundException.class,
+                () -> customUserDetailsService.loadUserByUsername(username));
+
+        String expectedMessage = "User not found with username or email: " + username;
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
 
 }
