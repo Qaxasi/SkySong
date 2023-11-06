@@ -33,6 +33,17 @@ public class JwtAuthenticationEntryPointTest {
         jwtAuthenticationEntryPoint = new JwtAuthenticationEntryPoint();
     }
     @Test
+    void shouldSetResponseStatusToUnauthorizedOnAuthFailure() throws IOException {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        when(response.getWriter()).thenReturn(printWriter);
+
+        jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
+
+        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    }
+    @Test
     void shouldRespondWitUnauthorizedAndJsonOnAuthFailure() throws IOException, ServletException {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
