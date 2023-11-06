@@ -4,6 +4,7 @@ import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,4 +55,15 @@ public class CustomAccessDeniedHandlerTest {
 
         verify(response).setContentType("application/json");
     }
+    @Test
+    void shouldReturnValidJsonWhenHandlingAccessDenied() throws IOException {
+        when(response.getWriter()).thenReturn(printWriter);
+
+        customAccessDeniedHandler.handle(request, response, exception);
+
+        String jsonResponse = stringWriter.toString();
+
+        assertDoesNotThrow(() -> new JSONObject(jsonResponse));
+    }
+
 }
