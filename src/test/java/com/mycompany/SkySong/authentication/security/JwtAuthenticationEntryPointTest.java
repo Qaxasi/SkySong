@@ -30,15 +30,17 @@ public class JwtAuthenticationEntryPointTest {
     private HttpServletResponse response;
     @Mock
     private AuthenticationException authenticationException;
+    private StringWriter stringWriter;
+    private PrintWriter printWriter;
     @BeforeEach
     void setUp() {
         jwtAuthenticationEntryPoint = new JwtAuthenticationEntryPoint();
+
+        stringWriter = new StringWriter();
+        printWriter = new PrintWriter(stringWriter);
     }
     @Test
     void shouldSetResponseStatusToUnauthorizedOnAuthFailure() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-
         when(response.getWriter()).thenReturn(printWriter);
 
         jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
@@ -47,9 +49,6 @@ public class JwtAuthenticationEntryPointTest {
     }
     @Test
     void shouldReturnContentTypeAsJsonOnAuthFailure() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-
         when(response.getWriter()).thenReturn(printWriter);
 
         jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
@@ -58,9 +57,6 @@ public class JwtAuthenticationEntryPointTest {
     }
     @Test
     void shouldReturnValidJsonOnAuthFailure() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-
         when(response.getWriter()).thenReturn(printWriter);
 
         jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
@@ -72,9 +68,6 @@ public class JwtAuthenticationEntryPointTest {
     }
     @Test
     void shouldReturnMessageOnAuthFailure() throws IOException {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-
         when(response.getWriter()).thenReturn(printWriter);
 
         jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
