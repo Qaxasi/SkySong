@@ -3,7 +3,6 @@ package com.mycompany.SkySong.authentication.service.impl;
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
-import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.DeleteService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +35,6 @@ public class DeleteServiceImpl implements DeleteService {
         } catch (DataAccessException e) {
                 throw new DatabaseException(
                         "An unexpected error occurred while deleting user. Please try again later.");
-
         }
     }
 }
