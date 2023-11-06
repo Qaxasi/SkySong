@@ -72,4 +72,21 @@ public class DeleteServiceImplTest {
 
         assertThrows(DatabaseException.class, () -> deleteService.deleteUser(userId));
     }
+    @Test
+    void shouldThrowMessageWhenUnexpectedErrorOccursWhileDeletingUser() {
+        long userId = 1L;
+        Role role = new Role(UserRole.ROLE_USER);
+        Set<Role> roles = Set.of(role);
+        User mockUser = new User(1, "testUsername", "testEmail@gmail.com",
+                "testPassword@123", roles);
+
+        when(userDAO.findById(userId)).thenReturn(Optional.of(mockUser));
+        doThrow(new DataAccessException("Database error") {}).when(userDAO).delete(mockUser);
+
+        Exception exception = assertThrows(DatabaseException.class, () -> deleteService.deleteUser(userId));
+
+        String expectedMessage = "An unexpected error occurred while deleting user. Please try again later.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
 }
