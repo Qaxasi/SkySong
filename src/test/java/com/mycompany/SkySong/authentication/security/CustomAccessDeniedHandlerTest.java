@@ -45,4 +45,12 @@ public class CustomAccessDeniedHandlerTest {
 
         verify(response).setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
+    @Test
+    void shouldReturnContentTypeJsonWhenHandlingAccessDenied() throws IOException {
+        when(response.getWriter()).thenReturn(printWriter);
+
+        customAccessDeniedHandler.handle(request, response, exception);
+
+        verify(response).setContentType("application/json");
+    }
 }
