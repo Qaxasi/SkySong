@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service;
 
+import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.model.entity.Role;
@@ -12,12 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
 
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,5 +58,18 @@ public class DeleteServiceImplTest {
         String expectedMessage = "User with ID: " + userId + " does not exist.";
 
         assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
+    void shouldThrowDatabaseExceptionWhenUnexpectedErrorOccursWhileDeletingUser() {
+        long userId = 1L;
+        Role role = new Role(UserRole.ROLE_USER);
+        Set<Role> roles = Set.of(role);
+        User mockUser = new User(1, "testUsername", "testEmail@gmail.com",
+                "testPassword@123", roles);
+
+        when(userDAO.findById(userId)).thenReturn(Optional.of(mockUser));
+        doThrow(new DatabaseException("Database error")).when(userDAO).delete(mockUser);
+
+        assertThrows(DatabaseException.class, () -> deleteService.deleteUser(userId));
     }
 }
