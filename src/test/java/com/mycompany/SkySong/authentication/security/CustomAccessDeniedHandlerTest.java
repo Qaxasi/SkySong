@@ -37,4 +37,12 @@ public class CustomAccessDeniedHandlerTest {
         stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
     }
+    @Test
+    void shouldSetResponseStatusToForbidden() throws IOException {
+        when(response.getWriter()).thenReturn(printWriter);
+
+        customAccessDeniedHandler.handle(request, response, exception);
+
+        verify(response).setStatus(HttpServletResponse.SC_FORBIDDEN);
+    }
 }
