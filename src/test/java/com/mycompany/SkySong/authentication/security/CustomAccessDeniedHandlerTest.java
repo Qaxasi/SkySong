@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -64,6 +65,19 @@ public class CustomAccessDeniedHandlerTest {
         String jsonResponse = stringWriter.toString();
 
         assertDoesNotThrow(() -> new JSONObject(jsonResponse));
+    }
+    @Test
+    void shouldReturnMessageWhenHandlingAccessDenied() throws IOException {
+        when(response.getWriter()).thenReturn(printWriter);
+
+        customAccessDeniedHandler.handle(request, response, exception);
+
+        String jsonResponse = stringWriter.toString();
+
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+
+        assertEquals("You do not have permission to perform this operation.",
+                jsonObject.getString("error"));
     }
 
 }
