@@ -20,5 +20,12 @@ public class JwtAuthenticationFilterIntegrationTest {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private UserDAO userDAO;
-
+    @BeforeEach
+    void setUp() {
+        String jwtSecret = "jwtToken";
+        long tokenExpirationTime = 1000L;
+        jwtTokenProvider = new JwtTokenProvider(jwtSecret, tokenExpirationTime);
+        customUserDetailsService = new CustomUserDetailsService(userDAO);
+        jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService);
+    }
 }
