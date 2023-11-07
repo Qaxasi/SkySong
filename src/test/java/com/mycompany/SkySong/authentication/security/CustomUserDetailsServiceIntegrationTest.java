@@ -1,12 +1,24 @@
 package com.mycompany.SkySong.authentication.security;
 
+import com.mycompany.SkySong.authentication.model.entity.Role;
+import com.mycompany.SkySong.authentication.model.entity.User;
+import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.secutiry.service.CustomUserDetailsService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -17,4 +29,12 @@ public class CustomUserDetailsServiceIntegrationTest {
     private UserDAO userDAO;
     @Autowired
     private DataSource dataSource;
+    @BeforeEach
+    void init() throws Exception {
+        try(Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/user-data.sql"));
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
+
+        }
+    }
 }
