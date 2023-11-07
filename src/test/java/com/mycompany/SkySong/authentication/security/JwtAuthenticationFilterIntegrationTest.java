@@ -64,4 +64,11 @@ public class JwtAuthenticationFilterIntegrationTest {
         response = new MockHttpServletResponse();
 
     }
+    @AfterEach
+    void cleanup() throws Exception {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.update("DELETE FROM user_roles");
+        jdbcTemplate.update("DELETE FROM users");
+        jdbcTemplate.update("DELETE FROM roles");
+    }
 }
