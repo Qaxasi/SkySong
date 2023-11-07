@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.sql.DataSource;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class CustomUserDetailsServiceIntegrationTest {
@@ -13,4 +15,6 @@ public class CustomUserDetailsServiceIntegrationTest {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private DataSource dataSource;
 }
