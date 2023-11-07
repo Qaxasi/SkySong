@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.security;
 
+import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
@@ -14,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -21,8 +23,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -65,6 +66,12 @@ public class CustomUserDetailsServiceIntegrationTest {
 
         assertEquals("testEmail@gmail.com", userDetails.getUsername());
         assertTrue(passwordEncoder.matches("testPassword@123", userDetails.getPassword()));
+    }
+    @Test
+    void shouldThrowExceptionWhenLoadingMissingUserByUsername() {
+       String nonExistentUsername = "nonExistentUsername";
 
+        assertThrows(UsernameNotFoundException.class,
+                () -> customUserDetailsService.loadUserByUsername(nonExistentUsername));
     }
 }
