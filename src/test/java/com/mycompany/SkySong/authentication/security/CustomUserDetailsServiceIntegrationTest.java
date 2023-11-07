@@ -88,4 +88,10 @@ public class CustomUserDetailsServiceIntegrationTest {
 
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
     }
+    @Test
+    void shouldFetchUserDetailsWithCorrectRolesBasedOnEmail() {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("testEmail@gmail.com");
+
+        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
+    }
 }
