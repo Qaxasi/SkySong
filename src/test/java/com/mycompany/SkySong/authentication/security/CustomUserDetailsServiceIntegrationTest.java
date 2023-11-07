@@ -82,4 +82,10 @@ public class CustomUserDetailsServiceIntegrationTest {
         assertThrows(UsernameNotFoundException.class,
                 () -> customUserDetailsService.loadUserByUsername(nonExistentEmail));
     }
+    @Test
+    void shouldFetchUserDetailsWithCorrectRolesBasedOnUsername() {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
+
+        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
+    }
 }
