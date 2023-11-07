@@ -83,13 +83,13 @@ public class CustomUserDetailsServiceIntegrationTest {
                 () -> customUserDetailsService.loadUserByUsername(nonExistentEmail));
     }
     @Test
-    void shouldFetchUserDetailsWithCorrectRolesBasedOnUsername() {
+    void shouldHaveUserRoleWhenLoadedByUsername() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
 
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
     }
     @Test
-    void shouldFetchUserDetailsWithCorrectRolesBasedOnEmail() {
+    void shouldHaveUserRoleWhenLoadedByEmail() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testEmail@gmail.com");
 
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
