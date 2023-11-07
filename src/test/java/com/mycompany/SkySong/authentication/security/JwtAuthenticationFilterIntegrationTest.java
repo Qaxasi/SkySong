@@ -125,4 +125,14 @@ public class JwtAuthenticationFilterIntegrationTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
         assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
     }
+    @Test
+    void shouldNotSetSecurityContextWhenMalformedToken() throws ServletException, IOException {
+        String malformedToken = "malformedToken";
+
+        request.addHeader("Authorization", "Bearer " + malformedToken);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
 }
