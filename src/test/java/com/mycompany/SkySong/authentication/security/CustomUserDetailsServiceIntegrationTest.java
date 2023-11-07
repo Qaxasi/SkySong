@@ -94,4 +94,11 @@ public class CustomUserDetailsServiceIntegrationTest {
 
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
     }
+    @Test
+    void shouldHaveUserAndAdminRolesWhenLoadedByUsername() {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("testAdmin");
+
+        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
+        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
+    }
 }
