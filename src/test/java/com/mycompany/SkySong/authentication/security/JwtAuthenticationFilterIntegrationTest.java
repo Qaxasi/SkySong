@@ -83,4 +83,19 @@ public class JwtAuthenticationFilterIntegrationTest {
 
         verify(filterChain).doFilter(any(), any());
     }
+    @Test
+    void shouldSetSecurityContextWithValidJwtToken() throws ServletException, IOException {
+        Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
+
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        request.addHeader("Authorization", "Bearer " + token);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
+
+        assertNotNull(authContext);
+        assertEquals("testUsername", authContext.getName());
+    }
 }
