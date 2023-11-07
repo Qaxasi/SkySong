@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -41,11 +42,19 @@ public class CustomUserDetailsServiceIntegrationTest {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
 
         }
-    }@AfterEach
+    }
+    @AfterEach
     void cleanup() throws Exception {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
+    }
+    @Test
+    void shouldReturnCorrectUserDetailsWhenLoggingWithUsername() {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
+
+        assertEquals("testUsername", userDetails.getUsername());
+        assertTrue(passwordEncoder.matches("testPassword@123", userDetails.getPassword()));
     }
 }
