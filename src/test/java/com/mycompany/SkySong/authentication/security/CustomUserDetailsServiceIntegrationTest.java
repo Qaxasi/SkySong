@@ -101,4 +101,11 @@ public class CustomUserDetailsServiceIntegrationTest {
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
     }
+    @Test
+    void shouldHaveUserAndAdminRolesWhenLoadedByEmail() {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("testAdmin@gmail.com");
+
+        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
+        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
+    }
 }
