@@ -74,4 +74,12 @@ public class CustomUserDetailsServiceIntegrationTest {
         assertThrows(UsernameNotFoundException.class,
                 () -> customUserDetailsService.loadUserByUsername(nonExistentUsername));
     }
+    @Test
+    void shouldThrowExceptionWhenLoadingMissingUserByEmail() {
+        String nonExistentEmail = "nonExistentEmail@gmail.com";
+
+        //In our implementation, the email can serve as the username
+        assertThrows(UsernameNotFoundException.class,
+                () -> customUserDetailsService.loadUserByUsername(nonExistentEmail));
+    }
 }
