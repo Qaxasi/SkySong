@@ -14,6 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
@@ -31,6 +32,8 @@ public class CustomUserDetailsServiceIntegrationTest {
     private UserDAO userDAO;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
