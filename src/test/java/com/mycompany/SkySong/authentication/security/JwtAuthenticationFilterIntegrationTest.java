@@ -34,8 +34,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -97,5 +96,19 @@ public class JwtAuthenticationFilterIntegrationTest {
 
         assertNotNull(authContext);
         assertEquals("testUsername", authContext.getName());
+    }
+    @Test
+    void shouldNotSetSecurityContextWhenExpiredToken() throws InterruptedException, ServletException, IOException {
+        Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
+
+        String expiredToken = jwtTokenProvider.generateToken(authentication);
+
+        Thread.sleep(1001);
+
+        request.addHeader("Authorization", "Bearer " + expiredToken);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
