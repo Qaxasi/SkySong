@@ -1,9 +1,5 @@
 package com.mycompany.SkySong.authentication.security;
 
-import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
-import com.mycompany.SkySong.authentication.model.entity.Role;
-import com.mycompany.SkySong.authentication.model.entity.User;
-import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.secutiry.service.CustomUserDetailsService;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
