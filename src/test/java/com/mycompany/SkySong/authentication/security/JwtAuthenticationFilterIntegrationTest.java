@@ -9,6 +9,7 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -110,5 +111,18 @@ public class JwtAuthenticationFilterIntegrationTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+    @Test
+    void shouldReturnUnauthorizedForExpiredToken() throws InterruptedException, ServletException, IOException {
+        Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
+
+        String expiredToken = jwtTokenProvider.generateToken(authentication);
+
+        Thread.sleep(1001);
+
+        request.addHeader("Authorization", "Bearer " + expiredToken);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
     }
 }
