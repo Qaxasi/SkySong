@@ -42,7 +42,7 @@ public class JwtAuthenticationFilterTest {
         jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService);
     }
     @Test
-    void shouldProcessValidTokenFromAuthorizationHeader() throws ServletException, IOException {
+    void shouldContinueWithFilterChainAfterSuccessfulAuthentication() throws ServletException, IOException {
         String token = "validToken";
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
         when(jwtTokenProvider.validateToken(token)).thenReturn(true);
