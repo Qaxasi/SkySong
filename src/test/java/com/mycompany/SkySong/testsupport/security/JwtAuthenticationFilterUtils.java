@@ -14,5 +14,16 @@ public class JwtAuthenticationFilterUtils {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_MS = 1000L;
 
+    public static String generateTokenWithoutSubject() {
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + EXPIRATION_MS);
+        Map<String, Object> claims = new HashMap<>();
 
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expirationDate)
+                .signWith(SECRET_KEY)
+                .compact();
+    }
 }
