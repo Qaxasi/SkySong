@@ -26,4 +26,14 @@ public class JwtAuthenticationFilterUtils {
                 .signWith(SECRET_KEY)
                 .compact();
     }
+    public static String generateTokenWithUnsupportedSignature() {
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + EXPIRATION_MS);
+
+        return Jwts.builder()
+                .setIssuedAt(now)
+                .setExpiration(expirationDate)
+                .setHeaderParam("alg", "none")
+                .compact();
+    }
 }
