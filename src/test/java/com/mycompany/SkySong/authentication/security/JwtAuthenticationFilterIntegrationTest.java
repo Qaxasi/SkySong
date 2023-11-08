@@ -172,4 +172,14 @@ public class JwtAuthenticationFilterIntegrationTest {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
+    @Test
+    void shouldNotSetSecurityContextWithTokenHavingEmptyClaims() throws ServletException, IOException {
+        String tokenWithEmptyClaims = JwtAuthenticationFilterUtils.generateTokenWithEmptyClaims();
+
+        request.addHeader("Authorization", "Bearer " + tokenWithEmptyClaims);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
 }
