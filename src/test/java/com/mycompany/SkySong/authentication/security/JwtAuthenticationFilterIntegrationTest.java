@@ -4,6 +4,7 @@ import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.secutiry.service.CustomUserDetailsService;
+import com.mycompany.SkySong.testsupport.security.JwtAuthenticationFilterUtils;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
@@ -66,6 +67,8 @@ public class JwtAuthenticationFilterIntegrationTest {
     }
     @AfterEach
     void cleanup() throws Exception {
+        SecurityContextHolder.clearContext();
+
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
@@ -102,9 +105,7 @@ public class JwtAuthenticationFilterIntegrationTest {
     void shouldNotSetSecurityContextWhenExpiredToken() throws InterruptedException, ServletException, IOException {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
-        String expiredToken = jwtTokenProvider.generateToken(authentication);
-
-        Thread.sleep(1001);
+        String expiredToken = JwtAuthenticationFilterUtils.generateExpiredToken();
 
         request.addHeader("Authorization", "Bearer " + expiredToken);
 
@@ -144,5 +145,15 @@ public class JwtAuthenticationFilterIntegrationTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
+    }
+    @Test
+    void shouldNotSetSecurityContextWhenTokenIsWithoutSubject() throws ServletException, IOException {
+        String tokenWithoutSubject = JwtAuthenticationFilterUtils.generateTokenWithoutSubject();
+
+        request.addHeader("Authorization", "Bearer " + tokenWithoutSubject);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
