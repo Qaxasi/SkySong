@@ -103,8 +103,6 @@ public class JwtAuthenticationFilterIntegrationTest {
     }
     @Test
     void shouldNotSetSecurityContextWhenExpiredToken() throws InterruptedException, ServletException, IOException {
-        Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
-
         String expiredToken = JwtAuthenticationFilterUtils.generateExpiredToken();
 
         request.addHeader("Authorization", "Bearer " + expiredToken);
