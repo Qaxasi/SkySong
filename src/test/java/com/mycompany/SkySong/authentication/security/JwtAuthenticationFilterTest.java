@@ -57,6 +57,22 @@ public class JwtAuthenticationFilterTest {
 
         verify(filterChain, times(1)).doFilter(request, response);
     }
+    @Test
+    void shouldSetAuthenticationInSecurityContextAfterSuccessfulAuthentication() throws ServletException, IOException {
+        String token = "validToken";
+        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
+        when(jwtTokenProvider.validateToken(token)).thenReturn(true);
+
+        Claims mockClaims = mock(Claims.class);
+        when(mockClaims.getSubject()).thenReturn("username");
+        when(jwtTokenProvider.getClaimsFromToken(token)).thenReturn(mockClaims);
+
+        when(customUserDetailsService.loadUserByUsername("username")).thenReturn(mock(UserDetails.class));
+
+        jwtAuthenticationFilter.doFilter(request, response, filterChain);
+
+        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+    }
 
     @Test
     void shouldNotAuthorizeWithInvalidToken() throws ServletException, IOException {
