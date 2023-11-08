@@ -36,4 +36,15 @@ public class JwtAuthenticationFilterUtils {
                 .setHeaderParam("alg", "none")
                 .compact();
     }
+    public static String generateTokenWithEmptyClaims() {
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + EXPIRATION_MS);
+
+        return Jwts.builder()
+                .setClaims(new HashMap<>())
+                .setIssuedAt(now)
+                .setExpiration(expirationDate)
+                .signWith(SECRET_KEY)
+                .compact();
+    }
 }
