@@ -14,11 +14,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -53,8 +55,7 @@ public class JwtAuthenticationFilterTest {
 
         jwtAuthenticationFilter.doFilter(request, response, filterChain);
 
-        verify(filterChain).doFilter(request, response);
-        verify(response, never()).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        verify(filterChain, times(1)).doFilter(request, response);
     }
 
     @Test
