@@ -156,4 +156,10 @@ public class JwtAuthenticationFilterIntegrationTest {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
+    @Test
+    void shouldNotSetSecurityContextWithoutToken() throws ServletException, IOException {
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
 }
