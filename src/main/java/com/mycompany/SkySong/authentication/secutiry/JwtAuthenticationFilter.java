@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.authentication.secutiry;
 
-import com.mycompany.SkySong.authentication.exception.TokenException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
