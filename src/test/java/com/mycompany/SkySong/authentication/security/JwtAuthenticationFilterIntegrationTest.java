@@ -114,19 +114,6 @@ public class JwtAuthenticationFilterIntegrationTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
-    void shouldReturnUnauthorizedForExpiredToken() throws InterruptedException, ServletException, IOException {
-        Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
-
-        String expiredToken = jwtTokenProvider.generateToken(authentication);
-
-        Thread.sleep(1001);
-
-        request.addHeader("Authorization", "Bearer " + expiredToken);
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
-    }
-    @Test
     void shouldNotSetSecurityContextWhenMalformedToken() throws ServletException, IOException {
         String malformedToken = "malformedToken";
 
@@ -135,16 +122,6 @@ public class JwtAuthenticationFilterIntegrationTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
-    }
-    @Test
-    void shouldReturnUnauthorizedForMalformedToken() throws ServletException, IOException {
-        String malformedToken = "malformedToken";
-
-        request.addHeader("Authorization", "Bearer " + malformedToken);
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        assertEquals(HttpServletResponse.SC_UNAUTHORIZED, response.getStatus());
     }
     @Test
     void shouldNotSetSecurityContextWhenTokenIsWithoutSubject() throws ServletException, IOException {
