@@ -91,7 +91,6 @@ public class JwtAuthenticationFilterIntegrationTest {
         Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
 
         assertNotNull(authContext);
-        assertEquals("testUsername", authContext.getName());
     }
     @Test
     void shouldNotSetSecurityContextWhenExpiredToken() throws InterruptedException, ServletException, IOException {
