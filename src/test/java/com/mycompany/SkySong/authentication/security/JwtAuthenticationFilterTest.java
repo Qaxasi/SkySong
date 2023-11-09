@@ -133,7 +133,7 @@ public class JwtAuthenticationFilterTest {
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
     @Test
-    void shouldReturnUnauthorizedForUnexpectedExceptionDuringTokenValidation() throws ServletException, IOException {
+    void shouldNotProcessRequestWhenUnexpectedExceptionDuringTokenValidation() throws ServletException, IOException {
         String token = "token";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
