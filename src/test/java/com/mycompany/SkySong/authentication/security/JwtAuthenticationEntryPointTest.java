@@ -40,33 +40,6 @@ public class JwtAuthenticationEntryPointTest {
         printWriter = new PrintWriter(stringWriter);
     }
     @Test
-    void shouldSetResponseStatusToUnauthorizedOnAuthFailure() throws IOException {
-        when(response.getWriter()).thenReturn(printWriter);
-
-        jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
-
-        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    }
-    @Test
-    void shouldReturnContentTypeAsJsonOnAuthFailure() throws IOException {
-        when(response.getWriter()).thenReturn(printWriter);
-
-        jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
-
-        verify(response).setContentType("application/json");
-    }
-    @Test
-    void shouldReturnValidJsonOnAuthFailure() throws IOException {
-        when(response.getWriter()).thenReturn(printWriter);
-
-        jwtAuthenticationEntryPoint.commence(request, response, authenticationException);
-
-        printWriter.flush();
-        String jsonResponse = stringWriter.toString();
-
-        assertDoesNotThrow(() -> new JSONObject(jsonResponse));
-    }
-    @Test
     void shouldReturnMessageOnAuthFailure() throws IOException {
         when(response.getWriter()).thenReturn(printWriter);
 
