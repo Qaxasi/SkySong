@@ -93,6 +93,20 @@ public class JwtAuthenticationFilterIntegrationTest {
         assertNotNull(authContext);
     }
     @Test
+    void shouldSetCorrectUsernameInSecurityContextWithValidJwtToken() throws ServletException, IOException {
+        Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
+
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        request.addHeader("Authorization", "Bearer " + token);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
+
+        assertEquals(authentication.getName(), authContext.getName());
+    }
+    @Test
     void shouldNotSetSecurityContextWhenExpiredToken() throws InterruptedException, ServletException, IOException {
         String expiredToken = JwtAuthenticationFilterUtils.generateExpiredToken();
 
