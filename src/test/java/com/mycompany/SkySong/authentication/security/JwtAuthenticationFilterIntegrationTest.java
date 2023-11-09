@@ -58,7 +58,7 @@ public class JwtAuthenticationFilterIntegrationTest {
 
     }
     @AfterEach
-    void cleanup() throws Exception {
+    void cleanup() {
         SecurityContextHolder.clearContext();
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -107,7 +107,7 @@ public class JwtAuthenticationFilterIntegrationTest {
         assertEquals(authentication.getName(), authContext.getName());
     }
     @Test
-    void shouldNotSetSecurityContextWhenExpiredToken() throws InterruptedException, ServletException, IOException {
+    void shouldNotSetSecurityContextWhenExpiredToken() throws ServletException, IOException {
         String expiredToken = JwtAuthenticationFilterUtils.generateExpiredToken();
 
         request.addHeader("Authorization", "Bearer " + expiredToken);
