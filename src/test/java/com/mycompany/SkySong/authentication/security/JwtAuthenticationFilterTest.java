@@ -77,7 +77,7 @@ public class JwtAuthenticationFilterTest {
     }
 
     @Test
-    void shouldNotSetAuthenticationInSecurityContextForInvalidJwtToken() throws ServletException, IOException {
+    void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
         String token = "invalidToken";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
