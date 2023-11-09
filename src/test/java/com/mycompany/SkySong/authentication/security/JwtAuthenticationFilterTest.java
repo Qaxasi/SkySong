@@ -85,7 +85,7 @@ public class JwtAuthenticationFilterTest {
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
-        assertNull(SecurityContextHolder.getContext().getAuthentication());
+        verify(filterChain, never()).doFilter(request, response);
     }
     @Test
     void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
