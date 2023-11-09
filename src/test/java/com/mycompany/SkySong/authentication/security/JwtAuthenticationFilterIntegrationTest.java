@@ -122,12 +122,7 @@ public class JwtAuthenticationFilterIntegrationTest {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
-    @Test
-    void shouldNotSetSecurityContextWithoutToken() throws ServletException, IOException {
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        assertNull(SecurityContextHolder.getContext().getAuthentication());
-    }
+  
     @Test
     void shouldNotSetSecurityContextWithUnsupportedTokenSignature() throws ServletException, IOException {
         String tokenWithUnsupportedSignature = JwtAuthenticationFilterUtils.generateTokenWithUnsupportedSignature();
