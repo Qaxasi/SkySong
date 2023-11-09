@@ -103,7 +103,7 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
-    void shouldNotAuthorizeForExpiredToken() throws ServletException, IOException {
+    void shouldNotSetAuthenticationInSecurityContextForExpiredToken() throws ServletException, IOException {
         String token = "expiredToken";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
