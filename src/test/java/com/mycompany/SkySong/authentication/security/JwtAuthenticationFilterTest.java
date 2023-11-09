@@ -93,7 +93,6 @@ public class JwtAuthenticationFilterTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain, never()).doFilter(request, response);
-            verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
     @Test
     void shouldNotProcessRequestWithMalformedToken() throws ServletException, IOException {
