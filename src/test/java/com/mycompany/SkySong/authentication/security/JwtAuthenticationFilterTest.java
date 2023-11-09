@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -83,8 +84,7 @@ public class JwtAuthenticationFilterTest {
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
-        verify(filterChain, never()).doFilter(request, response);
-        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
     void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
@@ -93,7 +93,7 @@ public class JwtAuthenticationFilterTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain, never()).doFilter(request, response);
-        verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
     @Test
     void shouldNotProcessRequestWithMalformedToken() throws ServletException, IOException {
@@ -105,7 +105,7 @@ public class JwtAuthenticationFilterTest {
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
     @Test
-    void shouldReturnUnauthorizedForExpiredToken() throws ServletException, IOException {
+    void shouldNotAuthorizeForExpiredToken() throws ServletException, IOException {
         String token = "expiredToken";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
