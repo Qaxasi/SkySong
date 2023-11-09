@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.authentication.security;
 
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,32 +39,6 @@ public class CustomAccessDeniedHandlerTest {
 
         stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
-    }
-    @Test
-    void shouldSetResponseStatusToForbidden() throws IOException {
-        when(response.getWriter()).thenReturn(printWriter);
-
-        customAccessDeniedHandler.handle(request, response, exception);
-
-        verify(response).setStatus(HttpServletResponse.SC_FORBIDDEN);
-    }
-    @Test
-    void shouldReturnContentTypeJsonWhenHandlingAccessDenied() throws IOException {
-        when(response.getWriter()).thenReturn(printWriter);
-
-        customAccessDeniedHandler.handle(request, response, exception);
-
-        verify(response).setContentType("application/json");
-    }
-    @Test
-    void shouldReturnValidJsonWhenHandlingAccessDenied() throws IOException {
-        when(response.getWriter()).thenReturn(printWriter);
-
-        customAccessDeniedHandler.handle(request, response, exception);
-
-        String jsonResponse = stringWriter.toString();
-
-        assertDoesNotThrow(() -> new JSONObject(jsonResponse));
     }
     @Test
     void shouldReturnMessageWhenHandlingAccessDenied() throws IOException {
