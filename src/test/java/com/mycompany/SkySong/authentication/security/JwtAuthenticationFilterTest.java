@@ -115,7 +115,7 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
-    void shouldNotAuthorizeWhenUserNotFound() throws ServletException, IOException {
+    void shouldNotProcessRequestWhenUserNotFound() throws ServletException, IOException {
         String token = "validTokenButNoUser";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
