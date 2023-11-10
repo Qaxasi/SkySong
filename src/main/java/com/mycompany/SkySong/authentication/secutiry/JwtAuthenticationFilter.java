@@ -39,7 +39,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
-            String token = getTokenFromRequest(request);
+            String token = CookieUtils.getCookie(request, "auth_token")
+                    .map(Cookie::getValue)
+                    .orElse(null);
 
             if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
