@@ -1,4 +1,9 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
-public class TokenStoreServiceImpl {
+import com.mycompany.SkySong.authentication.service.TokenStoreService;
+
+public class TokenStoreServiceImpl implements TokenStoreService {
+    @Override
+    public void blacklistToken(String token) {
+    }
 }
