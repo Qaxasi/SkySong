@@ -6,8 +6,6 @@ import com.mycompany.SkySong.authentication.service.TokenStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TokenStoreServiceImpl implements TokenStoreService {
-    @Autowired
-    private BlacklistedTokenDAO blacklistedTokenDAO;
     @Override
     public void blacklistToken(String token) {
         if (!blacklistedTokenDAO.existsByToken(token)) {
