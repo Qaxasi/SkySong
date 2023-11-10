@@ -3,6 +3,8 @@ package com.mycompany.SkySong.authentication.controller;
 import com.mycompany.SkySong.authentication.model.dto.JWTAuthResponse;
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.service.LoginService;
+import com.mycompany.SkySong.authentication.utils.constants.CookieUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +20,12 @@ public class LoginController {
         this.loginService = loginService;
     }
     @PostMapping("/login")
-    public ResponseEntity<JWTAuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JWTAuthResponse> login(@Valid @RequestBody LoginRequest loginRequest,
+                                                 HttpServletResponse response) {
         String token = loginService.login(loginRequest);
         JWTAuthResponse jwtAuthResponse = new JWTAuthResponse(token);
+
+        CookieUtils.addCookie(response, "auth_token", token, 24 * 60 * 60);
         return ResponseEntity.ok(jwtAuthResponse);
     }
 }
