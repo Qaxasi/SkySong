@@ -39,8 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
-            CookieUtils.getCookie(request, response, )
-
             String token = getTokenFromRequest(request);
 
             if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
@@ -65,17 +63,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.error("Error processing the request", e);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
-    }
-
-    private String getJwtFromCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie: cookies) {
-                if ("auth_token".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
     }
 }
