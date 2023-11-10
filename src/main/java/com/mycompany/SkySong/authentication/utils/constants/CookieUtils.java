@@ -27,4 +27,17 @@ public class CookieUtils {
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }
+    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            Arrays.stream(cookies)
+                    .filter(cookie -> name.equals(cookie.getName()))
+                    .forEach(cookie -> {
+                        cookie.setValue(null);
+                        cookie.setMaxAge(0);
+                        cookie.setPath("/");
+                        response.addCookie(cookie);
+                    });
+        }
+    }
 }
