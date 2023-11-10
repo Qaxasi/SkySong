@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.secutiry;
 
+import com.mycompany.SkySong.authentication.utils.constants.CookieUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -37,6 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
+            CookieUtils.getCookie(request, response, )
+
             String token = getTokenFromRequest(request);
 
             if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
@@ -63,12 +66,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
+ 
 }
