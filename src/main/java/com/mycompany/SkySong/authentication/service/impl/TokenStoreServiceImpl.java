@@ -15,4 +15,7 @@ public class TokenStoreServiceImpl implements TokenStoreService {
     public void blacklistToken(String token) {
         redisTemplate.opsForValue().set(token, "blacklisted", 15, TimeUnit.MINUTES);
     }
+    public boolean isTokenBlacklisted(String token) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(token));
+    }
 }
