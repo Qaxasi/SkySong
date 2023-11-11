@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.secutiry;
 
-import com.mycompany.SkySong.authentication.utils.constants.CookieUtils;
+import com.mycompany.SkySong.authentication.utils.CookieUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,23 +33,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     public void doFilterInternal(@NotNull HttpServletRequest request,
-                                    @NotNull HttpServletResponse response,
-                                    @NotNull FilterChain filterChain) throws ServletException, IOException {
+                                 @NotNull HttpServletResponse response,
+                                 @NotNull FilterChain filterChain) throws ServletException, IOException {
 
-        try {
-            log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
-            String token = CookieUtils.getCookie(request, "auth_token")
-                    .map(Cookie::getValue)
-                    .orElse(null);
+        log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
-            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+        String token = CookieUtils.getCookie(request, "auth_token")
+                .map(Cookie::getValue)
+                .orElse(null);
 
-                Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
-                String username = claims.getSubject();
+            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            String username = claims.getSubject();
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
@@ -59,11 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
             } else {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             }
-        } catch (Exception e) {
-            log.error("Error processing the request", e);
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }
