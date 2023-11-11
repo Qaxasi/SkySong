@@ -1,6 +1,9 @@
 package com.mycompany.SkySong.testsupport.controller;
 
+import jakarta.servlet.http.Cookie;
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -18,8 +21,9 @@ public class AssertControllerUtils {
                         .content(requestBody))
                 .andExpect(status().is(expectedStatusCode));
     }
-    public static void assertDeleteStatusReturns(MockMvc mockMvc, String endpoint, int expectedStatusCode) throws Exception {
-        mockMvc.perform(delete(endpoint))
+    public static void assertDeleteStatusReturns(MockMvc mockMvc, String endpoint, String token, int expectedStatusCode) throws Exception {
+        mockMvc.perform(delete(endpoint)
+                        .cookie(new Cookie("auth_token", token)))
                 .andExpect(status().is(expectedStatusCode));
     }
 
