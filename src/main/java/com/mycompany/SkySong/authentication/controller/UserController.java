@@ -3,7 +3,9 @@ package com.mycompany.SkySong.authentication.controller;
 import com.mycompany.SkySong.authentication.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.service.DeleteService;
-import com.mycompany.SkySong.authentication.service.TokenStoreService;
+import com.mycompany.SkySong.authentication.utils.CookieUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,5 +24,10 @@ public class UserController {
         }
         DeleteResponse deleteResponse = deleteService.deleteUser(userId);
         return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtils.deleteCookie(request, response, "auth_token");
+        return ResponseEntity.ok("User logged out successfully");
     }
 }
