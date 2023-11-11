@@ -25,9 +25,4 @@ public class UserController {
         DeleteResponse deleteResponse = deleteService.deleteUser(userId);
         return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
     }
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtils.deleteCookie(request, response, "auth_token");
-        return ResponseEntity.ok("User logged out successfully");
-    }
 }
