@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class DeleteUserController {
     private final DeleteService deleteService;
-    public UserController(DeleteService deleteService) {
+    public DeleteUserController(DeleteService deleteService) {
         this.deleteService = deleteService;
     }
     @DeleteMapping({"/","/{userId}"})
