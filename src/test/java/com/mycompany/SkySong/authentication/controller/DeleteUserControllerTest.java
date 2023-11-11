@@ -43,72 +43,57 @@ public class DeleteUserControllerTest {
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusOkWhenUserDeletedGivenValidUserId() throws Exception{
-        String token = AssertControllerUtils.obtainAccessToken(
-                mockMvc, "testAdmin", "testPassword@123");
-
         long userId = 1L;
 
         AssertControllerUtils.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, token,200);
+                mockMvc, "/api/v1/users/" + userId, 200);
     }
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
-        String token = AssertControllerUtils.obtainAccessToken(
-                mockMvc, "testAdmin", "testPassword@123");
-
         long userId = 10L;
 
         AssertControllerUtils.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, token, 404);
+                mockMvc, "/api/v1/users/" + userId, 404);
     }
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnBadRequestOnDeleteWithNoUserId() throws Exception {
-        String token = AssertControllerUtils.obtainAccessToken(
-                mockMvc, "testAdmin", "testPassword@123");
-
         AssertControllerUtils.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/", token, 400);
+                mockMvc, "/api/v1/users/",  400);
     }
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnBadRequestWhenUserDeletionGivenInvalidUserIdFormat() throws Exception {
-        String token = AssertControllerUtils.obtainAccessToken(
-                mockMvc, "testAdmin", "testPassword@123");
-
         String invalidUserId = "invalidFormat";
 
         AssertControllerUtils.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + invalidUserId, token,  400);
+                mockMvc, "/api/v1/users/" + invalidUserId, 400);
     }
     @Test
     @WithMockUser(roles="USER")
     void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
-        String token = AssertControllerUtils.obtainAccessToken(
-                mockMvc, "testUsername", "testPassword@123");
-
         long userId = 1L;
 
         AssertControllerUtils.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, token, 403);
+                mockMvc, "/api/v1/users/" + userId, 403);
     }
-//    @Test
-//    @WithMockUser(roles = "USER")
-//    void shouldReturnErrorMessageWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
-//        long userId = 1L;
-//
-//        AssertControllerUtils.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
-//                Map.of("$.error", "You do not have permission to perform this operation"));
-//    }
-//    @Test
-//    @WithMockUser(roles="ADMIN")
-//    void shouldReturnMessageOnUserDeletionWithInvalidIdFormat() throws Exception {
-//        String invalidUserId = "invalidFormat";
-//        String expectedMessage = "Invalid input data format";
-//
-//        AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/" + invalidUserId, expectedMessage);
-//    }
+    @Test
+    @WithMockUser(roles = "USER")
+    void shouldReturnErrorMessageWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
+        long userId = 1L;
+
+        AssertControllerUtils.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
+                Map.of("$.error", "You do not have permission to perform this operation."));
+    }
+    @Test
+    @WithMockUser(roles="ADMIN")
+    void shouldReturnMessageOnUserDeletionWithInvalidIdFormat() throws Exception {
+        String invalidUserId = "invalidFormat";
+        String expectedMessage = "Invalid input data format";
+
+        AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/" + invalidUserId, expectedMessage);
+    }
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnMessageOnUserDeletionWithNoUserId() throws Exception {
@@ -121,7 +106,7 @@ public class DeleteUserControllerTest {
         long userId = 1L;
 
         AssertControllerUtils.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, null, 401);
+                mockMvc, "/api/v1/users/" + userId, 401);
     }
     @Test
     void shouldReturnMessageWhenDeletingUserWithoutBeingAuthenticated() throws Exception {
