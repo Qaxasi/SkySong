@@ -21,23 +21,10 @@ public class AssertControllerUtils {
                         .content(requestBody))
                 .andExpect(status().is(expectedStatusCode));
     }
-    public static String obtainAccessToken(MockMvc mockMvc, String username, String password) throws Exception {
-        String json = "{\"usernameOrEmail\":\"" + username + "\", \"password\":\"" + password + "\"}";
-
-        MockHttpServletResponse response = mockMvc.perform(post("/api/v1/users/login")
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-
-        String jsonResponse = response.getContentAsString();
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-        return jsonObject.getString("accessToken");
-    }
     public static void assertDeleteStatusReturns(MockMvc mockMvc, String endpoint, int expectedStatusCode) throws Exception {
         mockMvc.perform(delete(endpoint))
                 .andExpect(status().is(expectedStatusCode));
     }
-
     public static void assertPostJsonReturns(MockMvc mockMvc, String endpoint, String requestBody, Map<String,
             Object> jsonPathExpectations) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
