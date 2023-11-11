@@ -4,7 +4,7 @@ import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
-import com.mycompany.SkySong.authentication.service.DeleteService;
+import com.mycompany.SkySong.authentication.service.DeleteUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class DeleteServiceImpl implements DeleteService {
+public class DeleteUserServiceImpl implements DeleteUserService {
     private final UserDAO userDAO;
 
-    public DeleteServiceImpl(UserDAO userDAO) {
+    public DeleteUserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
     @Transactional

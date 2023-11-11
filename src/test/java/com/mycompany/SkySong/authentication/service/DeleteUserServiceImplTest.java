@@ -7,7 +7,7 @@ import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
-import com.mycompany.SkySong.authentication.service.impl.DeleteServiceImpl;
+import com.mycompany.SkySong.authentication.service.impl.DeleteUserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,13 +23,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DeleteServiceImplTest {
-    private DeleteService deleteService;
+public class DeleteUserServiceImplTest {
+    private DeleteUserService deleteUserService;
     @Mock
     private UserDAO userDAO;
     @BeforeEach
     void init() {
-        deleteService = new DeleteServiceImpl(userDAO);
+        deleteUserService = new DeleteUserServiceImpl(userDAO);
     }
     @Test
     void shouldReturnSuccessMessageOnValidUserIdDeletion() {
@@ -42,7 +42,7 @@ public class DeleteServiceImplTest {
 
         when(userDAO.findById(userId)).thenReturn(Optional.of(user));
 
-        DeleteResponse response = deleteService.deleteUser(userId);
+        DeleteResponse response = deleteUserService.deleteUser(userId);
 
         String expectedMessage = "User with ID: " + userId + " deleted successfully.";
 
@@ -53,7 +53,7 @@ public class DeleteServiceImplTest {
         long userId = 1L;
         when(userDAO.findById(userId)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(UserNotFoundException.class, () -> deleteService.deleteUser(userId));
+        Exception exception = assertThrows(UserNotFoundException.class, () -> deleteUserService.deleteUser(userId));
 
         String expectedMessage = "User with ID: " + userId + " does not exist.";
 
@@ -70,7 +70,7 @@ public class DeleteServiceImplTest {
         when(userDAO.findById(userId)).thenReturn(Optional.of(mockUser));
         doThrow(new DatabaseException("Simulated database error")).when(userDAO).delete(mockUser);
 
-        assertThrows(DatabaseException.class, () -> deleteService.deleteUser(userId));
+        assertThrows(DatabaseException.class, () -> deleteUserService.deleteUser(userId));
     }
     @Test
     void shouldThrowMessageWhenUnexpectedErrorOccursWhileDeletingUser() {
@@ -83,7 +83,7 @@ public class DeleteServiceImplTest {
         when(userDAO.findById(userId)).thenReturn(Optional.of(mockUser));
         doThrow(new DataAccessException("Simulated database error") {}).when(userDAO).delete(mockUser);
 
-        Exception exception = assertThrows(DatabaseException.class, () -> deleteService.deleteUser(userId));
+        Exception exception = assertThrows(DatabaseException.class, () -> deleteUserService.deleteUser(userId));
 
         String expectedMessage = "An unexpected error occurred while deleting user. Please try again later.";
 
