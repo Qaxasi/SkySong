@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.authentication.utils.constants;
+package com.mycompany.SkySong.authentication.utils;
 
 
 import jakarta.servlet.http.Cookie;

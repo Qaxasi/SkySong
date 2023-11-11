@@ -3,7 +3,7 @@ package com.mycompany.SkySong.authentication.controller;
 import com.mycompany.SkySong.authentication.model.dto.JWTAuthResponse;
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.service.LoginService;
-import com.mycompany.SkySong.authentication.utils.constants.CookieUtils;
+import com.mycompany.SkySong.authentication.utils.CookieUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
