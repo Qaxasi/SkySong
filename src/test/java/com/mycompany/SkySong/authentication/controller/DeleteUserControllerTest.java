@@ -43,10 +43,13 @@ public class DeleteUserControllerTest {
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusOkWhenUserDeletedGivenValidUserId() throws Exception{
+        String token = AssertControllerUtils.obtainAccessToken(
+                mockMvc, "testAdmin", "testPassword@123");
+
         long userId = 1L;
 
         AssertControllerUtils.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, 200);
+                mockMvc, "/api/v1/users/" + userId, token,200);
     }
     @Test
     @WithMockUser(roles="ADMIN")
