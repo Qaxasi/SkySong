@@ -33,9 +33,8 @@ public class AssertControllerUtils {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         return jsonObject.getString("accessToken");
     }
-    public static void assertDeleteStatusReturns(MockMvc mockMvc, String endpoint, String token, int expectedStatusCode) throws Exception {
-        mockMvc.perform(delete(endpoint)
-                        .cookie(new Cookie("auth_token", token)))
+    public static void assertDeleteStatusReturns(MockMvc mockMvc, String endpoint, int expectedStatusCode) throws Exception {
+        mockMvc.perform(delete(endpoint))
                 .andExpect(status().is(expectedStatusCode));
     }
 
