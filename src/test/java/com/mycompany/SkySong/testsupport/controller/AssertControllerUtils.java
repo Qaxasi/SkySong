@@ -23,6 +23,13 @@ public class AssertControllerUtils {
                         .content(requestBody))
                 .andExpect(cookie().exists(cookieName));
     }
+    public static void assertCookieDoesNotExist(MockMvc mockMvc, String endpoint, String requestBody,
+                                                String cookieName) throws Exception {
+        mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(cookie().doesNotExist(cookieName));
+    }
 
 
 
