@@ -15,6 +15,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class AssertControllerUtils {
+
+    //Cookies
+    public static void assertCookieExist(MockMvc mockMvc, String endpoint, String requestBody, String cookieName) throws Exception {
+        mockMvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(cookie().exists(cookieName));
+    }
+
+
+
+
     public static void assertPostStatusReturns(MockMvc mockMvc, String endpoint, String requestBody, int expectedStatusCode) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
