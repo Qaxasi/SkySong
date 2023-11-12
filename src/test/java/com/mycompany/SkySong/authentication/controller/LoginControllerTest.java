@@ -56,6 +56,13 @@ public class LoginControllerTest {
         AssertControllerUtils.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 200);
     }
+    @Test
+    void shouldSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        String cookieName = "auth_token";
+
+        AssertControllerUtils.assertCookieExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+    }
 
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
