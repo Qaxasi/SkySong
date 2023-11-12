@@ -2,6 +2,7 @@ package com.mycompany.SkySong.testsupport.controller;
 
 import jakarta.servlet.http.Cookie;
 import org.json.JSONObject;
+import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,6 +38,14 @@ public class AssertControllerUtils {
                 .content(requestBody))
                 .andExpect(cookie().httpOnly(cookieName, true));
     }
+    public static void assertCookieMaxAge(MockMvc mockMvc, String endpoint, String requestBody,
+                                          String cookieName, int expectedMaxAge) throws Exception {
+        mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(cookie().maxAge(cookieName, expectedMaxAge));
+    }
+
 
 
 
