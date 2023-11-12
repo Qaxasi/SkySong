@@ -77,6 +77,15 @@ public class LoginControllerTest {
 
         AssertControllerUtils.assertCookieIsHttpOnly(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
+    @Test
+    void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        String cookieName = "auth_token";
+        int expectedMaxAge = 24 * 60 * 60;
+
+        AssertControllerUtils.assertCookieMaxAge(mockMvc, "/api/v1/users/login",
+                requestBody, cookieName, expectedMaxAge);
+    }
 
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
