@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({ServiceFailureException.class, DatabaseException.class})
-    public ResponseEntity<String> handleServiceFailureException(final RuntimeException ex) {
+    public ResponseEntity<String> handleInternalServerError(final RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler({BadCredentialsException.class, TokenException.class})
