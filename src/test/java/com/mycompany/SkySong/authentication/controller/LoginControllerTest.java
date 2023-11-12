@@ -70,6 +70,13 @@ public class LoginControllerTest {
 
         AssertControllerUtils.assertCookieDoesNotExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
+    @Test
+    void shouldSetAuthTokenCookieHttpOnlyOnSuccessfulLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        String cookieName = "auth_token";
+
+        AssertControllerUtils.assertCookieIsHttpOnly(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+    }
 
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
