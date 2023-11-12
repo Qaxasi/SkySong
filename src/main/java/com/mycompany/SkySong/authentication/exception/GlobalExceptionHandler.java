@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUserNotFoundException(final UserNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler({RegisterException.class, TokenException.class})
+    @ExceptionHandler({RegisterException.class, NullOrEmptyInputException.class})
     public ResponseEntity<String> handleRegisterException(final RegisterException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
@@ -29,13 +29,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleServiceFailureException(final ServiceFailureException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    @ExceptionHandler(BadCredentialsException.class)
+    @ExceptionHandler({BadCredentialsException.class, TokenException.class})
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
-    }
-    @ExceptionHandler(NullOrEmptyInputException.class)
-    public ResponseEntity<String> handleNullOrEmptyInputException(NullOrEmptyInputException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleMethodArgumentTypeMismatchException() {
