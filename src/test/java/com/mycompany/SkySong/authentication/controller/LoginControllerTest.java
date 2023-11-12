@@ -86,7 +86,13 @@ public class LoginControllerTest {
         AssertControllerUtils.assertCookieMaxAge(mockMvc, "/api/v1/users/login",
                 requestBody, cookieName, expectedMaxAge);
     }
+    @Test
+    void shouldMarkAuthTokenCookieAsSecureOnLogin() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        String cookieName = "auth_token";
 
+        AssertControllerUtils.assertCookieIsSecure(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+    }
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
