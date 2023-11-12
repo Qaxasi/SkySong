@@ -22,15 +22,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler({RegisterException.class, NullOrEmptyInputException.class})
-    public ResponseEntity<String> handleBadRequestExceptions(final RegisterException ex) {
+    public ResponseEntity<String> handleBadRequestExceptions(final RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({ServiceFailureException.class, DatabaseException.class})
-    public ResponseEntity<String> handleServiceFailureException(final ServiceFailureException ex) {
+    public ResponseEntity<String> handleServiceFailureException(final RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler({BadCredentialsException.class, TokenException.class})
-    public ResponseEntity<String> handleUnauthorizedExceptions(BadCredentialsException exception) {
+    public ResponseEntity<String> handleUnauthorizedExceptions(final RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
