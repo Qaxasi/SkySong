@@ -30,6 +30,14 @@ public class AssertControllerUtils {
                 .content(requestBody))
                 .andExpect(cookie().doesNotExist(cookieName));
     }
+    public static void assertCookieIsHttpOnly(MockMvc mockMvc, String endpoint, String requestBody,
+                                              String cookieName) throws Exception {
+        mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(cookie().httpOnly(cookieName, true));
+    }
+
 
 
 
