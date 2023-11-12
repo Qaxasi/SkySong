@@ -45,6 +45,13 @@ public class AssertControllerUtils {
                 .content(requestBody))
                 .andExpect(cookie().maxAge(cookieName, expectedMaxAge));
     }
+    public static void assertCookieIsSecure(MockMvc mockMvc, String endpoint, String requestBody,
+                                            String cookieName) throws Exception {
+        mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(cookie().secure(cookieName, true));
+    }
 
 
 
