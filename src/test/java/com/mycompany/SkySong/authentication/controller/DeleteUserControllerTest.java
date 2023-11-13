@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
+import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
@@ -18,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.sql.DataSource;
 import java.util.Map;
 
+import static org.mockito.Mockito.when;
+
 @WebMvcTest(DeleteUserController.class)
 public class DeleteUserControllerTest {
     @Autowired
@@ -25,8 +28,7 @@ public class DeleteUserControllerTest {
     @MockBean
     private DeleteUserService deleteUserService;
     @MockBean
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
+    private JwtTokenProvider jwtTokenProvider;
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusOkWhenUserDeletedGivenValidUserId() throws Exception{
