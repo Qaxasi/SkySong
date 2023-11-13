@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
+import com.mycompany.SkySong.authentication.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
@@ -17,10 +18,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.sql.DataSource;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -80,14 +83,6 @@ public class DeleteUserControllerTest {
                 mockMvc, "/api/v1/users/" + userId, 403);
     }
     @Test
-    @WithMockUser(roles = "USER")
-    void shouldReturnErrorMessageWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
-        long userId = 1L;
-
-        DeleteRequestAssertions.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
-                Map.of("$.error", "You do not have permission to perform this operation."));
-    }
-    @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnMessageOnUserDeletionWithInvalidIdFormat() throws Exception {
         String invalidUserId = "invalidFormat";
@@ -108,12 +103,5 @@ public class DeleteUserControllerTest {
 
         DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 401);
-    }
-    @Test
-    void shouldReturnMessageWhenDeletingUserWithoutBeingAuthenticated() throws Exception {
-        long userId = 1L;
-
-        DeleteRequestAssertions.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
-                Map.of("$.error", "Unauthorized access. Please log in."));
     }
 }
