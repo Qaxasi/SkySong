@@ -42,6 +42,9 @@ public class DeleteUserControllerTest {
     void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
         long userId = 10L;
 
+        when(deleteUserService.deleteUser(userId)).thenThrow(
+                new UserNotFoundException("User with this ID does not exist"));
+
         DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 404);
     }
