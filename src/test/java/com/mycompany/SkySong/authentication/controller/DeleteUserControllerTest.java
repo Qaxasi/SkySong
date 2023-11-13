@@ -20,8 +20,6 @@ import java.util.Map;
 public class DeleteUserControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private DataSource dataSource;
 
     @Test
     @WithMockUser(roles="ADMIN")
