@@ -15,8 +15,6 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
 public class DeleteUserControllerTest {
     @Autowired
     private MockMvc mockMvc;
