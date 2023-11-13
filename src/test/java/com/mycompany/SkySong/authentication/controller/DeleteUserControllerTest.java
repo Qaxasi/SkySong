@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.controller;
 
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
+import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
@@ -33,6 +34,10 @@ public class DeleteUserControllerTest {
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusOkWhenUserDeletedGivenValidUserId() throws Exception{
         long userId = 1L;
+
+        DeleteResponse expectedResponse = new DeleteResponse("User with ID: " + userId + " deleted successfully.");
+
+        when(deleteUserService.deleteUser(userId)).thenReturn(expectedResponse);
 
         DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 200);
