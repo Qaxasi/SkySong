@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.authentication.controller;
 
+import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,6 +22,10 @@ import java.util.Map;
 public class DeleteUserControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private DeleteUserService deleteUserService;
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Test
     @WithMockUser(roles="ADMIN")
