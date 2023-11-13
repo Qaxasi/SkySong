@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.controller;
 
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
+import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,7 +27,7 @@ public class DeleteUserControllerTest {
     void shouldReturnStatusOkWhenUserDeletedGivenValidUserId() throws Exception{
         long userId = 1L;
 
-        AssertControllerUtils.assertDeleteStatusReturns(
+        DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 200);
     }
     @Test
@@ -34,13 +35,13 @@ public class DeleteUserControllerTest {
     void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
         long userId = 10L;
 
-        AssertControllerUtils.assertDeleteStatusReturns(
+        DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 404);
     }
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnBadRequestOnDeleteWithNoUserId() throws Exception {
-        AssertControllerUtils.assertDeleteStatusReturns(
+        DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/",  400);
     }
     @Test
@@ -48,7 +49,7 @@ public class DeleteUserControllerTest {
     void shouldReturnBadRequestWhenUserDeletionGivenInvalidUserIdFormat() throws Exception {
         String invalidUserId = "invalidFormat";
 
-        AssertControllerUtils.assertDeleteStatusReturns(
+        DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + invalidUserId, 400);
     }
     @Test
@@ -56,7 +57,7 @@ public class DeleteUserControllerTest {
     void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
         long userId = 1L;
 
-        AssertControllerUtils.assertDeleteStatusReturns(
+        DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 403);
     }
     @Test
@@ -64,7 +65,7 @@ public class DeleteUserControllerTest {
     void shouldReturnErrorMessageWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
         long userId = 1L;
 
-        AssertControllerUtils.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
+        DeleteRequestAssertions.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
                 Map.of("$.error", "You do not have permission to perform this operation."));
     }
     @Test
@@ -73,27 +74,27 @@ public class DeleteUserControllerTest {
         String invalidUserId = "invalidFormat";
         String expectedMessage = "Invalid input data format";
 
-        AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/" + invalidUserId, expectedMessage);
+        DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + invalidUserId, expectedMessage);
     }
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnMessageOnUserDeletionWithNoUserId() throws Exception {
         String expectedMessage = "User ID is required and cannot be empty.";
 
-        AssertControllerUtils.assertDeleteResponse(mockMvc, "/api/v1/users/", expectedMessage);
+        DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/", expectedMessage);
     }
     @Test
     void shouldReturnUnauthorizedWhenDeletingUserWithoutBeingAuthenticated() throws Exception {
         long userId = 1L;
 
-        AssertControllerUtils.assertDeleteStatusReturns(
+        DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 401);
     }
     @Test
     void shouldReturnMessageWhenDeletingUserWithoutBeingAuthenticated() throws Exception {
         long userId = 1L;
 
-        AssertControllerUtils.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
+        DeleteRequestAssertions.assertDeleteJsonReturns(mockMvc, "/api/v1/users/" + userId,
                 Map.of("$.error", "Unauthorized access. Please log in."));
     }
 }
