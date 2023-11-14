@@ -146,6 +146,15 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String fakeToken = "fake-jwt-token";
 
+        when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(
+                new UsernamePasswordAuthenticationToken("testEmail@gmail.com", "testPassword@123"));
+
+        when(loginService.login(any(LoginRequest.class))).thenReturn(fakeToken);
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("testEmail@gmail.com",
+                        "testPassword@123", Collections.emptyList()));
+
         PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/login",
                 requestBody,
                 jsonPath("$.accessToken").isNotEmpty(),
