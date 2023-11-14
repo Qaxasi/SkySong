@@ -54,7 +54,8 @@ public class LoginControllerTest {
         when(loginService.login(any(LoginRequest.class))).thenReturn(fakeToken);
 
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken("testEmail@gmail.com", "testPassword@123", Collections.emptyList()));
+                new UsernamePasswordAuthenticationToken("testEmail@gmail.com",
+                        "testPassword@123", Collections.emptyList()));
 
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 200);
@@ -62,7 +63,17 @@ public class LoginControllerTest {
     @Test
     void shouldSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        String fakeToken = "fake-jwt-token";
         String cookieName = "auth_token";
+
+        when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(
+                new UsernamePasswordAuthenticationToken("testEmail@gmail.com", "testPassword@123"));
+
+        when(loginService.login(any(LoginRequest.class))).thenReturn(fakeToken);
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("testEmail@gmail.com",
+                        "testPassword@123", Collections.emptyList()));
 
         PostRequestAssertions.assertCookieExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
