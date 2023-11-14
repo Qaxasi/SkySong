@@ -25,8 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LoginControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private DataSource dataSource;
     @Test
     void shouldRespondWithOkStatusOnSuccessfulEmailLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
