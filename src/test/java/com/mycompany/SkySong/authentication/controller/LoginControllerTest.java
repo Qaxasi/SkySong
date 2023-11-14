@@ -160,7 +160,7 @@ public class LoginControllerTest {
                 jsonPath("$.accessToken").isNotEmpty());
     }
     @Test
-    void shouldReturnUnauthorizedStatusForInvalidUsernameLogin() throws Exception {
+    void shouldReturnUnauthorizedStatusForInvalidLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
 
         when(loginService.login(any(LoginRequest.class))).thenThrow(
