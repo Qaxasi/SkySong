@@ -63,7 +63,7 @@ public class LoginControllerTest {
     }
     @Test
     void shouldSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String fakeToken = "fake-jwt-token";
         String cookieName = "auth_token";
 
@@ -80,7 +80,7 @@ public class LoginControllerTest {
     }
     @Test
     void shouldNotSetAuthTokenCookieOnFailedLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"invalidPassword\"}";
+        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"invalidPassword\"}";
         String cookieName = "auth_token";
 
         when(loginService.login(any(LoginRequest.class))).thenThrow(
@@ -90,14 +90,14 @@ public class LoginControllerTest {
     }
     @Test
     void shouldSetAuthTokenCookieHttpOnlyOnSuccessfulLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
 
         PostRequestAssertions.assertCookieIsHttpOnly(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
         int expectedMaxAge = 24 * 60 * 60;
 
@@ -106,14 +106,14 @@ public class LoginControllerTest {
     }
     @Test
     void shouldMarkAuthTokenCookieAsSecureOnLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
 
         PostRequestAssertions.assertCookieIsSecure(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
 
         PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/login",
                 requestBody,
