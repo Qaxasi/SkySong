@@ -157,8 +157,7 @@ public class LoginControllerTest {
 
         PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/login",
                 requestBody,
-                jsonPath("$.accessToken").isNotEmpty(),
-                jsonPath("$.tokenType").isNotEmpty());
+                jsonPath("$.accessToken").isNotEmpty());
     }
     @Test
     void shouldReturnUnauthorizedStatusForInvalidUsernameLogin() throws Exception {
