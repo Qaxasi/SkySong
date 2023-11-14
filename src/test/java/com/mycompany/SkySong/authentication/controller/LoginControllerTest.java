@@ -108,6 +108,7 @@ public class LoginControllerTest {
     @Test
     void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
+        String fakeToken = "fake-jwt-token";
         String cookieName = "auth_token";
         int expectedMaxAge = 24 * 60 * 60;
 
