@@ -44,7 +44,7 @@ public class LoginControllerTest {
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
     @Test
-    void shouldRespondWithOkStatusOnSuccessfulEmailLogin() throws Exception {
+    void shouldRespondWithOkStatusOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String fakeToken = "fake-jwt-token";
 
