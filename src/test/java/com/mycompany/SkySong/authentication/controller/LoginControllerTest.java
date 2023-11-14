@@ -60,13 +60,6 @@ public class LoginControllerTest {
                 mockMvc,"/api/v1/users/login", requestBody, 200);
     }
     @Test
-    void shouldRespondWithOkStatusOnSuccessfulUsernameLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
-
-        PostRequestAssertions.assertPostStatusReturns(
-                mockMvc,"/api/v1/users/login", requestBody, 200);
-    }
-    @Test
     void shouldSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
