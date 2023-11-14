@@ -79,7 +79,7 @@ public class LoginControllerTest {
         PostRequestAssertions.assertCookieExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
-    void shouldNotSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
+    void shouldNotSetAuthTokenCookieOnFailedLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"invalidPassword\"}";
         String cookieName = "auth_token";
 
