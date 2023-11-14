@@ -163,6 +163,9 @@ public class LoginControllerTest {
     void shouldReturnUnauthorizedStatusForInvalidUsernameLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
 
+        when(loginService.login(any(LoginRequest.class))).thenThrow(
+                new BadCredentialsException("Incorrect credentials"));
+
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 401);
     }
