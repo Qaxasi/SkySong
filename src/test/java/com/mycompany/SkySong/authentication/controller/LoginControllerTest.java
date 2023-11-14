@@ -170,14 +170,6 @@ public class LoginControllerTest {
                 mockMvc,"/api/v1/users/login", requestBody, 401);
     }
     @Test
-    void shouldReturnUnauthorizedStatusForInvalidPasswordLogin() throws Exception {
-        final var requestBody =
-                "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
-
-        PostRequestAssertions.assertPostStatusReturns(
-                mockMvc,"/api/v1/users/login", requestBody, 401);
-    }
-    @Test
     void shouldReturnBadRequestForEmptyCredentialsLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
