@@ -112,6 +112,15 @@ public class LoginControllerTest {
         String cookieName = "auth_token";
         int expectedMaxAge = 24 * 60 * 60;
 
+        when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(
+                new UsernamePasswordAuthenticationToken("testEmail@gmail.com", "testPassword@123"));
+
+        when(loginService.login(any(LoginRequest.class))).thenReturn(fakeToken);
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("testEmail@gmail.com",
+                        "testPassword@123", Collections.emptyList()));
+
         PostRequestAssertions.assertCookieMaxAge(mockMvc, "/api/v1/users/login",
                 requestBody, cookieName, expectedMaxAge);
     }
