@@ -142,7 +142,7 @@ public class LoginControllerTest {
         PostRequestAssertions.assertCookieIsSecure(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
-    void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
+    void shouldReturnNonEmptyAccessTokenOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String fakeToken = "fake-jwt-token";
 
