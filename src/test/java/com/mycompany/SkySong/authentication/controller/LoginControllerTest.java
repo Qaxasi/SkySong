@@ -27,20 +27,6 @@ public class LoginControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private DataSource dataSource;
-    @BeforeEach
-    void init() throws Exception {
-        try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/user-data.sql"));
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
-        }
-    }
-    @AfterEach
-    void cleanup() throws Exception {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update("DELETE FROM user_roles");
-        jdbcTemplate.update("DELETE FROM users");
-        jdbcTemplate.update("DELETE FROM roles");
-    }
     @Test
     void shouldRespondWithOkStatusOnSuccessfulEmailLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
