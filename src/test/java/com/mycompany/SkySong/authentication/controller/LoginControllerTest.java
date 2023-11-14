@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
-import com.mycompany.SkySong.testsupport.controller.AssertControllerUtils;
+import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ public class LoginControllerTest {
     void shouldRespondWithOkStatusOnSuccessfulEmailLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 200);
 
     }
@@ -53,7 +53,7 @@ public class LoginControllerTest {
     void shouldRespondWithOkStatusOnSuccessfulUsernameLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 200);
     }
     @Test
@@ -61,21 +61,21 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
 
-        AssertControllerUtils.assertCookieExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        PostRequestAssertions.assertCookieExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldNotSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"invalidPassword\"}";
         String cookieName = "auth_token";
 
-        AssertControllerUtils.assertCookieDoesNotExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        PostRequestAssertions.assertCookieDoesNotExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldSetAuthTokenCookieHttpOnlyOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
 
-        AssertControllerUtils.assertCookieIsHttpOnly(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        PostRequestAssertions.assertCookieIsHttpOnly(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
@@ -83,7 +83,7 @@ public class LoginControllerTest {
         String cookieName = "auth_token";
         int expectedMaxAge = 24 * 60 * 60;
 
-        AssertControllerUtils.assertCookieMaxAge(mockMvc, "/api/v1/users/login",
+        PostRequestAssertions.assertCookieMaxAge(mockMvc, "/api/v1/users/login",
                 requestBody, cookieName, expectedMaxAge);
     }
     @Test
@@ -91,13 +91,13 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
 
-        AssertControllerUtils.assertCookieIsSecure(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        PostRequestAssertions.assertCookieIsSecure(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertPostFieldsReturns(mockMvc,"/api/v1/users/login",
+        PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/login",
                 requestBody,
                 jsonPath("$.accessToken").isNotEmpty(),
                 jsonPath("$.tokenType").isNotEmpty());
@@ -106,7 +106,7 @@ public class LoginControllerTest {
     void shouldReturnUnauthorizedStatusForInvalidUsernameLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 401);
     }
     @Test
@@ -114,21 +114,21 @@ public class LoginControllerTest {
         final var requestBody =
                 "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testWrongPassword@123\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 401);
     }
     @Test
     void shouldReturnBadRequestForEmptyCredentialsLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 400);
     }
     @Test
     void shouldReturnCorrectErrorMessageWhenLoginWithEmptyCredentials() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
 
-        AssertControllerUtils.assertPostJsonReturns(mockMvc,"/api/v1/users/login", requestBody,
+        PostRequestAssertions.assertPostJsonReturns(mockMvc,"/api/v1/users/login", requestBody,
                 Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
     }
@@ -136,7 +136,7 @@ public class LoginControllerTest {
     void shouldReturnBadRequestForMalformedLoginRequestBody() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"";
 
-        AssertControllerUtils.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 400);
     }
 
