@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.authentication.controller;
 
+import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
+import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.LoginService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
@@ -14,20 +16,31 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.util.Collections;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+
 @WebMvcTest(controllers = LoginController.class)
 public class LoginControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
     private LoginService loginService;
+    @MockBean
+    private AuthenticationManager authenticationManager;
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
     @Test
@@ -36,7 +49,6 @@ public class LoginControllerTest {
 
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 200);
-
     }
     @Test
     void shouldRespondWithOkStatusOnSuccessfulUsernameLogin() throws Exception {
