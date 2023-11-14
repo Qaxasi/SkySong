@@ -144,6 +144,7 @@ public class LoginControllerTest {
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
+        String fakeToken = "fake-jwt-token";
 
         PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/login",
                 requestBody,
