@@ -4,6 +4,7 @@ package com.mycompany.SkySong.authentication.config;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-
+@Slf4j
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
@@ -51,6 +52,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        log.info("SecurityConfig is loaded");
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
