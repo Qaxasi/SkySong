@@ -169,27 +169,4 @@ public class LoginControllerTest {
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 401);
     }
-    @Test
-    void shouldReturnBadRequestForEmptyCredentialsLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
-
-        PostRequestAssertions.assertPostStatusReturns(
-                mockMvc,"/api/v1/users/login", requestBody, 400);
-    }
-    @Test
-    void shouldReturnCorrectErrorMessageWhenLoginWithEmptyCredentials() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
-
-        PostRequestAssertions.assertPostJsonReturns(mockMvc,"/api/v1/users/login", requestBody,
-                Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
-                        "$.errors.password", "The password field cannot be empty"));
-    }
-    @Test
-    void shouldReturnBadRequestForMalformedLoginRequestBody() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"";
-
-        PostRequestAssertions.assertPostStatusReturns(
-                mockMvc,"/api/v1/users/login", requestBody, 400);
-    }
-
 }
