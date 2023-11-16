@@ -95,4 +95,11 @@ public class LoginControllerTest {
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", requestBody, 401);
     }
+    @Test
+    void shouldReturnBadRequestForMalformedLoginRequestBody() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"";
+
+        PostRequestAssertions.assertPostStatusReturns(
+                mockMvc,"/api/v1/users/login", requestBody, 400);
+    }
 }
