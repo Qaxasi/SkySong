@@ -17,5 +17,4 @@ public class LoginControllerUnitTest {
     private LoginService loginService;
     @InjectMocks
     private LoginController loginController;
-
 }
