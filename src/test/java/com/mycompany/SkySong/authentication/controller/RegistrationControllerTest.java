@@ -133,6 +133,9 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"test-invalid-password-format\"}";
 
+        when(registrationService.register(any(RegisterRequest.class))).thenThrow(
+                new RegisterException("Invalid password format"));
+
        PostRequestAssertions.assertPostStatusReturns(mockMvc, "/api/v1/users/register",
                requestBody, 400);
     }
