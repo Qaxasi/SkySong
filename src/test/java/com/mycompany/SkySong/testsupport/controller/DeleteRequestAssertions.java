@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class DeleteRequestAssertions {
     public static void assertDeleteStatusReturns(MockMvc mockMvc, String endpoint, int expectedStatusCode) throws Exception {
-        mockMvc.perform(delete(endpoint).with(csrf()))
+        mockMvc.perform(delete(endpoint))
                 .andExpect(status().is(expectedStatusCode));
     }
 
