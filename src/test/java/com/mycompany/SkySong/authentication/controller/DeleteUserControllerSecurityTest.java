@@ -54,4 +54,12 @@ public class DeleteUserControllerSecurityTest {
         DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, 401);
     }
+    @Test
+    @WithMockUser(roles="USER")
+    void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
+        long userId = 1L;
+
+        DeleteRequestAssertions.assertDeleteStatusReturns(
+                mockMvc, "/api/v1/users/" + userId, 403);
+    }
 }
