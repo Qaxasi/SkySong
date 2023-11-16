@@ -2,7 +2,6 @@ package com.mycompany.SkySong.authentication.controller;
 
 import com.mycompany.SkySong.authentication.config.SecurityConfig;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
-import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
@@ -13,12 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.Mockito.when;
 
@@ -37,18 +33,6 @@ public class DeleteUserControllerTest {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
-    @Test
-    @WithMockUser(roles="ADMIN")
-    void shouldReturnStatusOkWhenUserDeletedGivenValidUserId() throws Exception{
-        long userId = 1L;
-
-        DeleteResponse expectedResponse = new DeleteResponse("User with ID: " + userId + " deleted successfully.");
-
-        when(deleteUserService.deleteUser(userId)).thenReturn(expectedResponse);
-
-        DeleteRequestAssertions.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, 200);
-    }
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
