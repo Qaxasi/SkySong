@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.authentication.controller;
 
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
+import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.LoginService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
@@ -30,6 +32,9 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 public class LoginControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private UserDAO userDAO;
+
     @Test
     void shouldRespondWithOkStatusOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
