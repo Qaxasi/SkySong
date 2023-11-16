@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
-import com.mycompany.SkySong.testsupport.controller.AssertControllerUtils;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
