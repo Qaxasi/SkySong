@@ -82,6 +82,9 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
+        when(registrationService.register(any(RegisterRequest.class))).thenThrow(new RegisterException(
+                "Username is already exist"));
+
         PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
