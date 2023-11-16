@@ -29,4 +29,12 @@ public class LoginControllerUnitTest {
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .build();
     }
+    @Test
+    public void shouldReturnBadRequestForInvalidCredentials() throws Exception {
+        final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
+
+
+        PostRequestAssertions.assertPostStatusReturns(mockMvc, "/api/v1/users/login",
+                requestBody, 400);
+    }
 }
