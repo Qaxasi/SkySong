@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.controller;
 
 
 import com.mycompany.SkySong.authentication.config.SecurityConfig;
+import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
@@ -66,6 +67,10 @@ public class RegistrationControllerTest {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
+
+        when(registrationService.register(any(RegisterRequest.class))).thenReturn(
+                new RegistrationResponse("User registered successfully"));
+
         PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/register",
                 requestBody,
                 jsonPath("$.message").isNotEmpty());
