@@ -20,18 +20,13 @@ import java.util.Collections;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 
 @WebMvcTest(controllers = LoginController.class)
 public class LoginControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private LoginService loginService;
-    @MockBean
-    private AuthenticationManager authenticationManager;
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
     @Test
     void shouldRespondWithOkStatusOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
