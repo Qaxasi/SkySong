@@ -24,8 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RegistrationControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private DataSource dataSource;
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
