@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.authentication.controller;
 
-
 import com.mycompany.SkySong.authentication.exception.GlobalExceptionHandler;
 import com.mycompany.SkySong.authentication.service.LoginService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -32,7 +30,6 @@ public class LoginControllerUnitTest {
     @Test
     public void shouldReturnBadRequestForInvalidCredentials() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
-
 
         PostRequestAssertions.assertPostStatusReturns(mockMvc, "/api/v1/users/login",
                 requestBody, 400);
