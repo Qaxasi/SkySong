@@ -3,6 +3,8 @@ package com.mycompany.SkySong.authentication.controller;
 import com.mycompany.SkySong.authentication.config.SecurityConfig;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
+import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
+import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
@@ -12,9 +14,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.Mockito.when;
 
@@ -27,6 +31,12 @@ public class DeleteUserControllerTest {
     private DeleteUserService deleteUserService;
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
+    @MockBean
+    private UserDetailsService userDetailsService;
+    @MockBean
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @MockBean
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusOkWhenUserDeletedGivenValidUserId() throws Exception{
