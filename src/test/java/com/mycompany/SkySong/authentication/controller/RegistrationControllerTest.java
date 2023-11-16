@@ -1,6 +1,11 @@
 package com.mycompany.SkySong.authentication.controller;
 
 
+import com.mycompany.SkySong.authentication.config.SecurityConfig;
+import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
+import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.service.RegistrationService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,9 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,11 +28,25 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static reactor.core.publisher.Mono.when;
+
 @WebMvcTest(RegistrationController.class)
+@Import(SecurityConfig.class)
 public class RegistrationControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private RegistrationService registrationService;
+    @MockBean
+    private JwtTokenProvider jwtTokenProvider;
+    @MockBean
+    private UserDetailsService userDetailsService;
+    @MockBean
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @MockBean
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
