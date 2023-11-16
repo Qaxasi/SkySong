@@ -2,6 +2,8 @@ package com.mycompany.SkySong.authentication.controller;
 
 
 import com.mycompany.SkySong.authentication.config.SecurityConfig;
+import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
+import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
@@ -29,8 +31,8 @@ import java.sql.Connection;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static reactor.core.publisher.Mono.when;
 
 @WebMvcTest(RegistrationController.class)
 @Import(SecurityConfig.class)
@@ -52,6 +54,10 @@ public class RegistrationControllerTest {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
+
+        when(registrationService.register(any(RegisterRequest.class))).thenReturn(
+                new RegistrationResponse("User registered successfully"));
+
         PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 201);
     }
