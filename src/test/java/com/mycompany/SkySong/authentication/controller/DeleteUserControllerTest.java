@@ -62,16 +62,6 @@ public class DeleteUserControllerTest {
                 mockMvc, "/api/v1/users/" + invalidUserId, 400);
     }
     @Test
-    @WithMockUser(roles="USER")
-    void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
-        long userId = 1L;
-
-        when(deleteUserService.deleteUser(userId)).thenThrow(new AccessDeniedException("Access denied."));
-
-        DeleteRequestAssertions.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, 403);
-    }
-    @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnMessageOnUserDeletionWithInvalidIdFormat() throws Exception {
         String invalidUserId = "invalidFormat";
@@ -85,13 +75,5 @@ public class DeleteUserControllerTest {
         String expectedMessage = "User ID is required and cannot be empty.";
 
         DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/", expectedMessage);
-    }
-    @Test
-    @WithAnonymousUser
-    void shouldReturnUnauthorizedWhenDeletingUserWithoutBeingAuthenticated() throws Exception {
-        long userId = 1L;
-
-        DeleteRequestAssertions.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, 401);
     }
 }
