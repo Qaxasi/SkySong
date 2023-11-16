@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.controller;
 
 
+import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ public class RegistrationControllerTest {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
-        AssertControllerUtils.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 201);
     }
     @Test
@@ -56,7 +57,7 @@ public class RegistrationControllerTest {
         final var requestBody =
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
-        AssertControllerUtils.assertPostFieldsReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/register",
                 requestBody,
                 jsonPath("$.message").isNotEmpty());
     }
@@ -67,7 +68,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
     @Test
@@ -76,7 +77,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -86,7 +87,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"test-invalid-username-format\", \"email\": \"testUniqueEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -96,7 +97,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"test-invalid-email-format\", " +
                         "\"password\": \"testPassword@123\"}";
 
-        AssertControllerUtils.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -106,7 +107,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"test-invalid-password-format\"}";
 
-       AssertControllerUtils.assertPostStatusReturns(mockMvc, "/api/v1/users/register",
+       PostRequestAssertions.assertPostStatusReturns(mockMvc, "/api/v1/users/register",
                requestBody, 400);
     }
 
@@ -116,7 +117,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"";
 
-        AssertControllerUtils.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -126,7 +127,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"\", \"email\": \"\", " +
                         "\"password\": \"\"}";
 
-        AssertControllerUtils.assertPostJsonReturns(mockMvc, "/api/v1/users/register", requestBody,
+        PostRequestAssertions.assertPostJsonReturns(mockMvc, "/api/v1/users/register", requestBody,
                 Map.of("$.errors.username", "The username field cannot be empty.",
                         "$.errors.email","The email field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
