@@ -26,4 +26,11 @@ public class LogoutControllerTest {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
+    @Test
+    void shouldReturnStatusOkAfterSuccessfulLogout() throws Exception {
+        PostRequestAssertions.assertPostStatusReturnsWithoutBody(
+                mockMvc,
+                "/ap1/v1/users/logout",
+                200);
+    }
 }
