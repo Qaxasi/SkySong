@@ -54,6 +54,11 @@ public class PostRequestAssertions {
                         .content(requestBody))
                 .andExpect(status().is(expectedStatusCode));
     }
+    public static void assertPostStatusReturnsWithoutBody(MockMvc mockMvc, String endpoint, Cookie cookieName,
+                                                          int expectedStatusCode) throws Exception {
+        mockMvc.perform(post(endpoint).cookie(cookieName))
+                .andExpect(status().is(expectedStatusCode));
+    }
     public static void assertPostJsonReturns(MockMvc mockMvc, String endpoint, String requestBody, Map<String,
             Object> jsonPathExpectations) throws Exception {
         ResultActions actions = mockMvc.perform(post(endpoint)
