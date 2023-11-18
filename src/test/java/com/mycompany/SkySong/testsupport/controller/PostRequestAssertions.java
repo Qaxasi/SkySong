@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.testsupport.controller;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -72,5 +73,11 @@ public class PostRequestAssertions {
         for (ResultMatcher matcher : matchers) {
             actions.andExpect(matcher);
         }
+    }
+    public static void assertMessageReturns(MockMvc mockMvc, String endpoint, Cookie cookie,
+                                            String expectedMessage) throws Exception {
+        mockMvc.perform(post(endpoint).cookie(cookie))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedMessage));
     }
 }
