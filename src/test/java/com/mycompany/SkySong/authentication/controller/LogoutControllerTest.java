@@ -35,7 +35,7 @@ public class LogoutControllerTest {
         Cookie mockCookie = new Cookie("auth_token", "token-value");
         PostRequestAssertions.assertPostStatusReturnsWithoutBody(
                 mockMvc,
-                "/ap1/v1/users/logout",
+                "/api/v1/users/logout",
                 mockCookie,
                 200);
     }
