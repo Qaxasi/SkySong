@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(LogoutController.class)
@@ -32,5 +33,12 @@ public class LogoutControllerTest {
                 mockMvc,
                 "/ap1/v1/users/logout",
                 200);
+    }
+    @Test
+    @WithMockUser
+    void shouldReturnMessageAfterSuccessfulLogout() throws Exception {
+        String expectedMessage = "User logged out successfully";
+
+        PostRequestAssertions.assertMessageReturns(mockMvc, "/api/v1/users/logout", expectedMessage);
     }
 }
