@@ -32,17 +32,20 @@ public class LogoutControllerTest {
     @Test
     @WithMockUser
     void shouldReturnStatusOkAfterSuccessfulLogout() throws Exception {
+        Cookie mockCookie = new Cookie("auth_token", "token-value");
         PostRequestAssertions.assertPostStatusReturnsWithoutBody(
                 mockMvc,
                 "/ap1/v1/users/logout",
+                mockCookie,
                 200);
     }
     @Test
     @WithMockUser
     void shouldReturnMessageAfterSuccessfulLogout() throws Exception {
+        Cookie mockCookie = new Cookie("auth_token", "token-value");
         String expectedMessage = "User logged out successfully";
 
-        PostRequestAssertions.assertMessageReturns(mockMvc, "/api/v1/users/logout", expectedMessage);
+        PostRequestAssertions.assertMessageReturns(mockMvc, "/api/v1/users/logout", mockCookie, expectedMessage);
     }
     @Test
     @WithMockUser
