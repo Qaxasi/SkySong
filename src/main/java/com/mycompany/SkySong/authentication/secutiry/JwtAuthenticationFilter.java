@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
-        String token = CookieUtils.getCookie(request, "auth_token")
+        String token = cookieService.getCookie(request, "auth_token")
                 .map(Cookie::getValue)
                 .orElse(null);
 
