@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
 
+import com.mycompany.SkySong.authentication.service.CookieService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class CookieServiceImpl {
+public class CookieServiceImpl implements CookieService {
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
