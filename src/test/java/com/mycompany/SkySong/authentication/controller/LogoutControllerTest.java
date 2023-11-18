@@ -4,7 +4,9 @@ import com.mycompany.SkySong.authentication.config.SecurityConfig;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,5 +43,11 @@ public class LogoutControllerTest {
         String expectedMessage = "User logged out successfully";
 
         PostRequestAssertions.assertMessageReturns(mockMvc, "/api/v1/users/logout", expectedMessage);
+    }
+    @Test
+    @WithMockUser
+    void test() throws Exception {
+        Cookie mockCookie = new Cookie("auth_token", "token-value");
+        CookieAssertions.assertCookieIsDeleted(mockMvc, "/api/v1/users/logout", mockCookie);
     }
 }
