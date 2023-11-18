@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.secutiry;
 
-import com.mycompany.SkySong.authentication.utils.CookieUtils;
+import com.mycompany.SkySong.authentication.service.impl.CookieUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
