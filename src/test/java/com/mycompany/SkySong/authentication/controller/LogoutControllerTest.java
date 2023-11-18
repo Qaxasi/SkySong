@@ -28,6 +28,7 @@ public class LogoutControllerTest {
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
     @Test
+    @WithMockUser
     void shouldReturnStatusOkAfterSuccessfulLogout() throws Exception {
         PostRequestAssertions.assertPostStatusReturnsWithoutBody(
                 mockMvc,
