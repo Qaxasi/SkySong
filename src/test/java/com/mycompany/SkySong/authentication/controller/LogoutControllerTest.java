@@ -52,7 +52,7 @@ public class LogoutControllerTest {
     }
     @Test
     @WithMockUser
-    void test() throws Exception {
+    void shouldDeleteAuthTokenCookieOnLogout() throws Exception {
         Cookie mockCookie = new Cookie("auth_token", "token-value");
         CookieAssertions.assertCookieIsDeleted(mockMvc, "/api/v1/users/logout", mockCookie);
     }
