@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class CookieServiceImpl implements CookieService {
 
-    public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
+    public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             return Arrays.stream(cookies)
@@ -20,7 +20,7 @@ public class CookieServiceImpl implements CookieService {
         }
         return Optional.empty();
     }
-    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+    public void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
@@ -28,7 +28,7 @@ public class CookieServiceImpl implements CookieService {
         cookie.setMaxAge(maxAge);
         response.addCookie(cookie);
     }
-    public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
+    public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             Arrays.stream(cookies)
