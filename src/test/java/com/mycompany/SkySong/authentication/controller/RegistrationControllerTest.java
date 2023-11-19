@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.controller;
 
 import com.mycompany.SkySong.authentication.config.SecurityConfig;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
+import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
@@ -48,7 +49,7 @@ public class RegistrationControllerTest {
                         "\"password\": \"testPassword@123\"}";
 
         when(registrationService.register(any(RegisterRequest.class))).thenReturn(
-                new RegistrationResponse("User registered successfully"));
+                new ApiResponse("User registered successfully"));
 
         PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
                 requestBody, 201);
@@ -60,7 +61,7 @@ public class RegistrationControllerTest {
                         "\"password\": \"testPassword@123\"}";
 
         when(registrationService.register(any(RegisterRequest.class))).thenReturn(
-                new RegistrationResponse("User registered successfully"));
+                new ApiResponse("User registered successfully"));
 
         PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/register",
                 requestBody,
