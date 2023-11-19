@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.exception.RegisterException;
+import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.model.entity.User;
@@ -141,7 +142,7 @@ public class RegistrationServiceIntegrationTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
-        RegistrationResponse response = registrationService.register(registerRequest);
+        ApiResponse response = registrationService.register(registerRequest);
         assertEquals("User registered successfully", response.message());
 
         Optional<User> user = userDAO.findByUsername(registerRequest.username());
@@ -150,5 +151,4 @@ public class RegistrationServiceIntegrationTest {
         assertNotEquals(registerRequest.password(), encodedPasswordInDB);
         assertTrue(passwordEncoder.matches(registerRequest.password(), encodedPasswordInDB));
     }
-
 }
