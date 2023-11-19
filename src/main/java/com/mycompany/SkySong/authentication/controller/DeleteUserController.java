@@ -2,7 +2,6 @@ package com.mycompany.SkySong.authentication.controller;
 
 import com.mycompany.SkySong.authentication.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
-import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
