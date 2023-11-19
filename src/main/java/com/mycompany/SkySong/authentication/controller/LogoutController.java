@@ -2,7 +2,6 @@ package com.mycompany.SkySong.authentication.controller;
 
 import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
 import com.mycompany.SkySong.authentication.service.CookieService;
-import com.mycompany.SkySong.authentication.service.impl.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
