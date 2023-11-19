@@ -68,7 +68,10 @@ public class LogoutControllerTest {
         Cookie mockCookie = new Cookie("auth_token", "token-value");
         String expectedMessage = "User logged out successfully";
 
-        PostRequestAssertions.assertMessageReturns(mockMvc, "/api/v1/users/logout", mockCookie, expectedMessage);
+        PostRequestAssertions.assertMessageReturns(mockMvc,
+                "/api/v1/users/logout",
+                mockCookie,
+                expectedMessage);
     }
     @Test
     @WithMockUser
