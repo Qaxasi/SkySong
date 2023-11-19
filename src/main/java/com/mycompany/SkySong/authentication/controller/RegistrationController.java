@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
+import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.service.RegistrationService;
@@ -16,8 +17,8 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
     @PostMapping("/register")
-    public ResponseEntity<RegistrationResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        RegistrationResponse registrationResponse = registrationService.register(registerRequest);
+    public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
+        ApiResponse registrationResponse = registrationService.register(registerRequest);
         return new ResponseEntity<>(registrationResponse, HttpStatus.CREATED);
     }
 }
