@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
+import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
@@ -20,12 +21,12 @@ public class DeleteUserServiceImpl implements DeleteUserService {
     }
     @Transactional
     @Override
-    public DeleteResponse deleteUser(long userId) {
+    public ApiResponse deleteUser(long userId) {
         try {
             return userDAO.findById(userId).map(user -> {
                 userDAO.delete(user);
                 log.info("User with ID {} deleted successfully", userId);
-                return new DeleteResponse("User with ID: " + userId + " deleted successfully.");
+                return new ApiResponse("User with ID: " + userId + " deleted successfully.");
             }).orElseThrow(() -> {
                 log.info("User with ID {} does not exist", userId);
                 return new UserNotFoundException(
