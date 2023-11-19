@@ -20,7 +20,7 @@ public class LogoutController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         try {
-            CookieUtils.deleteCookie(request, response, "auth_token");
+            cookieService.deleteCookie(request, response, "auth_token");
             return ResponseEntity.ok("User logged out successfully");
         } catch (RuntimeException e) {
             throw new ServiceFailureException("Logout failed due to an internal error");
