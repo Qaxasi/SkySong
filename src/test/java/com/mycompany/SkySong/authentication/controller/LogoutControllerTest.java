@@ -8,6 +8,9 @@ import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,9 +20,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 @WebMvcTest(LogoutController.class)
 @Import(SecurityConfig.class)
 public class LogoutControllerTest {
@@ -35,6 +38,20 @@ public class LogoutControllerTest {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
+    @BeforeEach
+    void setUp() {
+        doAnswer(invocation -> {
+            HttpServletResponse response = invocation.getArgument(1);
+            Cookie cookie = new Cookie("auth_token", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+            return null;
+        }).when(cookieService).deleteCookie(
+                any(HttpServletRequest.class),
+                any(HttpServletResponse.class),
+                eq("auth_token"));
+    }
     @Test
     @WithMockUser
     void shouldReturnStatusOkAfterSuccessfulLogout() throws Exception {
@@ -65,7 +82,5 @@ public class LogoutControllerTest {
         PostRequestAssertions.assertPostStatusReturnsWithoutBodyAndCookie(mockMvc,
                 "/api/v1/users/logout",
                 200);
-        mockMvc.perform(post("/api/v1/users/logout"))
-                .andExpect(status().isOk());
     }
 }
