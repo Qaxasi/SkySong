@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.*;
+
 @WebMvcTest(LogoutController.class)
 @Import(SecurityConfig.class)
 public class LogoutControllerTest {
@@ -85,5 +87,15 @@ public class LogoutControllerTest {
         PostRequestAssertions.assertPostStatusReturnsWithoutBodyAndCookie(mockMvc,
                 "/api/v1/users/logout",
                 200);
+    }
+    @Test
+    @WithMockUser
+    void shouldHandleServiceFailureException() throws Exception {
+        doThrow(new RuntimeException("Internal Error")).when(cookieService).deleteCookie(any(), any(), any());
+
+        PostRequestAssertions.assertPostStatusReturnsWithoutBodyAndCookie(
+                mockMvc,
+                "/api/v1/users/logout",
+                500);
     }
 }
