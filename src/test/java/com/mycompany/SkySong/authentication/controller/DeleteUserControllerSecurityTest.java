@@ -4,6 +4,7 @@ import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
+import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,8 @@ public class DeleteUserControllerSecurityTest {
     private MockMvc mockMvc;
     @MockBean
     private UserDAO userDAO;
+    @MockBean
+    private CookieService cookieService;
     @BeforeEach
     void setUp() {
         Role role = new Role(UserRole.ROLE_USER);
