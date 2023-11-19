@@ -30,8 +30,6 @@ public class DeleteUserControllerSecurityTest {
     private MockMvc mockMvc;
     @MockBean
     private UserDAO userDAO;
-    @MockBean
-    private CookieService cookieService;
     @BeforeEach
     void setUp() {
         Role role = new Role(UserRole.ROLE_USER);
