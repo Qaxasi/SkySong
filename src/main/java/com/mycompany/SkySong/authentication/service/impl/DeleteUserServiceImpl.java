@@ -3,7 +3,6 @@ package com.mycompany.SkySong.authentication.service.impl;
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
-import com.mycompany.SkySong.authentication.model.dto.DeleteResponse;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
 import lombok.extern.slf4j.Slf4j;
