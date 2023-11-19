@@ -7,6 +7,7 @@ import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.authentication.service.RegistrationService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,8 @@ public class RegistrationControllerTest {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
+    @MockBean
+    private CookieService cookieService;
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
