@@ -90,4 +90,9 @@ public class PostRequestAssertions {
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedMessage));
     }
+    public static void assertMessageReturnsWithoutCookie(MockMvc mockMvc, String endpoint,
+                                            String expectedMessage) throws Exception {
+        mockMvc.perform(post(endpoint))
+                .andExpect(content().string(expectedMessage));
+    }
 }
