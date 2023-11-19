@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
+import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
@@ -37,7 +38,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Transactional
     @Override
-    public RegistrationResponse register(RegisterRequest registerRequest) {
+    public ApiResponse register(RegisterRequest registerRequest) {
 
         validationService.validateCredentials(registerRequest);
 
@@ -49,7 +50,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         } catch (DataAccessException ex) {
             throw new DatabaseException("An error occurred while processing your request. Please try again later.");
         }
-        return new RegistrationResponse("User registered successfully");
+        return new ApiResponse("User registered successfully");
     }
 
     private void checkForExistingCredentials(RegisterRequest registerRequest) {
