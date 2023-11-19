@@ -40,10 +40,6 @@ public class JwtAuthenticationFilterTest {
     private HttpServletRequest request;
     @Mock
     private FilterChain filterChain;
-    @BeforeEach
-    void setUp() {
-        jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenProvider, customUserDetailsService);
-    }
     @Test
     void shouldContinueWithFilterChainAfterSuccessfulAuthentication() throws ServletException, IOException {
         String token = "validToken";
