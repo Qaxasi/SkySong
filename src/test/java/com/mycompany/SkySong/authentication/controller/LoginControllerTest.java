@@ -4,6 +4,7 @@ import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
+import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,21 +49,21 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
 
-        PostRequestAssertions.assertCookieExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        CookieAssertions.assertCookieExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldNotSetAuthTokenCookieOnFailedLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"invalidPassword\"}";
         String cookieName = "auth_token";
 
-        PostRequestAssertions.assertCookieDoesNotExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        CookieAssertions.assertCookieDoesNotExist(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldSetAuthTokenCookieHttpOnlyOnSuccessfulLogin() throws Exception {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
 
-        PostRequestAssertions.assertCookieIsHttpOnly(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        CookieAssertions.assertCookieIsHttpOnly(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
@@ -70,7 +71,7 @@ public class LoginControllerTest {
         String cookieName = "auth_token";
         int expectedMaxAge = 24 * 60 * 60;
 
-        PostRequestAssertions.assertCookieMaxAge(mockMvc, "/api/v1/users/login",
+        CookieAssertions.assertCookieMaxAge(mockMvc, "/api/v1/users/login",
                 requestBody, cookieName, expectedMaxAge);
     }
     @Test
@@ -78,7 +79,7 @@ public class LoginControllerTest {
         final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
         String cookieName = "auth_token";
 
-        PostRequestAssertions.assertCookieIsSecure(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        CookieAssertions.assertCookieIsSecure(mockMvc, "/api/v1/users/login", requestBody, cookieName);
     }
     @Test
     void shouldReturnNonEmptyAccessTokenOnSuccessfulLogin() throws Exception {
