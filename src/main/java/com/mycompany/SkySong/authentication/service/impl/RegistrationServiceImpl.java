@@ -4,7 +4,6 @@ import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
 import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
-import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
