@@ -28,7 +28,7 @@ public class LoginController {
         String token = loginService.login(loginRequest);
         JWTAuthResponse jwtAuthResponse = new JWTAuthResponse(token);
 
-        CookieUtils.addCookie(response, "auth_token", token, 24 * 60 * 60);
+        cookieService.addCookie(response, "auth_token", token, 24 * 60 * 60);
         return ResponseEntity.ok(jwtAuthResponse);
     }
 }
