@@ -98,4 +98,12 @@ public class LogoutControllerTest {
                 "/api/v1/users/logout",
                 500);
     }
+    @Test
+    @WithMockUser
+    void shouldProcessLogoutForAnonymousUser() throws Exception {
+        PostRequestAssertions.assertPostStatusReturnsWithoutBodyAndCookie(
+                mockMvc,
+                "/api/v1/users/logout",
+                200);
+    }
 }
