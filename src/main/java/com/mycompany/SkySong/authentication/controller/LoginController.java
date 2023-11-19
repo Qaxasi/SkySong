@@ -4,7 +4,6 @@ import com.mycompany.SkySong.authentication.model.dto.JWTAuthResponse;
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.authentication.service.LoginService;
-import com.mycompany.SkySong.authentication.service.impl.CookieUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
