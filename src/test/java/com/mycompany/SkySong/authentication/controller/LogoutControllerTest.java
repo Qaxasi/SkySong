@@ -4,6 +4,7 @@ import com.mycompany.SkySong.authentication.config.SecurityConfig;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import jakarta.servlet.http.Cookie;
@@ -24,6 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LogoutControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private CookieService cookieService;
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
     @MockBean
