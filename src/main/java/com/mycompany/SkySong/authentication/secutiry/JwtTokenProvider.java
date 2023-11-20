@@ -56,13 +56,13 @@ public class JwtTokenProvider {
                     .parse(token);
             return true;
         } catch (ExpiredJwtException e) {
-            throw new TokenException("Expired JWT token");
+            throw new TokenException(messageService.getMessage("jwt.expired"));
         } catch (MalformedJwtException e) {
-            throw new TokenException("Invalid JWT token");
+            throw new TokenException(messageService.getMessage("jwt.invalid"));
         } catch (UnsupportedJwtException e) {
-            throw new TokenException("Unsupported JWT token");
+            throw new TokenException(messageService.getMessage("jwt.unsupported"));
         } catch (IllegalArgumentException e) {
-            throw new TokenException("JWT claims string is empty");
+            throw new TokenException(messageService.getMessage("jwt.claims.empty"));
         }
     }
 }
