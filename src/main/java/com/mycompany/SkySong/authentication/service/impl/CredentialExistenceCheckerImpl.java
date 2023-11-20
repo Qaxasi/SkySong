@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
+import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import com.mycompany.SkySong.authentication.service.CredentialExistenceChecker;
@@ -13,10 +14,14 @@ public class CredentialExistenceCheckerImpl implements CredentialExistenceChecke
         this.userDAO = userDAO;
         this.messageService = messageService;
     }
-
     @Override
     public void checkForExistingCredentials(RegisterRequest registerRequest) {
 
+    }
+    private void checkForExistingUsername(RegisterRequest registerRequest) {
+        if (userDAO.existsByUsername(registerRequest.username())) {
+            throw new RegisterException("Username is already exist!.");
+        }
     }
 
 
