@@ -3,6 +3,7 @@ package com.mycompany.SkySong.authentication.service.impl;
 import com.mycompany.SkySong.authentication.service.MessageService;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Properties;
 
 public class ApplicationMessageService implements MessageService {
@@ -23,6 +24,7 @@ public class ApplicationMessageService implements MessageService {
 
     @Override
     public String getMessage(String key, Object... params) {
-        return null;
+        String message = messages.getProperty(key, "Default message for " + key);
+        return MessageFormat.format(message, params);
     }
 }
