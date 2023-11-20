@@ -26,15 +26,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     // This method loads a user by either username or email
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        User user = userDAO.findByUsername(usernameOrEmail)
-                .orElseGet(() -> userDAO.findByEmail(usernameOrEmail)
-                        .orElseThrow(() -> new UsernameNotFoundException(
-                                messageService.getMessage("user.not.found", usernameOrEmail))));
+        User user = findUserByUsernameOrEmail(usernameOrEmail);
+        Set<GrantedAuthority> authorities = getAuthorities(user);
 
-        Set<GrantedAuthority> authorities = user
-                .getRoles()
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.toString())).collect(Collectors.toSet());
         return new org.springframework.security.core.userdetails.User(usernameOrEmail,
                 user.getPassword(),
                 authorities);
