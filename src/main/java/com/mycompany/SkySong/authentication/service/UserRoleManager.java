@@ -3,5 +3,5 @@ package com.mycompany.SkySong.authentication.service;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 
 public interface UserRoleManager {
-    Role getUserRole();
+    Role getRoleByName(String roleName);
 }
