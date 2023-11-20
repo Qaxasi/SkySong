@@ -20,7 +20,8 @@ public class DeleteUserController {
     @DeleteMapping({"/","/{userId}"})
     public ResponseEntity<ApiResponse> delete(@PathVariable(required = false) Long userId) {
         if (userId == null) {
-            throw new NullOrEmptyInputException("User ID is required and cannot be empty.");
+            String errorMessage = messageService.getMessage("user.id.required");
+            throw new NullOrEmptyInputException(errorMessage);
         }
         ApiResponse deleteResponse = deleteUserService.deleteUser(userId);
         return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
