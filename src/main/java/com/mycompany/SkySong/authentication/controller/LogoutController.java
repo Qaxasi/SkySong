@@ -23,9 +23,9 @@ public class LogoutController {
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         try {
             cookieService.deleteCookie(request, response, "auth_token");
-            return ResponseEntity.ok("User logged out successfully");
+            return ResponseEntity.ok(messageService.getMessage("logout.success"));
         } catch (RuntimeException e) {
-            throw new ServiceFailureException("Logout failed due to an internal error");
+            throw new ServiceFailureException(messageService.getMessage("logout.failure"));
         }
     }
 }
