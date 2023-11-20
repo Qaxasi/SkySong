@@ -8,6 +8,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
+    private final ApplicationMessageService messageService;
+
+    public ValidationServiceImpl(ApplicationMessageService messageService) {
+        this.messageService = messageService;
+    }
+
     @Override
     public void validateCredentials(RegisterRequest registerRequest) {
         validateUsername(registerRequest);
