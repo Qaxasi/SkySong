@@ -23,22 +23,19 @@ public class ValidationServiceImpl implements ValidationService {
 
     private void validateUsername(RegisterRequest registerRequest) {
         if (!registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
-            throw new RegisterException("Invalid username format. The username can contain only letters and numbers, " +
-                    "and should be between 3 to 20 characters long.");
+            throw new RegisterException(messageService.getMessage("validation.username.error"));
         }
     }
 
     private void validateEmail(RegisterRequest registerRequest) {
         if (!registerRequest.email().matches(ValidationPatterns.EMAIL_PATTERN)) {
-            throw new RegisterException("Invalid email address format. The email should follow the standard " +
-                    "format (e.g., user@example.com) and be between 6 to 30 characters long.");
+            throw new RegisterException(messageService.getMessage("validation.email.error"));
         }
     }
 
     private void validatePassword(RegisterRequest registerRequest) {
         if (!registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
-            throw new RegisterException("Invalid password format. The password must contain an least 8 characters," +
-                    " including uppercase letters, lowercase letters, numbers, and special characters.");
+            throw new RegisterException(messageService.getMessage("validation.password.error"));
         }
     }
 }
