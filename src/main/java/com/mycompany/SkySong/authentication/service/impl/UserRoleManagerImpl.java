@@ -14,9 +14,8 @@ public class UserRoleManagerImpl implements UserRoleManager {
         this.roleDAO = roleDAO;
         this.messageService = messageService;
     }
-
     @Override
-    public Role getUserRole() {
+    public Role getRoleByName(String roleName) {
         return null;
     }
 }
