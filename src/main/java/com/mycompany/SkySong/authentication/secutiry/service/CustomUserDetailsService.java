@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userDAO.findByUsername(usernameOrEmail)
                 .orElseGet(() -> userDAO.findByEmail(usernameOrEmail)
                         .orElseThrow(() -> new UsernameNotFoundException(
-                                "User not found with username or email: " + usernameOrEmail)));
+                                messageService.getMessage("user.not.found", usernameOrEmail))));
 
         Set<GrantedAuthority> authorities = user
                 .getRoles()
