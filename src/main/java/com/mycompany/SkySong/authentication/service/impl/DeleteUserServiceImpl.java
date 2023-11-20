@@ -27,16 +27,13 @@ public class DeleteUserServiceImpl implements DeleteUserService {
             return userDAO.findById(userId).map(user -> {
                 userDAO.delete(user);
                 log.info("User with ID {} deleted successfully", userId);
-                return new ApiResponse("User with ID: " + userId + " deleted successfully.");
+                return new ApiResponse(messageService.getMessage("user.delete.success", userId));
             }).orElseThrow(() -> {
                 log.info("User with ID {} does not exist", userId);
-                return new UserNotFoundException(
-                        "User with ID: " + userId + " does not exist."
-                );
+                return new UserNotFoundException(messageService.getMessage("user.delete.not-found", userId));
             });
         } catch (DataAccessException e) {
-                throw new DatabaseException(
-                        "An unexpected error occurred while deleting user. Please try again later.");
+                throw new DatabaseException(messageService.getMessage("user.delete.error"));
         }
     }
 }
