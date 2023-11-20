@@ -1,11 +1,12 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.service.MessageService;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Properties;
-
+@Service
 public class ApplicationMessageService implements MessageService {
     private final Properties messages = new Properties();
 
