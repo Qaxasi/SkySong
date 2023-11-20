@@ -18,7 +18,7 @@ public class ApplicationMessageService implements MessageService {
 
     @Override
     public String getMessage(String key) {
-        return null;
+        return messages.getProperty(key, "Default message for " + key);
     }
 
     @Override
