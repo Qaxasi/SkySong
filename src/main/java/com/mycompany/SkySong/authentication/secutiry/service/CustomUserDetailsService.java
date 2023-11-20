@@ -45,4 +45,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                         .orElseThrow(() -> new UsernameNotFoundException(
                                 messageService.getMessage("user.not.found", usernameOrEmail))));
     }
+    private  Set<GrantedAuthority> getAuthorities(User user) {
+        return user.getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(role.toString()))
+                .collect(Collectors.toSet());
+    }
 }
