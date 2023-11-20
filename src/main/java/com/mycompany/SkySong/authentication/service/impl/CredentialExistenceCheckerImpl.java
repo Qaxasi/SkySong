@@ -23,6 +23,11 @@ public class CredentialExistenceCheckerImpl implements CredentialExistenceChecke
             throw new RegisterException("Username is already exist!.");
         }
     }
+    private void checkForExistingEmail(RegisterRequest registerRequest) {
+        if (userDAO.existsByEmail(registerRequest.email())) {
+            throw new RegisterException("Email is already exist!.");
+        }
+    }
 
 
 }
