@@ -2,11 +2,13 @@ package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
+import com.mycompany.SkySong.authentication.service.ValidationService;
 import com.mycompany.SkySong.authentication.utils.constants.ValidationPatterns;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ValidationServiceImpl {
+public class ValidationServiceImpl implements ValidationService {
+    @Override
     public void validateCredentials(RegisterRequest registerRequest) {
         validateUsername(registerRequest);
         validateEmail(registerRequest);
