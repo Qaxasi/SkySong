@@ -26,13 +26,15 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final RoleDAO roleDAO;
     private final ValidationService validationService;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationMessageService messageService;
 
     public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO, ValidationService validationService,
-                                   PasswordEncoder passwordEncoder) {
+                                   PasswordEncoder passwordEncoder, ApplicationMessageService messageService) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.validationService = validationService;
         this.passwordEncoder = passwordEncoder;
+        this.messageService = messageService;
     }
 
     @Transactional
