@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.secutiry.service;
 
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
+import com.mycompany.SkySong.authentication.service.impl.ApplicationMessageService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserDAO userDAO;
+    private final ApplicationMessageService messageService;
 
-    public CustomUserDetailsService(UserDAO userDAO) {
+    public CustomUserDetailsService(UserDAO userDAO, ApplicationMessageService messageService) {
         this.userDAO = userDAO;
+        this.messageService = messageService;
     }
 
     // This method loads a user by either username or email
