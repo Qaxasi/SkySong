@@ -14,12 +14,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {
-
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    public LoginServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    private final ApplicationMessageService messageService;
+    public LoginServiceImpl(AuthenticationManager authenticationManager,
+                            JwtTokenProvider jwtTokenProvider,
+                            ApplicationMessageService messageService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.messageService = messageService;
     }
 
     @Override
