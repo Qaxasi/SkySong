@@ -16,7 +16,8 @@ public class CredentialExistenceCheckerImpl implements CredentialExistenceChecke
     }
     @Override
     public void checkForExistingCredentials(RegisterRequest registerRequest) {
-
+        checkForExistingUsername(registerRequest);
+        checkForExistingEmail(registerRequest);
     }
     private void checkForExistingUsername(RegisterRequest registerRequest) {
         if (userDAO.existsByUsername(registerRequest.username())) {
