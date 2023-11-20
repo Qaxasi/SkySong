@@ -39,4 +39,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getPassword(),
                 authorities);
     }
+    private User findUserByUsernameOrEmail(String usernameOrEmail) {
+        return userDAO.findByUsername(usernameOrEmail)
+                .orElseGet(() -> userDAO.findByEmail(usernameOrEmail)
+                        .orElseThrow(() -> new UsernameNotFoundException(
+                                messageService.getMessage("user.not.found", usernameOrEmail))));
+    }
 }
