@@ -33,7 +33,7 @@ public class LoginServiceImpl implements LoginService {
             return jwtTokenProvider.generateToken(authentication);
         } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
-            throw new BadCredentialsException("Incorrect username/email or password");
+            throw new BadCredentialsException(messageService.getMessage("login.failure"));
         }
     }
 
