@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.controller;
 
 import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
 import com.mycompany.SkySong.authentication.service.CookieService;
+import com.mycompany.SkySong.authentication.service.impl.ApplicationMessageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class LogoutController {
     private final CookieService cookieService;
-    public LogoutController(CookieService cookieService) {
+    private final ApplicationMessageService messageService;
+    public LogoutController(CookieService cookieService, ApplicationMessageService messageService) {
         this.cookieService = cookieService;
+        this.messageService = messageService;
     }
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
