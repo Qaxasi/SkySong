@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.authentication.secutiry;
 
 import com.mycompany.SkySong.authentication.exception.TokenException;
+import com.mycompany.SkySong.authentication.secutiry.service.interfaces.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.impl.ApplicationMessageService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -13,7 +14,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
-public class JwtTokenProviderImpl {
+public class JwtTokenProviderImpl implements JwtTokenProvider {
     private final String jwtSecret;
     private final long jwtExpirationDate;
     private final ApplicationMessageService messageService;
