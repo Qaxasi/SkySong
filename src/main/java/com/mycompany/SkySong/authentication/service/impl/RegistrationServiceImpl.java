@@ -51,9 +51,12 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         validationService.validateCredentials(registerRequest);
 
-        checkForExistingCredentials(registerRequest);
+        credentialExistenceChecker.checkForExistingCredentials(registerRequest);
 
-        User user = createUserFromRequest(registerRequest);
+        Role role = userRoleManager.getRoleByName(UserRole.ROLE_USER);
+
+        User user = userFactory.createUser(registerRequest, role);
+
         try {
             userDAO.save(user);
         } catch (DataAccessException ex) {
