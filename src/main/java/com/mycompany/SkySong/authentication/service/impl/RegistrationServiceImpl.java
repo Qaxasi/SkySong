@@ -8,7 +8,7 @@ import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
-import com.mycompany.SkySong.authentication.service.RegistrationService;
+import com.mycompany.SkySong.authentication.service.*;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +27,22 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final ValidationService validationService;
     private final PasswordEncoder passwordEncoder;
     private final ApplicationMessageService messageService;
+    private final UserRoleManager userRoleManager;
+    private final UserFactory userFactory;
+    private final CredentialExistenceChecker credentialExistenceChecker;
 
     public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO, ValidationService validationService,
-                                   PasswordEncoder passwordEncoder, ApplicationMessageService messageService) {
+                                   PasswordEncoder passwordEncoder, ApplicationMessageService messageService,
+                                   UserRoleManager userRoleManager, UserFactory userFactory,
+                                   CredentialExistenceChecker credentialExistenceChecker) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.validationService = validationService;
         this.passwordEncoder = passwordEncoder;
         this.messageService = messageService;
+        this.userRoleManager = userRoleManager;
+        this.userFactory = userFactory;
+        this.credentialExistenceChecker = credentialExistenceChecker;
     }
 
     @Transactional
