@@ -61,47 +61,4 @@ public class RegistrationServiceImpl implements RegistrationService {
         }
         return new ApiResponse("User registered successfully");
     }
-
-    private void checkForExistingCredentials(RegisterRequest registerRequest) {
-        checkForExistingUsername(registerRequest);
-        checkForExistingEmail(registerRequest);
-    }
-
-    private void checkForExistingUsername(RegisterRequest registerRequest) {
-        if (userDAO.existsByUsername(registerRequest.username())) {
-            throw new RegisterException("Username is already exist!.");
-        }
-    }
-
-    private void checkForExistingEmail(RegisterRequest registerRequest) {
-        if (userDAO.existsByEmail(registerRequest.email())) {
-            throw new RegisterException("Email is already exist!.");
-        }
-    }
-    private User createUserFromRequest(RegisterRequest registerRequest) {
-        User user = new User();
-        user.setUsername(registerRequest.username());
-        user.setEmail(registerRequest.email());
-        user.setPassword(encodePassword(registerRequest.password()));
-        user.setRoles(Set.of(getUserRole()));
-
-        return user;
-    }
-    private String encodePassword(String password) {
-        try {
-            return passwordEncoder.encode(password);
-        } catch (Exception ex) {
-            log.error("Error encoding the password");
-            throw new ServiceFailureException("There was an issue during password encoding. Please try again later.");
-
-        }
-    }
-    private Role getUserRole() {
-        return roleDAO.findByName(UserRole.ROLE_USER)
-                .orElseThrow(() -> {
-                    log.error("User role not set in the system!");
-                    return new ServiceFailureException(
-                            "There was an issue during registration. Please try again later.");
-                });
-    }
 }
