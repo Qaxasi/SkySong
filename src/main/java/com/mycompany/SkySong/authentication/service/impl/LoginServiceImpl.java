@@ -2,6 +2,7 @@ package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
 import com.mycompany.SkySong.authentication.secutiry.JwtTokenProviderImpl;
+import com.mycompany.SkySong.authentication.secutiry.service.interfaces.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,13 +16,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginServiceImpl implements LoginService {
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProviderImpl jwtTokenProviderImpl;
+    private final JwtTokenProvider jwtTokenProvider;
     private final ApplicationMessageService messageService;
     public LoginServiceImpl(AuthenticationManager authenticationManager,
-                            JwtTokenProviderImpl jwtTokenProviderImpl,
+                            JwtTokenProvider jwtTokenProvider,
                             ApplicationMessageService messageService) {
         this.authenticationManager = authenticationManager;
-        this.jwtTokenProviderImpl = jwtTokenProviderImpl;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.messageService = messageService;
     }
 
@@ -30,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
         try {
             Authentication authentication = authenticationUser(loginRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return jwtTokenProviderImpl.generateToken(authentication);
+            return jwtTokenProvider.generateToken(authentication);
         } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
             throw new BadCredentialsException(messageService.getMessage("login.failure"));
