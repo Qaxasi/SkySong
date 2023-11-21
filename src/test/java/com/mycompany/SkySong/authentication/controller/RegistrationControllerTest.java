@@ -6,7 +6,7 @@ import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProviderImpl;
 import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.authentication.service.RegistrationService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
@@ -32,7 +32,7 @@ public class RegistrationControllerTest {
     @MockBean
     private RegistrationService registrationService;
     @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProviderImpl jwtTokenProviderImpl;
     @MockBean
     private UserDetailsService userDetailsService;
     @MockBean

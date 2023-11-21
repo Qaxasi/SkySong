@@ -3,7 +3,7 @@ package com.mycompany.SkySong.authentication.controller;
 import com.mycompany.SkySong.authentication.config.SecurityConfig;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProviderImpl;
 import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
@@ -32,7 +32,7 @@ public class LogoutControllerTest {
     @MockBean
     private CookieService cookieService;
     @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProviderImpl jwtTokenProviderImpl;
     @MockBean
     private UserDetailsService userDetailsService;
     @MockBean

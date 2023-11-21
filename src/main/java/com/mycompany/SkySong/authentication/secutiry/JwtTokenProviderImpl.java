@@ -13,12 +13,12 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider {
+public class JwtTokenProviderImpl {
     private final String jwtSecret;
     private final long jwtExpirationDate;
     private final ApplicationMessageService messageService;
-    public JwtTokenProvider(@Value("${JWT_SECRET}") String jwtSecret,
-                            @Value("${app-jwt-expiration-milliseconds}") long jwtExpirationDate, ApplicationMessageService messageService) {
+    public JwtTokenProviderImpl(@Value("${JWT_SECRET}") String jwtSecret,
+                                @Value("${app-jwt-expiration-milliseconds}") long jwtExpirationDate, ApplicationMessageService messageService) {
         this.jwtSecret = jwtSecret;
         this.jwtExpirationDate = jwtExpirationDate;
         this.messageService = messageService;

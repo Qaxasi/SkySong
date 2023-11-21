@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.authentication.security;
 
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
-import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProviderImpl;
 import com.mycompany.SkySong.authentication.secutiry.service.CustomUserDetailsService;
 import com.mycompany.SkySong.testsupport.security.JwtAuthenticationFilterUtils;
 import jakarta.servlet.FilterChain;
@@ -36,7 +36,7 @@ public class JwtAuthenticationFilterIntegrationTest {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProviderImpl jwtTokenProviderImpl;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
     @MockBean
@@ -68,7 +68,7 @@ public class JwtAuthenticationFilterIntegrationTest {
     void shouldProcessValidJwtTokenAndContinueFilterChain() throws ServletException, IOException {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
-        String token = jwtTokenProvider.generateToken(authentication);
+        String token = jwtTokenProviderImpl.generateToken(authentication);
 
         request.addHeader("Authorization", "Bearer " + token);
 
@@ -80,7 +80,7 @@ public class JwtAuthenticationFilterIntegrationTest {
     void shouldSetSecurityContextWithValidJwtToken() throws ServletException, IOException {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
-        String token = jwtTokenProvider.generateToken(authentication);
+        String token = jwtTokenProviderImpl.generateToken(authentication);
 
         request.addHeader("Authorization", "Bearer " + token);
 
@@ -94,7 +94,7 @@ public class JwtAuthenticationFilterIntegrationTest {
     void shouldSetCorrectUsernameInSecurityContextWithValidJwtToken() throws ServletException, IOException {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
-        String token = jwtTokenProvider.generateToken(authentication);
+        String token = jwtTokenProviderImpl.generateToken(authentication);
 
         request.addHeader("Authorization", "Bearer " + token);
 

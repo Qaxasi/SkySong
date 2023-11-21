@@ -23,12 +23,12 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProviderImpl jwtTokenProviderImpl;
     private final UserDetailsService userDetailsService;
     private final CookieService cookieService;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService, CookieService cookieService) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtAuthenticationFilter(JwtTokenProviderImpl jwtTokenProviderImpl, UserDetailsService userDetailsService, CookieService cookieService) {
+        this.jwtTokenProviderImpl = jwtTokenProviderImpl;
         this.userDetailsService = userDetailsService;
         this.cookieService = cookieService;
     }
@@ -45,9 +45,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .map(Cookie::getValue)
                 .orElse(null);
 
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+        if (StringUtils.hasText(token) && jwtTokenProviderImpl.validateToken(token)) {
 
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+            Claims claims = jwtTokenProviderImpl.getClaimsFromToken(token);
 
             String username = claims.getSubject();
 

@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
-import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProviderImpl;
 import com.mycompany.SkySong.authentication.service.impl.LoginServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,8 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class LoginServiceImplTest {
     private LoginServiceImpl loginService;
     @Mock
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProviderImpl jwtTokenProviderImpl;
     @Mock
     private AuthenticationManager authenticationManager;
     @Mock
@@ -31,7 +29,7 @@ public class LoginServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        loginService = new LoginServiceImpl(authenticationManager, jwtTokenProvider);
+        loginService = new LoginServiceImpl(authenticationManager, jwtTokenProviderImpl);
 
     }
     @Test
@@ -40,7 +38,7 @@ public class LoginServiceImplTest {
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
-        when(jwtTokenProvider.generateToken(authentication)).thenReturn("validToken");
+        when(jwtTokenProviderImpl.generateToken(authentication)).thenReturn("validToken");
 
         String token = loginService.login(loginRequest);
 
@@ -79,6 +77,6 @@ public class LoginServiceImplTest {
 
         loginService.login(loginRequest);
 
-        verify(jwtTokenProvider).generateToken(authentication);
+        verify(jwtTokenProviderImpl).generateToken(authentication);
     }
 }

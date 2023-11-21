@@ -4,7 +4,7 @@ import com.mycompany.SkySong.authentication.config.SecurityConfig;
 import com.mycompany.SkySong.authentication.exception.UserNotFoundException;
 import com.mycompany.SkySong.authentication.secutiry.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProviderImpl;
 import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
@@ -27,7 +27,7 @@ public class DeleteUserControllerTest {
     @MockBean
     private DeleteUserService deleteUserService;
     @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProviderImpl jwtTokenProviderImpl;
     @MockBean
     private UserDetailsService userDetailsService;
     @MockBean

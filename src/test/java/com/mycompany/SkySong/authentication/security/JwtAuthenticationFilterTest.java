@@ -2,7 +2,7 @@ package com.mycompany.SkySong.authentication.security;
 
 import com.mycompany.SkySong.authentication.exception.TokenException;
 import com.mycompany.SkySong.authentication.secutiry.JwtAuthenticationFilter;
-import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProviderImpl;
 import com.mycompany.SkySong.authentication.secutiry.service.CustomUserDetailsService;
 import com.mycompany.SkySong.authentication.service.CookieService;
 import io.jsonwebtoken.Claims;
@@ -10,7 +10,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,7 +32,7 @@ public class JwtAuthenticationFilterTest {
     @Mock
     private CookieService cookieService;
     @Mock
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProviderImpl jwtTokenProviderImpl;
     @Mock
     private CustomUserDetailsService customUserDetailsService;
     @Mock
@@ -46,11 +45,11 @@ public class JwtAuthenticationFilterTest {
     void shouldContinueWithFilterChainAfterSuccessfulAuthentication() throws ServletException, IOException {
         String token = "validToken";
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProvider.validateToken(token)).thenReturn(true);
+        when(jwtTokenProviderImpl.validateToken(token)).thenReturn(true);
 
         Claims mockClaims = mock(Claims.class);
         when(mockClaims.getSubject()).thenReturn("username");
-        when(jwtTokenProvider.getClaimsFromToken(token)).thenReturn(mockClaims);
+        when(jwtTokenProviderImpl.getClaimsFromToken(token)).thenReturn(mockClaims);
 
         when(customUserDetailsService.loadUserByUsername("username")).thenReturn(mock(UserDetails.class));
 
@@ -62,11 +61,11 @@ public class JwtAuthenticationFilterTest {
     void shouldSetAuthenticationInSecurityContextAfterSuccessfulAuthentication() throws ServletException, IOException {
         String token = "validToken";
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProvider.validateToken(token)).thenReturn(true);
+        when(jwtTokenProviderImpl.validateToken(token)).thenReturn(true);
 
         Claims mockClaims = mock(Claims.class);
         when(mockClaims.getSubject()).thenReturn("username");
-        when(jwtTokenProvider.getClaimsFromToken(token)).thenReturn(mockClaims);
+        when(jwtTokenProviderImpl.getClaimsFromToken(token)).thenReturn(mockClaims);
 
         when(customUserDetailsService.loadUserByUsername("username")).thenReturn(mock(UserDetails.class));
 
@@ -80,7 +79,7 @@ public class JwtAuthenticationFilterTest {
         String token = "invalidToken";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProvider.validateToken(token)).thenReturn(false);
+        when(jwtTokenProviderImpl.validateToken(token)).thenReturn(false);
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
@@ -107,7 +106,7 @@ public class JwtAuthenticationFilterTest {
         String token = "expiredToken";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProvider.validateToken(token)).thenThrow(new TokenException("Token expired"));
+        when(jwtTokenProviderImpl.validateToken(token)).thenThrow(new TokenException("Token expired"));
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
@@ -118,11 +117,11 @@ public class JwtAuthenticationFilterTest {
         String token = "validTokenButNoUser";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProvider.validateToken(token)).thenReturn(true);
+        when(jwtTokenProviderImpl.validateToken(token)).thenReturn(true);
 
         Claims mockClaims = mock(Claims.class);
         when(mockClaims.getSubject()).thenReturn("unknownUser");
-        when(jwtTokenProvider.getClaimsFromToken(token)).thenReturn(mockClaims);
+        when(jwtTokenProviderImpl.getClaimsFromToken(token)).thenReturn(mockClaims);
 
         when(customUserDetailsService.loadUserByUsername("unknownUser")).thenThrow(
                 new UsernameNotFoundException("User not found"));
@@ -136,7 +135,7 @@ public class JwtAuthenticationFilterTest {
         String token = "token";
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProvider.validateToken(token)).thenThrow(
+        when(jwtTokenProviderImpl.validateToken(token)).thenThrow(
                 new RuntimeException("Unexpected error processing the request"));
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);

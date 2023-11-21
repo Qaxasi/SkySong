@@ -2,7 +2,7 @@ package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.exception.TokenException;
 import com.mycompany.SkySong.authentication.model.dto.LoginRequest;
-import com.mycompany.SkySong.authentication.secutiry.JwtTokenProvider;
+import com.mycompany.SkySong.authentication.secutiry.JwtTokenProviderImpl;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.config.Elements.JWT;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -31,7 +30,7 @@ public class LoginServiceImplIntegrationTest {
     @Autowired
     private LoginService loginService;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProviderImpl jwtTokenProviderImpl;
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -57,7 +56,7 @@ public class LoginServiceImplIntegrationTest {
 
         String token = loginService.login(loginRequest);
 
-        assertTrue(jwtTokenProvider.validateToken(token));
+        assertTrue(jwtTokenProviderImpl.validateToken(token));
     }
     @Test
     void shouldThrowExceptionWhenEmailLoggingWithInvalidPassword() {
@@ -88,7 +87,7 @@ public class LoginServiceImplIntegrationTest {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
-        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        Claims claims = jwtTokenProviderImpl.getClaimsFromToken(token);
         String username = claims.getSubject();
 
         assertEquals(loginRequest.usernameOrEmail(), username);
@@ -98,7 +97,7 @@ public class LoginServiceImplIntegrationTest {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
-        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        Claims claims = jwtTokenProviderImpl.getClaimsFromToken(token);
 
         assertNotNull(claims.getExpiration());
     }
@@ -111,11 +110,11 @@ public class LoginServiceImplIntegrationTest {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.usernameOrEmail(), loginRequest.password()));
 
-            String token = jwtTokenProvider.generateToken(authentication);
+            String token = jwtTokenProviderImpl.generateToken(authentication);
 
             Thread.sleep(1000 + 1000);
 
-            assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(token));
+            assertThrows(TokenException.class, () -> jwtTokenProviderImpl.validateToken(token));
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
