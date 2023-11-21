@@ -33,7 +33,7 @@ public class UserFactoryImpl implements UserFactory {
         try {
             return passwordEncoder.encode(password);
         } catch (IllegalArgumentException  ex) {
-            log.error("Error encoding the password");
+            log.error("Error encoding the password: " + ex.getMessage(), ex);
             throw new ServiceFailureException(messageService.getMessage("password.encoding.error"));
 
         }
