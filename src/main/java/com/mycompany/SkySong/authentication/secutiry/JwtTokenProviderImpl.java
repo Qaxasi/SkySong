@@ -18,12 +18,14 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     private final String jwtSecret;
     private final long jwtExpirationDate;
     private final ApplicationMessageService messageService;
+    private final JwtExceptionHandler jwtExceptionHandler;
     public JwtTokenProviderImpl(@Value("${JWT_SECRET}") String jwtSecret,
                                 @Value("${app-jwt-expiration-milliseconds}") long jwtExpirationDate,
-                                ApplicationMessageService messageService) {
+                                ApplicationMessageService messageService, JwtExceptionHandler jwtExceptionHandler) {
         this.jwtSecret = jwtSecret;
         this.jwtExpirationDate = jwtExpirationDate;
         this.messageService = messageService;
+        this.jwtExceptionHandler = jwtExceptionHandler;
     }
     @Override
     public String generateToken(Authentication authentication) {
