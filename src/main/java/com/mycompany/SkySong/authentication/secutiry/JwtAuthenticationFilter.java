@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.secutiry;
 
+import com.mycompany.SkySong.authentication.secutiry.service.interfaces.JwtTokenProvider;
 import com.mycompany.SkySong.authentication.service.CookieService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -23,12 +24,12 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProviderImpl jwtTokenProviderImpl;
+    private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
     private final CookieService cookieService;
 
-    public JwtAuthenticationFilter(JwtTokenProviderImpl jwtTokenProviderImpl, UserDetailsService userDetailsService, CookieService cookieService) {
-        this.jwtTokenProviderImpl = jwtTokenProviderImpl;
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService, CookieService cookieService) {
+        this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.cookieService = cookieService;
     }
@@ -45,9 +46,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .map(Cookie::getValue)
                 .orElse(null);
 
-        if (StringUtils.hasText(token) && jwtTokenProviderImpl.validateToken(token)) {
+        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
-            Claims claims = jwtTokenProviderImpl.getClaimsFromToken(token);
+            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
 
             String username = claims.getSubject();
 
