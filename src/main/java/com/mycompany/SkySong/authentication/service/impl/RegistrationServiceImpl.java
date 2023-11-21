@@ -23,22 +23,18 @@ import java.util.Set;
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
-    private final RoleDAO roleDAO;
     private final ValidationService validationService;
-    private final PasswordEncoder passwordEncoder;
     private final ApplicationMessageService messageService;
     private final UserRoleManager userRoleManager;
     private final UserFactory userFactory;
     private final CredentialExistenceChecker credentialExistenceChecker;
 
-    public RegistrationServiceImpl(UserDAO userDAO, RoleDAO roleDAO, ValidationService validationService,
-                                   PasswordEncoder passwordEncoder, ApplicationMessageService messageService,
+    public RegistrationServiceImpl(UserDAO userDAO, ValidationService validationService,
+                                   ApplicationMessageService messageService,
                                    UserRoleManager userRoleManager, UserFactory userFactory,
                                    CredentialExistenceChecker credentialExistenceChecker) {
         this.userDAO = userDAO;
-        this.roleDAO = roleDAO;
         this.validationService = validationService;
-        this.passwordEncoder = passwordEncoder;
         this.messageService = messageService;
         this.userRoleManager = userRoleManager;
         this.userFactory = userFactory;
