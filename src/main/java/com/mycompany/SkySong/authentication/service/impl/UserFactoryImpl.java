@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
+import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
@@ -11,5 +12,14 @@ public class UserFactoryImpl implements UserFactory {
     @Override
     public User createUser(RegisterRequest registerRequest, Role role) {
         return null;
+    }
+    private String encodePassword(String password) {
+        try {
+            return passwordEncoder.encode(password);
+        } catch (Exception ex) {
+            log.error("Error encoding the password");
+            throw new ServiceFailureException("There was an issue during password encoding. Please try again later.");
+
+        }
     }
 }
