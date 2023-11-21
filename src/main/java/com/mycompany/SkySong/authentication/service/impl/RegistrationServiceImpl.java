@@ -39,7 +39,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Transactional
     @Override
-    public ApiResponse register(RegisterRequest registerRequest) {
+    public ApiResponse register(RegisterRequest registerRequest) throws DatabaseException {
 
         validationService.validateCredentials(registerRequest);
 
