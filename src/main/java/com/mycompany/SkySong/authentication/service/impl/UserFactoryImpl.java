@@ -8,6 +8,8 @@ import com.mycompany.SkySong.authentication.service.UserFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 public class UserFactoryImpl implements UserFactory {
     private final PasswordEncoder passwordEncoder;
@@ -18,7 +20,12 @@ public class UserFactoryImpl implements UserFactory {
     }
     @Override
     public User createUser(RegisterRequest registerRequest, Role role) {
-        return null;
+        User user = new User();
+        user.setUsername(registerRequest.username());
+        user.setEmail(registerRequest.email());
+        user.setPassword(encodePassword(registerRequest.password()));
+        user.setRoles(Collections.singleton(role));
+        return user;
     }
     private String encodePassword(String password) {
         try {
