@@ -17,6 +17,11 @@ import java.util.Map;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleAllExceptions(Exception ex) {
+        log.error("Unexpected error: " + ex.getMessage());
+        return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(final UserNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
