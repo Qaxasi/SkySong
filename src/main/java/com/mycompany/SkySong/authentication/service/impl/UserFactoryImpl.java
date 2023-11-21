@@ -25,7 +25,7 @@ public class UserFactoryImpl implements UserFactory {
             return passwordEncoder.encode(password);
         } catch (Exception ex) {
             log.error("Error encoding the password");
-            throw new ServiceFailureException("There was an issue during password encoding. Please try again later.");
+            throw new ServiceFailureException(messageService.getMessage("password.encoding.error"));
 
         }
     }
