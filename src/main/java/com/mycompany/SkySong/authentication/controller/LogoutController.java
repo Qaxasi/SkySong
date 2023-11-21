@@ -5,11 +5,12 @@ import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.authentication.service.impl.ApplicationMessageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
 public class LogoutController {
