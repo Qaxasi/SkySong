@@ -60,8 +60,8 @@ public class RegistrationServiceImpl implements RegistrationService {
         try {
             userDAO.save(user);
         } catch (DataAccessException ex) {
-            throw new DatabaseException("An error occurred while processing your request. Please try again later.");
+            throw new DatabaseException(messageService.getMessage("user.registration.error"));
         }
-        return new ApiResponse("User registered successfully");
+        return new ApiResponse(messageService.getMessage("user.registration.success"));
     }
 }
