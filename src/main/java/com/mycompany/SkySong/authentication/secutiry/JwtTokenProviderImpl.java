@@ -57,14 +57,9 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
                     .build()
                     .parse(token);
             return true;
-        } catch (ExpiredJwtException e) {
-            throw new TokenException(messageService.getMessage("jwt.expired"));
-        } catch (MalformedJwtException e) {
-            throw new TokenException(messageService.getMessage("jwt.invalid"));
-        } catch (UnsupportedJwtException e) {
-            throw new TokenException(messageService.getMessage("jwt.unsupported"));
-        } catch (IllegalArgumentException e) {
-            throw new TokenException(messageService.getMessage("jwt.claims.empty"));
+        } catch (Exception e) {
+            jwtExceptionHandler.handleException(e);
+            return false;
         }
     }
     private Key key() {
