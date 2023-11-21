@@ -1,19 +1,15 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
-import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
 import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
-import com.mycompany.SkySong.authentication.exception.RegisterException;
 import com.mycompany.SkySong.authentication.model.entity.Role;
-import com.mycompany.SkySong.authentication.repository.RoleDAO;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.service.*;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
