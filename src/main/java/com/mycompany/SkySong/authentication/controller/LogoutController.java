@@ -26,6 +26,7 @@ public class LogoutController {
             cookieService.deleteCookie(request, response, "auth_token");
             return ResponseEntity.ok(messageService.getMessage("logout.success"));
         } catch (RuntimeException e) {
+            log.error("Error while logging out: " + e.getMessage(), e);
             throw new ServiceFailureException(messageService.getMessage("logout.failure"));
         }
     }
