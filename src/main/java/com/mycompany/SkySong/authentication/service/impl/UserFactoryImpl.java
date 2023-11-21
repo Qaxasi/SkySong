@@ -5,12 +5,14 @@ import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.service.UserFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
 @Service
+@Slf4j
 public class UserFactoryImpl implements UserFactory {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationMessageService messageService;
