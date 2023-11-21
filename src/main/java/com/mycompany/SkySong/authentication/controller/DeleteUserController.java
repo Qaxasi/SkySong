@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
+import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.service.DeleteUserService;
@@ -18,7 +19,7 @@ public class DeleteUserController {
         this.messageService = messageService;
     }
     @DeleteMapping({"/","/{userId}"})
-    public ResponseEntity<ApiResponse> delete(@PathVariable(required = false) Long userId) {
+    public ResponseEntity<ApiResponse> delete(@PathVariable(required = false) Long userId) throws DatabaseException {
         if (userId == null) {
             String errorMessage = messageService.getMessage("user.id.required");
             throw new NullOrEmptyInputException(errorMessage);
