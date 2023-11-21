@@ -4,7 +4,9 @@ import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
 import com.mycompany.SkySong.authentication.service.UserFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserFactoryImpl implements UserFactory {
     @Override
     public User createUser(RegisterRequest registerRequest, Role role) {
