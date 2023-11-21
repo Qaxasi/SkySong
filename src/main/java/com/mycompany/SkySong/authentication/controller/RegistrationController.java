@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
+import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.model.dto.ApiResponse;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.service.RegistrationService;
@@ -16,7 +17,8 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<ApiResponse> register(
+            @Valid @RequestBody RegisterRequest registerRequest) throws DatabaseException {
         ApiResponse registrationResponse = registrationService.register(registerRequest);
         return new ResponseEntity<>(registrationResponse, HttpStatus.CREATED);
     }
