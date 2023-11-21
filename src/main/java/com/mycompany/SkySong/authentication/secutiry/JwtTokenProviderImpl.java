@@ -19,12 +19,13 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     private final long jwtExpirationDate;
     private final ApplicationMessageService messageService;
     public JwtTokenProviderImpl(@Value("${JWT_SECRET}") String jwtSecret,
-                                @Value("${app-jwt-expiration-milliseconds}") long jwtExpirationDate, ApplicationMessageService messageService) {
+                                @Value("${app-jwt-expiration-milliseconds}") long jwtExpirationDate,
+                                ApplicationMessageService messageService) {
         this.jwtSecret = jwtSecret;
         this.jwtExpirationDate = jwtExpirationDate;
         this.messageService = messageService;
     }
-
+    @Override
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
 
@@ -38,9 +39,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
                 .signWith(key())
                 .compact();
     }
-    private Key key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-    }
+    @Override
     public Claims getClaimsFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key())
@@ -48,7 +47,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
+    @Override
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -65,5 +64,8 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         } catch (IllegalArgumentException e) {
             throw new TokenException(messageService.getMessage("jwt.claims.empty"));
         }
+    }
+    private Key key() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 }
