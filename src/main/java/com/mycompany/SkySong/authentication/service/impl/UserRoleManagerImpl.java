@@ -22,7 +22,7 @@ public class UserRoleManagerImpl implements UserRoleManager {
     public Role getRoleByName(UserRole userRole) {
         return roleDAO.findByName(userRole)
                 .orElseThrow(() -> {
-                    log.error("User role not set in the system!");
+                    log.error("User role not set in the system: " + userRole);
                     return new ServiceFailureException(messageService.getMessage("user.role.not-set"));
                 });
     }
