@@ -55,8 +55,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String> handleHttpMessageNotReadableException(final HttpMessageNotReadableException exception) {
+    public ResponseEntity<Object> handleHttpMessageNotReadableException(final HttpMessageNotReadableException exception) {
         String errorMessage = "Invalid JSON format: " + exception.getMessage();
-        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        return ErrorResponseBuilder.createErrorResponse(errorMessage, HttpStatus.BAD_REQUEST);
     }
 }
