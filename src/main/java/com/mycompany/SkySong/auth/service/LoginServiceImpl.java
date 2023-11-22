@@ -2,7 +2,6 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
