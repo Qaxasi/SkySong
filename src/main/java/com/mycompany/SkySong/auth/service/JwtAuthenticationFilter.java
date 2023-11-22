@@ -1,7 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.service.JwtTokenProvider;
-import com.mycompany.SkySong.auth.service.CookieService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
