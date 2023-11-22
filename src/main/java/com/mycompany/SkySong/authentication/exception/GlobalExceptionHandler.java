@@ -23,8 +23,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFoundException(final UserNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> handleUserNotFoundException(final UserNotFoundException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler({RegisterException.class, NullOrEmptyInputException.class})
     public ResponseEntity<Object> handleBadRequestExceptions(final RuntimeException ex) {
