@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Properties;
 @Service
-public class ApplicationMessageServiceImpl implements ApplicationMessageService {
+class ApplicationMessageServiceImpl implements ApplicationMessageService {
     private final Properties messages = new Properties();
 
     public ApplicationMessageServiceImpl() {
