@@ -18,9 +18,10 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleAllExceptions(Exception ex) {
+    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
         log.error("Unexpected error: " + ex.getMessage());
-        return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        return ErrorResponseBuilder.createErrorResponse("Internal server error",
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleUserNotFoundException(final UserNotFoundException ex) {
