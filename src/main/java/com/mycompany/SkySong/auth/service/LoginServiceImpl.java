@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class LoginServiceImpl implements LoginService {
+class LoginServiceImpl implements LoginService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final ApplicationMessageService messageService;
