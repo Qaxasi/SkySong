@@ -4,7 +4,6 @@ import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import org.springframework.stereotype.Service;
 
 @Service
