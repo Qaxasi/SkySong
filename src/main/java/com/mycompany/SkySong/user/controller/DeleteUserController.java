@@ -3,6 +3,7 @@ package com.mycompany.SkySong.user.controller;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.user.service.DeleteUserService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class DeleteUserController {
     private final DeleteUserService deleteUserService;
-    private final ApplicationMessageServiceImpl messageService;
-    public DeleteUserController(DeleteUserService deleteUserService, ApplicationMessageServiceImpl messageService) {
+    private final ApplicationMessageService messageService;
+    public DeleteUserController(DeleteUserService deleteUserService, ApplicationMessageService messageService) {
         this.deleteUserService = deleteUserService;
         this.messageService = messageService;
     }
