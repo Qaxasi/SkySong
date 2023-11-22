@@ -2,15 +2,16 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import com.mycompany.SkySong.shared.util.ValidationPatterns;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ValidationServiceImpl implements ValidationService {
-    private final ApplicationMessageServiceImpl messageService;
+    private final ApplicationMessageService messageService;
 
-    public ValidationServiceImpl(ApplicationMessageServiceImpl messageService) {
+    public ValidationServiceImpl(ApplicationMessageService messageService) {
         this.messageService = messageService;
     }
 
