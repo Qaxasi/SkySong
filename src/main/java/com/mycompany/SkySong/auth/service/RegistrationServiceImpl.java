@@ -7,6 +7,7 @@ import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.repository.UserDAO;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -18,13 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final ValidationService validationService;
-    private final ApplicationMessageServiceImpl messageService;
+    private final ApplicationMessageService messageService;
     private final UserRoleManager userRoleManager;
     private final UserFactory userFactory;
     private final CredentialExistenceChecker credentialExistenceChecker;
 
     public RegistrationServiceImpl(UserDAO userDAO, ValidationService validationService,
-                                   ApplicationMessageServiceImpl messageService,
+                                   ApplicationMessageService messageService,
                                    UserRoleManager userRoleManager, UserFactory userFactory,
                                    CredentialExistenceChecker credentialExistenceChecker) {
         this.userDAO = userDAO;
