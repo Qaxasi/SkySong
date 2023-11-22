@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-public class RegistrationServiceImpl implements RegistrationService {
+class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final ValidationService validationService;
     private final ApplicationMessageService messageService;
