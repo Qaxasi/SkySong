@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-public class DeleteUserServiceImpl implements DeleteUserService {
+class DeleteUserServiceImpl implements DeleteUserService {
     private final UserDAO userDAO;
     private final ApplicationMessageService messageService;
 
