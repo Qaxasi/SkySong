@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Optional;
 @Service
-public class CookieServiceImpl implements CookieService {
+class CookieServiceImpl implements CookieService {
     @Override
     public Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
