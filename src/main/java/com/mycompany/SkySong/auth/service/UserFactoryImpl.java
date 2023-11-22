@@ -13,7 +13,7 @@ import java.util.Collections;
 
 @Service
 @Slf4j
-public class UserFactoryImpl implements UserFactory {
+class UserFactoryImpl implements UserFactory {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationMessageService messageService;
     public UserFactoryImpl(PasswordEncoder passwordEncoder, ApplicationMessageService messageService) {
