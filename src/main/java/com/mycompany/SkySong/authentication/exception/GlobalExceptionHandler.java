@@ -27,8 +27,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler({RegisterException.class, NullOrEmptyInputException.class})
-    public ResponseEntity<String> handleBadRequestExceptions(final RuntimeException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> handleBadRequestExceptions(final RuntimeException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({ServiceFailureException.class, DatabaseException.class})
     public ResponseEntity<Object> handleInternalServerError(final RuntimeException ex) {
