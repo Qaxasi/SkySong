@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.controller;
 
-import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
+import com.mycompany.SkySong.authentication.exception.InternalErrorException;
 import com.mycompany.SkySong.authentication.service.CookieService;
 import com.mycompany.SkySong.authentication.service.impl.ApplicationMessageService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ public class LogoutController {
             return ResponseEntity.ok(messageService.getMessage("logout.success"));
         } catch (RuntimeException e) {
             log.error("Error while logging out: " + e.getMessage(), e);
-            throw new ServiceFailureException(messageService.getMessage("logout.failure"));
+            throw new InternalErrorException(messageService.getMessage("logout.failure"));
         }
     }
 }

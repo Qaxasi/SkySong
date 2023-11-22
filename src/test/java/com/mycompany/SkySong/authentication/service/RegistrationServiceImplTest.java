@@ -2,7 +2,7 @@ package com.mycompany.SkySong.authentication.service;
 
 import com.mycompany.SkySong.authentication.exception.DatabaseException;
 import com.mycompany.SkySong.authentication.exception.RegisterException;
-import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
+import com.mycompany.SkySong.authentication.exception.InternalErrorException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.authentication.model.entity.Role;
@@ -15,17 +15,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -112,14 +109,14 @@ public class RegistrationServiceImplTest {
 
         when(roleDAO.findByName(any())).thenReturn(Optional.empty());
 
-        assertThrows(ServiceFailureException.class, () -> registrationService.register(registerRequest));
+        assertThrows(InternalErrorException.class, () -> registrationService.register(registerRequest));
     }
     @Test
     void shouldThrowErrorMessageWhenRoleNotSetInTheDatabase() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
-        Exception exception = assertThrows(ServiceFailureException.class,
+        Exception exception = assertThrows(InternalErrorException.class,
                 () -> registrationService.register(registerRequest));
 
         String expectedMessage = "There was an issue during registration. Please try again later.";
@@ -155,9 +152,9 @@ public class RegistrationServiceImplTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
-        when(passwordEncoder.encode(any())).thenThrow(new ServiceFailureException("Service error"));
+        when(passwordEncoder.encode(any())).thenThrow(new InternalErrorException("Service error"));
 
-        assertThrows(ServiceFailureException.class, () -> registrationService.register(registerRequest));
+        assertThrows(InternalErrorException.class, () -> registrationService.register(registerRequest));
     }
     @Test
     void shouldThrowErrorMessageWhenPasswordEncodingFails() {
@@ -165,8 +162,8 @@ public class RegistrationServiceImplTest {
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
         when(passwordEncoder.encode(registerRequest.password())).thenThrow(
-                new ServiceFailureException("Service error"));
-        Exception exception = assertThrows(ServiceFailureException.class,
+                new InternalErrorException("Service error"));
+        Exception exception = assertThrows(InternalErrorException.class,
                 () -> registrationService.register(registerRequest));
 
         String expectedMessage = "There was an issue during password encoding. Please try again later.";

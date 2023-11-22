@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
-import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
+import com.mycompany.SkySong.authentication.exception.InternalErrorException;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.UserRole;
 import com.mycompany.SkySong.authentication.repository.RoleDAO;
@@ -23,7 +23,7 @@ public class UserRoleManagerImpl implements UserRoleManager {
         return roleDAO.findByName(userRole)
                 .orElseThrow(() -> {
                     log.error("User role not set in the system: " + userRole);
-                    return new ServiceFailureException(messageService.getMessage("user.role.not-set"));
+                    return new InternalErrorException(messageService.getMessage("user.role.not-set"));
                 });
     }
 }

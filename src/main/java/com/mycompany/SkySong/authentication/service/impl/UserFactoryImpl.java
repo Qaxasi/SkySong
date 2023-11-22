@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.authentication.service.impl;
 
-import com.mycompany.SkySong.authentication.exception.ServiceFailureException;
+import com.mycompany.SkySong.authentication.exception.InternalErrorException;
 import com.mycompany.SkySong.authentication.model.dto.RegisterRequest;
 import com.mycompany.SkySong.authentication.model.entity.Role;
 import com.mycompany.SkySong.authentication.model.entity.User;
@@ -34,7 +34,7 @@ public class UserFactoryImpl implements UserFactory {
             return passwordEncoder.encode(password);
         } catch (IllegalArgumentException  ex) {
             log.error("Error encoding the password: " + ex.getMessage(), ex);
-            throw new ServiceFailureException(messageService.getMessage("password.encoding.error"));
+            throw new InternalErrorException(messageService.getMessage("password.encoding.error"));
 
         }
     }
