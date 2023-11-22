@@ -5,7 +5,6 @@ import com.mycompany.SkySong.shared.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.user.service.DeleteUserService;
-import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
