@@ -3,15 +3,14 @@ package com.mycompany.SkySong.auth.service;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.auth.service.CredentialExistenceChecker;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CredentialExistenceCheckerImpl implements CredentialExistenceChecker {
     private final UserDAO userDAO;
-    private final ApplicationMessageService messageService;
-    public CredentialExistenceCheckerImpl(UserDAO userDAO, ApplicationMessageService messageService) {
+    private final ApplicationMessageServiceImpl messageService;
+    public CredentialExistenceCheckerImpl(UserDAO userDAO, ApplicationMessageServiceImpl messageService) {
         this.userDAO = userDAO;
         this.messageService = messageService;
     }

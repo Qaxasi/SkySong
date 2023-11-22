@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Properties;
 @Service
-public class ApplicationMessageService implements MessageService {
+public class ApplicationMessageServiceImpl implements MessageService {
     private final Properties messages = new Properties();
 
-    public ApplicationMessageService() {
+    public ApplicationMessageServiceImpl() {
         try {
             messages.load(getClass().getClassLoader().getResourceAsStream("messages.properties"));
         } catch (IOException e) {

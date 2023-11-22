@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.user.service;
 
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.exception.UserNotFoundException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 class DeleteUserServiceImpl implements DeleteUserService {
     private final UserDAO userDAO;
-    private final ApplicationMessageService messageService;
+    private final ApplicationMessageServiceImpl messageService;
 
-    public DeleteUserServiceImpl(UserDAO userDAO, ApplicationMessageService messageService) {
+    public DeleteUserServiceImpl(UserDAO userDAO, ApplicationMessageServiceImpl messageService) {
         this.userDAO = userDAO;
         this.messageService = messageService;
     }
