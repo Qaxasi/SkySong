@@ -12,7 +12,7 @@ public class ErrorResponseBuilder {
         response.put("error", errorMessage);
         return new ResponseEntity<>(response, status);
     }
-    public static ResponseEntity<Object> createValidationErrorResponse(Map<String, String> errors, HttpStatus status) {
+    public static ResponseEntity<Object> createValidationErrorResponse(Map<String, Object> errors, HttpStatus status) {
         Map<String, Object> response = new HashMap<>();
         response.put("errors", errors);
         return new ResponseEntity<>(response, status);
