@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.user.service;
 
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.exception.UserNotFoundException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
