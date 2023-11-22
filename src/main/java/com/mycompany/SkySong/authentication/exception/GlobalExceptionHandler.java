@@ -39,9 +39,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String> handleMethodArgumentTypeMismatchException() {
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatchException() {
         String message = "Invalid input data format";
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        return ErrorResponseBuilder.createErrorResponse(message, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(final MethodArgumentNotValidException ex) {
