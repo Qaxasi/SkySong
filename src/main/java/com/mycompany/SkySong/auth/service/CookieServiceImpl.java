@@ -1,7 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-
-import com.mycompany.SkySong.auth.service.CookieService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
