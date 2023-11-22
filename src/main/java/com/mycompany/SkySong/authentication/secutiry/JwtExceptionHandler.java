@@ -5,7 +5,9 @@ import com.mycompany.SkySong.authentication.service.impl.ApplicationMessageServi
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JwtExceptionHandler {
     private final ApplicationMessageService messageService;
 
