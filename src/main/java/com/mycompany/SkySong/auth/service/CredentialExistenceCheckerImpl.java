@@ -7,7 +7,7 @@ import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CredentialExistenceCheckerImpl implements CredentialExistenceChecker {
+class CredentialExistenceCheckerImpl implements CredentialExistenceChecker {
     private final UserDAO userDAO;
     private final ApplicationMessageService messageService;
     public CredentialExistenceCheckerImpl(UserDAO userDAO, ApplicationMessageService messageService) {
