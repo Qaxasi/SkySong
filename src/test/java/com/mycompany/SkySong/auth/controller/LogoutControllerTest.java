@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.auth.security.CookieDeleter;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
@@ -30,7 +31,7 @@ public class LogoutControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private CookieService cookieService;
+    private CookieDeleter cookieDeleter;
     @MockBean
     private JwtTokenProviderImpl jwtTokenProviderImpl;
     @MockBean
@@ -48,7 +49,7 @@ public class LogoutControllerTest {
             cookie.setMaxAge(0);
             response.addCookie(cookie);
             return null;
-        }).when(cookieService).deleteCookie(
+        }).when(cookieDeleter).deleteCookie(
                 any(HttpServletRequest.class),
                 any(HttpServletResponse.class),
                 eq("auth_token"));
@@ -90,7 +91,7 @@ public class LogoutControllerTest {
     @Test
     @WithMockUser
     void shouldHandleServiceFailureException() throws Exception {
-        doThrow(new RuntimeException("Internal Error")).when(cookieService).deleteCookie(any(), any(), any());
+        doThrow(new RuntimeException("Internal Error")).when(cookieDeleter).deleteCookie(any(), any(), any());
 
         PostRequestAssertions.assertPostStatusReturnsWithoutBodyAndCookie(
                 mockMvc,
@@ -100,7 +101,7 @@ public class LogoutControllerTest {
     @Test
     @WithMockUser
     void shouldReturnErrorMessageWhenHandleServiceFailureException() throws Exception {
-        doThrow(new RuntimeException("Internal Error")).when(cookieService).deleteCookie(any(), any(), any());
+        doThrow(new RuntimeException("Internal Error")).when(cookieDeleter).deleteCookie(any(), any(), any());
         String expectedMessage = "Logout failed due to an internal error";
 
         PostRequestAssertions.assertMessageReturnsWithoutCookie(
