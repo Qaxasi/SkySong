@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.auth.security.CookieRetriever;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
@@ -40,7 +41,7 @@ public class RegistrationControllerTest {
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
     @MockBean
-    private CookieService cookieService;
+    private CookieRetriever cookieRetriever;
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
