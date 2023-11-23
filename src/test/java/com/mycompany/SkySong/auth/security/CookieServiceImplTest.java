@@ -28,4 +28,13 @@ public class CookieServiceImplTest {
 
         assertEquals(result, Optional.empty());
     }
+    @Test
+    void shouldReturnEmptyOptionalWhenRequestedCookieNotInRequest() {
+        Cookie[] cookies = {new Cookie("differentName", "testValue")};
+        when(request.getCookies()).thenReturn(cookies);
+
+        Optional<Cookie> result = cookieService.getCookie(request, "testCookie");
+
+        assertEquals(result, Optional.empty());
+    }
 }
