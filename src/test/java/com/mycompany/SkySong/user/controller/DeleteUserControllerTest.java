@@ -6,6 +6,7 @@ import com.mycompany.SkySong.shared.exception.UserNotFoundException;
 import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.user.service.DeleteUserService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,8 @@ public class DeleteUserControllerTest {
     private CustomAccessDeniedHandler customAccessDeniedHandler;
     @MockBean
     private CookieRetriever cookieRetriever;
+    @MockBean
+    private ApplicationMessageService applicationMessageService;
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
