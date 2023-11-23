@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 @Service
-public class CookieDeleterImpl implements CookieDeleter {
+class CookieDeleterImpl implements CookieDeleter {
     @Override
     public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie[] cookies = request.getCookies();
