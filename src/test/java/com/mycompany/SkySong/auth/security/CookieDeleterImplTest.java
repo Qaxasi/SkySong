@@ -11,8 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CookieDeleterImplTest {
@@ -38,5 +37,14 @@ public class CookieDeleterImplTest {
                 () -> assertEquals("testCookie", modifiedCookie.getName()),
                 () -> assertNull(modifiedCookie.getValue()),
                 () -> assertEquals(0, modifiedCookie.getMaxAge()));
+    }
+    @Test
+    void shouldNotModifyResponseWhenCookieNotPresent() {
+        Cookie[] cookies = { new Cookie("testCookie", "testValue")};
+        when(request.getCookies()).thenReturn(cookies);
+
+        cookieDeleter.deleteCookie(request, response, "differentName");
+
+        verify(response, never()).addCookie(any(Cookie.class));
     }
 }
