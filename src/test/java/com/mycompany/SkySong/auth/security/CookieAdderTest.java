@@ -18,4 +18,21 @@ public class CookieAdderTest {
     private CookieAdderImpl cookieAdder;
     @Mock
     private HttpServletResponse response;
+
+    @Test
+    void shouldCreateCookieWithCorrectProperties() {
+        cookieAdder.addCookie(response,  "testCookie", "testValue", 3600);
+
+        ArgumentCaptor<Cookie> cookieCaptor = ArgumentCaptor.forClass(Cookie.class);
+        verify(response).addCookie(cookieCaptor.capture());
+
+        Cookie capturedCookie = cookieCaptor.getValue();
+        assertAll("cookie",
+                () -> assertEquals("testCookie", capturedCookie.getName()),
+                () -> assertEquals("testValue", capturedCookie.getValue()),
+                () -> assertEquals(3600, capturedCookie.getMaxAge()),
+                () -> assertEquals("/", capturedCookie.getPath()),
+                () -> assertTrue(capturedCookie.isHttpOnly()),
+                () -> assertTrue(capturedCookie.getSecure()));
+    }
 }
