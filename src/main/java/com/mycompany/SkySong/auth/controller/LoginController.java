@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.auth.security.CookieAdder;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.security.CookieService;
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class LoginController {
     private final LoginService loginService;
-    private final CookieService cookieService;
-    public LoginController(LoginService loginService, CookieService cookieService) {
+    private final CookieAdder cookieAdder;
+    public LoginController(LoginService loginService, CookieAdder cookieAdder) {
         this.loginService = loginService;
-        this.cookieService = cookieService;
+        this.cookieAdder = cookieAdder;
     }
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest loginRequest,
@@ -27,7 +28,7 @@ public class LoginController {
         String token = loginService.login(loginRequest);
         ApiResponse jwtAuthResponse = new ApiResponse(token);
 
-        cookieService.addCookie(response, "auth_token", token, 24 * 60 * 60);
+        cookieAdder.addCookie(response, "auth_token", token, 24 * 60 * 60);
         return ResponseEntity.ok(jwtAuthResponse);
     }
 }
