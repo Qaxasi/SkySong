@@ -8,7 +8,6 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
-import com.mycompany.SkySong.auth.security.CookieService;
 import com.mycompany.SkySong.auth.service.RegistrationService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.Test;
