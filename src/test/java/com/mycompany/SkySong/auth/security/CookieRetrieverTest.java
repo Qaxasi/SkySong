@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class CookieRetrieverTest {
     @InjectMocks
-    private CookieServiceImpl cookieService;
+    private CookieRetriever cookieRetriever;
     @Mock
     private HttpServletRequest request;
 
@@ -26,7 +26,7 @@ public class CookieRetrieverTest {
     void shouldReturnEmptyOptionalWhenNoCookieRequest() {
         when(request.getCookies()).thenReturn(null);
 
-        Optional<Cookie> result = cookieService.getCookie(request, "testCookie");
+        Optional<Cookie> result = cookieRetriever.getCookie(request, "testCookie");
 
         assertEquals(result, Optional.empty());
     }
@@ -36,7 +36,7 @@ public class CookieRetrieverTest {
         Cookie[] cookies = {new Cookie("differentName", "testValue")};
         when(request.getCookies()).thenReturn(cookies);
 
-        Optional<Cookie> result = cookieService.getCookie(request, "testCookie");
+        Optional<Cookie> result = cookieRetriever.getCookie(request, "testCookie");
 
         assertEquals(result, Optional.empty());
     }
@@ -48,13 +48,13 @@ public class CookieRetrieverTest {
 
         when(request.getCookies()).thenReturn(cookies);
 
-        Optional<Cookie> result = cookieService.getCookie(request, "testCookie");
+        Optional<Cookie> result = cookieRetriever.getCookie(request, "testCookie");
 
         assertTrue(result.isPresent());
         assertThat(result.get(), is(expectedCookie));
     }
     @Test
     void shouldThrowNullPointerExceptionWhenRequestIsNull() {
-        assertThrows(NullPointerException.class, () -> cookieService.getCookie(null, "testCookie"));
+        assertThrows(NullPointerException.class, () -> cookieRetriever.getCookie(null, "testCookie"));
     }
 }
