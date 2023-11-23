@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class CookieAdderTest {
+public class CookieAdderImplTest {
     @InjectMocks
     private CookieAdderImpl cookieAdder;
     @Mock
