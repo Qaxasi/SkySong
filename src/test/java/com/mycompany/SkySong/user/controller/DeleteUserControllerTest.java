@@ -5,7 +5,6 @@ import com.mycompany.SkySong.shared.exception.UserNotFoundException;
 import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
-import com.mycompany.SkySong.auth.security.CookieService;
 import com.mycompany.SkySong.user.service.DeleteUserService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
 import org.junit.jupiter.api.Test;
