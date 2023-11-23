@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.auth.security.CustomUserDetailsService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
