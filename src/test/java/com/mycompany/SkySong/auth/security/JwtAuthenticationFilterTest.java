@@ -30,7 +30,7 @@ public class JwtAuthenticationFilterTest {
     @InjectMocks
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Mock
-    private CookieService cookieService;
+    private CookieRetriever cookieRetriever;
     @Mock
     private JwtTokenProviderImpl jwtTokenProviderImpl;
     @Mock
