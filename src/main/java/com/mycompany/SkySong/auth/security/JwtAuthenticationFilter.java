@@ -24,14 +24,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
-    private final CookieService cookieService;
+    private final CookieRetriever cookieRetriever;
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
                                    UserDetailsService userDetailsService,
-                                   CookieService cookieService) {
+                                   CookieRetriever cookieRetriever) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
-        this.cookieService = cookieService;
+        this.cookieRetriever = cookieRetriever;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         log.info("JwtFilter - processing request to {}", request.getRequestURI());
 
-        String token = cookieService.getCookie(request, "auth_token")
+        String token = cookieRetriever.getCookie(request, "auth_token")
                 .map(Cookie::getValue)
                 .orElse(null);
 
