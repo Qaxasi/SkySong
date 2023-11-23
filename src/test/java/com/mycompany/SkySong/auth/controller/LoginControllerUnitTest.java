@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.controller;
 
-import com.mycompany.SkySong.auth.controller.LoginController;
 import com.mycompany.SkySong.shared.exception.GlobalExceptionHandler;
 import com.mycompany.SkySong.auth.service.LoginService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
