@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.user.controller;
 
+import com.mycompany.SkySong.auth.security.CookieRetriever;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.shared.exception.UserNotFoundException;
 import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
@@ -34,7 +35,7 @@ public class DeleteUserControllerTest {
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
     @MockBean
-    private CookieService cookieService;
+    private CookieRetriever cookieRetriever;
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
