@@ -2,7 +2,7 @@ package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
-import com.mycompany.SkySong.auth.service.CookieService;
+import com.mycompany.SkySong.auth.security.CookieService;
 import com.mycompany.SkySong.auth.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

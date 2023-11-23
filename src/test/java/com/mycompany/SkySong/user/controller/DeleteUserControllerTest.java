@@ -1,14 +1,13 @@
-package com.mycompany.SkySong.auth.controller;
+package com.mycompany.SkySong.user.controller;
 
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.shared.exception.UserNotFoundException;
-import com.mycompany.SkySong.auth.service.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.auth.service.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.auth.service.JwtTokenProviderImpl;
-import com.mycompany.SkySong.auth.service.CookieService;
+import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
+import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
+import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
+import com.mycompany.SkySong.auth.security.CookieService;
 import com.mycompany.SkySong.user.service.DeleteUserService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
-import com.mycompany.SkySong.user.controller.DeleteUserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

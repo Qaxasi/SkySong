@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.auth.service;
+package com.mycompany.SkySong.auth.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

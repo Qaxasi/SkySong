@@ -1,10 +1,10 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.shared.config.SecurityConfig;
-import com.mycompany.SkySong.auth.service.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.auth.service.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.auth.service.JwtTokenProviderImpl;
-import com.mycompany.SkySong.auth.service.CookieService;
+import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
+import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
+import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
+import com.mycompany.SkySong.auth.security.CookieService;
 import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import jakarta.servlet.http.Cookie;

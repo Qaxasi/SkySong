@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.auth.service.JwtAuthenticationEntryPoint;
+import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;

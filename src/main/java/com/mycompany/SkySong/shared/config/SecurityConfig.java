@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.shared.config;
 
 
-import com.mycompany.SkySong.auth.service.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.auth.service.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.auth.service.JwtAuthenticationFilter;
+import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
+import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
+import com.mycompany.SkySong.auth.security.JwtAuthenticationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

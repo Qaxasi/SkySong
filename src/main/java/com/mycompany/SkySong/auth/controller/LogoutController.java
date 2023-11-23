@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.shared.exception.InternalErrorException;
-import com.mycompany.SkySong.auth.service.CookieService;
+import com.mycompany.SkySong.auth.security.CookieService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

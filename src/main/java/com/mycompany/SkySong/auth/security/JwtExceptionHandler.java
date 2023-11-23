@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.auth.service;
+package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;

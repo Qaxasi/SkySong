@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.auth.controller;
+package com.mycompany.SkySong.user.controller;
 
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.shared.entity.User;

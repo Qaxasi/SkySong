@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.service.RegistrationServiceImpl;
+import com.mycompany.SkySong.auth.service.ValidationService;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.exception.InternalErrorException;
