@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CookieServiceImplTest {
+public class CookieRetrieverTest {
     @InjectMocks
     private CookieServiceImpl cookieService;
     @Mock
