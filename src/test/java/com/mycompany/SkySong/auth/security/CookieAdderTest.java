@@ -35,4 +35,9 @@ public class CookieAdderTest {
                 () -> assertTrue(capturedCookie.isHttpOnly()),
                 () -> assertTrue(capturedCookie.getSecure()));
     }
+    @Test
+    void shouldHandleNullResponse() {
+        assertThrows(NullPointerException.class, () -> cookieAdder.addCookie(
+                null, "testCookie", "testValue",  3600));
+    }
 }
