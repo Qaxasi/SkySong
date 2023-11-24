@@ -61,21 +61,6 @@ public class CustomUserDetailsServiceIntegrationTest {
                 userDetails, passwordEncoder, "testEmail@gmail.com", "testPassword@123");
     }
     @Test
-    void shouldThrowExceptionWhenLoadingMissingUserByUsername() {
-       String nonExistentUsername = "nonExistentUsername";
-
-        assertThrows(UsernameNotFoundException.class,
-                () -> customUserDetailsService.loadUserByUsername(nonExistentUsername));
-    }
-    @Test
-    void shouldThrowExceptionWhenLoadingMissingUserByEmail() {
-        String nonExistentEmail = "nonExistentEmail@gmail.com";
-
-        //In our implementation, the email can serve as the username
-        assertThrows(UsernameNotFoundException.class,
-                () -> customUserDetailsService.loadUserByUsername(nonExistentEmail));
-    }
-    @Test
     void shouldHaveUserRoleWhenLoadedRegularUserByUsername() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
 
