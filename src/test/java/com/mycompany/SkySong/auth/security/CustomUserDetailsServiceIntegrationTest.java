@@ -75,26 +75,26 @@ public class CustomUserDetailsServiceIntegrationTest {
                 () -> customUserDetailsService.loadUserByUsername(nonExistentEmail));
     }
     @Test
-    void shouldHaveUserRoleWhenLoadedByUsername() {
+    void shouldHaveUserRoleWhenLoadedRegularUserByUsername() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
 
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
     }
     @Test
-    void shouldHaveUserRoleWhenLoadedByEmail() {
+    void shouldHaveUserRoleWhenLoadedRegularUserByEmail() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testEmail@gmail.com");
 
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
     }
     @Test
-    void shouldHaveUserAndAdminRolesWhenLoadedByUsername() {
+    void shouldHaveUserAndAdminRolesWhenLoadedAdminByUsername() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testAdmin");
 
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
     }
     @Test
-    void shouldHaveUserAndAdminRolesWhenLoadedByEmail() {
+    void shouldHaveUserAndAdminRolesWhenLoadedAdminByEmail() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testAdmin@gmail.com");
 
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
