@@ -57,8 +57,8 @@ public class CustomUserDetailsServiceIntegrationTest {
         //In our implementation, the email can serve as the username
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testEmail@gmail.com");
 
-        assertEquals("testEmail@gmail.com", userDetails.getUsername());
-        assertTrue(passwordEncoder.matches("testPassword@123", userDetails.getPassword()));
+        UserDetailsAssertions.assertUserDetails(
+                userDetails, passwordEncoder, "testEmail@gmail.com", "testPassword@123");
     }
     @Test
     void shouldThrowExceptionWhenLoadingMissingUserByUsername() {
