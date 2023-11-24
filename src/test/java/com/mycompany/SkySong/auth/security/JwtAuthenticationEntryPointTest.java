@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtAuthenticationEntryPointTest {
+    @InjectMocks
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @Mock
     private HttpServletRequest request;
@@ -30,8 +32,6 @@ public class JwtAuthenticationEntryPointTest {
     private PrintWriter printWriter;
     @BeforeEach
     void setUp() {
-        jwtAuthenticationEntryPoint = new JwtAuthenticationEntryPoint();
-
         stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
     }
