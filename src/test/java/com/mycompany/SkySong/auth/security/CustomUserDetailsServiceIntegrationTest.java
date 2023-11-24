@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
+import com.mycompany.SkySong.testsupport.auth.security.UserDetailsAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ public class CustomUserDetailsServiceIntegrationTest {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
 
         assertEquals("testUsername", userDetails.getUsername());
-        assertTrue(passwordEncoder.matches("testPassword@123", userDetails.getPassword()));
+        UserDetailsAssertions.assertPasswordMatches(userDetails, passwordEncoder, "testPassword@123");
     }
 
     @Test
