@@ -64,32 +64,30 @@ public class CustomUserDetailsServiceIntegrationTest {
     void shouldHaveUserRoleWhenLoadedRegularUserByUsername() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
 
-        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
+        UserDetailsAssertions.hasAuthority(userDetails, "ROLE_USER");
     }
     @Test
     void shouldHaveUserRoleWhenLoadedRegularUserByEmail() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testEmail@gmail.com");
 
-        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
+        UserDetailsAssertions.hasAuthority(userDetails, "ROLE_USER");
     }
     @Test
     void shouldHaveUserAndAdminRolesWhenLoadedAdminByUsername() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testAdmin");
 
-        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
-        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
+        UserDetailsAssertions.hasAuthority(userDetails, "ROLE_USER", "ROLE_ADMIN");
     }
     @Test
     void shouldHaveUserAndAdminRolesWhenLoadedAdminByEmail() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testAdmin@gmail.com");
 
-        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
-        assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
+        UserDetailsAssertions.hasAuthority(userDetails, "ROLE_USER", "ROLE_ADMIN");
     }
     @Test
     void shouldNotHaveAdminRoleForRegularUser() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
 
-        assertFalse(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
+        assertFalse(UserDetailsAssertions.hasAuthority(userDetails, "ROLE_ADMIN"));
     }
 }
