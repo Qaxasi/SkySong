@@ -48,8 +48,8 @@ public class CustomUserDetailsServiceIntegrationTest {
     void shouldReturnCorrectUserDetailsWhenLoggingWithUsername() {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
 
-        assertEquals("testUsername", userDetails.getUsername());
-        UserDetailsAssertions.assertPasswordMatches(userDetails, passwordEncoder, "testPassword@123");
+        UserDetailsAssertions.assertUserDetails(
+                userDetails, passwordEncoder, "testUsername", "testPassword@123");
     }
 
     @Test
