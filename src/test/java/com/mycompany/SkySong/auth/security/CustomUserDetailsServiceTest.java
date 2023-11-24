@@ -37,4 +37,13 @@ public class CustomUserDetailsServiceTest {
 
         assertEquals(expectedMessage, exception.getMessage());
     }
+    @Test
+    void shouldThrowExceptionWhenLoadingMissingUserByUsername() {
+        String nonExistentUsername = "nonExistentUsername";
+
+        when(userDAO.findByUsername(nonExistentUsername)).thenThrow(new UsernameNotFoundException("User not found."));
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> customUserDetailsService.loadUserByUsername(nonExistentUsername));
+    }
 }
