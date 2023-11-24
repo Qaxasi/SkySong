@@ -100,4 +100,10 @@ public class CustomUserDetailsServiceIntegrationTest {
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_USER".equals(auth.getAuthority())));
         assertTrue(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
     }
+    @Test
+    void shouldNotHaveAdminRoleForRegularUser() {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("testUsername");
+
+        assertFalse(userDetails.getAuthorities().stream().anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority())));
+    }
 }
