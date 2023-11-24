@@ -3,6 +3,7 @@ package com.mycompany.SkySong.testsupport.auth.security;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UserDetailsAssertions {
@@ -10,9 +11,11 @@ public class UserDetailsAssertions {
         return userDetails.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals(authority));
     }
-    public static void assertPasswordMatches(UserDetails userDetails,
+    public static void assertUserDetails(UserDetails userDetails,
                                              PasswordEncoder passwordEncoder,
-                                             String password) {
-        assertTrue(passwordEncoder.matches(password, userDetails.getPassword()));
+                                             String expectedUsername,
+                                             String expectedPassword) {
+        assertEquals(expectedUsername, userDetails.getUsername());
+        assertTrue(passwordEncoder.matches(expectedPassword, userDetails.getPassword()));
     }
 }
