@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.access.AccessDeniedException;
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomAccessDeniedHandlerTest {
+    @InjectMocks
     private CustomAccessDeniedHandler customAccessDeniedHandler;
     @Mock
     private HttpServletRequest request;
@@ -30,8 +32,6 @@ public class CustomAccessDeniedHandlerTest {
     private PrintWriter printWriter;
     @BeforeEach
     void setUp() {
-        customAccessDeniedHandler = new CustomAccessDeniedHandler();
-
         stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
     }
@@ -48,5 +48,4 @@ public class CustomAccessDeniedHandlerTest {
         assertEquals("You do not have permission to perform this operation.",
                 jsonObject.getString("error"));
     }
-
 }
