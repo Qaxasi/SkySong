@@ -1,9 +1,7 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.auth.security.CustomUserDetailsService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
