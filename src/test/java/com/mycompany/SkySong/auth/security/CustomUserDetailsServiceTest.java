@@ -19,10 +19,6 @@ public class CustomUserDetailsServiceTest {
     private CustomUserDetailsService customUserDetailsService;
     @Mock
     private UserDAO userDAO;
-    @BeforeEach
-    void setUp() {
-        customUserDetailsService = new CustomUserDetailsService(userDAO);
-    }
     @Test
     void shouldReturnExceptionMessageWhenUserWithUsernameNotFound() {
         String username = "nonExistingUser";
