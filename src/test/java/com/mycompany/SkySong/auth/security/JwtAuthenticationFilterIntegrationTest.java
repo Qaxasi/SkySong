@@ -48,12 +48,10 @@ public class JwtAuthenticationFilterIntegrationTest {
     @BeforeEach
     void setUp() throws SQLException {
         try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/user-data.sql"));
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
         }
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-
     }
     @AfterEach
     void cleanup() {
