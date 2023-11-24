@@ -1,4 +1,4 @@
-ALTER TABLE roles AUTO_INCREMENT = 1;
+
 
 INSERT INTO roles (name)
     VALUES('ROLE_USER'),
