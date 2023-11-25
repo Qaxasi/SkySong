@@ -89,7 +89,7 @@ public class JwtAuthenticationFilterIntegrationTest {
         assertNotNull(authContext);
     }
     @Test
-    void shouldSetCorrectUsernameInSecurityContextWithValidJwtToken() throws ServletException, IOException {
+    void shouldSetCorrectUsernameInSecurityContextAfterSuccessfulAuthentication() throws ServletException, IOException {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
         String token = jwtTokenProviderImpl.generateToken(authentication);
