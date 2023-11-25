@@ -75,7 +75,7 @@ public class JwtAuthenticationFilterIntegrationTest {
         verify(filterChain).doFilter(request, response);
     }
     @Test
-    void shouldSetSecurityContextWithValidJwtToken() throws ServletException, IOException {
+    void shouldSetSecurityContextAfterSuccessfulAuthentication() throws ServletException, IOException {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
         String token = jwtTokenProviderImpl.generateToken(authentication);
