@@ -6,6 +6,7 @@ import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
 import com.mycompany.SkySong.testsupport.security.JwtAuthenticationFilterUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,8 +68,8 @@ public class JwtAuthenticationFilterIntegrationTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
         String token = jwtTokenProviderImpl.generateToken(authentication);
-
-        request.addHeader("Authorization", "Bearer " + token);
+        Cookie cookie = new Cookie("auth_token", token);
+        request.setCookies(cookie);
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
@@ -79,8 +80,8 @@ public class JwtAuthenticationFilterIntegrationTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
         String token = jwtTokenProviderImpl.generateToken(authentication);
-
-        request.addHeader("Authorization", "Bearer " + token);
+        Cookie cookie = new Cookie("auth_token", token);
+        request.setCookies(cookie);
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
@@ -93,8 +94,8 @@ public class JwtAuthenticationFilterIntegrationTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
         String token = jwtTokenProviderImpl.generateToken(authentication);
-
-        request.addHeader("Authorization", "Bearer " + token);
+        Cookie cookie = new Cookie("auth_token", token);
+        request.setCookies(cookie);
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
