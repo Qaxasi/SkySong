@@ -63,7 +63,7 @@ public class JwtAuthenticationFilterIntegrationTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
-    void shouldProcessValidJwtTokenAndContinueFilterChain() throws ServletException, IOException {
+    void shouldContinueWithFilterChainAfterSuccessfulAuthentication() throws ServletException, IOException {
         Authentication authentication = new UsernamePasswordAuthenticationToken("testUsername", null);
 
         String token = jwtTokenProviderImpl.generateToken(authentication);
