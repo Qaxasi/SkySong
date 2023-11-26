@@ -46,6 +46,16 @@ public class JwtAuthenticationFilterTest {
     @Mock
     private FilterChain filterChain;
     @Test
+    void shouldInvokeEntryPointForInvalidToken() throws ServletException, IOException {
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", "invalidToken")));
+        when(jwtTokenProviderImpl.validateToken("invalidToken")).thenReturn(false);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(jwtAuthenticationEntryPoint).commence(eq(request), eq(response), any(InsufficientAuthenticationException.class));
+    }
+    @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
         String token = "invalidToken";
 
