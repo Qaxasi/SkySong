@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,15 +28,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final CookieRetriever cookieRetriever;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final ApplicationMessageService messageService;
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
                                    UserDetailsService userDetailsService,
                                    CookieRetriever cookieRetriever,
-                                   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+                                   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, ApplicationMessageService messageService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.cookieRetriever = cookieRetriever;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.messageService = messageService;
     }
 
     @Override
