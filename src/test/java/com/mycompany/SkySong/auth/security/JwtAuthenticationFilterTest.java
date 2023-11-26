@@ -114,6 +114,18 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
+    void shouldNotSetSecurityContextForExpiredToken() throws ServletException, IOException {
+        String expiredToken = "expiredToken";
+
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", expiredToken)));
+        when(jwtTokenProviderImpl.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+    @Test
     void shouldNotProcessRequestWhenUserNotFound() throws ServletException, IOException {
         String token = "validTokenButNoUser";
 
