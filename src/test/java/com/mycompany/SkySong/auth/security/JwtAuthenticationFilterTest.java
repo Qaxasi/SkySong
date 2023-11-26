@@ -53,7 +53,8 @@ public class JwtAuthenticationFilterTest {
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
-        verify(jwtAuthenticationEntryPoint).commence(eq(request), eq(response), any(InsufficientAuthenticationException.class));
+        verify(jwtAuthenticationEntryPoint).commence(eq(request), eq(response),
+                any(InsufficientAuthenticationException.class));
     }
     @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
@@ -67,7 +68,7 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
-        when(request.getHeader("Authorization")).thenReturn(null);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
