@@ -57,10 +57,9 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
-        String token = "invalidToken";
-
-        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProviderImpl.validateToken(token)).thenReturn(false);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", "invalidToken")));
+        when(jwtTokenProviderImpl.validateToken("invalidToken")).thenReturn(false);
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
