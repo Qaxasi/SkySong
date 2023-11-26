@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -53,25 +54,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .map(Cookie::getValue)
                 .orElse(null);
 
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+        try {
+            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+                Claims claims = jwtTokenProvider.getClaimsFromToken(token);
 
-            String username = claims.getSubject();
+                String username = claims.getSubject();
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
 
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            filterChain.doFilter(request, response);
-        } else {
-            jwtAuthenticationEntryPoint.commence(request, response, new InsufficientAuthenticationException(
-                    messageService.getMessage("unauthorized.token.invalid")
-            ));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                filterChain.doFilter(request, response);
+            } else {
+                jwtAuthenticationEntryPoint.commence(request, response, new InsufficientAuthenticationException(
+                        messageService.getMessage("unauthorized.token.invalid")
+                ));
+            }
+        } catch (TokenException e) {
+            jwtAuthenticationEntryPoint.commence(request, response,
+                    new InsufficientAuthenticationException(e.getMessage()));
         }
     }
     @Override
