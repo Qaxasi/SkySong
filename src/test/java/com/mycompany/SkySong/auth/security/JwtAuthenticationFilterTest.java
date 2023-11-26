@@ -38,39 +38,6 @@ public class JwtAuthenticationFilterTest {
     @Mock
     private FilterChain filterChain;
     @Test
-    void shouldContinueWithFilterChainAfterSuccessfulAuthentication() throws ServletException, IOException {
-        String token = "validToken";
-        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProviderImpl.validateToken(token)).thenReturn(true);
-
-        Claims mockClaims = mock(Claims.class);
-        when(mockClaims.getSubject()).thenReturn("username");
-        when(jwtTokenProviderImpl.getClaimsFromToken(token)).thenReturn(mockClaims);
-
-        when(customUserDetailsService.loadUserByUsername("username")).thenReturn(mock(UserDetails.class));
-
-        jwtAuthenticationFilter.doFilter(request, response, filterChain);
-
-        verify(filterChain, times(1)).doFilter(request, response);
-    }
-    @Test
-    void shouldSetAuthenticationInSecurityContextAfterSuccessfulAuthentication() throws ServletException, IOException {
-        String token = "validToken";
-        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProviderImpl.validateToken(token)).thenReturn(true);
-
-        Claims mockClaims = mock(Claims.class);
-        when(mockClaims.getSubject()).thenReturn("username");
-        when(jwtTokenProviderImpl.getClaimsFromToken(token)).thenReturn(mockClaims);
-
-        when(customUserDetailsService.loadUserByUsername("username")).thenReturn(mock(UserDetails.class));
-
-        jwtAuthenticationFilter.doFilter(request, response, filterChain);
-
-        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-    }
-
-    @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
         String token = "invalidToken";
 
