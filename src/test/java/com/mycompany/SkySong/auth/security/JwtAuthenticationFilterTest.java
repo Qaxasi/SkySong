@@ -103,10 +103,11 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void shouldNotProcessRequestForExpiredToken() throws ServletException, IOException {
-        String token = "expiredToken";
+        String expiredToken = "expiredToken";
 
-        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProviderImpl.validateToken(token)).thenThrow(new TokenException("Token expired"));
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", expiredToken)));
+        when(jwtTokenProviderImpl.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
