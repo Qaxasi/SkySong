@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.exception.TokenException;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
@@ -11,11 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -35,6 +39,10 @@ public class JwtAuthenticationFilterTest {
     private HttpServletResponse response;
     @Mock
     private HttpServletRequest request;
+    @Mock
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Mock
+    private ApplicationMessageService messageService;
     @Mock
     private FilterChain filterChain;
     @Test
