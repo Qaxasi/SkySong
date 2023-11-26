@@ -85,6 +85,15 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
+    void shouldInvokeEntryPointForRequestWithoutToken() throws ServletException, IOException {
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(jwtAuthenticationEntryPoint).commence(eq(request), eq(response),
+                any(InsufficientAuthenticationException.class));
+    }
+    @Test
     void shouldNotProcessRequestForExpiredToken() throws ServletException, IOException {
         String token = "expiredToken";
 
