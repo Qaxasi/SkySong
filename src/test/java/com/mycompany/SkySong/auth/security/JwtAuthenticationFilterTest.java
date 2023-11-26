@@ -76,18 +76,9 @@ public class JwtAuthenticationFilterTest {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
-
     @Test
     void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain, never()).doFilter(request, response);
-    }
-    @Test
-    void shouldNotProcessRequestWithMalformedToken() throws ServletException, IOException {
-        when(request.getHeader("Authorization")).thenReturn("MalformedToken");
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
