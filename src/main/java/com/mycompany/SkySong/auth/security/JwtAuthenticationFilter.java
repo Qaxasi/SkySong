@@ -25,13 +25,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
     private final CookieRetriever cookieRetriever;
+    private final JwtAuthenticationEntryPoint entryPoint;
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
                                    UserDetailsService userDetailsService,
-                                   CookieRetriever cookieRetriever) {
+                                   CookieRetriever cookieRetriever,
+                                   JwtAuthenticationEntryPoint entryPoint) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.cookieRetriever = cookieRetriever;
+        this.entryPoint = entryPoint;
     }
 
     @Override
