@@ -54,32 +54,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .map(Cookie::getValue)
                 .orElse(null);
 
-        try {
-            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
-                Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 
-                String username = claims.getSubject();
+            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            String username = claims.getSubject();
 
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
 
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                filterChain.doFilter(request, response);
-            } else {
-                jwtAuthenticationEntryPoint.commence(request, response, new InsufficientAuthenticationException(
-                        messageService.getMessage("unauthorized.token.invalid")
-                ));
-            }
-        } catch (TokenException e) {
-            jwtAuthenticationEntryPoint.commence(request, response,
-                    new InsufficientAuthenticationException(e.getMessage()));
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            filterChain.doFilter(request, response);
+        } else {
+            jwtAuthenticationEntryPoint.commence(request, response, new InsufficientAuthenticationException(
+                    messageService.getMessage("unauthorized.token.invalid")
+            ));
         }
     }
+
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
