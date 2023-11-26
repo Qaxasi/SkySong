@@ -94,6 +94,14 @@ public class JwtAuthenticationFilterTest {
                 any(InsufficientAuthenticationException.class));
     }
     @Test
+    void shouldNotSetSecurityContextForRequestWithoutToken() throws ServletException, IOException {
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+    @Test
     void shouldNotProcessRequestForExpiredToken() throws ServletException, IOException {
         String token = "expiredToken";
 
