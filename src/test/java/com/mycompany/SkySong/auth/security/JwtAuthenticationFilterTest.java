@@ -5,6 +5,7 @@ import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -48,6 +49,8 @@ public class JwtAuthenticationFilterTest {
     private FilterChain filterChain;
     @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
+
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", "invalidToken")));
         when(jwtTokenProviderImpl.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
@@ -59,6 +62,8 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void shouldNotSetSecurityContextForInvalidJwtToken() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
+
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", "invalidToken")));
         when(jwtTokenProviderImpl.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
@@ -70,6 +75,8 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
+
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
@@ -78,6 +85,8 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void shouldInvokeEntryPointForRequestWithoutToken() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
+
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
@@ -87,6 +96,8 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void shouldNotSetSecurityContextForRequestWithoutToken() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
+
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
@@ -96,6 +107,7 @@ public class JwtAuthenticationFilterTest {
     @Test
     void shouldNotProcessRequestForExpiredToken() throws ServletException, IOException {
         String expiredToken = "expiredToken";
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", expiredToken)));
@@ -109,6 +121,7 @@ public class JwtAuthenticationFilterTest {
     @Test
     void shouldNotSetSecurityContextForExpiredToken() throws ServletException, IOException {
         String expiredToken = "expiredToken";
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", expiredToken)));
@@ -123,6 +136,7 @@ public class JwtAuthenticationFilterTest {
     void shouldNotProcessRequestWhenUserNotFound() throws ServletException, IOException {
         String token = "validTokenButNoUser";
         String username = "nonExistentUser";
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", token)));
@@ -143,6 +157,7 @@ public class JwtAuthenticationFilterTest {
     void shouldNotSetSecurityContextForRequestWhenUserNotFound() throws ServletException, IOException {
         String token = "validTokenButNoUser";
         String username = "nonExistentUser";
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", token)));
