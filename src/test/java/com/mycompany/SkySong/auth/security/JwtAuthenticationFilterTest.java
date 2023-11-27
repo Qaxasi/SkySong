@@ -160,7 +160,7 @@ public class JwtAuthenticationFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
-    void shouldInvokeFilterChainForExcludedPaths() throws ServletException, IOException {
+    void shouldInvokeFilterChainForLoginPaths() throws ServletException, IOException {
         when(request.getRequestURI()).thenReturn("/api/v1/users/login");
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
