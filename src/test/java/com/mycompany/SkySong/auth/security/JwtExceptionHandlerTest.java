@@ -4,6 +4,7 @@ import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -57,6 +58,12 @@ public class JwtExceptionHandlerTest {
         TokenException tokenException = assertThrows(TokenException.class,
                 () -> jwtExceptionHandler.handleException(malformedJwtException));
         assertEquals(expectedMessage, tokenException.getMessage());
+    }
+    @Test
+    void shouldThrowTokenExceptionForUnsupportedToken() {
+        UnsupportedJwtException unsupportedJwtException = new UnsupportedJwtException("JWT is unsupported");
+
+        assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(unsupportedJwtException));
     }
 
 }
