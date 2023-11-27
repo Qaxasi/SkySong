@@ -60,9 +60,10 @@ public class JwtAuthenticationFilterTest {
     void shouldNotSetSecurityContextForInvalidJwtToken() throws ServletException, IOException {
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", "invalidToken")));
-        when(jwtTokenProviderImpl.validateToken("invalidToken")).thenReturn(false);
+        when(jwtTokenProviderImpl.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+        assertThrows(TokenException.class, () -> jwtAuthenticationFilter
+                .doFilterInternal(request, response, filterChain));
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
