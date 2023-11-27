@@ -250,4 +250,17 @@ public class JwtAuthenticationFilterTest {
 
         verify(filterChain, never()).doFilter(request, response);
     }
+    @Test
+    void shouldNotSetSecurityContextForMalformedToken() throws ServletException, IOException {
+        String malformedToken = "malformedToken";
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", malformedToken)));
+        when(jwtTokenProviderImpl.validateToken(malformedToken))
+                .thenReturn(false);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
 }
