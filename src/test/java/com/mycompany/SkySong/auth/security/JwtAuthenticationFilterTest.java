@@ -192,6 +192,14 @@ public class JwtAuthenticationFilterTest {
         verify(jwtTokenProviderImpl, never()).validateToken(anyString());
     }
     @Test
+    void shouldInvokeFilterChainForLogoutPath() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/logout");
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+    @Test
     void shouldNotProcessRequestWhenUnexpectedExceptionDuringTokenValidation() throws ServletException, IOException {
         String token = "token";
 
