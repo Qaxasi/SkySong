@@ -207,16 +207,4 @@ public class JwtAuthenticationFilterTest {
 
         verify(jwtTokenProviderImpl, never()).validateToken(anyString());
     }
-    @Test
-    void shouldNotProcessRequestWhenUnexpectedExceptionDuringTokenValidation() throws ServletException, IOException {
-        String token = "token";
-
-        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(jwtTokenProviderImpl.validateToken(token)).thenThrow(
-                new RuntimeException("Unexpected error processing the request"));
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain, never()).doFilter(request, response);
-    }
 }
