@@ -168,6 +168,14 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain).doFilter(request, response);
     }
     @Test
+    void shouldNotInvokeTokenValidationForLoginPath() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/login");
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(jwtTokenProviderImpl, never()).validateToken(anyString());
+    }
+    @Test
     void shouldNotProcessRequestWhenUnexpectedExceptionDuringTokenValidation() throws ServletException, IOException {
         String token = "token";
 
