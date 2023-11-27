@@ -46,5 +46,17 @@ public class JwtExceptionHandlerTest {
 
         assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(malformedJwtException));
     }
+    @Test
+    void shouldReturnCorrectMessageForMalformedToken() {
+        String expectedMessage = "malformed token";
+
+        when(messageService.getMessage("jwt.invalid")).thenReturn(expectedMessage);
+
+        MalformedJwtException malformedJwtException = new MalformedJwtException("JWT is malformed");
+
+        TokenException tokenException = assertThrows(TokenException.class,
+                () -> jwtExceptionHandler.handleException(malformedJwtException));
+        assertEquals(expectedMessage, tokenException.getMessage());
+    }
 
 }
