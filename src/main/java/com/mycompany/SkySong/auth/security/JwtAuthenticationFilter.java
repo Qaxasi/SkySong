@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -34,7 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
                                    UserDetailsService userDetailsService,
                                    CookieRetriever cookieRetriever,
-                                   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, ApplicationMessageService messageService) {
+                                   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                                   ApplicationMessageService messageService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
         this.cookieRetriever = cookieRetriever;
