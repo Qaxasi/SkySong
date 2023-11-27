@@ -61,7 +61,7 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
-    void shouldNotSetSecurityContextForInvalidJwtToken() throws ServletException, IOException {
+    void shouldNotSetSecurityContextForInvalidJwtToken() {
         when(request.getRequestURI()).thenReturn("/api/v1/users/1");
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
@@ -119,7 +119,7 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
-    void shouldNotSetSecurityContextForExpiredToken() throws ServletException, IOException {
+    void shouldNotSetSecurityContextForExpiredToken() {
         String expiredToken = "expiredToken";
         when(request.getRequestURI()).thenReturn("/api/v1/users/1");
 
@@ -154,7 +154,7 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
-    void shouldNotSetSecurityContextForRequestWhenUserNotFound() throws ServletException, IOException {
+    void shouldNotSetSecurityContextForRequestWhenUserNotFound() {
         String token = "validTokenButNoUser";
         String username = "nonExistentUser";
         when(request.getRequestURI()).thenReturn("/api/v1/users/1");
