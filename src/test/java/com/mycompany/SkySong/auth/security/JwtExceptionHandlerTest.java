@@ -65,5 +65,18 @@ public class JwtExceptionHandlerTest {
 
         assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(unsupportedJwtException));
     }
+    @Test
+    void shouldReturnCorrectMessageForUnsupportedToken() {
+        String expectedMessage = "unsupported token";
+
+        when(messageService.getMessage("jwt.unsupported")).thenReturn(expectedMessage);
+
+        UnsupportedJwtException unsupportedJwtException = new UnsupportedJwtException("JWT is unsupported");
+
+        TokenException tokenException = assertThrows(TokenException.class,
+                () -> jwtExceptionHandler.handleException(unsupportedJwtException));
+
+        assertEquals(expectedMessage, tokenException.getMessage());
+    }
 
 }
