@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.antlr.v4.runtime.Token;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -221,5 +222,19 @@ public class JwtAuthenticationFilterTest {
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
         verify(jwtTokenProviderImpl, never()).validateToken(anyString());
+    }
+    @Test
+    void shouldInvokeEntryPointForMalformedToken() throws ServletException, IOException {
+        String malformedToken = "malformedToken";
+        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", malformedToken)));
+        when(jwtTokenProviderImpl.validateToken(malformedToken))
+                .thenReturn(false);
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(jwtAuthenticationEntryPoint).commence(
+                eq(request), eq(response), any(InsufficientAuthenticationException.class));
     }
 }
