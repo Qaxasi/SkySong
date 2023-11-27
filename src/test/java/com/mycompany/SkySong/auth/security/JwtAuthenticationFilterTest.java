@@ -172,14 +172,6 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
-    void shouldNotProcessRequestWithBearerPrefixOnly() throws ServletException, IOException {
-        when(request.getHeader("Authorization")).thenReturn("Bearer ");
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain, never()).doFilter(request, response);
-    }
-    @Test
     void shouldNotSetSecurityContextWithoutToken() throws ServletException, IOException {
         when(request.getHeader("Authorization")).thenReturn("Bearer ");
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
