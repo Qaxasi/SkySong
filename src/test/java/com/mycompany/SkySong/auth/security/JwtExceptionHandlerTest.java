@@ -84,5 +84,18 @@ public class JwtExceptionHandlerTest {
 
         assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(illegalArgumentException));
     }
+    @Test
+    void shouldReturnCorrectMessageForIllegalArgumentException() {
+        String expectedMessage = "claims are empty";
+
+        when(messageService.getMessage("jwt.claims.empty")).thenReturn(expectedMessage);
+
+        IllegalArgumentException illegalArgumentException = new IllegalArgumentException("Claims are empty");
+
+        TokenException tokenException = assertThrows(TokenException.class,
+                () -> jwtExceptionHandler.handleException(illegalArgumentException));
+
+        assertEquals(expectedMessage, tokenException.getMessage());
+    }
 
 }
