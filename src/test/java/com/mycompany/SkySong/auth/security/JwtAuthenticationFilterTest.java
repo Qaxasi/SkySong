@@ -100,7 +100,8 @@ public class JwtAuthenticationFilterTest {
                 Optional.of(new Cookie("auth_token", expiredToken)));
         when(jwtTokenProviderImpl.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+        assertThrows(TokenException.class, () -> jwtAuthenticationFilter
+                .doFilterInternal(request, response, filterChain));
 
         verify(filterChain, never()).doFilter(request, response);
     }
