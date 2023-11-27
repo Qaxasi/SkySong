@@ -3,6 +3,7 @@ package com.mycompany.SkySong.auth.security;
 import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,6 +39,12 @@ public class JwtExceptionHandlerTest {
                 () -> jwtExceptionHandler.handleException(exception));
 
         assertEquals(expectedMessage, tokenException.getMessage());
+    }
+    @Test
+    void shouldThrowTokenExceptionForMalformedToken() {
+        MalformedJwtException malformedJwtException = new MalformedJwtException("JWT is malformed");
+
+        assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(malformedJwtException));
     }
 
 }
