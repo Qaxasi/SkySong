@@ -140,6 +140,26 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain, never()).doFilter(request, response);
     }
     @Test
+    void shouldNotSetSecurityContextForRequestWhenUserNotFound() throws ServletException, IOException {
+        String token = "validTokenButNoUser";
+        String username = "nonExistentUser";
+
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", token)));
+        when(jwtTokenProviderImpl.validateToken(token)).thenReturn(true);
+
+        Claims claims = Jwts.claims().setSubject(username);
+        when(jwtTokenProviderImpl.getClaimsFromToken(token)).thenReturn(claims);
+
+        when(customUserDetailsService.loadUserByUsername("nonExistentUser")).thenThrow(
+                new UsernameNotFoundException("User not found"));
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> jwtAuthenticationFilter.doFilterInternal(request, response, filterChain));
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+    @Test
     void shouldNotProcessRequestWhenUnexpectedExceptionDuringTokenValidation() throws ServletException, IOException {
         String token = "token";
 
