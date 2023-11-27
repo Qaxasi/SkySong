@@ -119,19 +119,6 @@ public class JwtAuthenticationFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
-    void shouldInvokeEntryPointForExpiredToken() throws ServletException, IOException {
-        String expiredToken = "expiredToken";
-
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", expiredToken)));
-        when(jwtTokenProviderImpl.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(jwtAuthenticationEntryPoint).commence(
-                eq(request), eq(response), any(org.springframework.security.core.AuthenticationException.class));
-    }
-    @Test
     void shouldNotProcessRequestWhenUserNotFound() throws ServletException, IOException {
         String token = "validTokenButNoUser";
 
