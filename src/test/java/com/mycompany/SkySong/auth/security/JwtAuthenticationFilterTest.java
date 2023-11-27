@@ -22,8 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,14 +45,14 @@ public class JwtAuthenticationFilterTest {
     private ApplicationMessageService messageService;
     @Mock
     private FilterChain filterChain;
-    
     @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", "invalidToken")));
-        when(jwtTokenProviderImpl.validateToken("invalidToken")).thenReturn(false);
+        when(jwtTokenProviderImpl.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+        assertThrows(TokenException.class, () -> jwtAuthenticationFilter
+                .doFilterInternal(request, response, filterChain));
 
         verify(filterChain, never()).doFilter(request, response);
     }
