@@ -4,6 +4,7 @@ import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -121,18 +122,20 @@ public class JwtAuthenticationFilterTest {
     @Test
     void shouldNotProcessRequestWhenUserNotFound() throws ServletException, IOException {
         String token = "validTokenButNoUser";
+        String username = "nonExistentUser";
 
-        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", token)));
         when(jwtTokenProviderImpl.validateToken(token)).thenReturn(true);
 
-        Claims mockClaims = mock(Claims.class);
-        when(mockClaims.getSubject()).thenReturn("unknownUser");
-        when(jwtTokenProviderImpl.getClaimsFromToken(token)).thenReturn(mockClaims);
+        Claims claims = Jwts.claims().setSubject(username);
+        when(jwtTokenProviderImpl.getClaimsFromToken(token)).thenReturn(claims);
 
-        when(customUserDetailsService.loadUserByUsername("unknownUser")).thenThrow(
+        when(customUserDetailsService.loadUserByUsername("nonExistentUser")).thenThrow(
                 new UsernameNotFoundException("User not found"));
 
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+        assertThrows(UsernameNotFoundException.class,
+                () -> jwtAuthenticationFilter.doFilterInternal(request, response, filterChain));
 
         verify(filterChain, never()).doFilter(request, response);
     }
