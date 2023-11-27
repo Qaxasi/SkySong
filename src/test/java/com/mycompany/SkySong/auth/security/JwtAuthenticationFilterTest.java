@@ -184,6 +184,14 @@ public class JwtAuthenticationFilterTest {
         verify(filterChain).doFilter(request, response);
     }
     @Test
+    void shouldNotInvokeTokenValidationForRegisterPath() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/register");
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(jwtTokenProviderImpl, never()).validateToken(anyString());
+    }
+    @Test
     void shouldNotProcessRequestWhenUnexpectedExceptionDuringTokenValidation() throws ServletException, IOException {
         String token = "token";
 
