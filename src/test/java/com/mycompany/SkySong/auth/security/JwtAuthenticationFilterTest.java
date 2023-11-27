@@ -160,7 +160,7 @@ public class JwtAuthenticationFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
-    void shouldInvokeFilterChainForLoginPaths() throws ServletException, IOException {
+    void shouldInvokeFilterChainForLoginPath() throws ServletException, IOException {
         when(request.getRequestURI()).thenReturn("/api/v1/users/login");
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
@@ -176,7 +176,7 @@ public class JwtAuthenticationFilterTest {
         verify(jwtTokenProviderImpl, never()).validateToken(anyString());
     }
     @Test
-    void shouldInvokeFilterChainForRegisterPaths() throws ServletException, IOException {
+    void shouldInvokeFilterChainForRegisterPath() throws ServletException, IOException {
         when(request.getRequestURI()).thenReturn("/api/v1/users/register");
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
