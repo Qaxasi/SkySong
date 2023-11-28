@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.auth.security.CookieDeleter;
+import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.shared.exception.InternalErrorException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ public class LogoutController {
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         try {
             cookieDeleter.deleteCookie(request, response, "auth_token");
-            return ResponseEntity.ok(messageService.getMessage("logout.success"));
+            return ResponseEntity.ok(new ApiResponse(messageService.getMessage("logout.success")));
         } catch (RuntimeException e) {
             log.error("Error while logging out: " + e.getMessage(), e);
             throw new InternalErrorException(messageService.getMessage("logout.failure"));
