@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.exception.TokenException;
-import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtTokenProviderImplTest {
-    private JwtTokenProviderImpl jwtTokenProviderImpl;
+    private JwtTokenProviderImpl jwtTokenProvider;
     @Mock
     private Authentication mockAuth;
 
@@ -31,13 +30,13 @@ public class JwtTokenProviderImplTest {
     public void setUp() {
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
-        jwtTokenProviderImpl = new JwtTokenProviderImpl(base64Secret, 1000L);
+        jwtTokenProvider = new JwtTokenProviderImpl(base64Secret, 1000L);
     }
     @Test
     void shouldGenerateTokenForGivenAuthentication() {
         when(mockAuth.getName()).thenReturn("testUser");
 
-        String token = jwtTokenProviderImpl.generateToken(mockAuth);
+        String token = jwtTokenProvider.generateToken(mockAuth);
         assertNotNull(token);
         assertFalse(token.isEmpty());
     }
@@ -45,16 +44,16 @@ public class JwtTokenProviderImplTest {
     void shouldValidateTokenGeneratedForGivenAuthentication() {
         when(mockAuth.getName()).thenReturn("testUser");
 
-        String token = jwtTokenProviderImpl.generateToken(mockAuth);
-        assertTrue(jwtTokenProviderImpl.validateToken(token));
+        String token = jwtTokenProvider.generateToken(mockAuth);
+        assertTrue(jwtTokenProvider.validateToken(token));
     }
 
     @Test
     void shouldRetrieveUsernameFromValidToken() {
         when(mockAuth.getName()).thenReturn("testUser");
 
-        String token = jwtTokenProviderImpl.generateToken(mockAuth);
-        Claims claims = jwtTokenProviderImpl.getClaimsFromToken(token);
+        String token = jwtTokenProvider.generateToken(mockAuth);
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
         String retrieveUsername = claims.getSubject();
 
         assertEquals("testUser", retrieveUsername);
@@ -65,8 +64,8 @@ public class JwtTokenProviderImplTest {
 
         when(mockAuth.getName()).thenReturn(expectedUser);
 
-        String token = jwtTokenProviderImpl.generateToken(mockAuth);
-        Claims claims = jwtTokenProviderImpl.getClaimsFromToken(token);
+        String token = jwtTokenProvider.generateToken(mockAuth);
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
 
         assertNotNull(claims.getExpiration());
     }
@@ -74,22 +73,22 @@ public class JwtTokenProviderImplTest {
     void shouldThrowExceptionForExpiredToken() throws InterruptedException {
         when(mockAuth.getName()).thenReturn("testUser");
 
-        String token = jwtTokenProviderImpl.generateToken(mockAuth);
+        String token = jwtTokenProvider.generateToken(mockAuth);
         Thread.sleep(1001);
-        assertThrows(TokenException.class, () -> jwtTokenProviderImpl.validateToken(token));
+        assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(token));
     }
 
     @Test
     void shouldThrowTokenExceptionForMalformedToken() {
         String malformedToken = "not-valid-token";
 
-        assertThrows(TokenException.class, () -> jwtTokenProviderImpl.validateToken(malformedToken));
+        assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(malformedToken));
     }
     @Test
     void shouldThrowTokenExceptionForEmptyClaims() {
         String emptyClaimsToken = "";
 
-        assertThrows(TokenException.class, () -> jwtTokenProviderImpl.validateToken(emptyClaimsToken));
+        assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(emptyClaimsToken));
     }
     @Test
     void shouldThrowTokenExceptionForInvalidAlgorithm() {
@@ -98,6 +97,6 @@ public class JwtTokenProviderImplTest {
                 .setExpiration(new Date(System.currentTimeMillis() + 100L))
                 .compact();
 
-        assertThrows(TokenException.class, () -> jwtTokenProviderImpl.validateToken(unsupportedToken));
+        assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(unsupportedToken));
     }
 }
