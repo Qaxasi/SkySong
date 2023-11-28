@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
-import com.mycompany.SkySong.auth.security.CookieDeleter;
+import com.mycompany.SkySong.auth.security.*;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
@@ -32,7 +32,7 @@ public class LogoutControllerTest {
     @MockBean
     private CookieDeleter cookieDeleter;
     @MockBean
-    private JwtTokenProviderImpl jwtTokenProviderImpl;
+    private JwtTokenProvider jwtTokenProvider;
     @MockBean
     private UserDetailsService userDetailsService;
     @MockBean
