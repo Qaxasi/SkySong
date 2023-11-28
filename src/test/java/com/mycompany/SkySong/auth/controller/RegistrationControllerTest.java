@@ -1,13 +1,10 @@
 package com.mycompany.SkySong.auth.controller;
 
-import com.mycompany.SkySong.auth.security.CookieRetriever;
+import com.mycompany.SkySong.auth.security.*;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
 import com.mycompany.SkySong.auth.service.RegistrationService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +29,7 @@ public class RegistrationControllerTest {
     @MockBean
     private RegistrationService registrationService;
     @MockBean
-    private JwtTokenProviderImpl jwtTokenProviderImpl;
+    private JwtTokenProvider jwtTokenProvider;
     @MockBean
     private UserDetailsService userDetailsService;
     @MockBean
