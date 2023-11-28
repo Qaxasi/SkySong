@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class CookieRetrieverImplTest {
     @InjectMocks
-    private CookieRetriever cookieRetriever;
+    private CookieRetrieverImpl cookieRetriever;
     @Mock
     private HttpServletRequest request;
 
