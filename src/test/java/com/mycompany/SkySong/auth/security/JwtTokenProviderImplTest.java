@@ -27,10 +27,11 @@ public class JwtTokenProviderImplTest {
     private Authentication mockAuth;
     @Mock
     private JwtExceptionHandler jwtExceptionHandler;
+    private Key key;
 
     @BeforeEach
     public void setUp() {
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
         jwtTokenProvider = new JwtTokenProviderImpl(base64Secret, 1000L, jwtExceptionHandler);
     }
