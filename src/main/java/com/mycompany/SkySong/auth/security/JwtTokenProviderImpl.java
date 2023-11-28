@@ -11,7 +11,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
-public class JwtTokenProviderImpl implements JwtTokenProvider {
+class JwtTokenProviderImpl implements JwtTokenProvider {
     private final String jwtSecret;
     private final long jwtExpirationDate;
     private final JwtExceptionHandler jwtExceptionHandler;
