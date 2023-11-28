@@ -6,6 +6,7 @@ import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.service.RegistrationService;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class RegistrationControllerTest {
     private CustomAccessDeniedHandler customAccessDeniedHandler;
     @MockBean
     private CookieRetriever cookieRetriever;
+    @MockBean
+    private ApplicationMessageService messageService;
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
