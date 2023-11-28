@@ -11,8 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -97,5 +96,12 @@ public class JwtExceptionHandlerTest {
 
         assertEquals(expectedMessage, tokenException.getMessage());
     }
+    @Test
+    void shouldNotInterceptUnhandledExceptionTypes() {
+        NullPointerException exception = new NullPointerException("Error");
+
+        assertDoesNotThrow(() -> jwtExceptionHandler.handleException(exception));
+    }
+
 
 }
