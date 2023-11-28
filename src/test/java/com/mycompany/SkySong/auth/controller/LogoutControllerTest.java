@@ -4,6 +4,7 @@ import com.mycompany.SkySong.auth.security.*;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import jakarta.servlet.http.Cookie;
@@ -38,6 +39,10 @@ public class LogoutControllerTest {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
+    @MockBean
+    private ApplicationMessageService messageService;
+    @MockBean
+    private CookieRetriever cookieRetriever;
     @BeforeEach
     void setUp() {
         doAnswer(invocation -> {
