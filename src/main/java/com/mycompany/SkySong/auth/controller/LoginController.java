@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.auth.model.dto.LoginResponse;
 import com.mycompany.SkySong.auth.security.CookieAdder;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
@@ -22,12 +23,12 @@ public class LoginController {
         this.cookieAdder = cookieAdder;
     }
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest loginRequest,
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest,
                                              HttpServletResponse response) {
         String token = loginService.login(loginRequest);
-        ApiResponse jwtAuthResponse = new ApiResponse(token);
+        LoginResponse loginResponse = new LoginResponse(token);
 
         cookieAdder.addCookie(response, "auth_token", token, 24 * 60 * 60);
-        return ResponseEntity.ok(jwtAuthResponse);
+        return ResponseEntity.ok(loginResponse);
     }
 }
