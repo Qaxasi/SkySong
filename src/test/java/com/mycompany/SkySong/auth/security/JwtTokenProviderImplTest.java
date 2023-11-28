@@ -33,7 +33,9 @@ public class JwtTokenProviderImplTest {
     public void setUp() {
         key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
-        jwtTokenProvider = new JwtTokenProviderImpl(base64Secret, 1000L, jwtExceptionHandler);
+        long jwtExpirationTime = 1000L;
+
+        jwtTokenProvider = new JwtTokenProviderImpl(base64Secret, jwtExpirationTime, jwtExceptionHandler);
     }
     @Test
     void shouldGenerateTokenForGivenAuthentication() {
