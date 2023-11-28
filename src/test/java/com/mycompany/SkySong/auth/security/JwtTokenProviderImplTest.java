@@ -25,6 +25,8 @@ public class JwtTokenProviderImplTest {
     private JwtTokenProviderImpl jwtTokenProvider;
     @Mock
     private Authentication mockAuth;
+    @Mock
+    private JwtExceptionHandler jwtExceptionHandler;
 
     @BeforeEach
     public void setUp() {
