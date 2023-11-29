@@ -26,4 +26,14 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest
 @ActiveProfiles("test")
 public class JwtTokenProviderIntegrationTest {
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtExceptionHandler jwtExceptionHandler;
+    @Autowired
+    private DateProvider dateProvider;
+    @Autowired
+    private DataSource dataSource;
 }
