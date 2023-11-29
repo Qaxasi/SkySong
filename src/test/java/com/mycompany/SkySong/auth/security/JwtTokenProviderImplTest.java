@@ -35,6 +35,8 @@ public class JwtTokenProviderImplTest {
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
         long jwtExpirationTime = 1000L;
 
+        when(dateProvider.getCurrentDate()).thenReturn(new Date());
+
         jwtTokenProvider = new JwtTokenProviderImpl(base64Secret, jwtExpirationTime, jwtExceptionHandler, dateProvider);
     }
     @Test
