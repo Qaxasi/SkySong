@@ -29,12 +29,12 @@ class JwtTokenProviderImpl implements JwtTokenProvider {
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
 
-        Date currentDate = new Date();
+        Date currentDate = dateProvider.getCurrentDate();
         Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
 
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(new Date())
+                .setIssuedAt(currentDate)
                 .setExpiration(expireDate)
                 .signWith(key())
                 .compact();
