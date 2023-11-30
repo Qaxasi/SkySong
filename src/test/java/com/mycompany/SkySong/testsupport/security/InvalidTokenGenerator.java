@@ -40,12 +40,9 @@ public class InvalidTokenGenerator {
     }
     public static String generateTokenWithUnsupportedSignature(Key key) {
         Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + EXPIRATION_MS);
+        Date expirationDate = getExpirationDate(false);
 
-        return Jwts.builder()
-                .setIssuedAt(now)
-                .setExpiration(expirationDate)
-                .signWith(key)
+        return createBaseBuilder(now, expirationDate, key)
                 .compact();
     }
     public static String generateTokenWithEmptyClaims(Key key) {
