@@ -25,14 +25,14 @@ public class InvalidTokenGenerator {
                 .signWith(key)
                 .compact();
     }
-    public static String generateTokenWithUnsupportedSignature() {
+    public static String generateTokenWithUnsupportedSignature(Key key) {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + EXPIRATION_MS);
 
         return Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
-                .setHeaderParam("alg", "none")
+                .signWith(key)
                 .compact();
     }
     public static String generateTokenWithEmptyClaims() {
