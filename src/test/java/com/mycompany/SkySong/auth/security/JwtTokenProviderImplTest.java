@@ -83,7 +83,7 @@ public class JwtTokenProviderImplTest {
         assertNotNull(claims.getExpiration());
     }
     @Test
-    void shouldThrowTokenExceptionForExpiredToken() {
+    void shouldReturnFalseForExpiredJwtTokenValidation() {
         String expiredToken = InvalidTokenGenerator.generateExpiredToken(key);
 
         assertFalse(jwtTokenProvider.validateToken(expiredToken));
