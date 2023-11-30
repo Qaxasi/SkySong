@@ -50,13 +50,10 @@ public class InvalidTokenGenerator {
     }
     public static String generateTokenWithEmptyClaims(Key key) {
         Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + EXPIRATION_MS);
+        Date expirationDate = getExpirationDate(false);
 
-        return Jwts.builder()
+        return createBaseBuilder(now, expirationDate, key)
                 .setClaims(new HashMap<>())
-                .setIssuedAt(now)
-                .setExpiration(expirationDate)
-                .signWith(key)
                 .compact();
     }
     public static String generateExpiredToken(String username, Key key) {
