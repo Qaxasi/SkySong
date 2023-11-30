@@ -35,7 +35,7 @@ public class InvalidTokenGenerator {
                 .signWith(key)
                 .compact();
     }
-    public static String generateTokenWithEmptyClaims() {
+    public static String generateTokenWithEmptyClaims(Key key) {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + EXPIRATION_MS);
 
@@ -43,7 +43,7 @@ public class InvalidTokenGenerator {
                 .setClaims(new HashMap<>())
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
-                .signWith(SECRET_KEY)
+                .signWith(key)
                 .compact();
     }
     public static String generateExpiredToken(String username, Key key) {
