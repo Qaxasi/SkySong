@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InvalidTokenGenerator {
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_MS = 1000L;
 
     public static String generateTokenWithoutSubject(Key key) {
