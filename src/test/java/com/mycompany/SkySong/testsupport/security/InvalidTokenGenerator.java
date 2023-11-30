@@ -25,19 +25,6 @@ public class InvalidTokenGenerator {
                 .setExpiration(expirationDate)
                 .signWith(key);
     }
-
-    public static String generateTokenWithoutSubject(Key key) {
-        Date now = new Date();
-        Date expirationDate = new Date(now.getTime() + EXPIRATION_MS);
-        Map<String, Object> claims = new HashMap<>();
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expirationDate)
-                .signWith(key)
-                .compact();
-    }
     public static String generateTokenWithUnsupportedSignature(Key key) {
         Date now = new Date();
         Date expirationDate = getExpirationDate(false);
