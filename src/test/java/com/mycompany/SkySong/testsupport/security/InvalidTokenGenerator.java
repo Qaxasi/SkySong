@@ -11,6 +11,9 @@ import java.util.Map;
 
 public class InvalidTokenGenerator {
     private static final long EXPIRATION_MS = 1000L;
+    private static Date getCurrentDate() {
+        return new Date();
+    }
 
     public static String generateTokenWithoutSubject(Key key) {
         Date now = new Date();
