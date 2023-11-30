@@ -88,4 +88,10 @@ public class JwtTokenProviderImplTest {
 
         assertFalse(jwtTokenProvider.validateToken(expiredToken));
     }
+    @Test
+    void shouldReturnFalseForMalformedTokenValidation() {
+        String malformedToken = InvalidTokenGenerator.generateMalformedToken(key);
+
+        assertFalse(jwtTokenProvider.validateToken(malformedToken));
+    }
 }
