@@ -49,4 +49,10 @@ public class InvalidTokenGenerator {
                 .setSubject(username)
                 .compact();
     }
+    public static String generateTokenWithInvalidSignature(Key key) {
+        String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
+                .setSubject("testUser")
+                .compact();
+        return token + "invalid";
+    }
 }
