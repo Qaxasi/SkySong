@@ -100,4 +100,10 @@ public class JwtTokenProviderImplTest {
 
         assertFalse(jwtTokenProvider.validateToken(invalidToken));
     }
+    @Test
+    void shouldReturnFalseForTokenWithInvalidSignature() {
+        String invalidToken = InvalidTokenGenerator.generateTokenWithInvalidSignature(key);
+
+        assertFalse(jwtTokenProvider.validateToken(invalidToken));
+    }
 }
