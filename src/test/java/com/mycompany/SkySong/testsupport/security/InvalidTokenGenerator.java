@@ -25,6 +25,12 @@ public class InvalidTokenGenerator {
                 .setExpiration(expirationDate)
                 .signWith(key);
     }
+    public static String generateMalformedToken(String username, Key key) {
+        String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
+                .setSubject(username)
+                .compact();
+        return token.substring(0, token.length() / 2);
+    }
     public static String generateTokenWithUnsupportedSignature(String username, Key key) {
         return createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
                 .setSubject(username)
