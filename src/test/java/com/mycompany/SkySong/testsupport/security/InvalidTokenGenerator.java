@@ -32,8 +32,11 @@ public class InvalidTokenGenerator {
         return token.substring(0, token.length() / 2);
     }
     public static String generateTokenWithUnsupportedSignature(String username, Key key) {
+        Key strongerKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
         return createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
                 .setSubject(username)
+                .signWith(strongerKey, SignatureAlgorithm.HS512)
                 .compact();
     }
     public static String generateTokenWithEmptyClaims(Key key) {
