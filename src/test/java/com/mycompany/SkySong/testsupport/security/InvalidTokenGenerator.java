@@ -25,17 +25,17 @@ public class InvalidTokenGenerator {
                 .setExpiration(expirationDate)
                 .signWith(key);
     }
-    public static String generateMalformedToken(String username, Key key) {
+    public static String generateMalformedToken(Key key) {
         String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
-                .setSubject(username)
+                .setSubject("testUser")
                 .compact();
         return token.substring(0, token.length() / 2);
     }
-    public static String generateTokenWithUnsupportedSignature(String username, Key key) {
+    public static String generateTokenWithUnsupportedSignature(Key key) {
         Key strongerKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
         return createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
-                .setSubject(username)
+                .setSubject("testUser")
                 .signWith(strongerKey, SignatureAlgorithm.HS512)
                 .compact();
     }
@@ -44,9 +44,9 @@ public class InvalidTokenGenerator {
                 .setClaims(new HashMap<>())
                 .compact();
     }
-    public static String generateExpiredToken(String username, Key key) {
+    public static String generateExpiredToken(Key key) {
         return createBaseBuilder(getCurrentDate(), getExpirationDate(true), key)
-                .setSubject(username)
+                .setSubject("testUser")
                 .compact();
     }
     public static String generateTokenWithInvalidSignature(Key key) {
