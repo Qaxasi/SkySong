@@ -1,9 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.service.ValidationService;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.auth.service.impl.ValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
