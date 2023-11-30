@@ -50,11 +50,13 @@ class JwtTokenProviderImpl implements JwtTokenProvider {
     @Override
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key())
                     .build()
-                    .parse(token);
-            return true;
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return claims.getSubject() != null && !claims.getSubject().isEmpty();
         } catch (Exception e) {
             jwtExceptionHandler.handleException(e);
             return false;
