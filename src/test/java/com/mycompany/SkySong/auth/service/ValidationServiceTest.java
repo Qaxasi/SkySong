@@ -96,11 +96,13 @@ public class ValidationServiceTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "invalidUsername#", "testEmail@gmail.com", "testPassword@123");
 
-        Exception exception = assertThrows(RegisterException.class,
-                () -> validationService.validateCredentials(registerRequest));
-
         String expectedMessage = "Invalid username format. The username can contain only letters and numbers," +
                 " and should be between 3 to 20 characters long.";
+
+        when(messageService.getMessage("validation.username.error")).thenReturn(expectedMessage);
+
+        Exception exception = assertThrows(RegisterException.class,
+                () -> validationService.validateCredentials(registerRequest));
 
         assertEquals(expectedMessage, exception.getMessage());
     }
@@ -116,11 +118,13 @@ public class ValidationServiceTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "invalidEmail", "testPassword@123");
 
-        Exception exception = assertThrows(RegisterException.class,
-                () -> validationService.validateCredentials(registerRequest));
-
         String expectedMessage = "Invalid email address format. The email should follow the standard " +
                 "format (e.g., user@example.com) and be between 6 to 30 characters long.";
+
+        when(messageService.getMessage("validation.email.error")).thenReturn(expectedMessage);
+
+        Exception exception = assertThrows(RegisterException.class,
+                () -> validationService.validateCredentials(registerRequest));
 
         assertEquals(expectedMessage, exception.getMessage());
     }
