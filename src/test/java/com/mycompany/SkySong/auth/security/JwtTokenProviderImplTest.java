@@ -42,6 +42,8 @@ public class JwtTokenProviderImplTest {
     void shouldGenerateTokenForGivenAuthentication() {
         when(mockAuth.getName()).thenReturn("testUser");
 
+        when(dateProvider.getCurrentDate()).thenReturn(new Date());
+
         String token = jwtTokenProvider.generateToken(mockAuth);
         assertNotNull(token);
         assertFalse(token.isEmpty());
@@ -49,6 +51,8 @@ public class JwtTokenProviderImplTest {
     @Test
     void shouldValidateTokenGeneratedForGivenAuthentication() {
         when(mockAuth.getName()).thenReturn("testUser");
+
+        when(dateProvider.getCurrentDate()).thenReturn(new Date());
 
         String token = jwtTokenProvider.generateToken(mockAuth);
         assertTrue(jwtTokenProvider.validateToken(token));
@@ -58,6 +62,8 @@ public class JwtTokenProviderImplTest {
     void shouldRetrieveUsernameFromValidToken() {
         when(mockAuth.getName()).thenReturn("testUser");
 
+        when(dateProvider.getCurrentDate()).thenReturn(new Date());
+
         String token = jwtTokenProvider.generateToken(mockAuth);
         Claims claims = jwtTokenProvider.getClaimsFromToken(token);
         String retrieveUsername = claims.getSubject();
@@ -66,9 +72,9 @@ public class JwtTokenProviderImplTest {
     }
     @Test
     void shouldRetrieveExpirationTimeFromToken() {
-        String expectedUser = "testUser";
+        when(mockAuth.getName()).thenReturn("testUser");
 
-        when(mockAuth.getName()).thenReturn(expectedUser);
+        when(dateProvider.getCurrentDate()).thenReturn(new Date());
 
         String token = jwtTokenProvider.generateToken(mockAuth);
         Claims claims = jwtTokenProvider.getClaimsFromToken(token);
