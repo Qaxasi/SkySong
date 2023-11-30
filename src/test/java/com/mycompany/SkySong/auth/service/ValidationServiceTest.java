@@ -2,9 +2,11 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class ValidationServiceTest {
     private ValidationService validationService;
+    @Mock
+    private ApplicationMessageService messageService;
     @Test
     void shouldThrowExceptionWhenPasswordIsToShort() {
         RegisterRequest registerRequest =
