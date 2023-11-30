@@ -29,9 +29,10 @@ public class JwtTokenProviderImplTest {
     private JwtExceptionHandler jwtExceptionHandler;
     @Mock
     private DateProvider dateProvider;
+    private Key key;
     @BeforeEach
     public void setUp() {
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
         long jwtExpirationTime = 1000L;
 
