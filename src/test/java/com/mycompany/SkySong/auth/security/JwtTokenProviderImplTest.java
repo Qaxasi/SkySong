@@ -1,9 +1,7 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.testsupport.security.InvalidTokenGenerator;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
