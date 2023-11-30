@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ValidationServiceTest {
@@ -59,11 +60,13 @@ public class ValidationServiceTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "invalidPassword");
 
-        Exception exception = assertThrows(RegisterException.class,
-                () -> validationService.validateCredentials(registerRequest));
-
         String expectedMessage = "Invalid password format. The password must contain an least 8 characters, " +
                 "including uppercase letters, lowercase letters, numbers, and special characters.";
+
+        when(messageService.getMessage("validation.password.error")).thenReturn(expectedMessage);
+
+        Exception exception = assertThrows(RegisterException.class,
+                () -> validationService.validateCredentials(registerRequest));
 
         assertEquals(expectedMessage, exception.getMessage());
     }
