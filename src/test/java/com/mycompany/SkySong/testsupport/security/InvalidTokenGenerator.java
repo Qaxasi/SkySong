@@ -26,26 +26,17 @@ public class InvalidTokenGenerator {
                 .signWith(key);
     }
     public static String generateTokenWithUnsupportedSignature(String username, Key key) {
-        Date now = new Date();
-        Date expirationDate = getExpirationDate(false);
-
-        return createBaseBuilder(now, expirationDate, key)
+        return createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
                 .setSubject(username)
                 .compact();
     }
     public static String generateTokenWithEmptyClaims(Key key) {
-        Date now = new Date();
-        Date expirationDate = getExpirationDate(false);
-
-        return createBaseBuilder(now, expirationDate, key)
+        return createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
                 .setClaims(new HashMap<>())
                 .compact();
     }
     public static String generateExpiredToken(String username, Key key) {
-        Date now = new Date();
-        Date expirationDate = getExpirationDate(true);
-
-        return createBaseBuilder(now, expirationDate, key)
+        return createBaseBuilder(getCurrentDate(), getExpirationDate(true), key)
                 .setSubject(username)
                 .compact();
     }
