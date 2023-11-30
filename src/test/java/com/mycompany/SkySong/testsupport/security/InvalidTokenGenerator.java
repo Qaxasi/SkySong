@@ -14,6 +14,10 @@ public class InvalidTokenGenerator {
     private static Date getCurrentDate() {
         return new Date();
     }
+    private static Date getExpirationDate(boolean expired) {
+        Date now = getCurrentDate();
+        return new Date(now.getTime() + (expired ? -EXPIRATION_MS : EXPIRATION_MS));
+    }
 
     public static String generateTokenWithoutSubject(Key key) {
         Date now = new Date();
