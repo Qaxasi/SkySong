@@ -8,7 +8,6 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class InvalidTokenGenerator {
     private static final long EXPIRATION_MS = 1000L;
