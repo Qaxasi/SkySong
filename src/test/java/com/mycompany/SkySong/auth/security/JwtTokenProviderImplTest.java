@@ -94,4 +94,10 @@ public class JwtTokenProviderImplTest {
 
         assertFalse(jwtTokenProvider.validateToken(malformedToken));
     }
+    @Test
+    void shouldReturnFalseForTokenWithUnsupportedSignature() {
+        String invalidToken = InvalidTokenGenerator.generateTokenWithUnsupportedSignature(key);
+
+        assertFalse(jwtTokenProvider.validateToken(invalidToken));
+    }
 }
