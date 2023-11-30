@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class ValidationServiceTest {
     @InjectMocks
-    private ValidationService validationService;
+    private ValidationServiceImpl validationService;
     @Mock
     private ApplicationMessageService messageService;
     @Test
