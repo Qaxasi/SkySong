@@ -55,13 +55,10 @@ public class InvalidTokenGenerator {
     }
     public static String generateExpiredToken(String username, Key key) {
         Date now = new Date();
-        Date expirationDate = new Date(now.getTime() - EXPIRATION_MS);
+        Date expirationDate = getExpirationDate(true);
 
-        return Jwts.builder()
+        return createBaseBuilder(now, expirationDate, key)
                 .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(expirationDate)
-                .signWith(key)
                 .compact();
     }
 }
