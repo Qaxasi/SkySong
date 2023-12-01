@@ -28,7 +28,7 @@ public class CredentialExistenceCheckerImplTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
-        when(userDAO.existsByUsername("testUsername")).thenThrow(new CredentialValidationException("Username exist!"));
+        when(userDAO.existsByUsername("testUsername")).thenReturn(true);
 
         assertThrows(CredentialValidationException.class,
                 () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
@@ -38,7 +38,7 @@ public class CredentialExistenceCheckerImplTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
-        when(userDAO.existsByEmail("testEmail@gmail.com")).thenThrow(new CredentialValidationException("Email exist!"));
+        when(userDAO.existsByEmail("testEmail@gmail.com")).thenReturn(true);
 
         assertThrows(CredentialValidationException.class,
                 () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
