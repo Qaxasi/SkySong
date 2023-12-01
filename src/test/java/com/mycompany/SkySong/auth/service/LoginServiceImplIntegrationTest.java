@@ -44,7 +44,7 @@ public class LoginServiceImplIntegrationTest {
         }
     }
     @AfterEach
-    void cleanup() throws Exception {
+    void cleanup() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
