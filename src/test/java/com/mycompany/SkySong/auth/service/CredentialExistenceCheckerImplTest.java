@@ -4,7 +4,6 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import org.h2.api.CredentialsValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
