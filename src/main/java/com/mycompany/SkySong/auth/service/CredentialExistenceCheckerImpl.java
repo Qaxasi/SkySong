@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
-import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
