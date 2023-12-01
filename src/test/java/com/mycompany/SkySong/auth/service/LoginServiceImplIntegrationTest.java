@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
 import com.mycompany.SkySong.auth.service.LoginService;
 import com.mycompany.SkySong.shared.exception.TokenException;
@@ -31,7 +32,7 @@ public class LoginServiceImplIntegrationTest {
     @Autowired
     private LoginService loginService;
     @Autowired
-    private JwtTokenProviderImpl jwtTokenProviderImpl;
+    private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private DataSource dataSource;
     @Autowired
