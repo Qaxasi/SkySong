@@ -1,8 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
-import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
-import com.mycompany.SkySong.auth.service.LoginService;
 import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import io.jsonwebtoken.Claims;
