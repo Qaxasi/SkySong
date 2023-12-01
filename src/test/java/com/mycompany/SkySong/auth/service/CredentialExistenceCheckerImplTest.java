@@ -25,7 +25,7 @@ public class CredentialExistenceCheckerImplTest {
     @Test
     void shouldThrowRegisterExceptionIfUsernameExists() {
         RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
 
         when(userDAO.existsByUsername("testUsername")).thenThrow(new CredentialValidationException("Username exist!"));
 
