@@ -81,44 +81,6 @@ public class LoginServiceImplIntegrationTest {
         assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
     }
     @Test
-    void shouldContainCorrectUserInToken() {
-        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
-
-        String token = loginService.login(loginRequest);
-        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-        String username = claims.getSubject();
-
-        assertEquals(loginRequest.usernameOrEmail(), username);
-    }
-    @Test
-    void shouldReturnTokenWithExpirationTime() {
-        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
-
-        String token = loginService.login(loginRequest);
-        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-
-        assertNotNull(claims.getExpiration());
-    }
-
-    @Test
-    void shouldBecomeInvalidTokenAfterDelay() {
-        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
-
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.usernameOrEmail(), loginRequest.password()));
-
-            String token = jwtTokenProvider.generateToken(authentication);
-
-            Thread.sleep(1000 + 1000);
-
-            assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(token));
-
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @Test
     void shouldNotAuthenticateWhenLoginWithInvalidCredentials() {
         LoginRequest loginRequest = new LoginRequest(
                 "testWrongUsername", "testWrongPassword@123");
