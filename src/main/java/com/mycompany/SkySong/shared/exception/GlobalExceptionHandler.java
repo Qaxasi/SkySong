@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleUserNotFoundException(final UserNotFoundException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler({RegisterException.class, NullOrEmptyInputException.class})
+    @ExceptionHandler({RegisterException.class, NullOrEmptyInputException.class, CredentialValidationException.class})
     public ResponseEntity<Object> handleBadRequestExceptions(final RuntimeException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
