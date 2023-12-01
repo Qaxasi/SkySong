@@ -4,12 +4,14 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import org.h2.api.CredentialsValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -40,5 +42,20 @@ public class CredentialExistenceCheckerImplTest {
 
         assertThrows(CredentialValidationException.class,
                 () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
+    }
+    @Test
+    void shouldReturnMessageWhenUsernameExist() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(userDAO.existsByUsername("testUsername")).thenReturn(true);
+
+        String expectedMessage = "Username is already exist!.";
+        when(messageService.getMessage("username.exist")).thenReturn(expectedMessage);
+
+        Exception exception = assertThrows(CredentialValidationException.class,
+                () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
+
+        assertEquals(exception.getMessage(), expectedMessage);
     }
 }
