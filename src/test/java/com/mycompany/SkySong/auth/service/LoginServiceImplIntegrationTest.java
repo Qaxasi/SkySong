@@ -97,4 +97,14 @@ public class LoginServiceImplIntegrationTest {
 
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
+    @Test
+    void shouldReturnCorrectUserNameInAuthenticationWhenCredentialsAreValid() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
+
+        loginService.login(loginRequest);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        assertEquals(loginRequest.usernameOrEmail(), authentication.getName());
+    }
 }
