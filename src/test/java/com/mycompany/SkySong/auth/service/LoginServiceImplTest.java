@@ -28,12 +28,6 @@ public class LoginServiceImplTest {
     private Authentication authentication;
     @Mock
     private ApplicationMessageService messageService;
-
-    @BeforeEach
-    public void setUp() {
-        loginService = new LoginServiceImpl(authenticationManager, jwtTokenProvider);
-
-    }
     @Test
     void shouldReturnTokenOnSuccessfulLogin() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
