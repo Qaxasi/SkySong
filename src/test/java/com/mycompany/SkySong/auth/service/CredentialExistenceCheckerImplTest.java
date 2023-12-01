@@ -44,7 +44,7 @@ public class CredentialExistenceCheckerImplTest {
                 () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
     }
     @Test
-    void shouldReturnMessageWhenUsernameExist() {
+    void shouldReturnErrorMessageWhenUsernameExist() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
