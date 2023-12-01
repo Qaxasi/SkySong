@@ -56,7 +56,7 @@ public class LoginServiceImplIntegrationTest {
 
         String token = loginService.login(loginRequest);
 
-        assertTrue(jwtTokenProviderImpl.validateToken(token));
+        assertTrue(jwtTokenProvider.validateToken(token));
     }
     @Test
     void shouldThrowExceptionWhenEmailLoggingWithInvalidPassword() {
@@ -87,7 +87,7 @@ public class LoginServiceImplIntegrationTest {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
-        Claims claims = jwtTokenProviderImpl.getClaimsFromToken(token);
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
         String username = claims.getSubject();
 
         assertEquals(loginRequest.usernameOrEmail(), username);
@@ -97,7 +97,7 @@ public class LoginServiceImplIntegrationTest {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         String token = loginService.login(loginRequest);
-        Claims claims = jwtTokenProviderImpl.getClaimsFromToken(token);
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
 
         assertNotNull(claims.getExpiration());
     }
@@ -110,11 +110,11 @@ public class LoginServiceImplIntegrationTest {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.usernameOrEmail(), loginRequest.password()));
 
-            String token = jwtTokenProviderImpl.generateToken(authentication);
+            String token = jwtTokenProvider.generateToken(authentication);
 
             Thread.sleep(1000 + 1000);
 
-            assertThrows(TokenException.class, () -> jwtTokenProviderImpl.validateToken(token));
+            assertThrows(TokenException.class, () -> jwtTokenProvider.validateToken(token));
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
