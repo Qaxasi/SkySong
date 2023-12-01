@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
+import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
@@ -26,9 +27,9 @@ public class CredentialExistenceCheckerImplTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
-        when(userDAO.existsByUsername("testUsername")).thenThrow(new RegisterException("Username exist!"));
+        when(userDAO.existsByUsername("testUsername")).thenThrow(new CredentialValidationException("Username exist!"));
 
-        assertThrows(RegisterException.class,
+        assertThrows(CredentialValidationException.class,
                 () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
     }
 }
