@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
@@ -24,35 +25,35 @@ public class ValidationServiceTest {
         RegisterRequest registerRequest =
                 new RegisterRequest("testUsername", "testEmail@gmail.com", "Test@2");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowExceptionWhenPasswordDoesNotHaveUppercaseLetter() {
         RegisterRequest registerRequest =
                 new RegisterRequest("testUsername", "testEmail@gmail.com", "testpass@123");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowExceptionWhenPasswordDoesNotHaveLowercaseLetter() {
         RegisterRequest registerRequest =
                 new RegisterRequest("testUsername", "testEmail@gmail.com", "TESTPASS@123");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowExceptionWhenPasswordDoesNotHaveNumber() {
         RegisterRequest registerRequest =
                 new RegisterRequest("testUsername", "testEmail@gmail.com", "testPass@ONE");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowExceptionWhenPasswordDoesNotHaveSpecialCharacter() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword123");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowErrorMessageForInvalidPasswordFormat() {
@@ -64,7 +65,7 @@ public class ValidationServiceTest {
 
         when(messageService.getMessage("validation.password.error")).thenReturn(expectedMessage);
 
-        Exception exception = assertThrows(RegisterException.class,
+        Exception exception = assertThrows(CredentialValidationException.class,
                 () -> validationService.validateCredentials(registerRequest));
 
         assertEquals(expectedMessage, exception.getMessage());
@@ -74,21 +75,21 @@ public class ValidationServiceTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "un", "testEmail@gmail.com", "testPassword@123");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowExceptionWhenUsernameIsToLong() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testVeryLongUsernameFormat", "testEmail@gmail.com", "testPassword@123");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowExceptionWhenUsernameContainSpecialCharacter() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "test#Username", "testEmail@gmail.com", "testPassword@123");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowErrorMessageForInvalidUsernameFormat() {
@@ -100,7 +101,7 @@ public class ValidationServiceTest {
 
         when(messageService.getMessage("validation.username.error")).thenReturn(expectedMessage);
 
-        Exception exception = assertThrows(RegisterException.class,
+        Exception exception = assertThrows(CredentialValidationException.class,
                 () -> validationService.validateCredentials(registerRequest));
 
         assertEquals(expectedMessage, exception.getMessage());
@@ -110,7 +111,7 @@ public class ValidationServiceTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "invalidEmail", "testPassword@123");
 
-        assertThrows(RegisterException.class, () -> validationService.validateCredentials(registerRequest));
+        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
     void shouldThrowErrorMessageForInvalidEmailFormat() {
@@ -122,7 +123,7 @@ public class ValidationServiceTest {
 
         when(messageService.getMessage("validation.email.error")).thenReturn(expectedMessage);
 
-        Exception exception = assertThrows(RegisterException.class,
+        Exception exception = assertThrows(CredentialValidationException.class,
                 () -> validationService.validateCredentials(registerRequest));
 
         assertEquals(expectedMessage, exception.getMessage());
