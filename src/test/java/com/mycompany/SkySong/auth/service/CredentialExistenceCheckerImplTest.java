@@ -22,7 +22,7 @@ public class CredentialExistenceCheckerImplTest {
     @Mock
     private ApplicationMessageService messageService;
     @Test
-    void shouldThrowRegisterExceptionIfUsernameExists() {
+    void shouldThrowExceptionIfUsernameExists() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
