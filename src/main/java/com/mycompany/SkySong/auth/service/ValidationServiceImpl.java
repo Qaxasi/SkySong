@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
@@ -23,19 +24,19 @@ class ValidationServiceImpl implements ValidationService {
 
     private void validateUsername(RegisterRequest registerRequest) {
         if (!registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
-            throw new RegisterException(messageService.getMessage("validation.username.error"));
+            throw new CredentialValidationException(messageService.getMessage("validation.username.error"));
         }
     }
 
     private void validateEmail(RegisterRequest registerRequest) {
         if (!registerRequest.email().matches(ValidationPatterns.EMAIL_PATTERN)) {
-            throw new RegisterException(messageService.getMessage("validation.email.error"));
+            throw new CredentialValidationException(messageService.getMessage("validation.email.error"));
         }
     }
 
     private void validatePassword(RegisterRequest registerRequest) {
         if (!registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
-            throw new RegisterException(messageService.getMessage("validation.password.error"));
+            throw new CredentialValidationException(messageService.getMessage("validation.password.error"));
         }
     }
 }
