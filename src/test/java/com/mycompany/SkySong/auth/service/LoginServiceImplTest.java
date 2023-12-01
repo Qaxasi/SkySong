@@ -49,11 +49,13 @@ public class LoginServiceImplTest {
         when(authenticationManager.authenticate(any())).thenThrow(
                 new BadCredentialsException("Incorrect credentials"));
 
+        when(messageService.getMessage("login.failure"))
+                .thenReturn("Incorrect username/email or password.");
+
         Exception exception = assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
-        String expectedMessage = "Incorrect username/email or password";
 
+        String expectedMessage = "Incorrect username/email or password.";
         assertEquals(expectedMessage, exception.getMessage());
-
     }
     @Test
     void shouldThrowExceptionWhenLoggingWithInvalidCredentials() {
