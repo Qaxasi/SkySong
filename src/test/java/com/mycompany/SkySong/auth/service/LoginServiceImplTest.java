@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
+import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
 import com.mycompany.SkySong.auth.service.LoginServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class LoginServiceImplTest {
     private LoginServiceImpl loginService;
     @Mock
-    private JwtTokenProviderImpl jwtTokenProviderImpl;
+    private JwtTokenProvider jwtTokenProvider;
     @Mock
     private AuthenticationManager authenticationManager;
     @Mock
@@ -29,7 +30,7 @@ public class LoginServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        loginService = new LoginServiceImpl(authenticationManager, jwtTokenProviderImpl);
+        loginService = new LoginServiceImpl(authenticationManager, jwtTokenProvider);
 
     }
     @Test
@@ -38,7 +39,7 @@ public class LoginServiceImplTest {
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
-        when(jwtTokenProviderImpl.generateToken(authentication)).thenReturn("validToken");
+        when(jwtTokenProvider.generateToken(authentication)).thenReturn("validToken");
 
         String token = loginService.login(loginRequest);
 
@@ -77,6 +78,6 @@ public class LoginServiceImplTest {
 
         loginService.login(loginRequest);
 
-        verify(jwtTokenProviderImpl).generateToken(authentication);
+        verify(jwtTokenProvider).generateToken(authentication);
     }
 }
