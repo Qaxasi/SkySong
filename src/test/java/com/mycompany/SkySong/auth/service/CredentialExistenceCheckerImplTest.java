@@ -58,4 +58,19 @@ public class CredentialExistenceCheckerImplTest {
 
         assertEquals(exception.getMessage(), expectedMessage);
     }
+    @Test
+    void shouldReturnErrorMessageWhenEmailExist() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(userDAO.existsByEmail("testEmail@gmail.com")).thenReturn(true);
+
+        String expectedMessage = "Email is already exist!.";
+        when(messageService.getMessage("email.exist")).thenReturn(expectedMessage);
+
+        Exception exception = assertThrows(CredentialValidationException.class,
+                () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
+
+        assertEquals(exception.getMessage(), expectedMessage);
+    }
 }
