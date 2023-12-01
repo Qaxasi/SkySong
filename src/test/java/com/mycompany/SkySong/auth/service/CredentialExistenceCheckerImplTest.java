@@ -31,4 +31,14 @@ public class CredentialExistenceCheckerImplTest {
         assertThrows(CredentialValidationException.class,
                 () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
     }
+    @Test
+    void shouldThrowExceptionIfEmailExist() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testEmail@gmail.com", "testPassword@123");
+
+        when(userDAO.existsByEmail("testEmail@gmail.com")).thenThrow(new CredentialValidationException("Email exist!"));
+
+        assertThrows(CredentialValidationException.class,
+                () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
+    }
 }
