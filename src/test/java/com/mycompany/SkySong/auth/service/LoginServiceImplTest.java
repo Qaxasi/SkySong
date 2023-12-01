@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,8 @@ public class LoginServiceImplTest {
     private AuthenticationManager authenticationManager;
     @Mock
     private Authentication authentication;
+    @Mock
+    private ApplicationMessageService messageService;
 
     @BeforeEach
     public void setUp() {
