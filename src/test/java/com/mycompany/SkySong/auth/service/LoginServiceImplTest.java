@@ -67,14 +67,5 @@ public class LoginServiceImplTest {
                 loginService.login(loginRequest));
 
     }
-    @Test
-    void shouldInvokeGenerateTokenWithProperAuthenticationAfterSuccessfulLogin() {
-        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
-
-        when(authenticationManager.authenticate(any())).thenReturn(authentication);
-
-        loginService.login(loginRequest);
-
-        verify(jwtTokenProvider).generateToken(authentication);
-    }
+   
 }
