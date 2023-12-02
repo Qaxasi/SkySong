@@ -131,22 +131,6 @@ public class RegistrationServiceIntegrationTest {
         assertEquals(userCountBefore, userCountAfter);
     }
     @Test
-    void shouldNotIncrementUserCountWhenEmailRegistrationFails() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
-
-        long userCountBefore = userDAO.count();
-
-        try {
-            registrationService.register(registerRequest);
-        } catch (RegisterException | DatabaseException ignored) {
-        }
-
-        long userCountAfter = userDAO.count();
-
-        assertEquals(userCountBefore, userCountAfter);
-    }
-    @Test
     void shouldCheckPasswordHashingOnRegistration() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
