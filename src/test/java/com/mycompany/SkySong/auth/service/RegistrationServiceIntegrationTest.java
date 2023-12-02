@@ -115,7 +115,7 @@ public class RegistrationServiceIntegrationTest {
         assertThat(userCountAfter).isEqualTo(userCountBefore + 1);
     }
     @Test
-    void shouldNotIncrementUserCountWhenUsernameRegistrationFails() {
+    void shouldNotIncrementUserCountWhenRegistrationFails() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
