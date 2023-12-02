@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.model.entity.Role;
+import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.auth.service.RegistrationServiceImpl;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
@@ -142,5 +144,25 @@ public class RegistrationServiceIntegrationTest {
         String encodedPasswordInDB = user.get().getPassword();
         assertNotEquals(registerRequest.password(), encodedPasswordInDB);
         assertTrue(passwordEncoder.matches(registerRequest.password(), encodedPasswordInDB));
+    }
+    @Test
+    void shouldAssignRoleUserToNewUser() throws DatabaseException {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        registrationService.register(registerRequest);
+
+        Optional<User> userOptional = userDAO.findByUsername("testUniqueUsername");
+        assertTrue(userOptional.isPresent());
+
+        User user = userOptional.get();
+
+        Optional<Role> roleOptional = roleDAO.findByName(UserRole.ROLE_USER);
+        assertTrue(roleOptional.isPresent());
+
+        Role userRole = roleOptional.get();
+
+        assertTrue(user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals(userRole.getName())));
     }
 }
