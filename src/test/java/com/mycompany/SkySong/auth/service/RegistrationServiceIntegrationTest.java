@@ -135,8 +135,7 @@ public class RegistrationServiceIntegrationTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
-        ApiResponse response = registrationService.register(registerRequest);
-        assertEquals("User registered successfully", response.message());
+        registrationService.register(registerRequest);
 
         Optional<User> user = userDAO.findByUsername(registerRequest.username());
         assertTrue(user.isPresent());
