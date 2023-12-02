@@ -81,4 +81,17 @@ public class LoginServiceImplTest {
 
         verify(jwtTokenProvider, never()).generateToken(authentication);
     }
+    @Test
+    void shouldPassCorrectCredentialsToAuthenticationManager() {
+        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(authentication);
+
+        loginService.login(loginRequest);
+
+        verify(authenticationManager).authenticate(
+                eq(new UsernamePasswordAuthenticationToken("testUsername", "testPassword@123"))
+        );
+    }
 }
