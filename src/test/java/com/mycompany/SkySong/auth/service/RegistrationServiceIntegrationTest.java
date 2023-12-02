@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.service.RegistrationServiceImpl;
+import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
@@ -64,6 +65,13 @@ public class RegistrationServiceIntegrationTest {
         assertTrue(registeredUser.isPresent());
         assertEquals(registerRequest.username(), registeredUser.get().getUsername());
         assertEquals(registerRequest.email(), registeredUser.get().getEmail());
+    }
+    @Test
+    void shouldThrowExceptionForInvalidUsernameFormatOnRegistration() throws DatabaseException {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "invalidUsername$Format", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
     @Test
     void shouldCheckExistenceOfRegisteredUserInDatabase() throws DatabaseException {
