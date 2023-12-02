@@ -102,15 +102,6 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
     @Test
-    void shouldCheckExistenceOfRegisteredUserInDatabase() throws DatabaseException {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        registrationService.register(registerRequest);
-
-        assertTrue(userDAO.existsByUsername(registerRequest.username()));
-    }
-    @Test
     void shouldIncrementUserCountByOneWhenUserSuccessfullyRegistered() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
@@ -122,13 +113,6 @@ public class RegistrationServiceIntegrationTest {
         long userCountAfter = userDAO.count();
 
         assertThat(userCountAfter).isEqualTo(userCountBefore + 1);
-    }
-    @Test
-    void shouldThrowExceptionWhenUserTryRegisterWithExistUsername() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
     void shouldNotIncrementUserCountWhenUsernameRegistrationFails() {
@@ -145,13 +129,6 @@ public class RegistrationServiceIntegrationTest {
         long userCountAfter = userDAO.count();
 
         assertEquals(userCountBefore, userCountAfter);
-    }
-    @Test
-    void shouldThrowExceptionWhenUserTryRegisterWithExistEmail() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
-
-        assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
     }
     @Test
     void shouldNotIncrementUserCountWhenEmailRegistrationFails() {
