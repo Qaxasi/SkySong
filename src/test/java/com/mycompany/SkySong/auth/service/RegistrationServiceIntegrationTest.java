@@ -81,6 +81,13 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldThrowExceptionForInvalidPasswordFormatOnRegistration() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testUniqueEmail@gmail.com", "invalidFormat");
+
+        assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
     void shouldCheckExistenceOfRegisteredUserInDatabase() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
