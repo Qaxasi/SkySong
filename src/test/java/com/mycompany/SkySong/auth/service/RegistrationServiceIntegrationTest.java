@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.service.RegistrationServiceImpl;
+import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
@@ -52,7 +53,7 @@ public class RegistrationServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
-    void shouldRegisterUserWithCorrectAttributesAndSaveToDatabase() {
+    void shouldRegisterUserWithCorrectAttributesAndSaveToDatabase() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
@@ -65,7 +66,7 @@ public class RegistrationServiceIntegrationTest {
         assertEquals(registerRequest.email(), registeredUser.get().getEmail());
     }
     @Test
-    void shouldCheckExistenceOfRegisteredUserInDatabase() {
+    void shouldCheckExistenceOfRegisteredUserInDatabase() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
@@ -74,7 +75,7 @@ public class RegistrationServiceIntegrationTest {
         assertTrue(userDAO.existsByUsername(registerRequest.username()));
     }
     @Test
-    void shouldIncrementUserCountByOneWhenUserSuccessfullyRegistered() {
+    void shouldIncrementUserCountByOneWhenUserSuccessfullyRegistered() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
@@ -102,7 +103,7 @@ public class RegistrationServiceIntegrationTest {
 
         try {
             registrationService.register(registerRequest);
-        } catch (RegisterException ignored) {
+        } catch (RegisterException | DatabaseException ignored) {
         }
 
         long userCountAfter = userDAO.count();
@@ -125,7 +126,7 @@ public class RegistrationServiceIntegrationTest {
 
         try {
             registrationService.register(registerRequest);
-        } catch (RegisterException ignored) {
+        } catch (RegisterException | DatabaseException ignored) {
         }
 
         long userCountAfter = userDAO.count();
@@ -133,7 +134,7 @@ public class RegistrationServiceIntegrationTest {
         assertEquals(userCountBefore, userCountAfter);
     }
     @Test
-    void shouldCheckPasswordHashingOnRegistration() {
+    void shouldCheckPasswordHashingOnRegistration() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
 
