@@ -78,7 +78,7 @@ public class LoginServiceImplIntegrationTest {
         assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
     }
     @Test
-    void shouldNotAuthenticateWhenLoginWithInvalidCredentials() {
+    void shouldNotSetAuthContextWithInvalidCredentials() {
         LoginRequest loginRequest = new LoginRequest(
                 "testWrongUsername", "testWrongPassword@123");
 
@@ -87,7 +87,7 @@ public class LoginServiceImplIntegrationTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
-    void shouldAuthenticateWhenLoginWithValidCredentials() {
+    void shouldSetAuthContextWhenLoginWithValidCredentials() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         loginService.login(loginRequest);
@@ -95,7 +95,7 @@ public class LoginServiceImplIntegrationTest {
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
-    void shouldReturnCorrectUserNameInAuthenticationWhenCredentialsAreValid() {
+    void shouldReturnCorrectUsernameInAuthenticationWhenCredentialsAreValid() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
 
         loginService.login(loginRequest);
