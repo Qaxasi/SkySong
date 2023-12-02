@@ -88,6 +88,13 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldThrowExceptionWhenTryRegisterWithExistingUsername() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
     void shouldCheckExistenceOfRegisteredUserInDatabase() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
