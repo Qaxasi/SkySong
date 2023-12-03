@@ -81,4 +81,19 @@ public class UserRoleManagerImplTest {
 
         verify(roleDAO).findByName(role);
     }
+    @Test
+    void shouldUseMessageServiceCorrectlyWhenRoleDoesNotExist() {
+        UserRole role = UserRole.ROLE_USER;
+        String expectedMessage = "Error during registration";
+
+        when(messageService.getMessage("user.role.not-set")).thenReturn(expectedMessage);
+        when(roleDAO.findByName(role)).thenReturn(Optional.empty());
+
+        try {
+            userRoleManagerImpl.getRoleByName(role);
+        } catch (InternalErrorException  ignored) {
+        }
+
+        verify(messageService).getMessage("user.role.not-set");
+    }
 }
