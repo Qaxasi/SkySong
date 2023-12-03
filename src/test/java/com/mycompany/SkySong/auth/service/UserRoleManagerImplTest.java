@@ -68,5 +68,17 @@ public class UserRoleManagerImplTest {
 
         verify(roleDAO).findByName(role);
     }
+    @Test
+    void shouldUseRoleDAOCorrectlyWhenRoleDoesNotExist() {
+        UserRole role = UserRole.ROLE_USER;
 
+        when(roleDAO.findByName(role)).thenReturn(Optional.empty());
+
+        try {
+            userRoleManagerImpl.getRoleByName(role);
+        } catch (InternalErrorException  e) {
+        }
+
+        verify(roleDAO).findByName(role);
+    }
 }
