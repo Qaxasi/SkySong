@@ -37,11 +37,6 @@ public class RegistrationServiceImplTest {
     private ValidationService validationService;
     @Mock
     private PasswordEncoder passwordEncoder;
-
-    @BeforeEach
-    void setUp() {
-        registrationService = new RegistrationServiceImpl(userDAO, roleDAO, validationService, passwordEncoder);
-    }
     @Test
     void shouldReturnCorrectMessageAfterSuccessfullyRegisterNewUserWithValidCredentials() {
         RegisterRequest registerRequest = new RegisterRequest(
