@@ -16,6 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,4 +57,16 @@ public class UserRoleManagerImplTest {
 
         assertEquals(expectedMessage, exception.getMessage());
     }
+    @Test
+    void shouldUseRoleDAOCorrectlyWhenRoleExist() {
+        UserRole role = UserRole.ROLE_USER;
+        Role expectedRole = new Role(role);
+
+        when(roleDAO.findByName(role)).thenReturn(Optional.of(expectedRole));
+
+        userRoleManagerImpl.getRoleByName(role);
+
+        verify(roleDAO).findByName(role);
+    }
+
 }
