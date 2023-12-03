@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class LoginServiceImplIntegrationTest {
+public class LoginServiceIntegrationTest {
     @Autowired
     private LoginService loginService;
     @Autowired
