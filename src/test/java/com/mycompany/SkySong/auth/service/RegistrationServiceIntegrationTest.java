@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 public class RegistrationServiceIntegrationTest {
     @Autowired
-    private RegistrationServiceImpl registrationService;
+    private RegistrationService registrationService;
     @Autowired
     private UserDAO userDAO;
     @Autowired
