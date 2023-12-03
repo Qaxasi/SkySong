@@ -7,6 +7,7 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.repository.RoleDAO;
 import com.mycompany.SkySong.shared.repository.UserDAO;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,6 +31,14 @@ public class RegistrationServiceImplTest {
     private UserDAO userDAO;
     @Mock
     private ValidationService validationService;
+    @Mock
+    private ApplicationMessageService messageService;
+    @Mock
+    private UserRoleManager userRoleManager;
+    @Mock
+    private UserFactory userFactory;
+    @Mock
+    private CredentialExistenceChecker credentialExistenceChecker;
 
     @Test
     void shouldReturnCorrectMessageAfterSuccessfullyRegisterNewUserWithValidCredentials() {
