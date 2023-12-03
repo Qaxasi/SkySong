@@ -43,4 +43,17 @@ public class UserRoleManagerImplTest {
 
         assertEquals(actualRole, expectedRole);
     }
+    @Test
+    void shouldReturnErrorMessageWhenRoleNotFound() {
+        UserRole role = UserRole.ROLE_USER;
+        String expectedMessage = "Error during registration";
+
+        when(messageService.getMessage("user.role.not-set")).thenReturn(expectedMessage);
+        when(roleDAO.findByName(role)).thenReturn(Optional.empty());
+
+        Exception exception =
+                assertThrows(InternalErrorException.class, () -> userRoleManagerImpl.getRoleByName(role));
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
 }
