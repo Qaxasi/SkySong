@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class UserRoleManagerImplTest {
     @InjectMocks
-    private UserRoleManagerImplTest userRoleManagerImplTest;
+    private UserRoleManagerImpl userRoleManagerImpl;
     @Mock
     private RoleDAO roleDAO;
     @Mock
