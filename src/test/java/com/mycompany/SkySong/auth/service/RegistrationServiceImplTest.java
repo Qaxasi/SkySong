@@ -14,6 +14,7 @@ import com.mycompany.SkySong.auth.service.impl.ValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class RegistrationServiceImplTest {
+    @InjectMocks
     private RegistrationServiceImpl registrationService;
     @Mock
     private UserDAO userDAO;
