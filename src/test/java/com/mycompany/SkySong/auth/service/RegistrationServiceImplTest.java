@@ -29,11 +29,8 @@ public class RegistrationServiceImplTest {
     @Mock
     private UserDAO userDAO;
     @Mock
-    private RoleDAO roleDAO;
-    @Mock
     private ValidationService validationService;
-    @Mock
-    private PasswordEncoder passwordEncoder;
+
     @Test
     void shouldReturnCorrectMessageAfterSuccessfullyRegisterNewUserWithValidCredentials() {
         RegisterRequest registerRequest = new RegisterRequest(
