@@ -76,7 +76,7 @@ public class UserRoleManagerImplTest {
 
         try {
             userRoleManagerImpl.getRoleByName(role);
-        } catch (InternalErrorException  e) {
+        } catch (InternalErrorException  ignored) {
         }
 
         verify(roleDAO).findByName(role);
