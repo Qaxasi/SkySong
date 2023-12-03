@@ -32,4 +32,15 @@ public class UserRoleManagerImplTest {
 
         assertThrows(InternalErrorException.class, () -> userRoleManagerImpl.getRoleByName(any()));
     }
+    @Test
+    void shouldReturnCorrectRoleWhenRoleExist() {
+        UserRole role = UserRole.ROLE_USER;
+        Role expectedRole = new Role(role);
+
+        when(roleDAO.findByName(role)).thenReturn(Optional.of(expectedRole));
+
+        Role actualRole = userRoleManagerImpl.getRoleByName(role);
+
+        assertEquals(actualRole, expectedRole);
+    }
 }
