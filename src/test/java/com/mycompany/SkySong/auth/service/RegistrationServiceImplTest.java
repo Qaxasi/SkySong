@@ -1,17 +1,12 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.service.RegistrationServiceImpl;
-import com.mycompany.SkySong.auth.service.ValidationService;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.exception.InternalErrorException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.auth.model.dto.RegistrationResponse;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.repository.RoleDAO;
 import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.auth.service.impl.ValidationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
