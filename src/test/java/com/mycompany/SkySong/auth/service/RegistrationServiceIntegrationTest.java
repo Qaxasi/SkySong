@@ -103,6 +103,19 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldReturnErrorMessageForInvalidUsernameFormatOnRegistration() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "invalidUsername$Format", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        Exception exception = assertThrows(CredentialValidationException.class,
+                () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Invalid username format. The username can contain only letters and numbers," +
+                " and should be between 3 and 20 characters long.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
     void shouldThrowExceptionForInvalidEmailFormatOnRegistration() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
