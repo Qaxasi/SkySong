@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.auth.service.RegistrationServiceImpl;
@@ -11,6 +12,7 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.auth.repository.RoleDAO;
 import com.mycompany.SkySong.shared.repository.UserDAO;
+import com.mycompany.SkySong.testsupport.RegisterAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,6 +45,8 @@ public class RegistrationServiceIntegrationTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private LoginService loginService;
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
