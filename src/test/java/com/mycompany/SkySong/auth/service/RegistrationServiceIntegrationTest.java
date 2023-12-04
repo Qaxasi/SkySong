@@ -61,7 +61,7 @@ public class RegistrationServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
-    void shouldRegisterUserAndAllowLoginWithValidCredentials() throws SQLException, DatabaseException {
+    void shouldRegisterUserAndAllowLoginWithValidCredentials() throws DatabaseException {
         String username = "testUniqueUsername";
         String email = "testUniqueEmail@gmail.com";
         String password = "testPassword@123";
