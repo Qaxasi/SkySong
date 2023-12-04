@@ -61,6 +61,20 @@ public class RegistrationServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
+    void shouldRegisterUserAndAllowLoginWithValidCredentials() throws SQLException, DatabaseException {
+        String username = "testUniqueUsername";
+        String email = "testUniqueEmail@gmail.com";
+        String password = "testPassword@123";
+        RegisterRequest registerRequest = new RegisterRequest(username, email, password);
+
+        registrationService.register(registerRequest);
+
+        LoginRequest loginRequest = new LoginRequest(username, password);
+
+        String token = loginService.login(loginRequest);
+        assertNotNull(token, "JWT token has not been generated");
+    }
+    @Test
     void shouldRegisterUserWithCorrectAttributesAndSaveToDatabase() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
