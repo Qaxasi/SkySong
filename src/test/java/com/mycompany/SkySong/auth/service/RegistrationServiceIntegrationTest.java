@@ -26,6 +26,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -41,8 +43,6 @@ public class RegistrationServiceIntegrationTest {
     private UserDAO userDAO;
     @Autowired
     private RoleDAO roleDAO;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     @Autowired
     private DataSource dataSource;
     @Autowired
