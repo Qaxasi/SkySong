@@ -32,10 +32,6 @@ public class RegistrationServiceIntegrationTest {
     @Autowired
     private RegistrationService registrationService;
     @Autowired
-    private UserDAO userDAO;
-    @Autowired
-    private RoleDAO roleDAO;
-    @Autowired
     private DataSource dataSource;
     @Autowired
     private LoginService loginService;
@@ -190,7 +186,7 @@ public class RegistrationServiceIntegrationTest {
                 "FROM user_roles ur " +
                 "JOIN users u ON ur.user_id = u.id " +
                 "JOIN roles r ON ur.role_id = r.id " +
-                "WHERE u.username = ? AND r.role_name = ?";
+                "WHERE u.username = ? AND r.name = ?";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
