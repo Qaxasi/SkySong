@@ -75,7 +75,7 @@ public class RegistrationServiceIntegrationTest {
         assertNotNull(token, "JWT token has not been generated");
     }
     @Test
-    void shouldThrowExceptionForInvalidUsernameFormatOnRegistration() throws DatabaseException {
+    void shouldThrowExceptionForInvalidUsernameFormatOnRegistration() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "invalidUsername$Format", "testUniqueEmail@gmail.com", "testPassword@123");
 
