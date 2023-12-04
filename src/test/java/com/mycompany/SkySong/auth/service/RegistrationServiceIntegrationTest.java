@@ -163,6 +163,18 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldReturnErrorMessageWhenTryRegisterWithExistingUsername() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        Exception exception =assertThrows(CredentialValidationException.class,
+                () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Username is already exist!.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+    @Test
     void shouldThrowExceptionWhenTryRegisterWithExistingEmail() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
