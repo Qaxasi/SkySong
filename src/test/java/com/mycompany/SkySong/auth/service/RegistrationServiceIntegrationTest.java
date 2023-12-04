@@ -119,26 +119,6 @@ public class RegistrationServiceIntegrationTest {
 
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
-    @Test
-    void shouldAssignRoleUserToNewUser() throws DatabaseException {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        registrationService.register(registerRequest);
-
-        Optional<User> userOptional = userDAO.findByUsername("testUniqueUsername");
-        assertTrue(userOptional.isPresent());
-
-        User user = userOptional.get();
-
-        Optional<Role> roleOptional = roleDAO.findByName(UserRole.ROLE_USER);
-        assertTrue(roleOptional.isPresent());
-
-        Role userRole = roleOptional.get();
-
-        assertTrue(user.getRoles().stream()
-                .anyMatch(role -> role.getName().equals(userRole.getName())));
-    }
     private boolean assertUserRoleAddedToNewUser(String username, String roleName) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM user_roles ur " +
