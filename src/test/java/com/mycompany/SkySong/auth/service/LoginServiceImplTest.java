@@ -57,21 +57,9 @@ public class LoginServiceImplTest {
         assertEquals(expectedMessage, exception.getMessage());
     }
     @Test
-    void shouldThrowExceptionWhenLoggingWithInvalidCredentials() {
-        LoginRequest loginRequest = new LoginRequest(
-                "testWrongUsername", "testWrongPassword@123");
-
-        when(authenticationManager.authenticate(any())).thenThrow(
-                new BadCredentialsException("Incorrect credentials"));
-
-        assertThrows(BadCredentialsException.class, () ->
-                loginService.login(loginRequest));
-
-    }
-    @Test
     void shouldNotGenerateJwtTokenOnInvalidLogin() {
         LoginRequest loginRequest = new LoginRequest(
-                "testWrongUsername", "testWrongPassword@123");
+                "testWrongUsername", "testWrongPassword@123"        );
 
         when(authenticationManager.authenticate(any())).thenThrow(
                 new BadCredentialsException("Incorrect credentials"));
