@@ -85,6 +85,17 @@ public class RegistrationServiceIntegrationTest {
         assertTrue(assertUserRoleAddedToNewUser(registerRequest.username(), UserRole.ROLE_USER.name()));
     }
     @Test
+    void shouldReturnSuccessMessageOnUserRegistration () throws DatabaseException {
+        String username = "testUniqueUsername";
+        String email = "testUniqueEmail@gmail.com";
+        String password = "testPassword@123";
+        RegisterRequest registerRequest = new RegisterRequest(username, email, password);
+
+        ApiResponse response = registrationService.register(registerRequest);
+
+        assertEquals("User registered successfully.", response.message());
+    }
+    @Test
     void shouldThrowExceptionForInvalidUsernameFormatOnRegistration() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "invalidUsername$Format", "testUniqueEmail@gmail.com", "testPassword@123");
