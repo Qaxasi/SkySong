@@ -139,4 +139,22 @@ public class RegistrationServiceIntegrationTest {
         assertTrue(user.getRoles().stream()
                 .anyMatch(role -> role.getName().equals(userRole.getName())));
     }
+    private boolean assertUserRoleAddedToNewUser(String username, String roleName) throws SQLException {
+        String query = "SELECT COUNT(*) " +
+                "FROM user_roles ur " +
+                "JOIN users u ON ur.user_id = u.id " +
+                "JOIN roles r ON ur.role_id = r.id " +
+                "WHERE u.username = ? AND r.role_name = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, username);
+            statement.setString(2, roleName);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            return resultSet.next() && resultSet.getInt(1) == 1;
+        }
+    }
 }
