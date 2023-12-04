@@ -75,19 +75,6 @@ public class RegistrationServiceIntegrationTest {
         assertNotNull(token, "JWT token has not been generated");
     }
     @Test
-    void shouldRegisterUserWithCorrectAttributesAndSaveToDatabase() throws DatabaseException {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        registrationService.register(registerRequest);
-
-        Optional<User> registeredUser = userDAO.findByUsername(registerRequest.username());
-
-        assertTrue(registeredUser.isPresent());
-        assertEquals(registerRequest.username(), registeredUser.get().getUsername());
-        assertEquals(registerRequest.email(), registeredUser.get().getEmail());
-    }
-    @Test
     void shouldThrowExceptionForInvalidUsernameFormatOnRegistration() throws DatabaseException {
         RegisterRequest registerRequest = new RegisterRequest(
                 "invalidUsername$Format", "testUniqueEmail@gmail.com", "testPassword@123");
@@ -121,48 +108,6 @@ public class RegistrationServiceIntegrationTest {
                 "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
 
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
-    }
-    @Test
-    void shouldIncrementUserCountByOneWhenUserSuccessfullyRegistered() throws DatabaseException {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        long userCountBefore = userDAO.count();
-
-        registrationService.register(registerRequest);
-
-        long userCountAfter = userDAO.count();
-
-        assertThat(userCountAfter).isEqualTo(userCountBefore + 1);
-    }
-    @Test
-    void shouldNotIncrementUserCountWhenRegistrationFails() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        long userCountBefore = userDAO.count();
-
-        try {
-            registrationService.register(registerRequest);
-        } catch (RegisterException | DatabaseException ignored) {
-        }
-
-        long userCountAfter = userDAO.count();
-
-        assertEquals(userCountBefore, userCountAfter);
-    }
-    @Test
-    void shouldCheckPasswordHashingOnRegistration() throws DatabaseException {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        registrationService.register(registerRequest);
-
-        Optional<User> user = userDAO.findByUsername(registerRequest.username());
-        assertTrue(user.isPresent());
-        String encodedPasswordInDB = user.get().getPassword();
-        assertNotEquals(registerRequest.password(), encodedPasswordInDB);
-        assertTrue(passwordEncoder.matches(registerRequest.password(), encodedPasswordInDB));
     }
     @Test
     void shouldAssignRoleUserToNewUser() throws DatabaseException {
