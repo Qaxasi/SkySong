@@ -6,8 +6,6 @@ import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.auth.repository.RoleDAO;
-import com.mycompany.SkySong.shared.repository.UserDAO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
