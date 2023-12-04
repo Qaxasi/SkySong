@@ -123,6 +123,20 @@ public class RegistrationServiceIntegrationTest {
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
     @Test
+    void shouldReturnErrorMessageForInvalidEmailFormatOnRegistration() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
+
+        Exception exception = assertThrows(CredentialValidationException.class,
+                () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Invalid email address format. The email should follow the standard format" +
+                " (e.g., user@example.com) and be between 6 and 30 characters long.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
     void shouldThrowExceptionForInvalidPasswordFormatOnRegistration() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "invalidFormat");
