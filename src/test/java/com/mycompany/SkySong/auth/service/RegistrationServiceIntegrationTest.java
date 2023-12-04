@@ -74,6 +74,16 @@ public class RegistrationServiceIntegrationTest {
         String token = loginService.login(loginRequest);
         assertNotNull(token, "JWT token has not been generated");
     }
+
+    @Test
+    void shouldAssignRoleUserToNewUser() throws DatabaseException, SQLException {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
+
+        registrationService.register(registerRequest);
+
+        assertTrue(assertUserRoleAddedToNewUser(registerRequest.username(), UserRole.ROLE_USER.name()));
+    }
     @Test
     void shouldThrowExceptionForInvalidUsernameFormatOnRegistration() {
         RegisterRequest registerRequest = new RegisterRequest(
