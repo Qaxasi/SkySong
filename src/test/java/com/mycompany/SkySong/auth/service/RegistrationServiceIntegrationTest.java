@@ -135,13 +135,25 @@ public class RegistrationServiceIntegrationTest {
 
         assertEquals(expectedMessage, exception.getMessage());
     }
-
     @Test
     void shouldThrowExceptionForInvalidPasswordFormatOnRegistration() {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUniqueUsername", "testUniqueEmail@gmail.com", "invalidFormat");
 
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
+    }
+    @Test
+    void shouldReturnErrorMessageForInvalidPasswordFormat() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testUniqueEmail@gmail.com", "invalidFormat");
+
+        Exception exception = assertThrows(CredentialValidationException.class,
+                () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Invalid password format. The password must contain an least 8 characters, " +
+                "including uppercase letters, lowercase letters, numbers, and special characters.";
+
+        assertEquals(expectedMessage, exception.getMessage());
     }
     @Test
     void shouldThrowExceptionWhenTryRegisterWithExistingUsername() {
