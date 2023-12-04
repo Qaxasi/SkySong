@@ -181,6 +181,18 @@ public class RegistrationServiceIntegrationTest {
 
         assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
     }
+    @Test
+    void shouldReturnErrorMessageWhenTryRegisterWithExistEmail() {
+        RegisterRequest registerRequest = new RegisterRequest(
+                "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
+
+        Exception exception = assertThrows(CredentialValidationException.class,
+                () -> registrationService.register(registerRequest));
+
+        String expectedMessage = "Email is already exist!.";
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
     private boolean assertUserRoleAddedToNewUser(String username, String roleName) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM user_roles ur " +
