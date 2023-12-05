@@ -44,7 +44,7 @@ public class RegistrationServiceImplTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
-        when(roleDAO.findByName(any())).thenReturn(Optional.empty());
+        when(userRoleManager.getRoleByName(any())).thenThrow(new InternalErrorException("test error"));
 
         assertThrows(InternalErrorException.class, () -> registrationService.register(registerRequest));
     }
