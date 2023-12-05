@@ -21,7 +21,7 @@ public class PasswordServiceImplTest {
     @Mock
     private ApplicationMessageService messageService;
     @Test
-    void shouldThrowInternalErrorExceptionWhenPasswordIsNull() {
+    void shouldThrowInternalErrorExceptionWhenEncodingFails() {
         when(passwordEncoder.encode(null)).thenThrow(new IllegalArgumentException("test error"));
         assertThrows(InternalErrorException.class, () -> passwordService.encodePassword(null));
     }
