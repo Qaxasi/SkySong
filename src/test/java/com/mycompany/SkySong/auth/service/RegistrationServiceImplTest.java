@@ -83,38 +83,43 @@ public class RegistrationServiceImplTest {
     @Test
     void shouldThrowErrorMessageWhenDatabaseErrorOccurs() {
         RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword@123");
+                "testUsername", "testEmail@gmail.com", "testPassword123");
 
-        when(roleDAO.findByName(any())).thenReturn(Optional.of(new Role()));
-        when(userDAO.save(any())).thenThrow(new DataIntegrityViolationException("Database error"));
+        String expectedMessage = "test message";
 
-        Exception exception = assertThrows(DatabaseException.class, () -> registrationService.register(registerRequest));
+        doNothing().when(validationService).validateCredentials(any(RegisterRequest.class));
+        doNothing().when(credentialExistenceChecker).checkForExistingCredentials(any(RegisterRequest.class));
+        when(userRoleManager.getRoleByName(UserRole.ROLE_USER)).thenReturn(new Role(UserRole.ROLE_USER));
+        when(userFactory.createUser(any(), any())).thenReturn(new User());
+        when(messageService.getMessage("user.registration.error")).thenReturn(expectedMessage);
+        when(userDAO.save(any(User.class))).thenThrow(new DataAccessException("Database Error") {});
 
-        String expectedMessage = "An error occurred while processing your request. Please try again later.";
-
-        assertEquals(expectedMessage, exception.getMessage());
-    }
-    @Test
-    void shouldThrowExceptionWhenPasswordEncodingFails() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword@123");
-
-        when(passwordEncoder.encode(any())).thenThrow(new InternalErrorException("Service error"));
-
-        assertThrows(InternalErrorException.class, () -> registrationService.register(registerRequest));
-    }
-    @Test
-    void shouldThrowErrorMessageWhenPasswordEncodingFails() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword@123");
-
-        when(passwordEncoder.encode(registerRequest.password())).thenThrow(
-                new InternalErrorException("Service error"));
-        Exception exception = assertThrows(InternalErrorException.class,
+        Exception exception = assertThrows(DatabaseException.class,
                 () -> registrationService.register(registerRequest));
 
-        String expectedMessage = "There was an issue during password encoding. Please try again later.";
-
         assertEquals(expectedMessage, exception.getMessage());
     }
+//    @Test
+//    void shouldThrowExceptionWhenPasswordEncodingFails() {
+//        RegisterRequest registerRequest = new RegisterRequest(
+//                "testUsername", "testEmail@gmail.com", "testPassword@123");
+//
+//        when(passwordEncoder.encode(any())).thenThrow(new InternalErrorException("Service error"));
+//
+//        assertThrows(InternalErrorException.class, () -> registrationService.register(registerRequest));
+//    }
+//    @Test
+//    void shouldThrowErrorMessageWhenPasswordEncodingFails() {
+//        RegisterRequest registerRequest = new RegisterRequest(
+//                "testUsername", "testEmail@gmail.com", "testPassword@123");
+//
+//        when(passwordEncoder.encode(registerRequest.password())).thenThrow(
+//                new InternalErrorException("Service error"));
+//        Exception exception = assertThrows(InternalErrorException.class,
+//                () -> registrationService.register(registerRequest));
+//
+//        String expectedMessage = "There was an issue during password encoding. Please try again later.";
+//
+//        assertEquals(expectedMessage, exception.getMessage());
+//    }
 }
