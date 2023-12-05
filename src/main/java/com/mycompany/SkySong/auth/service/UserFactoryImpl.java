@@ -1,12 +1,10 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.shared.exception.InternalErrorException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -14,8 +12,10 @@ import java.util.Collections;
 @Service
 @Slf4j
 class UserFactoryImpl implements UserFactory {
+    private final PasswordService passwordService;
     private final ApplicationMessageService messageService;
-    public UserFactoryImpl(ApplicationMessageService messageService) {
+    public UserFactoryImpl(PasswordService passwordService, ApplicationMessageService messageService) {
+        this.passwordService = passwordService;
         this.messageService = messageService;
     }
     @Override
