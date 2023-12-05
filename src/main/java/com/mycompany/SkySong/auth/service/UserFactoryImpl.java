@@ -3,7 +3,6 @@ package com.mycompany.SkySong.auth.service;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.shared.entity.User;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
