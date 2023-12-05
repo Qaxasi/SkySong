@@ -23,7 +23,7 @@ class UserFactoryImpl implements UserFactory {
         User user = new User();
         user.setUsername(registerRequest.username());
         user.setEmail(registerRequest.email());
-        user.setPassword(encodePassword(registerRequest.password()));
+        user.setPassword(passwordService.encodePassword(registerRequest.password()));
         user.setRoles(Collections.singleton(role));
         return user;
     }
