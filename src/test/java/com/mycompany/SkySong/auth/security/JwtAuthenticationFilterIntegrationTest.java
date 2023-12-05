@@ -26,6 +26,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -115,5 +116,19 @@ public class JwtAuthenticationFilterIntegrationTest {
         Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
 
         assertNull(authContext);
+    }
+    @Test
+    void shouldNotProcessRequestWhenUserNotFound() throws ServletException, IOException {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                "testAbsentUsername", null);
+
+        String token = jwtTokenProviderImpl.generateToken(authentication);
+        Cookie cookie = new Cookie("auth_token", token);
+        request.setCookies(cookie);
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> jwtAuthenticationFilter.doFilterInternal(request, response, filterChain));
+
+        verify(filterChain, never()).doFilter(request, response);
     }
 }
