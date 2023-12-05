@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -24,5 +25,16 @@ public class PasswordServiceImplTest {
     void shouldThrowInternalErrorExceptionWhenEncodingFails() {
         when(passwordEncoder.encode(null)).thenThrow(new IllegalArgumentException("test error"));
         assertThrows(InternalErrorException.class, () -> passwordService.encodePassword(null));
+    }
+    @Test
+    void shouldReturnErrorMessageWhenEncodingFails() {
+        String expectedMessage = "test error message";
+        when(passwordEncoder.encode(null)).thenThrow(new IllegalArgumentException("test error"));
+
+        when(messageService.getMessage("password.encoding.error")).thenReturn(expectedMessage);
+
+        Exception exception = assertThrows(InternalErrorException.class, () -> passwordService.encodePassword(null));
+
+        assertEquals(exception.getMessage(), expectedMessage);
     }
 }
