@@ -22,9 +22,6 @@ public class UserFactoryImplTest {
     private UserFactoryImpl userFactory;
     @Mock
     private PasswordEncoder passwordEncoder;
-    @Mock
-    private ApplicationMessageService messageService;
-
     @Test
     void shouldCreateUserWithGivenDetails() {
         String username = "testUsername";
