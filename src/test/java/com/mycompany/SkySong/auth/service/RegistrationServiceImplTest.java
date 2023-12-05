@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.model.entity.UserRole;
+import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.exception.RegisterException;
 import com.mycompany.SkySong.shared.exception.InternalErrorException;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,6 +24,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,10 +70,13 @@ public class RegistrationServiceImplTest {
     @Test
     void shouldThrowExceptionWhenDatabaseErrorOccurs() {
         RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword@123");
+                "testUsername", "testEmail@gmail.com", "testPassword123");
 
-        when(roleDAO.findByName(any())).thenReturn(Optional.of(new Role()));
-        when(userDAO.save(any())).thenThrow(new DataIntegrityViolationException("Database error"));
+        doNothing().when(validationService).validateCredentials(any(RegisterRequest.class));
+        doNothing().when(credentialExistenceChecker).checkForExistingCredentials(any(RegisterRequest.class));
+        when(userRoleManager.getRoleByName(UserRole.ROLE_USER)).thenReturn(new Role(UserRole.ROLE_USER));
+        when(userFactory.createUser(any(), any())).thenReturn(new User());
+        when(userDAO.save(any(User.class))).thenThrow(new DataAccessException("Database Error") {});
 
         assertThrows(DatabaseException.class, () -> registrationService.register(registerRequest));
     }
