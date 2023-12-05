@@ -90,4 +90,13 @@ public class CustomUserDetailsServiceIntegrationTest {
 
         assertFalse(UserDetailsAssertions.hasAuthority(userDetails, "ROLE_ADMIN"));
     }
+    @Test
+    void shouldReturnExceptionMessageWhenUserNotFound() {
+        String username = "testAbsentUsername";
+        String expectedMessage = "User not found with username or email: " + username;
+        Exception exception = assertThrows(UsernameNotFoundException.class,
+                () -> customUserDetailsService.loadUserByUsername(username));
+
+        assertEquals(expectedMessage , exception.getMessage());
+    }
 }
