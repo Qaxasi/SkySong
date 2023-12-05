@@ -32,7 +32,7 @@ public class UserFactoryImplTest {
 
         RegisterRequest registerRequest = new RegisterRequest(username, email, password);
 
-        when(passwordEncoder.encode(password)).thenReturn(encodedPassword);
+        when(passwordService.encodePassword(password)).thenReturn(encodedPassword);
 
         User user = userFactory.createUser(registerRequest, role);
 
