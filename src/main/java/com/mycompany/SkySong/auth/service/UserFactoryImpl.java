@@ -29,13 +29,4 @@ class UserFactoryImpl implements UserFactory {
         user.setRoles(Collections.singleton(role));
         return user;
     }
-    private String encodePassword(String password) {
-        try {
-            return passwordEncoder.encode(password);
-        } catch (IllegalArgumentException  ex) {
-            log.error("Error encoding the password: " + ex.getMessage(), ex);
-            throw new InternalErrorException(messageService.getMessage("password.encoding.error"));
-
-        }
-    }
 }
