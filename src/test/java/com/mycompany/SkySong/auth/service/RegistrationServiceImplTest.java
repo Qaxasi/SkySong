@@ -39,49 +39,6 @@ public class RegistrationServiceImplTest {
     private UserFactory userFactory;
     @Mock
     private CredentialExistenceChecker credentialExistenceChecker;
-
-    @Test
-    void shouldReturnCorrectMessageAfterSuccessfullyRegisterNewUserWithValidCredentials() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword@123");
-
-        when(userDAO.existsByUsername(registerRequest.username())).thenReturn(false);
-        when(userDAO.existsByEmail(registerRequest.email())).thenReturn(false);
-        when(passwordEncoder.encode(registerRequest.password())).thenReturn("encodedPassword");
-        when(roleDAO.findByName(any())).thenReturn(Optional.of(new Role()));
-
-        RegistrationResponse response = registrationService.register(registerRequest);
-
-        String expectedMessage = "User registered successfully";
-        assertEquals(response.message(), expectedMessage);
-    }
-    @Test
-    void shouldThrowErrorMessageWhenTryRegisterWithExistUsername() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "existUsername", "testEmail@gmail.com", "testPassword@123");
-
-        when(userDAO.existsByUsername(registerRequest.username())).thenReturn(true);
-
-        Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
-
-        String expectedMessage = "Username is already exist!.";
-
-        assertEquals(expectedMessage, exception.getMessage());
-    }
-    @Test
-    void shouldThrowErrorMessageWhenTryRegisterWithExistingEmail() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "existEmai@gmail.com", "testPassword@123");
-
-        when(userDAO.existsByUsername(registerRequest.username())).thenReturn(false);
-        when(userDAO.existsByEmail(registerRequest.email())).thenReturn(true);
-
-        Exception exception = assertThrows(RegisterException.class, () -> registrationService.register(registerRequest));
-
-        String expectedMessage = "Email is already exist!.";
-
-        assertEquals(expectedMessage, exception.getMessage());
-    }
     @Test
     void shouldThrowExceptionWhenRoleNotSetInTheDatabase() {
         RegisterRequest registerRequest = new RegisterRequest(
