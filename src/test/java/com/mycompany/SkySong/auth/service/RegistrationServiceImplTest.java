@@ -43,8 +43,6 @@ public class RegistrationServiceImplTest {
     @Mock
     private UserFactory userFactory;
     @Mock
-    private PasswordService passwordService;
-    @Mock
     private CredentialExistenceChecker credentialExistenceChecker;
     @Test
     void shouldThrowExceptionWhenRoleNotSetInTheDatabase() {
