@@ -53,10 +53,12 @@ public class RegistrationServiceImplTest {
         RegisterRequest registerRequest = new RegisterRequest(
                 "testUsername", "testEmail@gmail.com", "testPassword@123");
 
+        String expectedMessage = "test error";
+
+        when(userRoleManager.getRoleByName(any())).thenThrow(new InternalErrorException(expectedMessage));
+
         Exception exception = assertThrows(InternalErrorException.class,
                 () -> registrationService.register(registerRequest));
-
-        String expectedMessage = "There was an issue during registration. Please try again later.";
 
         assertEquals(expectedMessage, exception.getMessage());
     }
