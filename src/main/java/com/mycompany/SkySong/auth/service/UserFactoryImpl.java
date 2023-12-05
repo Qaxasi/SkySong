@@ -13,10 +13,8 @@ import java.util.Collections;
 @Slf4j
 class UserFactoryImpl implements UserFactory {
     private final PasswordService passwordService;
-    private final ApplicationMessageService messageService;
-    public UserFactoryImpl(PasswordService passwordService, ApplicationMessageService messageService) {
+    public UserFactoryImpl(PasswordService passwordService) {
         this.passwordService = passwordService;
-        this.messageService = messageService;
     }
     @Override
     public User createUser(RegisterRequest registerRequest, Role role) {
