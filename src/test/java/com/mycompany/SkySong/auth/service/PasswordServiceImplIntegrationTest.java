@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PasswordServiceImplIntegrationTest {
     @Autowired
     private PasswordService passwordService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @Test
     void shouldEncodePasswordSuccessfully() {
