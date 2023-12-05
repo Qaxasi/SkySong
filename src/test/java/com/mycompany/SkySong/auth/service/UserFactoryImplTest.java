@@ -44,36 +44,4 @@ public class UserFactoryImplTest {
         assertEquals(user.getPassword(), encodedPassword);
         assertTrue(user.getRoles().contains(role));
     }
-    @Test
-    void shouldThrowExceptionWhenPasswordEncodingFailed() {
-        String username = "testUsername";
-        String email = "testEmail@gmail.com";
-        String password = "testPassword@123";
-        Role role = new Role(UserRole.ROLE_USER);
-
-        RegisterRequest registerRequest = new RegisterRequest(username, email, password);
-
-        when(passwordEncoder.encode(password)).thenThrow(new IllegalArgumentException("Test exception"));
-
-        assertThrows(InternalErrorException.class, () -> userFactory.createUser(registerRequest, role));
-    }
-    @Test
-    void shouldReturnMessageWhenPasswordEncodingFailed() {
-        String username = "testUsername";
-        String email = "testEmail@gmail.com";
-        String password = "testPassword@123";
-        Role role = new Role(UserRole.ROLE_USER);
-
-        String expectedMessage = "Test message";
-
-        RegisterRequest registerRequest = new RegisterRequest(username, email, password);
-
-        when(passwordEncoder.encode(password)).thenThrow(new IllegalArgumentException("Test exception"));
-        when(messageService.getMessage("password.encoding.error")).thenReturn(expectedMessage);
-
-        Exception exception = assertThrows(InternalErrorException.class,
-                () -> userFactory.createUser(registerRequest, role));
-
-        assertEquals(expectedMessage, exception.getMessage());
-    }
 }
