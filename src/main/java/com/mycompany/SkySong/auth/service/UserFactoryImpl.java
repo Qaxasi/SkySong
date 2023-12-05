@@ -14,10 +14,8 @@ import java.util.Collections;
 @Service
 @Slf4j
 class UserFactoryImpl implements UserFactory {
-    private final PasswordEncoder passwordEncoder;
     private final ApplicationMessageService messageService;
-    public UserFactoryImpl(PasswordEncoder passwordEncoder, ApplicationMessageService messageService) {
-        this.passwordEncoder = passwordEncoder;
+    public UserFactoryImpl(ApplicationMessageService messageService) {
         this.messageService = messageService;
     }
     @Override
