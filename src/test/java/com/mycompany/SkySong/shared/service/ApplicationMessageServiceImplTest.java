@@ -20,4 +20,14 @@ public class ApplicationMessageServiceImplTest {
         assertThrows(RuntimeException.class,
                 () -> new ApplicationMessageServiceImpl(invalidPropertiesStream));
     }
+    @Test
+    void shouldReturnErrorMessageWhenPropertiesFileNotFound() {
+        InputStream invalidPropertiesStream = this.getClass().getClassLoader()
+                .getResourceAsStream("nonexistent.properties");
+
+        Exception exception = assertThrows(RuntimeException.class,
+                () -> new ApplicationMessageServiceImpl(invalidPropertiesStream));
+
+        assertTrue(exception.getMessage().contains("Failed to load"));
+    }
 }
