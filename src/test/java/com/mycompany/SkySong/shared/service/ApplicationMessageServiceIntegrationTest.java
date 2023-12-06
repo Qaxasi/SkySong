@@ -30,4 +30,12 @@ public class ApplicationMessageServiceIntegrationTest {
         String expectedMessage = "Default message for " + key;
         assertEquals(expectedMessage, messageService.getMessage(key));
     }
+    @Test
+    void shouldFormatMessageCorrectly() {
+        long id = 100L;
+        String key = "user.delete.not-found";
+        String expectedMessage = "User with ID 100 does not exist.";
+
+        assertEquals(expectedMessage, messageService.getMessage(key, id));
+    }
 }
