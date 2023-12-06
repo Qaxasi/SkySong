@@ -27,8 +27,7 @@ import static org.mockito.Mockito.when;
 public class DeleteUserControllerSecurityTest {
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private UserDAO userDAO;
+    
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
