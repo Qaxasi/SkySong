@@ -18,7 +18,7 @@ class ApplicationMessageServiceImpl implements ApplicationMessageService {
             if (propertiesStream != null) {
                 messages.load(propertiesStream);
             } else {
-                throw new IOException("Properties file is null  ");
+                throw new IOException("Properties file is null");
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to load messages.properties");
