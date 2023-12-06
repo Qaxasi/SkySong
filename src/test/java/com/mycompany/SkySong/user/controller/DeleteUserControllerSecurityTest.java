@@ -29,6 +29,12 @@ public class DeleteUserControllerSecurityTest {
     private MockMvc mockMvc;
     @MockBean
     private UserDAO userDAO;
+    @BeforeEach
+    void init() throws Exception {
+        try(Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
+        }
+    }
     @Test
     void shouldReceiveOkStatusWhenDeletingUserWithValidId() throws Exception{
         long userId = 1L;
