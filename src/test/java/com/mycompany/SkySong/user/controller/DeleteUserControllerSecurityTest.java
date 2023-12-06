@@ -71,7 +71,7 @@ public class DeleteUserControllerSecurityTest {
     @Test
     @WithAnonymousUser
     void shouldReturnUnauthorizedWhenDeletingUserWithoutBeingAuthenticated() throws Exception {
-        long userId = 1L;
+        final long userId = 1L;
 
         DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, null, 401);
