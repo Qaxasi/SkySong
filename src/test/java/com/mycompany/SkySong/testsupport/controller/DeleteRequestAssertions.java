@@ -1,8 +1,10 @@
 package com.mycompany.SkySong.testsupport.controller;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.Map;
 
@@ -11,11 +13,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class DeleteRequestAssertions {
-    public static void assertDeleteStatusReturns(MockMvc mockMvc, String endpoint, int expectedStatusCode) throws Exception {
-        mockMvc.perform(delete(endpoint))
+    public static void assertDeleteStatusReturns(MockMvc mockMvc, String endpoint, Cookie cookie,
+                                                 int expectedStatusCode) throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = delete(endpoint);
+
+        if (cookie != null) {
+            requestBuilder.cookie(cookie);
+        }
+        mockMvc.perform(requestBuilder)
                 .andExpect(status().is(expectedStatusCode));
     }
-
     public static void assertDeleteJsonReturns(MockMvc mockMvc, String endpoint, Map<String,
             Object> jsonPathExpectations) throws Exception {
         ResultActions actions = mockMvc.perform(delete(endpoint)
