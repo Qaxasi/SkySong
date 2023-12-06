@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -15,5 +16,12 @@ public class ApplicationMessageServiceIntegrationTest {
     @Test
     void shouldBeInjectedCorrectly() {
         assertNotNull(messageService);
+    }
+    @Test
+    void shouldReturnCorrectMessageForExistingKey() {
+        String key = "user.id.required";
+        String expectedMessage = "User ID is required and cannot be empty.";
+
+        assertEquals(expectedMessage, messageService.getMessage(key));
     }
 }
