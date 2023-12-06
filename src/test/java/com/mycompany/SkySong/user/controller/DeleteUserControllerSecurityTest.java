@@ -5,6 +5,7 @@ import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -39,6 +41,13 @@ public class DeleteUserControllerSecurityTest {
         try(Connection connection = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
         }
+    }
+    @AfterEach
+    void cleanup() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.update("DELETE FROM user_roles");
+        jdbcTemplate.update("DELETE FROM users");
+        jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
     void shouldReceiveOkStatusWhenDeletingUserWithValidId() throws Exception{
