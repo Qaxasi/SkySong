@@ -24,4 +24,10 @@ public class ApplicationMessageServiceIntegrationTest {
 
         assertEquals(expectedMessage, messageService.getMessage(key));
     }
+    @Test
+    void shouldReturnDefaultMessageForNonExistingKey() {
+        String key = "key.not.exist";
+        String expectedMessage = "Default message for " + key;
+        assertEquals(expectedMessage, messageService.getMessage(key));
+    }
 }
