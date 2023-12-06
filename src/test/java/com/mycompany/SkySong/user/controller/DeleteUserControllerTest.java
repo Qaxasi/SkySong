@@ -1,11 +1,8 @@
 package com.mycompany.SkySong.user.controller;
 
-import com.mycompany.SkySong.auth.security.CookieRetriever;
+import com.mycompany.SkySong.auth.security.*;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.shared.exception.UserNotFoundException;
-import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
-import com.mycompany.SkySong.auth.security.JwtTokenProviderImpl;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.user.service.DeleteUserService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
@@ -28,7 +25,7 @@ public class DeleteUserControllerTest {
     @MockBean
     private DeleteUserService deleteUserService;
     @MockBean
-    private JwtTokenProviderImpl jwtTokenProviderImpl;
+    private JwtTokenProvider jwtTokenProvider;
     @MockBean
     private UserDetailsService userDetailsService;
     @MockBean
