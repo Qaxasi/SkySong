@@ -29,15 +29,6 @@ public class DeleteUserControllerSecurityTest {
     private MockMvc mockMvc;
     @MockBean
     private UserDAO userDAO;
-    @BeforeEach
-    void setUp() {
-        Role role = new Role(UserRole.ROLE_USER);
-        Set<Role> roles = Set.of(role);
-
-        when(userDAO.findById(1L))
-                .thenReturn(Optional.of(new User(1, "testUsername", "testEmail@gmail.com",
-                        "$2a$10$VEbWwz6NcL4y6MgKEE/sJuWiFe2EoVbru6gJ.6Miu6G16NWfqlxci", roles)));
-    }
     @Test
     void shouldReceiveOkStatusWhenDeletingUserWithValidId() throws Exception{
         long userId = 1L;
