@@ -57,11 +57,16 @@ public class DeleteUserControllerSecurityTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
-    void shouldReceiveOkStatusWhenDeletingUserWithValidId() throws Exception{
-        long userId = 1L;
+    void shouldReceiveOkStatusWhenDeletingUserWithValidId() throws Exception {
+        final String requestBody = "{\"usernameOrEmail\": \"testAdmin\",\"password\": \"testPassword@123\"}";
+        final long userId = 1L;
 
-        DeleteRequestAssertions.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, 200);
+       String jwtToken = loginAndGetToken(requestBody);
+
+       Cookie cookie = new Cookie("auth_token", jwtToken);
+
+       DeleteRequestAssertions.assertDeleteStatusReturns(
+                mockMvc, "/api/v1/users/" + userId, cookie, 200);
     }
     @Test
     @WithAnonymousUser
