@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.security;
+package com.mycompany.SkySong.testsupport.auth.security;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
