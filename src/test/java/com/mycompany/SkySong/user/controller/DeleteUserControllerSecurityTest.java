@@ -39,7 +39,6 @@ public class DeleteUserControllerSecurityTest {
                         "$2a$10$VEbWwz6NcL4y6MgKEE/sJuWiFe2EoVbru6gJ.6Miu6G16NWfqlxci", roles)));
     }
     @Test
-    @WithMockUser(roles="ADMIN")
     void shouldReceiveOkStatusWhenDeletingUserWithValidId() throws Exception{
         long userId = 1L;
 
@@ -55,7 +54,6 @@ public class DeleteUserControllerSecurityTest {
                 mockMvc, "/api/v1/users/" + userId, 401);
     }
     @Test
-    @WithMockUser(roles="USER")
     void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
         long userId = 1L;
 
