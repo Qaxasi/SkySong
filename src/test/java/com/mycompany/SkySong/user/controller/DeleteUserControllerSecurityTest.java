@@ -16,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.sql.DataSource;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,7 +28,9 @@ import static org.mockito.Mockito.when;
 public class DeleteUserControllerSecurityTest {
     @Autowired
     private MockMvc mockMvc;
-    
+    @Autowired
+    private DataSource dataSource;
+
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
