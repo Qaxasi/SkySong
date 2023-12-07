@@ -1,10 +1,6 @@
 package com.mycompany.SkySong.user.controller;
 
 import com.jayway.jsonpath.JsonPath;
-import com.mycompany.SkySong.auth.model.entity.Role;
-import com.mycompany.SkySong.shared.entity.User;
-import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
@@ -13,24 +9,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.util.Optional;
-import java.util.Set;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
