@@ -94,7 +94,7 @@ public class DeleteUserControllerSecurityTest {
                 mockMvc, "/api/v1/users/" + userId, cookie, 403);
     }
     @Test
-    void shouldReturnForbiddenMessageForUserWithInsufficientPrivileges() throws Exception {
+    void shouldReturnForbiddenMessageWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
         final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         final long userId = 1L;
         final String expectedMessage = "You do not have permission to perform this operation.";
