@@ -15,10 +15,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserTestHelper {
-    private final DataSource dataSource;
-    public UserTestHelper(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
     public Long getUserIdByUsername(String username) throws SQLException {
         String query = "SELECT id FROM users WHERE username = ?";
         try (Connection connection = dataSource.getConnection();
