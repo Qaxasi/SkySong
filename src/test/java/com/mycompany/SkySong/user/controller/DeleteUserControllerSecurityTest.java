@@ -72,8 +72,8 @@ public class DeleteUserControllerSecurityTest {
         final long userId = 1L;
         final String expectedMessage = "Unauthorized access. Please log in.";
 
-        DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + userId, null,
-                401, expectedMessage);
+        DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + userId,
+                null, expectedMessage);
     }
     @Test
     void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
@@ -98,7 +98,7 @@ public class DeleteUserControllerSecurityTest {
         Cookie cookie = new Cookie("auth_token", jwtToken);
 
         DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + userId,
-                cookie, 403, expectedMessage);
+                cookie, expectedMessage);
     }
     private String loginAndGetToken(String requestBody) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
