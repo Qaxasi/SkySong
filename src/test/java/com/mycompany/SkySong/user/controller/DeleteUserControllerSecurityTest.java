@@ -44,6 +44,9 @@ public class DeleteUserControllerSecurityTest {
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
+
+            final String usernameToDelete = "testSecondUsername";
+            this.userId = databaseTestHelper.getUserIdByUsername(dataSource, usernameToDelete);
         }
     }
     @AfterEach
