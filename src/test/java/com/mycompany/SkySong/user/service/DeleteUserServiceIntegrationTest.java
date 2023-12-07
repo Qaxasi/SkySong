@@ -1,12 +1,10 @@
-package com.mycompany.SkySong.auth.service;
+package com.mycompany.SkySong.user.service;
 
 import com.mycompany.SkySong.shared.exception.UserNotFoundException;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.user.service.DeleteUserService;
-import com.mycompany.SkySong.user.service.DeleteUserServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
