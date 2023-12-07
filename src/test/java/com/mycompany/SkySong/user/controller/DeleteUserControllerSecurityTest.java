@@ -67,6 +67,15 @@ public class DeleteUserControllerSecurityTest {
                 mockMvc, "/api/v1/users/" + userId, null, 401);
     }
     @Test
+    @WithAnonymousUser
+    void shouldReturnUnauthorizedMessageForUnauthenticatedUser() throws Exception {
+        final long userId = 1L;
+        final String expectedMessage = "Unauthorized access. Please log in.";
+
+        DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + userId, null,
+                401, expectedMessage);
+    }
+    @Test
     void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
         final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         final long userId = 1L;
