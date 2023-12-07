@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserTestHelper {
+public class DatabaseTestHelper {
     public Long getUserIdByUsername(DataSource dataSource, String username) throws SQLException {
         String query = "SELECT id FROM users WHERE username = ?";
         try (Connection connection = dataSource.getConnection();
