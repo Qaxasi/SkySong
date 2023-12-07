@@ -1,6 +1,8 @@
 package com.mycompany.SkySong.user.controller;
 
 import com.jayway.jsonpath.JsonPath;
+import com.mycompany.SkySong.testsupport.AuthenticationTestHelper;
+import com.mycompany.SkySong.testsupport.DatabaseTestHelper;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
@@ -32,6 +34,10 @@ public class DeleteUserControllerSecurityTest {
     private MockMvc mockMvc;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private DatabaseTestHelper databaseTestHelper;
+    @Autowired
+    private AuthenticationTestHelper authenticationTestHelper;
 
     @BeforeEach
     void init() throws Exception {
@@ -51,7 +57,7 @@ public class DeleteUserControllerSecurityTest {
         final String requestBody = "{\"usernameOrEmail\": \"testAdmin\",\"password\": \"testPassword@123\"}";
         final long userId = 1L;
 
-       String jwtToken = loginAndGetToken(requestBody);
+       String jwtToken = authenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
 
        Cookie cookie = new Cookie("auth_token", jwtToken);
 
@@ -80,7 +86,7 @@ public class DeleteUserControllerSecurityTest {
         final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         final long userId = 1L;
 
-        String jwtToken = loginAndGetToken(requestBody);
+        String jwtToken = authenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
 
         Cookie cookie = new Cookie("auth_token", jwtToken);
 
@@ -93,7 +99,7 @@ public class DeleteUserControllerSecurityTest {
         final long userId = 1L;
         final String expectedMessage = "You do not have permission to perform this operation.";
 
-        String jwtToken = loginAndGetToken(requestBody);
+        String jwtToken = authenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
 
         Cookie cookie = new Cookie("auth_token", jwtToken);
 
