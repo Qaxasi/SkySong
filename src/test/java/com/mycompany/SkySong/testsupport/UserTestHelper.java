@@ -31,14 +31,4 @@ public class UserTestHelper {
             }
         }
     }
-    public String loginAndGetToken(MockMvc mockMvc, String requestBody) throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String responseString = mvcResult.getResponse().getContentAsString();
-        return JsonPath.parse(responseString).read("$.accessToken");
-    }
 }
