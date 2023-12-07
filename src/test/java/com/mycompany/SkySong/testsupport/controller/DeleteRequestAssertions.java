@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.Map;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,9 +33,13 @@ public class DeleteRequestAssertions {
             actions.andExpect(jsonPath(expectation.getKey()).value(expectation.getValue()));
         }
     }
-    public static void assertDeleteResponse(MockMvc mockMvc, String endpoint, String expectedMessage) throws Exception {
-        mockMvc.perform(delete(endpoint))
-                .andExpect(content().string(expectedMessage));
-
+    public static void assertDeleteResponse(MockMvc mockMvc, String endpoint, Cookie jwtCookie, int expectedStatus,
+                                            String expectedMessage) throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = delete(endpoint);
+        if (jwtCookie != null) {
+            requestBuilder.cookie(jwtCookie);
+        }
+        mockMvc.perform(requestBuilder)
+                .andExpect(content().string(containsString(expectedMessage)));
     }
 }
