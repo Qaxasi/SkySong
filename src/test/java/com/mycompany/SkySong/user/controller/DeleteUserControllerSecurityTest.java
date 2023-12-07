@@ -87,7 +87,19 @@ public class DeleteUserControllerSecurityTest {
         DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, cookie, 403);
     }
+    @Test
+    void shouldReturnForbiddenMessageForUserWithInsufficientPrivileges() throws Exception {
+        final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        final long userId = 1L;
+        final String expectedMessage = "You do not have permission to perform this operation.";
 
+        String jwtToken = loginAndGetToken(requestBody);
+
+        Cookie cookie = new Cookie("auth_token", jwtToken);
+
+        DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + userId,
+                cookie, 403, expectedMessage);
+    }
     private String loginAndGetToken(String requestBody) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
