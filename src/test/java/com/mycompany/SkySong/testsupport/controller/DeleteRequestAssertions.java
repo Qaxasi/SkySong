@@ -33,7 +33,7 @@ public class DeleteRequestAssertions {
             actions.andExpect(jsonPath(expectation.getKey()).value(expectation.getValue()));
         }
     }
-    public static void assertDeleteResponse(MockMvc mockMvc, String endpoint, Cookie jwtCookie, int expectedStatus,
+    public static void assertDeleteResponse(MockMvc mockMvc, String endpoint, Cookie jwtCookie,
                                             String expectedMessage) throws Exception {
         MockHttpServletRequestBuilder requestBuilder = delete(endpoint);
         if (jwtCookie != null) {
