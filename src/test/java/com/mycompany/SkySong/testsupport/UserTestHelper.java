@@ -1,7 +1,5 @@
 package com.mycompany.SkySong.testsupport;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserTestHelper {
+    private final DataSource dataSource;
+    public UserTestHelper(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
     public Long getUserIdByUsername(String username) throws SQLException {
         String query = "SELECT id FROM users WHERE username = ?";
         try (Connection connection = dataSource.getConnection();
