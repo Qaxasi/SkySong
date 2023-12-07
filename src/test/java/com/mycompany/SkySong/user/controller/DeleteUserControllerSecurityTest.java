@@ -78,10 +78,15 @@ public class DeleteUserControllerSecurityTest {
     }
     @Test
     void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
-        long userId = 1L;
+        final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
+        final long userId = 1L;
+
+        String jwtToken = loginAndGetToken(requestBody);
+
+        Cookie cookie = new Cookie("auth_token", jwtToken);
 
         DeleteRequestAssertions.assertDeleteStatusReturns(
-                mockMvc, "/api/v1/users/" + userId, 403);
+                mockMvc, "/api/v1/users/" + userId, cookie, 403);
     }
 
     private String loginAndGetToken(String requestBody) throws Exception {
