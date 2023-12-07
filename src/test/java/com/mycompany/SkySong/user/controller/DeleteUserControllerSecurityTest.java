@@ -100,14 +100,4 @@ public class DeleteUserControllerSecurityTest {
         DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + userId,
                 cookie, expectedMessage);
     }
-    private String loginAndGetToken(String requestBody) throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String responseString = mvcResult.getResponse().getContentAsString();
-        return JsonPath.parse(responseString).read("$.accessToken");
-    }
 }
