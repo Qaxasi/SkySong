@@ -38,6 +38,7 @@ public class DeleteUserControllerSecurityTest {
     private DatabaseTestHelper databaseTestHelper;
     @Autowired
     private AuthenticationTestHelper authenticationTestHelper;
+    private Long userId;
 
     @BeforeEach
     void init() throws Exception {
