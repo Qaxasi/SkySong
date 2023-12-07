@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class DeleteUserServiceImplIntegrationTest {
+public class DeleteUserServiceIntegrationTest {
     @Autowired
     private DeleteUserServiceImpl deleteService;
     @Autowired
