@@ -28,10 +28,6 @@ public class DeleteUserControllerSecurityTest {
     private MockMvc mockMvc;
     @Autowired
     private DataSource dataSource;
-    @Autowired
-    private DatabaseTestHelper databaseTestHelper;
-    @Autowired
-    private AuthenticationTestHelper authenticationTestHelper;
     private Long userId;
 
     @BeforeEach
@@ -40,7 +36,7 @@ public class DeleteUserControllerSecurityTest {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
 
             final String usernameToDelete = "testSecondUsername";
-            this.userId = databaseTestHelper.getUserIdByUsername(dataSource, usernameToDelete);
+            this.userId = DatabaseTestHelper.getUserIdByUsername(dataSource, usernameToDelete);
         }
     }
     @AfterEach
@@ -54,7 +50,7 @@ public class DeleteUserControllerSecurityTest {
     void shouldReceiveOkStatusWhenDeletingUserWithValidId() throws Exception {
         final String requestBody = "{\"usernameOrEmail\": \"testAdmin\",\"password\": \"testPassword@123\"}";
 
-        String jwtToken = authenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
+        String jwtToken = AuthenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
         Cookie cookie = new Cookie("auth_token", jwtToken);
 
         DeleteRequestAssertions.assertDeleteStatusReturns(
@@ -78,7 +74,7 @@ public class DeleteUserControllerSecurityTest {
     void shouldReturnStatusForbiddenWhenUserWithInsufficientPrivilegesTriesToDeleteUser() throws Exception {
         final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
 
-        String jwtToken = authenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
+        String jwtToken = AuthenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
         Cookie cookie = new Cookie("auth_token", jwtToken);
 
         DeleteRequestAssertions.assertDeleteStatusReturns(
@@ -90,7 +86,7 @@ public class DeleteUserControllerSecurityTest {
 
         final String expectedMessage = "You do not have permission to perform this operation.";
 
-        String jwtToken = authenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
+        String jwtToken = AuthenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
         Cookie cookie = new Cookie("auth_token", jwtToken);
 
         DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + userId,
