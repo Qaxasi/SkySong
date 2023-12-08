@@ -47,7 +47,7 @@ public class DeleteUserControllerSecurityTest {
         jdbcTemplate.update("DELETE FROM roles");
     }
     @Test
-    void shouldReceiveOkStatusWhenDeletingUserWithValidId() throws Exception {
+    void shouldAllowDeletionForUserWithValidIdAndProperRole() throws Exception {
         final String requestBody = "{\"usernameOrEmail\": \"testAdmin\",\"password\": \"testPassword@123\"}";
 
         String jwtToken = AuthenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
