@@ -13,7 +13,10 @@ public class AuthenticationTestHelper {
         final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         return loginAndGetCookie(mockMvc, requestBody);
     }
-
+    public static Cookie adminUser(MockMvc mockMvc) throws Exception {
+        final String requestBody = "{\"usernameOrEmail\": \"testAdmin\",\"password\": \"testPassword@123\"}";
+        return loginAndGetCookie(mockMvc, requestBody);
+    }
     private static Cookie loginAndGetCookie(MockMvc mockMvc, String requestBody) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
