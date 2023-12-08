@@ -48,10 +48,7 @@ public class DeleteUserControllerSecurityTest {
     }
     @Test
     void shouldAdminDelete () throws Exception {
-        final String requestBody = "{\"usernameOrEmail\": \"testAdmin\",\"password\": \"testPassword@123\"}";
-
-        String jwtToken = AuthenticationTestHelper.loginAndGetToken(mockMvc, requestBody);
-        Cookie cookie = new Cookie("auth_token", jwtToken);
+        Cookie cookie = AuthenticationTestHelper.adminUser(mockMvc);
 
         DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/" + userId, cookie, 200);
