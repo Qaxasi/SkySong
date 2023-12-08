@@ -7,9 +7,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class AuthenticationTestHelper {
-    public String loginAndGetToken(MockMvc mockMvc, String requestBody) throws Exception {
+    public static String loginAndGetToken(MockMvc mockMvc, String requestBody) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
