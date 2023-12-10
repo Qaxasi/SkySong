@@ -39,4 +39,8 @@ public class RegistrationHelper {
         return new RegisterRequest(
                 "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
     }
+    public static RegisterRequest createExistUsernameRequest() {
+        return new RegisterRequest(
+                "testSecondUsername", "testEmail@gmail.com", "testPassword@123");
+    }
 }
