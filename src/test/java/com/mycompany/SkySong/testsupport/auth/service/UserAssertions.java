@@ -9,7 +9,12 @@ import java.sql.SQLException;
 import static com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper.doesUserExist;
 @Component
 public class UserAssertions {
-    public static void assertUserExist(String username, DataSource dataSource) throws SQLException {
+    private static DataSource dataSource;
+    @Autowired
+    public UserAssertions(DataSource dataSource) {
+        UserAssertions.dataSource = dataSource;
+    }
+    public static void assertUserExist(String username) throws SQLException {
         if (!doesUserExist(username, dataSource)) {
             throw new AssertionError("User " + username + " should exist in database.");
         }
