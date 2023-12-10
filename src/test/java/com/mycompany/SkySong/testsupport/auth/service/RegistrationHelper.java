@@ -17,10 +17,10 @@ public class RegistrationHelper {
         String password = "testPassword@123";
         return new RegisterRequest(username, email, password);
     }
-    private boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
+    public static boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
         String query = "SELECT COUNT(*) " +
-                       "FROM users" +
-                      " WHERE username = ?";
+                       "FROM users " +
+                       "WHERE username = ?";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
