@@ -17,7 +17,7 @@ public class RegistrationHelper {
     public static RegisterRequest createValidRegisterRequest() {
         return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
     }
-    public static LoginRequest userLoginRequest() {
+    public static LoginRequest createUserLoginRequest() {
         return new LoginRequest("testUsername", "testPassword@123");
     }
     public static void executeValidUserRegistration() throws DatabaseException {
