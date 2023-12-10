@@ -11,4 +11,9 @@ public class UserAssertions {
             throw new AssertionError("User " + username + " should exist in database.");
         }
     }
+    public static void assertUserDoesNotExist(String username, DataSource dataSource) throws SQLException {
+        if (doesUserExist(username, dataSource)) {
+            throw new AssertionError("User " + username + " should not exist in database.");
+        }
+    }
 }
