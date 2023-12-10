@@ -20,7 +20,7 @@ public class RegistrationHelper {
     public static LoginRequest userLoginRequest() {
         return new LoginRequest("testUsername", "testPassword@123");
     }
-    public static void givenAndExistingUser() throws DatabaseException {
+    public static void executeValidUserRegistration() throws DatabaseException {
         RegisterRequest request = createValidRegisterRequest();
         registrationService.register(request);
     }
