@@ -37,7 +37,11 @@ public class RegistrationHelper {
                 "invalidUsername$Format", "testEmail@gmail.com", "testPassword@123");
     }
     public static RegisterRequest createInvalidEmailRequest() {
-        return new new RegisterRequest(
+        return new RegisterRequest(
+                "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
+    }
+    public static RegisterRequest createInvalidPasswordRequest() {
+        return new RegisterRequest(
                 "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
     }
     public static boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
