@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RegistrationHelper {
-    public static RegisterRequest newUserRegisterRequest() {
+    public static RegisterRequest createValidRegisterRequest() {
         return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
     }
     public static boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
