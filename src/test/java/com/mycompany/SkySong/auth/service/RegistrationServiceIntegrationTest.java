@@ -133,10 +133,7 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldThrowExceptionWhenTryRegisterWithExistingUsername() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
+        assertValidationException(() -> registrationService.register(RegistrationHelper.createExistUsernameRequest()));
     }
     @Test
     void shouldReturnErrorMessageWhenTryRegisterWithExistingUsername() {
@@ -152,10 +149,7 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldThrowExceptionWhenTryRegisterWithExistingEmail() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
-
-        assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
+        assertValidationException(() -> registrationService.register(RegistrationHelper.createExistEmailRequest()));
     }
     @Test
     void shouldReturnErrorMessageWhenTryRegisterWithExistEmail() {
