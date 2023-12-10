@@ -21,6 +21,10 @@ public class RegistrationHelper {
     public static RegisterRequest createValidRegisterRequest() {
         return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
     }
+    public static void givenAndExistingUser() throws DatabaseException {
+        RegisterRequest request = createValidRegisterRequest();
+        registrationService.register(request);
+    }
     public static boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
         String query = "SELECT COUNT(*) " +
                        "FROM users " +
