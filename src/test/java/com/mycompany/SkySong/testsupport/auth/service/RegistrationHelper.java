@@ -32,6 +32,10 @@ public class RegistrationHelper {
     public static RegisterRequest createValidRegisterRequestWithUsername(String username) {
         return new RegisterRequest(username, username + "@gmail.com", "testPassword@123");
     }
+    public static RegisterRequest createInvalidUsernameRequest() {
+        return new RegisterRequest(
+                "invalidUsername$Format", "testEmail@gmail.com", "testPassword@123");
+    }
     public static boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
         String query = "SELECT COUNT(*) " +
                        "FROM users " +
