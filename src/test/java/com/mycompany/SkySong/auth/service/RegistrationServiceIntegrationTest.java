@@ -6,6 +6,7 @@ import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
+import com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.assertUserExist;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,6 +47,12 @@ public class RegistrationServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM user_roles");
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
+    }
+    @Test
+    void shouldRegisterUser() throws DatabaseException, SQLException {
+        RegisterRequest request = RegistrationHelper.newUserRegisterRequest();
+        registrationService.register(request);
+        assertUserExist(request.username());
     }
     @Test
     void shouldRegisterUserAndAllowLoginWithValidCredentials() throws DatabaseException {
