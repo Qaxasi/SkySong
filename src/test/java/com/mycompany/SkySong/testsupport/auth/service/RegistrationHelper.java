@@ -12,10 +12,7 @@ import java.sql.SQLException;
 
 public class RegistrationHelper {
     public static RegisterRequest newUserRegisterRequest() {
-        String username = "testUniqueUsername";
-        String email = "testUniqueEmail@gmail.com";
-        String password = "testPassword@123";
-        return new RegisterRequest(username, email, password);
+        return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
     }
     public static boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
         String query = "SELECT COUNT(*) " +
