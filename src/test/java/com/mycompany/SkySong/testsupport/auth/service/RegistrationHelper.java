@@ -44,38 +44,4 @@ public class RegistrationHelper {
         return new RegisterRequest(
                 "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
     }
-    public static boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
-        String query = "SELECT COUNT(*) " +
-                       "FROM users " +
-                       "WHERE username = ?";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setString(1, username);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            return resultSet.next() && resultSet.getInt(1) > 0;
-        }
-    }
-    public static boolean doesRoleAddedToNewUser(String username,
-                                                       String roleName, DataSource dataSource) throws SQLException {
-        String query = "SELECT COUNT(*) " +
-                "FROM user_roles ur " +
-                "JOIN users u ON ur.user_id = u.id " +
-                "JOIN roles r ON ur.role_id = r.id " +
-                "WHERE u.username = ? AND r.name = ?";
-
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setString(1, username);
-            statement.setString(2, roleName);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            return resultSet.next() && resultSet.getInt(1) == 1;
-        }
-    }
 }
