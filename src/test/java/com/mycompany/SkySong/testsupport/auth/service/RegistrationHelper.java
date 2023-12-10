@@ -7,11 +7,6 @@ import com.mycompany.SkySong.shared.exception.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 @Component
 public class RegistrationHelper {
     private static RegistrationService registrationService;
