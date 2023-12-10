@@ -32,7 +32,7 @@ public class RegistrationHelper {
             return resultSet.next() && resultSet.getInt(1) > 0;
         }
     }
-    public static boolean assertUserRoleAddedToNewUser(String username,
+    public static boolean doesRoleAddedToNewUser(String username,
                                                        String roleName, DataSource dataSource) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM user_roles ur " +
