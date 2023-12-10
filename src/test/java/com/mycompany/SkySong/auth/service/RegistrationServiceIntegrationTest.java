@@ -24,8 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper.givenAndExistingUser;
-import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.assertUserExist;
-import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.assertUserRole;
+import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -80,10 +79,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldThrowExceptionForInvalidUsernameFormatOnRegistration() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "invalidUsername$Format", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
+        assertValidationException(() ->
+                registrationService.register(RegistrationHelper.createInvalidUsernameRequest()));
     }
     @Test
     void shouldReturnErrorMessageForInvalidUsernameFormatOnRegistration() {
