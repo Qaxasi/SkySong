@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-import static com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper.doesRoleAddedToNewUser;
-import static com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper.doesUserExist;
+import static com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper.doesRoleAddedToNewUser;
+import static com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper.doesUserExist;
+
 @Component
 public class UserAssertions {
     private static DataSource dataSource;
