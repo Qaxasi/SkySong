@@ -25,6 +25,7 @@ import java.sql.SQLException;
 
 import static com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper.givenAndExistingUser;
 import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.assertUserExist;
+import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.assertUserRole;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -63,12 +64,8 @@ public class RegistrationServiceIntegrationTest {
 
     @Test
     void shouldAssignRoleUserToNewUser() throws DatabaseException, SQLException {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        registrationService.register(registerRequest);
-
-        assertTrue(assertUserRoleAddedToNewUser(registerRequest.username(), UserRole.ROLE_USER.name()));
+        registrationService.register(RegistrationHelper.createValidRegisterRequestWithUsername("testUsername"));
+        assertUserRole("testUsername", UserRole.ROLE_USER.name());
     }
     @Test
     void shouldReturnSuccessMessageOnUserRegistration () throws DatabaseException {
