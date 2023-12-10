@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
@@ -19,11 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper.givenAndExistingUser;
 import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
