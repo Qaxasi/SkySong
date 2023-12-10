@@ -97,10 +97,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldThrowExceptionForInvalidEmailFormatOnRegistration() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
-
-        assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
+        assertValidationException(() ->
+                registrationService.register(RegistrationHelper.createInvalidEmailRequest()));
     }
     @Test
     void shouldReturnErrorMessageForInvalidEmailFormatOnRegistration() {
@@ -117,10 +115,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldThrowExceptionForInvalidPasswordFormatOnRegistration() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testUniqueEmail@gmail.com", "invalidFormat");
-
-        assertThrows(CredentialValidationException.class, () -> registrationService.register(registerRequest));
+        assertValidationException(() ->
+                registrationService.register(RegistrationHelper.createInvalidPasswordRequest()));
     }
     @Test
     void shouldReturnErrorMessageForInvalidPasswordFormat() {
