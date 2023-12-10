@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RegistrationHelper {
-    public static RegisterRequest newUserRegisterRequest(RegistrationService registrationService) throws DatabaseException {
+    public static RegisterRequest newUserRegisterRequest() {
         String username = "testUniqueUsername";
         String email = "testUniqueEmail@gmail.com";
         String password = "testPassword@123";
