@@ -23,6 +23,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper.givenAndExistingUser;
 import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.assertUserExist;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,17 +57,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldAllowLoginForRegisterUser() throws DatabaseException {
-        String username = "testUniqueUsername";
-        String email = "testUniqueEmail@gmail.com";
-        String password = "testPassword@123";
-        RegisterRequest registerRequest = new RegisterRequest(username, email, password);
-
-        registrationService.register(registerRequest);
-
-        LoginRequest loginRequest = new LoginRequest(username, password);
-
-        String token = loginService.login(loginRequest);
-        assertNotNull(token, "JWT token has not been generated");
+        RegistrationHelper.givenAndExistingUser();
+        assertNotNull(loginService.login(RegistrationHelper.userLoginRequest()));
     }
 
     @Test
