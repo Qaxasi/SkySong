@@ -55,7 +55,7 @@ public class RegistrationServiceIntegrationTest {
         assertUserExist(request.username());
     }
     @Test
-    void shouldRegisterUserAndAllowLogin() throws DatabaseException {
+    void shouldAllowLoginForRegisterUser() throws DatabaseException {
         String username = "testUniqueUsername";
         String email = "testUniqueEmail@gmail.com";
         String password = "testPassword@123";
