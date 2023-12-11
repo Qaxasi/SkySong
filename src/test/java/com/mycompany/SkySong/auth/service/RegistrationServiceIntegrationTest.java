@@ -5,6 +5,7 @@ import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
+import com.mycompany.SkySong.testsupport.TestMessages;
 import com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,16 +81,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldReturnErrorMessageForInvalidUsernameFormatOnRegistration() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "invalidUsername$Format", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        Exception exception = assertThrows(CredentialValidationException.class,
-                () -> registrationService.register(registerRequest));
-
-        String expectedMessage = "Invalid username format. The username can contain only letters and numbers," +
-                " and should be between 3 and 20 characters long.";
-
-        assertEquals(expectedMessage, exception.getMessage());
+       assertErrorMessage(() -> registrationService.register(
+               RegistrationHelper.createInvalidUsernameRequest()), TestMessages.INVALID_USERNAME_FORMAT);
     }
     @Test
     void shouldThrowExceptionForInvalidEmailFormatOnRegistration() {
@@ -98,16 +91,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldReturnErrorMessageForInvalidEmailFormatOnRegistration() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
-
-        Exception exception = assertThrows(CredentialValidationException.class,
-                () -> registrationService.register(registerRequest));
-
-        String expectedMessage = "Invalid email address format. The email should follow the standard format" +
-                " (e.g., user@example.com) and be between 6 and 30 characters long.";
-
-        assertEquals(expectedMessage, exception.getMessage());
+        assertErrorMessage(() -> registrationService.register(
+                RegistrationHelper.createInvalidEmailRequest()), TestMessages.INVALID_EMAIL_FORMAT);
     }
     @Test
     void shouldThrowExceptionForInvalidPasswordFormatOnRegistration() {
@@ -116,16 +101,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldReturnErrorMessageForInvalidPasswordFormat() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testUniqueEmail@gmail.com", "invalidFormat");
-
-        Exception exception = assertThrows(CredentialValidationException.class,
-                () -> registrationService.register(registerRequest));
-
-        String expectedMessage = "Invalid password format. The password must contain an least 8 characters, " +
-                "including uppercase letters, lowercase letters, numbers, and special characters.";
-
-        assertEquals(expectedMessage, exception.getMessage());
+        assertErrorMessage(() -> registrationService.register(
+                RegistrationHelper.createInvalidPasswordRequest()), TestMessages.INVALID_PASSWORD_FORMAT);
     }
     @Test
     void shouldThrowExceptionWhenTryRegisterWithExistingUsername() {
@@ -133,15 +110,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldReturnErrorMessageWhenTryRegisterWithExistingUsername() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testUniqueEmail@gmail.com", "testPassword@123");
-
-        Exception exception =assertThrows(CredentialValidationException.class,
-                () -> registrationService.register(registerRequest));
-
-        String expectedMessage = "Username is already exist!.";
-
-        assertEquals(expectedMessage, exception.getMessage());
+        assertErrorMessage(() -> registrationService.register(
+                RegistrationHelper.createExistUsernameRequest()), TestMessages.USERNAME_EXIST);
     }
     @Test
     void shouldThrowExceptionWhenTryRegisterWithExistingEmail() {
@@ -149,14 +119,7 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldReturnErrorMessageWhenTryRegisterWithExistEmail() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUniqueUsername", "testEmail@gmail.com", "testPassword@123");
-
-        Exception exception = assertThrows(CredentialValidationException.class,
-                () -> registrationService.register(registerRequest));
-
-        String expectedMessage = "Email is already exist!.";
-
-        assertEquals(expectedMessage, exception.getMessage());
+        assertErrorMessage(() -> registrationService.register(
+                RegistrationHelper.createExistEmailRequest()), TestMessages.EMAIL_EXIST);
     }
 }
