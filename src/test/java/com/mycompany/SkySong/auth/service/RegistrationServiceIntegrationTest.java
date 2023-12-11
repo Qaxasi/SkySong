@@ -65,8 +65,8 @@ public class RegistrationServiceIntegrationTest {
 
     @Test
     void shouldAssignRoleUserToNewUser() throws DatabaseException, SQLException {
-        registrationService.register(registrationHelper.createValidRegisterRequestWithUsername("testUsername"));
-        assertUserRole("testUsername", UserRole.ROLE_USER.name());
+        registrationService.register(RegistrationHelper.createValidRegisterRequestWithUsername("testUsername"));
+        assertEquals(databaseHelper.getUserRole("testUsername"), UserRole.ROLE_USER.name());
     }
     @Test
     void shouldReturnSuccessMessageOnUserRegistration () throws DatabaseException {
