@@ -2,11 +2,7 @@ package com.mycompany.SkySong.testsupport.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.auth.service.RegistrationService;
-import com.mycompany.SkySong.shared.exception.DatabaseException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 public class RegistrationHelper {
