@@ -50,9 +50,9 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldRegisterUser() throws DatabaseException, SQLException {
-        RegisterRequest request = registrationHelper.createValidRegisterRequest();
+        RegisterRequest request = RegistrationHelper.createValidRegisterRequestWithUsername("testUsername");
         registrationService.register(request);
-        assertUserExist(request.username());
+        assertTrue(databaseHelper.doesUserExist(request.username()));
     }
     @Test
     void shouldAllowLoginForRegisterUser() throws DatabaseException {
