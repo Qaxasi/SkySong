@@ -2,6 +2,9 @@ package com.mycompany.SkySong.testsupport.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
+import com.mycompany.SkySong.auth.service.LoginService;
+import com.mycompany.SkySong.auth.service.RegistrationService;
+import com.mycompany.SkySong.shared.exception.DatabaseException;
 
 public class RegistrationHelper {
     public static RegisterRequest createValidRegisterRequest() {
@@ -32,5 +35,8 @@ public class RegistrationHelper {
     public static RegisterRequest createExistEmailRequest() {
         return new RegisterRequest(
                 "testUsername", "testExistEmail@gmail.com", "testPassword@123");
+    }
+    public static void executeValidUserRegistration(RegistrationService registrationService) throws DatabaseException {
+        registrationService.register(createValidRegisterRequest());
     }
 }
