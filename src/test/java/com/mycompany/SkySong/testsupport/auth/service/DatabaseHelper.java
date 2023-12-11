@@ -29,22 +29,23 @@ public class DatabaseHelper {
             return resultSet.next() && resultSet.getInt(1) > 0;
         }
     }
-    public String getUserRole(String username) throws SQLException {
-        String query = "SELECT r.name FROM user_roles ur " +
+    public boolean hasUserRole(String username, String roleName) throws SQLException {
+        String query = "SELECT COUNT(*) FROM user_roles ur " +
                 "JOIN users u ON ur.user_id = u.id " +
                 "JOIN roles r ON ur.role_id = r.id " +
-                "WHERE u.username = ?";
+                "WHERE u.username = ? AND r.name = ?";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, username);
+            statement.setString(2, roleName);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return resultSet.getString("name");
+                return resultSet.getInt(1) > 0;
             } else {
-                return null;
+                return false;
             }
         }
     }
