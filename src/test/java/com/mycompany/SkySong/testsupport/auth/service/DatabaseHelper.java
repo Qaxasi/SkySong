@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseHelper {
-    public static boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
+    public boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM users " +
                 "WHERE username = ?";
@@ -22,7 +22,7 @@ public class DatabaseHelper {
             return resultSet.next() && resultSet.getInt(1) > 0;
         }
     }
-    public static boolean doesRoleAddedToNewUser(String username,
+    public boolean doesRoleAddedToNewUser(String username,
                                                  String roleName, DataSource dataSource) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM user_roles ur " +
