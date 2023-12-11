@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-import static com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper.doesRoleAddedToNewUser;
-import static com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper.doesUserExist;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
