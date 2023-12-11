@@ -2,15 +2,18 @@ package com.mycompany.SkySong.testsupport.auth.service;
 
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import org.junit.jupiter.api.function.Executable;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 public class UserAssertions {
+    private final DatabaseHelper databaseHelper;
+
+    public UserAssertions(DatabaseHelper databaseHelper) {
+        this.databaseHelper = databaseHelper;
+    }
+
     public static void assertUserExist(String username) throws SQLException {
         if (!doesUserExist(username, dataSource)) {
             throw new AssertionError("User " + username + " should exist in database.");
