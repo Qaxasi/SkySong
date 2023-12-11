@@ -21,14 +21,6 @@ public class RegistrationHelper {
     public LoginRequest createUserLoginRequest() {
         return new LoginRequest("testUsername", "testPassword@123");
     }
-    public void executeValidUserRegistration() {
-        try {
-            RegisterRequest request = createValidRegisterRequest();
-            registrationService.register(request);
-        } catch (DatabaseException e) {
-            log.error("Error during registration");
-        }
-    }
     public RegisterRequest createValidRegisterRequestWithUsername(String username) {
         return new RegisterRequest(username, username + "@gmail.com", "testPassword@123");
     }
