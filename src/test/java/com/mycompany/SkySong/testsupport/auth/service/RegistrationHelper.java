@@ -32,11 +32,11 @@ public class RegistrationHelper {
     }
     public RegisterRequest createInvalidEmailRequest() {
         return new RegisterRequest(
-                "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
+                "testUsername", "invalidEmailFormat", "testPassword@123");
     }
     public RegisterRequest createInvalidPasswordRequest() {
         return new RegisterRequest(
-                "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
+                "testUsername", "testEmail@gmail.com", "invalidPassword");
     }
     public RegisterRequest createExistUsernameRequest() {
         return new RegisterRequest(
