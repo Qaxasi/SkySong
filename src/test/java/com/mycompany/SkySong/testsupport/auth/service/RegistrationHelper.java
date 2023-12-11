@@ -2,9 +2,7 @@ package com.mycompany.SkySong.testsupport.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class RegistrationHelper {
     public RegisterRequest createValidRegisterRequest() {
         return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
