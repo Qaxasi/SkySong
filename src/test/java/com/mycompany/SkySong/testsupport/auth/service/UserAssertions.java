@@ -13,11 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Component
 public class UserAssertions {
-    private static DataSource dataSource;
-    @Autowired
-    public UserAssertions(DataSource dataSource) {
-        UserAssertions.dataSource = dataSource;
-    }
     public static void assertUserExist(String username) throws SQLException {
         if (!doesUserExist(username, dataSource)) {
             throw new AssertionError("User " + username + " should exist in database.");
