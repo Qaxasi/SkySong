@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseHelper {
-    private DataSource dataSource;
+    private final DataSource dataSource;
     public DatabaseHelper(DataSource dataSource) {
         this.dataSource = dataSource;
     }
