@@ -10,8 +10,6 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-@Component
 public class UserAssertions {
     public static void assertUserExist(String username) throws SQLException {
         if (!doesUserExist(username, dataSource)) {
