@@ -3,7 +3,7 @@ package com.mycompany.SkySong.testsupport.auth.service;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
-public class RegistrationRequestBuilder {
+public class RegistrationHelper {
     public static RegisterRequest createValidRegisterRequest() {
         return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
     }

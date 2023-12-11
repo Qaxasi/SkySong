@@ -6,7 +6,7 @@ import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.testsupport.TestMessages;
 import com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper;
-import com.mycompany.SkySong.testsupport.auth.service.RegistrationRequestBuilder;
+import com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,62 +62,62 @@ public class RegistrationServiceIntegrationTest {
 
     @Test
     void shouldAssignRoleUserToNewUser() throws DatabaseException, SQLException {
-        registrationService.register(RegistrationRequestBuilder.createValidRegisterRequestWithUsername("testUsername"));
+        registrationService.register(RegistrationHelper.createValidRegisterRequestWithUsername("testUsername"));
         assertEquals(databaseHelper.getUserRole("testUsername"), UserRole.ROLE_USER.name());
     }
     @Test
     void shouldReturnSuccessMessageOnUserRegistration () throws DatabaseException {
-        ApiResponse response = registrationService.register(RegistrationRequestBuilder.createValidRegisterRequest());
+        ApiResponse response = registrationService.register(RegistrationHelper.createValidRegisterRequest());
         assertEquals(TestMessages.SUCCESS_REGISTRATION, response.message());
     }
     @Test
     void shouldThrowExceptionForInvalidUsernameFormat() {
         assertValidationException(() -> registrationService.register(
-                RegistrationRequestBuilder.createInvalidUsernameRequest()));
+                RegistrationHelper.createInvalidUsernameRequest()));
     }
     @Test
     void shouldReturnErrorMessageForInvalidUsernameFormat() {
        assertErrorMessage(() -> registrationService.register(
-               RegistrationRequestBuilder.createInvalidUsernameRequest()), TestMessages.INVALID_USERNAME_FORMAT);
+               RegistrationHelper.createInvalidUsernameRequest()), TestMessages.INVALID_USERNAME_FORMAT);
     }
     @Test
     void shouldThrowExceptionForInvalidEmailFormat() {
         assertValidationException(() -> registrationService.register(
-                RegistrationRequestBuilder.createInvalidEmailRequest()));
+                RegistrationHelper.createInvalidEmailRequest()));
     }
     @Test
     void shouldReturnErrorMessageForInvalidEmailFormat() {
         assertErrorMessage(() -> registrationService.register(
-                RegistrationRequestBuilder.createInvalidEmailRequest()), TestMessages.INVALID_EMAIL_FORMAT);
+                RegistrationHelper.createInvalidEmailRequest()), TestMessages.INVALID_EMAIL_FORMAT);
     }
     @Test
     void shouldThrowExceptionForInvalidPasswordFormat() {
         assertValidationException(() -> registrationService.register(
-                RegistrationRequestBuilder.createInvalidPasswordRequest()));
+                RegistrationHelper.createInvalidPasswordRequest()));
     }
     @Test
     void shouldReturnErrorMessageForInvalidPasswordFormat() {
         assertErrorMessage(() -> registrationService.register(
-                RegistrationRequestBuilder.createInvalidPasswordRequest()), TestMessages.INVALID_PASSWORD_FORMAT);
+                RegistrationHelper.createInvalidPasswordRequest()), TestMessages.INVALID_PASSWORD_FORMAT);
     }
     @Test
     void shouldThrowExceptionForExistUsername() {
         assertValidationException(() -> registrationService.register(
-                RegistrationRequestBuilder.createExistUsernameRequest()));
+                RegistrationHelper.createExistUsernameRequest()));
     }
     @Test
     void shouldReturnErrorMessageForExistUsername() {
         assertErrorMessage(() -> registrationService.register(
-                RegistrationRequestBuilder.createExistUsernameRequest()), TestMessages.USERNAME_EXIST);
+                RegistrationHelper.createExistUsernameRequest()), TestMessages.USERNAME_EXIST);
     }
     @Test
     void shouldThrowExceptionForExistEmail() {
         assertValidationException(() -> registrationService.register(
-                RegistrationRequestBuilder.createExistEmailRequest()));
+                RegistrationHelper.createExistEmailRequest()));
     }
     @Test
     void shouldReturnErrorMessageForExistEmail() {
         assertErrorMessage(() -> registrationService.register(
-                RegistrationRequestBuilder.createExistEmailRequest()), TestMessages.EMAIL_EXIST);
+                RegistrationHelper.createExistEmailRequest()), TestMessages.EMAIL_EXIST);
     }
 }
