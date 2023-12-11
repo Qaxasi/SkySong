@@ -65,14 +65,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldReturnSuccessMessageOnUserRegistration () throws DatabaseException {
-        String username = "testUniqueUsername";
-        String email = "testUniqueEmail@gmail.com";
-        String password = "testPassword@123";
-        RegisterRequest registerRequest = new RegisterRequest(username, email, password);
-
-        ApiResponse response = registrationService.register(registerRequest);
-
-        assertEquals("User registered successfully.", response.message());
+        ApiResponse response = registrationService.register(RegistrationHelper.createValidRegisterRequest());
+        assertEquals(TestMessages.SUCCESS_REGISTRATION, response.message());
     }
     @Test
     void shouldThrowExceptionForInvalidUsernameFormatOnRegistration() {
