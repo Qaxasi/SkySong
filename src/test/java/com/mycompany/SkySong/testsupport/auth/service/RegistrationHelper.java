@@ -46,10 +46,10 @@ public class RegistrationHelper {
     }
     public RegisterRequest createExistUsernameRequest() {
         return new RegisterRequest(
-                "testSecondUsername", "testEmail@gmail.com", "testPassword@123");
+                "testExistUsername", "testEmail@gmail.com", "testPassword@123");
     }
     public RegisterRequest createExistEmailRequest() {
         return new RegisterRequest(
-                "testUsername", "testSecondEmail@gmail.com", "testPassword@123");
+                "testUsername", "testExistEmail@gmail.com", "testPassword@123");
     }
 }
