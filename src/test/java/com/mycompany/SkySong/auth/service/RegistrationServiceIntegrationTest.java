@@ -31,8 +31,6 @@ public class RegistrationServiceIntegrationTest {
     @Autowired
     private RegistrationService registrationService;
     @Autowired
-    private RegistrationHelper registrationHelper;
-    @Autowired
     private DataSource dataSource;
     @Autowired
     private DatabaseHelper databaseHelper;
