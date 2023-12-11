@@ -56,8 +56,8 @@ public class RegistrationServiceIntegrationTest {
     }
     @Test
     void shouldAllowLoginForRegisterUser() throws DatabaseException {
-        registrationHelper.executeValidUserRegistration();
-        assertNotNull(loginService.login(registrationHelper.createUserLoginRequest()));
+        RegistrationHelper.executeValidUserRegistration(registrationService);
+        assertNotNull(loginService.login(RegistrationHelper.createUserLoginRequest()));
     }
 
     @Test
