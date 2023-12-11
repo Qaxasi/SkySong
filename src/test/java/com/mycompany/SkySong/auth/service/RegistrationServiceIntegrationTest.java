@@ -6,6 +6,7 @@ import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.testsupport.TestMessages;
+import com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper;
 import com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,8 @@ public class RegistrationServiceIntegrationTest {
     private RegistrationHelper registrationHelper;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private DatabaseHelper databaseHelper;
     @Autowired
     private LoginService loginService;
     @BeforeEach
