@@ -9,10 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RegistrationHelper {
-    private static RegistrationService registrationService;
-    @Autowired
+    private final RegistrationService registrationService;
     public RegistrationHelper(RegistrationService registrationService) {
-        RegistrationHelper.registrationService = registrationService;
+        this.registrationService = registrationService;
     }
     public static RegisterRequest createValidRegisterRequest() {
         return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
