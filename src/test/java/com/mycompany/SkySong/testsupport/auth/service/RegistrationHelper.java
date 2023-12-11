@@ -13,36 +13,36 @@ public class RegistrationHelper {
     public RegistrationHelper(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
-    public static RegisterRequest createValidRegisterRequest() {
+    public RegisterRequest createValidRegisterRequest() {
         return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
     }
-    public static LoginRequest createUserLoginRequest() {
+    public LoginRequest createUserLoginRequest() {
         return new LoginRequest("testUsername", "testPassword@123");
     }
-    public static void executeValidUserRegistration() throws DatabaseException {
+    public void executeValidUserRegistration() throws DatabaseException {
         RegisterRequest request = createValidRegisterRequest();
         registrationService.register(request);
     }
-    public static RegisterRequest createValidRegisterRequestWithUsername(String username) {
+    public RegisterRequest createValidRegisterRequestWithUsername(String username) {
         return new RegisterRequest(username, username + "@gmail.com", "testPassword@123");
     }
-    public static RegisterRequest createInvalidUsernameRequest() {
+    public RegisterRequest createInvalidUsernameRequest() {
         return new RegisterRequest(
                 "invalidUsername$Format", "testEmail@gmail.com", "testPassword@123");
     }
-    public static RegisterRequest createInvalidEmailRequest() {
+    public RegisterRequest createInvalidEmailRequest() {
         return new RegisterRequest(
                 "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
     }
-    public static RegisterRequest createInvalidPasswordRequest() {
+    public RegisterRequest createInvalidPasswordRequest() {
         return new RegisterRequest(
                 "testUniqueUsername", "invalidEmailFormat", "testPassword@123");
     }
-    public static RegisterRequest createExistUsernameRequest() {
+    public RegisterRequest createExistUsernameRequest() {
         return new RegisterRequest(
                 "testSecondUsername", "testEmail@gmail.com", "testPassword@123");
     }
-    public static RegisterRequest createExistEmailRequest() {
+    public RegisterRequest createExistEmailRequest() {
         return new RegisterRequest(
                 "testUsername", "testSecondEmail@gmail.com", "testPassword@123");
     }
