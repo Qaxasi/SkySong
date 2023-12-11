@@ -10,10 +10,6 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 public class RegistrationHelper {
-    private final RegistrationService registrationService;
-    public RegistrationHelper(RegistrationService registrationService) {
-        this.registrationService = registrationService;
-    }
     public RegisterRequest createValidRegisterRequest() {
         return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
     }
