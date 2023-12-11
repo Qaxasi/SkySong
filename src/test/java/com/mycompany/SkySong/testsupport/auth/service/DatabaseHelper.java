@@ -7,6 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DatabaseHelper {
+    private DataSource dataSource;
+    public DatabaseHelper(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM users " +
