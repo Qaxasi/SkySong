@@ -12,7 +12,7 @@ public class DatabaseHelper {
         this.dataSource = dataSource;
     }
 
-    public boolean doesUserExist(String username, DataSource dataSource) throws SQLException {
+    public boolean doesUserExist(String username) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM users " +
                 "WHERE username = ?";
@@ -27,8 +27,7 @@ public class DatabaseHelper {
             return resultSet.next() && resultSet.getInt(1) > 0;
         }
     }
-    public boolean doesRoleAddedToNewUser(String username,
-                                                 String roleName, DataSource dataSource) throws SQLException {
+    public boolean doesRoleAddedToNewUser(String username, String roleName) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM user_roles ur " +
                 "JOIN users u ON ur.user_id = u.id " +
