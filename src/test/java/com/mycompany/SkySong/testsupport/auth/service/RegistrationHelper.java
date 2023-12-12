@@ -2,8 +2,6 @@ package com.mycompany.SkySong.testsupport.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.auth.service.RegistrationService;
-import com.mycompany.SkySong.shared.exception.DatabaseException;
 
 public class RegistrationHelper {
     private static final String password = "Password#1";
