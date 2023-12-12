@@ -5,7 +5,6 @@ import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.testsupport.TestMessages;
 import com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper;
 import com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper;
 import org.junit.jupiter.api.AfterEach;
@@ -44,28 +43,26 @@ public class RegistrationServiceIntegrationTest {
     void cleanup() {
         databaseHelper.removeUsersAndRoles();
     }
-//    @Test
-//    void shouldRegisterUser() throws DatabaseException, SQLException {
-//        RegisterRequest request = RegistrationHelper.createValidRegisterRequestWithUsername("testUsername");
-//        registrationService.register(request);
-//        assertTrue(databaseHelper.doesUserExist(request.username()));
-//    }
-//    @Test
-//    void shouldAllowLoginForRegisterUser() throws DatabaseException {
-//        RegistrationHelper.executeValidUserRegistration(registrationService);
-//        assertNotNull(loginService.login(RegistrationHelper.createUserLoginRequest()));
-//    }
-//
-//    @Test
-//    void shouldAssignRoleUserToNewUser() throws DatabaseException, SQLException {
-//        registrationService.register(RegistrationHelper.createValidRegisterRequestWithUsername("testUsername"));
-//        assertTrue(databaseHelper.hasUserRole("testUsername", UserRole.ROLE_USER.name()));
-//    }
-//    @Test
-//    void shouldReturnSuccessMessageOnUserRegistration () throws DatabaseException {
-//        ApiResponse response = registrationService.register(RegistrationHelper.createValidRegisterRequest());
-//        assertEquals(TestMessages.SUCCESS_REGISTRATION, response.message());
-//    }
+    @Test
+    void shouldRegisterUser() {
+        registration.register(RegistrationHelper.register("User"));
+        assertTrue(databaseHelper.userExist("User"));
+    }
+    @Test
+    void shouldAllowLoginForRegisterUser() {
+        registration.register(RegistrationHelper.register);
+        assertNotNull(RegistrationHelper.login);
+    }
+    @Test
+    void shouldAssignRoleUserToNewUser() {
+        registration.register(RegistrationHelper.register("User"));
+        assertTrue(databaseHelper.hasUserRole("User", UserRole.ROLE_USER.name()));
+    }
+    @Test
+    void shouldReturnSuccessMessageOnUserRegistration () {
+        ApiResponse response = registration.register(RegistrationHelper.register);
+        assertEquals("User registered successfully." , response.message());
+    }
     @Test
     void shouldThrowExceptionForInvalidUsernameFormat() {
         assertException(() -> registration.register(RegistrationHelper.invalidUsername),
