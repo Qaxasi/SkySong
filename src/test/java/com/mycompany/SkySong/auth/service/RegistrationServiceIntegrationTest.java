@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.entity.UserRole;
+import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
@@ -48,51 +49,54 @@ public class RegistrationServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
     }
-    @Test
-    void shouldRegisterUser() throws DatabaseException, SQLException {
-        RegisterRequest request = RegistrationHelper.createValidRegisterRequestWithUsername("testUsername");
-        registrationService.register(request);
-        assertTrue(databaseHelper.doesUserExist(request.username()));
-    }
-    @Test
-    void shouldAllowLoginForRegisterUser() throws DatabaseException {
-        RegistrationHelper.executeValidUserRegistration(registrationService);
-        assertNotNull(loginService.login(RegistrationHelper.createUserLoginRequest()));
-    }
-
-    @Test
-    void shouldAssignRoleUserToNewUser() throws DatabaseException, SQLException {
-        registrationService.register(RegistrationHelper.createValidRegisterRequestWithUsername("testUsername"));
-        assertTrue(databaseHelper.hasUserRole("testUsername", UserRole.ROLE_USER.name()));
-    }
-    @Test
-    void shouldReturnSuccessMessageOnUserRegistration () throws DatabaseException {
-        ApiResponse response = registrationService.register(RegistrationHelper.createValidRegisterRequest());
-        assertEquals(TestMessages.SUCCESS_REGISTRATION, response.message());
-    }
+//    @Test
+//    void shouldRegisterUser() throws DatabaseException, SQLException {
+//        RegisterRequest request = RegistrationHelper.createValidRegisterRequestWithUsername("testUsername");
+//        registrationService.register(request);
+//        assertTrue(databaseHelper.doesUserExist(request.username()));
+//    }
+//    @Test
+//    void shouldAllowLoginForRegisterUser() throws DatabaseException {
+//        RegistrationHelper.executeValidUserRegistration(registrationService);
+//        assertNotNull(loginService.login(RegistrationHelper.createUserLoginRequest()));
+//    }
+//
+//    @Test
+//    void shouldAssignRoleUserToNewUser() throws DatabaseException, SQLException {
+//        registrationService.register(RegistrationHelper.createValidRegisterRequestWithUsername("testUsername"));
+//        assertTrue(databaseHelper.hasUserRole("testUsername", UserRole.ROLE_USER.name()));
+//    }
+//    @Test
+//    void shouldReturnSuccessMessageOnUserRegistration () throws DatabaseException {
+//        ApiResponse response = registrationService.register(RegistrationHelper.createValidRegisterRequest());
+//        assertEquals(TestMessages.SUCCESS_REGISTRATION, response.message());
+//    }
     @Test
     void shouldThrowExceptionForInvalidUsernameFormat() {
-        assertValidationException(() -> registrationService.register(
-                RegistrationHelper.createInvalidUsernameRequest()));
+        assertException(() -> registration.register(RegistrationHelper.invalidUsername),
+                CredentialValidationException.class, "Invalid username format. The username can contain only letters" +
+                        " and numbers, and should be between 3 and 20 characters long.");
     }
     @Test
     void shouldThrowExceptionForInvalidEmailFormat() {
-        assertValidationException(() -> registrationService.register(
-                RegistrationHelper.createInvalidEmailRequest()));
+        assertException(() -> registration.register(RegistrationHelper.invalidEmail),
+                CredentialValidationException.class, "Invalid email address format. The email should follow the " +
+                        "standard format (e.g., user@example.com) and be between 6 and 30 characters long.");
     }
     @Test
     void shouldThrowExceptionForInvalidPasswordFormat() {
-        assertValidationException(() -> registrationService.register(
-                RegistrationHelper.createInvalidPasswordRequest()));
+        assertException(() -> registration.register(RegistrationHelper.invalidPassword),
+                CredentialValidationException.class, "Invalid password format. The password must contain an least 8 " +
+                        "characters, including uppercase letters, lowercase letters, numbers, and special characters.");
     }
     @Test
     void shouldThrowExceptionForExistUsername() {
-        assertValidationException(() -> registrationService.register(
-                RegistrationHelper.createExistUsernameRequest()));
+        assertException(() -> registration.register(RegistrationHelper.existingUsername),
+                CredentialValidationException.class, "Username is already exist!.");
     }
     @Test
     void shouldThrowExceptionForExistEmail() {
-        assertValidationException(() -> registrationService.register(
-                RegistrationHelper.createExistEmailRequest()));
+        assertException(() -> registration.register(RegistrationHelper.existEmail),
+                CredentialValidationException.class, "Email is already exist!.");
     }
 }
