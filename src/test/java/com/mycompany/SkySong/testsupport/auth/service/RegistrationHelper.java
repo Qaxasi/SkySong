@@ -7,7 +7,7 @@ import com.mycompany.SkySong.shared.exception.DatabaseException;
 
 public class RegistrationHelper {
     private final String password = "Password#1";
-    public static RegisterRequest register = new RegisterRequest("User", "mail@mail", password);
+    public RegisterRequest register = new RegisterRequest("User", "mail@mail", password);
     public LoginRequest login = new LoginRequest("User", password);
 
     public RegisterRequest invalidUsername = new RegisterRequest("invalid#", "mail@mail", password);
