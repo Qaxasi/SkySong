@@ -2,9 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
-import com.mycompany.SkySong.shared.exception.DatabaseException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
-import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper;
 import com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper;
 import org.junit.jupiter.api.AfterEach;
@@ -12,14 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
