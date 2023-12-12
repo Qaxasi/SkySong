@@ -6,36 +6,19 @@ import com.mycompany.SkySong.auth.service.RegistrationService;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 
 public class RegistrationHelper {
-    public static RegisterRequest createValidRegisterRequest() {
-        return new RegisterRequest("testUsername", "testEmail@gmail.com", "testPassword@123");
-    }
-    public static LoginRequest createUserLoginRequest() {
-        return new LoginRequest("testUsername", "testPassword@123");
-    }
-    public static RegisterRequest createValidRegisterRequestWithUsername(String username) {
-        return new RegisterRequest(username, username + "@gmail.com", "testPassword@123");
-    }
-    public static RegisterRequest createInvalidUsernameRequest() {
-        return new RegisterRequest(
-                "invalidUsername$Format", "testEmail@gmail.com", "testPassword@123");
-    }
-    public static RegisterRequest createInvalidEmailRequest() {
-        return new RegisterRequest(
-                "testUsername", "invalidEmailFormat", "testPassword@123");
-    }
-    public static RegisterRequest createInvalidPasswordRequest() {
-        return new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "invalidPassword");
-    }
-    public static RegisterRequest createExistUsernameRequest() {
-        return new RegisterRequest(
-                "testExistUsername", "testEmail@gmail.com", "testPassword@123");
-    }
-    public static RegisterRequest createExistEmailRequest() {
-        return new RegisterRequest(
-                "testUsername", "testExistEmail@gmail.com", "testPassword@123");
-    }
-    public static void executeValidUserRegistration(RegistrationService registrationService) throws DatabaseException {
-        registrationService.register(createValidRegisterRequest());
+    private final String password = "Password#1";
+    public static RegisterRequest register = new RegisterRequest("User", "mail@mail", password);
+    public LoginRequest login = new LoginRequest("User", password);
+
+    public RegisterRequest invalidUsername = new RegisterRequest("invalid#", "mail@mail", password);
+    public RegisterRequest invalidEmail = new RegisterRequest("User", "invalid", password);
+    public RegisterRequest invalidPassword = new RegisterRequest("User", "mail@mail", "invalid");
+
+    public RegisterRequest existingUsername = new RegisterRequest(
+            "existUsername", "mail@mail", password);
+    public RegisterRequest existEmail = new RegisterRequest(
+            "User", "existMail@mail", password);
+    public RegisterRequest register(String username) {
+        return new RegisterRequest(username, "mail@mail", password);
     }
 }
