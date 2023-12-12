@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 public class RegistrationServiceIntegrationTest {
     @Autowired
-    private RegistrationService registrationService;
+    private RegistrationService registration;
     @Autowired
     private DataSource dataSource;
     @Autowired
