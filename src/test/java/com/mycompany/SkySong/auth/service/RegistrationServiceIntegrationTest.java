@@ -38,9 +38,7 @@ public class RegistrationServiceIntegrationTest {
     private LoginService login;
     @BeforeEach
     void init() throws Exception {
-        try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
-        }
+        databaseHelper.setup("data_sql/test-data-setup.sql");
     }
     @AfterEach
     void cleanup() {
