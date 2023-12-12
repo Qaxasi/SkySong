@@ -6,11 +6,9 @@ import org.junit.jupiter.api.function.Executable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 public class UserAssertions {
-    public static void assertValidationException(Executable executable) {
-        assertThrows(CredentialValidationException.class, executable);
-    }
-    public static void assertErrorMessage(Executable executable, String expectedMessage) {
-        Exception exception = assertThrows(Exception.class, executable);
+    public static void assertException(Executable executable, Class<? extends Throwable> expectedException,
+                                       String expectedMessage) {
+        Throwable exception = assertThrows(expectedException, executable);
         assertEquals(expectedMessage, exception.getMessage());
     }
 }
