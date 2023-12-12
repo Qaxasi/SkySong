@@ -14,19 +14,23 @@ public class DatabaseHelper {
         this.dataSource = dataSource;
     }
 
-    public boolean userExist(String username) throws SQLException {
-        String query = "SELECT COUNT(*) " +
-                "FROM users " +
-                "WHERE username = ?";
+    public boolean userExist(String username) {
+        try {
+            String query = "SELECT COUNT(*) " +
+                    "FROM users " +
+                    "WHERE username = ?";
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (Connection connection = dataSource.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setString(1, username);
+                statement.setString(1, username);
 
-            ResultSet resultSet = statement.executeQuery();
+                ResultSet resultSet = statement.executeQuery();
 
-            return resultSet.next() && resultSet.getInt(1) > 0;
+                return resultSet.next() && resultSet.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+                throw new RuntimeException("Error during checking if user exists " + e.getMessage(), e);
         }
     }
     public boolean hasUserRole(String username, String roleName) throws SQLException {
