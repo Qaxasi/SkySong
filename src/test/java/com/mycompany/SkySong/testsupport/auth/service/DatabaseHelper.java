@@ -14,7 +14,7 @@ public class DatabaseHelper {
         this.dataSource = dataSource;
     }
 
-    public boolean doesUserExist(String username) throws SQLException {
+    public boolean userExist(String username) throws SQLException {
         String query = "SELECT COUNT(*) " +
                 "FROM users " +
                 "WHERE username = ?";
