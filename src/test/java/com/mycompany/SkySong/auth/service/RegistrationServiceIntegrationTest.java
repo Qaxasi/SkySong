@@ -34,7 +34,7 @@ public class RegistrationServiceIntegrationTest {
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired
-    private LoginService loginService;
+    private LoginService login;
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
