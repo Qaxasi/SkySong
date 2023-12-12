@@ -17,7 +17,7 @@ public class DatabaseHelper {
     }
     public void setup(String scriptPath) throws Exception {
         try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource(scriptPath));
         }
     }
     public boolean userExist(String username) {
