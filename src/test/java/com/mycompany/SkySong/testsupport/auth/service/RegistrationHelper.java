@@ -5,21 +5,21 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
 public class RegistrationHelper {
     private static final String password = "Password#1";
-    public static RegisterRequest register = new RegisterRequest("User", "mail@mail", password);
+    public static RegisterRequest register = new RegisterRequest("User", "mail@mail.com", password);
     public static LoginRequest login = new LoginRequest("User", password);
 
     public static RegisterRequest invalidUsername = new RegisterRequest(
-            "invalid#", "mail@mail", password);
+            "invalid#", "mail@mail.com", password);
     public static RegisterRequest invalidEmail = new RegisterRequest(
             "User", "invalid", password);
     public static RegisterRequest invalidPassword = new RegisterRequest(
-            "User", "mail@mail", "invalid");
+            "User", "mail@mail.com", "invalid");
 
     public static RegisterRequest existingUsername = new RegisterRequest(
-            "existUsername", "mail@mail", password);
+            "existUsername", "mail@mail.com", password);
     public static RegisterRequest existEmail = new RegisterRequest(
-            "User", "existMail@mail", password);
+            "User", "existMail@mail.com", password);
     public static RegisterRequest register(String username) {
-        return new RegisterRequest(username, "mail@mail", password);
+        return new RegisterRequest(username, "mail@mail.com", password);
     }
 }
