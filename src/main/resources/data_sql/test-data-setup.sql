@@ -1,5 +1,5 @@
 INSERT INTO users (username, email, password)
-    VALUES('existUsername', 'existMail@mail',
+    VALUES('existUsername', 'existMail@mail.com',
       '$2a$10$VEbWwz6NcL4y6MgKEE/sJuWiFe2EoVbru6gJ.6Miu6G16NWfqlxci');
 
 INSERT INTO users (username, email, password)
