@@ -6,19 +6,22 @@ import com.mycompany.SkySong.auth.service.RegistrationService;
 import com.mycompany.SkySong.shared.exception.DatabaseException;
 
 public class RegistrationHelper {
-    private final String password = "Password#1";
-    public RegisterRequest register = new RegisterRequest("User", "mail@mail", password);
-    public LoginRequest login = new LoginRequest("User", password);
+    private static final String password = "Password#1";
+    public static RegisterRequest register = new RegisterRequest("User", "mail@mail", password);
+    public static LoginRequest login = new LoginRequest("User", password);
 
-    public RegisterRequest invalidUsername = new RegisterRequest("invalid#", "mail@mail", password);
-    public RegisterRequest invalidEmail = new RegisterRequest("User", "invalid", password);
-    public RegisterRequest invalidPassword = new RegisterRequest("User", "mail@mail", "invalid");
+    public static RegisterRequest invalidUsername = new RegisterRequest(
+            "invalid#", "mail@mail", password);
+    public static RegisterRequest invalidEmail = new RegisterRequest(
+            "User", "invalid", password);
+    public static RegisterRequest invalidPassword = new RegisterRequest(
+            "User", "mail@mail", "invalid");
 
-    public RegisterRequest existingUsername = new RegisterRequest(
+    public static RegisterRequest existingUsername = new RegisterRequest(
             "existUsername", "mail@mail", password);
-    public RegisterRequest existEmail = new RegisterRequest(
+    public static RegisterRequest existEmail = new RegisterRequest(
             "User", "existMail@mail", password);
-    public RegisterRequest register(String username) {
+    public static RegisterRequest register(String username) {
         return new RegisterRequest(username, "mail@mail", password);
     }
 }
