@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.testsupport.auth.service;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -13,7 +15,11 @@ public class DatabaseHelper {
     public DatabaseHelper(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
+    public void setup(String scriptPath) throws Exception {
+        try(Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
+        }
+    }
     public boolean userExist(String username) {
         try {
             String query = "SELECT COUNT(*) " +
