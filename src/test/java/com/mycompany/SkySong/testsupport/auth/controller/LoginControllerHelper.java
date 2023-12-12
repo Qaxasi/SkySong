@@ -17,6 +17,6 @@ public class LoginControllerHelper {
 
         when(userDAO.findByEmail("mail@mail.com"))
                 .thenReturn(Optional.of(new User(1, "User", "mail@mail.com",
-                        "$2a$10$VEbWwz6NcL4y6MgKEE/sJuWiFe2EoVbru6gJ.6Miu6G16NWfqlxci", roles)));
+                        "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", roles)));
     }
 }
