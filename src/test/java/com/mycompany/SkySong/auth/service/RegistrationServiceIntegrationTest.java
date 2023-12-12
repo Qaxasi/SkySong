@@ -42,10 +42,7 @@ public class RegistrationServiceIntegrationTest {
     }
     @AfterEach
     void cleanup() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update("DELETE FROM user_roles");
-        jdbcTemplate.update("DELETE FROM users");
-        jdbcTemplate.update("DELETE FROM roles");
+        databaseHelper.removeUsersAndRoles();
     }
 //    @Test
 //    void shouldRegisterUser() throws DatabaseException, SQLException {
