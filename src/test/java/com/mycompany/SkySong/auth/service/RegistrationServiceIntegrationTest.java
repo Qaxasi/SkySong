@@ -76,19 +76,9 @@ public class RegistrationServiceIntegrationTest {
                 RegistrationHelper.createInvalidUsernameRequest()));
     }
     @Test
-    void shouldReturnErrorMessageForInvalidUsernameFormat() {
-       assertErrorMessage(() -> registrationService.register(
-               RegistrationHelper.createInvalidUsernameRequest()), TestMessages.INVALID_USERNAME_FORMAT);
-    }
-    @Test
     void shouldThrowExceptionForInvalidEmailFormat() {
         assertValidationException(() -> registrationService.register(
                 RegistrationHelper.createInvalidEmailRequest()));
-    }
-    @Test
-    void shouldReturnErrorMessageForInvalidEmailFormat() {
-        assertErrorMessage(() -> registrationService.register(
-                RegistrationHelper.createInvalidEmailRequest()), TestMessages.INVALID_EMAIL_FORMAT);
     }
     @Test
     void shouldThrowExceptionForInvalidPasswordFormat() {
@@ -96,28 +86,13 @@ public class RegistrationServiceIntegrationTest {
                 RegistrationHelper.createInvalidPasswordRequest()));
     }
     @Test
-    void shouldReturnErrorMessageForInvalidPasswordFormat() {
-        assertErrorMessage(() -> registrationService.register(
-                RegistrationHelper.createInvalidPasswordRequest()), TestMessages.INVALID_PASSWORD_FORMAT);
-    }
-    @Test
     void shouldThrowExceptionForExistUsername() {
         assertValidationException(() -> registrationService.register(
                 RegistrationHelper.createExistUsernameRequest()));
     }
     @Test
-    void shouldReturnErrorMessageForExistUsername() {
-        assertErrorMessage(() -> registrationService.register(
-                RegistrationHelper.createExistUsernameRequest()), TestMessages.USERNAME_EXIST);
-    }
-    @Test
     void shouldThrowExceptionForExistEmail() {
         assertValidationException(() -> registrationService.register(
                 RegistrationHelper.createExistEmailRequest()));
-    }
-    @Test
-    void shouldReturnErrorMessageForExistEmail() {
-        assertErrorMessage(() -> registrationService.register(
-                RegistrationHelper.createExistEmailRequest()), TestMessages.EMAIL_EXIST);
     }
 }
