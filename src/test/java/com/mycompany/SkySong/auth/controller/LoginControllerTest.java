@@ -13,6 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Map;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -76,5 +78,12 @@ public class LoginControllerTest {
     public void whenInvalidCredentials_ReturnBadRequest() throws Exception {
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc, "/api/v1/users/login", LoginControllerHelper.emptyCredentials, 400);
+    }
+    @Test
+    void whenEmptyCredentials_ReturnCorrectErrorMessage() throws Exception {
+        PostRequestAssertions.assertPostJsonReturns(
+                mockMvc,"/api/v1/users/login", LoginControllerHelper.emptyCredentials,
+                Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
+                        "$.errors.password", "The password field cannot be empty"));
     }
 }
