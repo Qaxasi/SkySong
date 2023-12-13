@@ -65,10 +65,8 @@ public class LoginControllerTest {
     }
     @Test
     void shouldReturnNonEmptyAccessTokenOnSuccessfulLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
-
-        PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/login",
-                requestBody,
+        PostRequestAssertions.assertPostFieldsReturns(
+                mockMvc,"/api/v1/users/login", LoginControllerHelper.validCredentials,
                 jsonPath("$.accessToken").isNotEmpty());
     }
     @Test
