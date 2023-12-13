@@ -10,18 +10,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 
 public class CookieAssertions {
-    public static void assertCookieExist(MockMvc mockMvc, String endpoint, String requestBody, String cookieName) throws Exception {
+    public static void assertCookieExist(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(cookie().exists(cookieName));
+                .andExpect(cookie().exists("auth_token"));
     }
-    public static void assertCookieDoesNotExist(MockMvc mockMvc, String endpoint, String requestBody,
-                                                String cookieName) throws Exception {
+    public static void assertCookieDoesNotExist(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(cookie().doesNotExist(cookieName));
+                .andExpect(cookie().doesNotExist("auth_token"));
     }
     public static void assertCookieIsHttpOnly(MockMvc mockMvc, String endpoint, String requestBody,
                                               String cookieName) throws Exception {
