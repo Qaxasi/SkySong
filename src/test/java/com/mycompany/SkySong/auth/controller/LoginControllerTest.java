@@ -71,16 +71,12 @@ public class LoginControllerTest {
     }
     @Test
     void shouldReturnUnauthorizedStatusForInvalidLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testInvalidUsername\",\"password\": \"testPassword@123\"}";
-
         PostRequestAssertions.assertPostStatusReturns(
-                mockMvc,"/api/v1/users/login", requestBody, 401);
+                mockMvc,"/api/v1/users/login", LoginControllerHelper.invalidCredentials, 401);
     }
     @Test
     void shouldReturnBadRequestForMalformedLoginRequestBody() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"";
-
         PostRequestAssertions.assertPostStatusReturns(
-                mockMvc,"/api/v1/users/login", requestBody, 400);
+                mockMvc,"/api/v1/users/login", LoginControllerHelper.malformedJson, 400);
     }
 }
