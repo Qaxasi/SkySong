@@ -22,12 +22,11 @@ public class CookieAssertions {
                         .content(requestBody))
                 .andExpect(cookie().doesNotExist("auth_token"));
     }
-    public static void assertCookieIsHttpOnly(MockMvc mockMvc, String endpoint, String requestBody,
-                                              String cookieName) throws Exception {
+    public static void assertCookieIsHttpOnly(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(cookie().httpOnly(cookieName, true));
+                .andExpect(cookie().httpOnly("auth_token", true));
     }
     public static void assertCookieMaxAge(MockMvc mockMvc, String endpoint, String requestBody,
                                           String cookieName, int expectedMaxAge) throws Exception {
