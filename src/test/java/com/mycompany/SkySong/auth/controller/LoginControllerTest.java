@@ -4,6 +4,7 @@ import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.repository.UserDAO;
+import com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper;
 import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,12 +31,7 @@ public class LoginControllerTest {
     private UserDAO userDAO;
     @BeforeEach
     void setUp() {
-        Role role = new Role(UserRole.ROLE_USER);
-        Set<Role> roles = Set.of(role);
-
-        Mockito.when(userDAO.findByEmail("testEmail@gmail.com"))
-                .thenReturn(Optional.of(new User(1, "testUsername", "testEmail@gmail.com",
-                        "$2a$10$VEbWwz6NcL4y6MgKEE/sJuWiFe2EoVbru6gJ.6Miu6G16NWfqlxci", roles)));
+        LoginControllerHelper.setup(userDAO);
     }
     @Test
     void shouldRespondWithOkStatusOnSuccessfulLogin() throws Exception {
