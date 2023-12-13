@@ -16,19 +16,19 @@ public class CookieAssertions {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(cookie().exists("auth_token"));
+                .andExpect(cookie().exists(cookieName));
     }
     public static void assertCookieNotExist(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(cookie().doesNotExist("auth_token"));
+                .andExpect(cookie().doesNotExist(cookieName));
     }
     public static void assertCookieIsHttpOnly(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(cookie().httpOnly("auth_token", true));
+                .andExpect(cookie().httpOnly(cookieName, true));
     }
     public static void assertCookieMaxAge(MockMvc mockMvc, String endpoint, String requestBody,
                                           String cookieName, int expectedMaxAge) throws Exception {
