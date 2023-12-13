@@ -11,7 +11,7 @@ import java.util.Set;
 import static org.mockito.Mockito.when;
 
 public class LoginControllerHelper {
-    public static final String validJson =
+    public static final String validCredentials =
             "{\"usernameOrEmail\": \"mail@mail.com\",\"password\": \"Password#3\"}";
     public static final String invalidCredentials =
             "{\"usernameOrEmail\": \"invalid\",\"password\": \"invalid\"}";
