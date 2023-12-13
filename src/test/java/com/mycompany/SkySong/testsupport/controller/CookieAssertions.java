@@ -30,12 +30,11 @@ public class CookieAssertions {
                         .content(requestBody))
                 .andExpect(cookie().httpOnly(cookieName, true));
     }
-    public static void assertCookieMaxAge(MockMvc mockMvc, String endpoint, String requestBody,
-                                          String cookieName, int expectedMaxAge) throws Exception {
+    public static void assertCookieMaxAge(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(cookie().maxAge(cookieName, expectedMaxAge));
+                .andExpect(cookie().maxAge(cookieName, maxAge));
     }
     public static void assertCookieIsSecure(MockMvc mockMvc, String endpoint, String requestBody,
                                             String cookieName) throws Exception {
