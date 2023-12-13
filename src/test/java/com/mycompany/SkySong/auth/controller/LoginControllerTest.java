@@ -55,19 +55,11 @@ public class LoginControllerTest {
     }
     @Test
     void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
-        String cookieName = "auth_token";
-        int expectedMaxAge = 24 * 60 * 60;
-
-        CookieAssertions.assertCookieMaxAge(mockMvc, "/api/v1/users/login",
-                requestBody, cookieName, expectedMaxAge);
+        CookieAssertions.assertCookieMaxAge(mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
     }
     @Test
     void shouldMarkAuthTokenCookieAsSecureOnLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
-        String cookieName = "auth_token";
-
-        CookieAssertions.assertCookieIsSecure(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        CookieAssertions.assertCookieIsSecure(mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
     }
     @Test
     void shouldReturnNonEmptyAccessTokenOnSuccessfulLogin() throws Exception {
