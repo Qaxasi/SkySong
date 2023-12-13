@@ -27,48 +27,48 @@ public class LoginControllerTest {
         LoginControllerHelper.setup(userDAO);
     }
     @Test
-    void shouldRespondWithOkStatusOnSuccessfulLogin() throws Exception {
+    void whenLoginSuccess_ResponseStatusOk() throws Exception {
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", LoginControllerHelper.validCredentials, 200);
     }
     @Test
-    void shouldSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
+    void whenLoginSuccess_TokenCookieIsSet() throws Exception {
         CookieAssertions.assertCookieExist(
                 mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
-    void shouldNotSetAuthTokenCookieOnFailedLogin() throws Exception {
+    void whenLoginFails_TokenCookieIsNotSet() throws Exception {
         CookieAssertions.assertCookieNotExist(
                 mockMvc, "/api/v1/users/login", LoginControllerHelper.invalidCredentials);
     }
     @Test
-    void shouldSetAuthTokenCookieHttpOnlyOnSuccessfulLogin() throws Exception {
+    void whenUserLogsIn_TokenCookieIsSetHttpOnly() throws Exception {
         CookieAssertions.assertCookieIsHttpOnly(
                 mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
-    void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
+    void whenUserLogsIn_TokenCookieExpirationIsSetCorrectly() throws Exception {
         CookieAssertions.assertCookieMaxAge(
                 mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
-    void shouldMarkAuthTokenCookieAsSecureOnLogin() throws Exception {
+    void whenUserLogsIn_TokenCookieIsMarkedAsSecure() throws Exception {
         CookieAssertions.assertCookieIsSecure(
                 mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
-    void shouldReturnNonEmptyAccessTokenOnSuccessfulLogin() throws Exception {
+    void whenLoginSuccess_ReturnNotEmptyTokenField() throws Exception {
         PostRequestAssertions.assertPostFieldsReturns(
                 mockMvc,"/api/v1/users/login", LoginControllerHelper.validCredentials,
                 jsonPath("$.accessToken").isNotEmpty());
     }
     @Test
-    void shouldReturnUnauthorizedStatusForInvalidLogin() throws Exception {
+    void whenInvalidLogin_ReturnUnauthorizedStatus() throws Exception {
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", LoginControllerHelper.invalidCredentials, 401);
     }
     @Test
-    void shouldReturnBadRequestForMalformedLoginRequestBody() throws Exception {
+    void whenMalformedJson_ReturnBadRequest() throws Exception {
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", LoginControllerHelper.malformedJson, 400);
     }
