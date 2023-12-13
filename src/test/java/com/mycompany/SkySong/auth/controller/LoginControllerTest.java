@@ -40,18 +40,18 @@ public class LoginControllerTest {
     }
     @Test
     void shouldSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
-        CookieAssertions.assertCookieExist(mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
+        CookieAssertions.assertCookieExist(
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
     }
     @Test
     void shouldNotSetAuthTokenCookieOnFailedLogin() throws Exception {
-        CookieAssertions.assertCookieNotExist(mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
+        CookieAssertions.assertCookieNotExist(
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
     }
     @Test
     void shouldSetAuthTokenCookieHttpOnlyOnSuccessfulLogin() throws Exception {
-        final var requestBody = "{\"usernameOrEmail\": \"testEmail@gmail.com\",\"password\": \"testPassword@123\"}";
-        String cookieName = "auth_token";
-
-        CookieAssertions.assertCookieIsHttpOnly(mockMvc, "/api/v1/users/login", requestBody, cookieName);
+        CookieAssertions.assertCookieIsHttpOnly(
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
     }
     @Test
     void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
