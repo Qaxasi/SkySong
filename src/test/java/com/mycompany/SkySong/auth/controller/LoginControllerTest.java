@@ -46,7 +46,7 @@ public class LoginControllerTest {
     @Test
     void shouldNotSetAuthTokenCookieOnFailedLogin() throws Exception {
         CookieAssertions.assertCookieNotExist(
-                mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.invalidCredentials);
     }
     @Test
     void shouldSetAuthTokenCookieHttpOnlyOnSuccessfulLogin() throws Exception {
