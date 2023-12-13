@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 
 public class CookieAssertions {
+    private static final int maxAge = 24 * 60 * 60;
     public static void assertCookieExist(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
