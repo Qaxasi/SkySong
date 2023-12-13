@@ -72,4 +72,9 @@ public class LoginControllerTest {
         PostRequestAssertions.assertPostStatusReturns(
                 mockMvc,"/api/v1/users/login", LoginControllerHelper.malformedJson, 400);
     }
+    @Test
+    public void whenInvalidCredentials_ReturnBadRequest() throws Exception {
+        PostRequestAssertions.assertPostStatusReturns(
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.emptyCredentials, 400);
+    }
 }
