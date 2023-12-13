@@ -13,6 +13,8 @@ import static org.mockito.Mockito.when;
 public class LoginControllerHelper {
     public static final String validJson =
             "{\"usernameOrEmail\": \"mail@mail.com\",\"password\": \"Password#3\"}";
+    public static final String invalidCredentials =
+            "{\"usernameOrEmail\": \"invalid\",\"password\": \"invalid\"}";
     public static void setup(UserDAO userDAO) {
         Role role = new Role(UserRole.ROLE_USER);
         Set<Role> roles = Set.of(role);
