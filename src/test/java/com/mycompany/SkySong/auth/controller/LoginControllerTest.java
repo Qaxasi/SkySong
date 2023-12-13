@@ -1,24 +1,17 @@
 package com.mycompany.SkySong.auth.controller;
 
-import com.mycompany.SkySong.auth.model.entity.Role;
-import com.mycompany.SkySong.shared.entity.User;
-import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper;
 import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Optional;
-import java.util.Set;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
