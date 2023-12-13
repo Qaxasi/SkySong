@@ -16,7 +16,7 @@ public class CookieAssertions {
                         .content(requestBody))
                 .andExpect(cookie().exists("auth_token"));
     }
-    public static void assertCookieDoesNotExist(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
+    public static void assertCookieNotExist(MockMvc mockMvc, String endpoint, String requestBody) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
