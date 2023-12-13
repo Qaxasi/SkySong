@@ -31,7 +31,7 @@ public class LoginControllerTest {
     }
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
-        PostRequestAssertions.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatus(
                 mockMvc, endpoint, LoginControllerHelper.validCredentials, 200);
     }
     @Test
@@ -61,28 +61,28 @@ public class LoginControllerTest {
     }
     @Test
     void whenLoginSuccess_ReturnNotEmptyTokenField() throws Exception {
-        PostRequestAssertions.assertPostFieldsReturns(
+        PostRequestAssertions.assertPostRequestFields(
                 mockMvc, endpoint, LoginControllerHelper.validCredentials,
                 jsonPath("$.accessToken").isNotEmpty());
     }
     @Test
     void whenInvalidLogin_ReturnUnauthorizedStatus() throws Exception {
-        PostRequestAssertions.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatus(
                 mockMvc, endpoint, LoginControllerHelper.invalidCredentials, 401);
     }
     @Test
     void whenMalformedJson_ReturnBadRequest() throws Exception {
-        PostRequestAssertions.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatus(
                 mockMvc, endpoint, LoginControllerHelper.malformedJson, 400);
     }
     @Test
     public void whenInvalidCredentials_ReturnBadRequest() throws Exception {
-        PostRequestAssertions.assertPostStatusReturns(
+        PostRequestAssertions.assertPostStatus(
                 mockMvc, endpoint, LoginControllerHelper.emptyCredentials, 400);
     }
     @Test
     void whenEmptyCredentials_ReturnCorrectErrorMessage() throws Exception {
-        PostRequestAssertions.assertPostJsonReturns(
+        PostRequestAssertions.assertPostJsonResponse(
                 mockMvc, endpoint, LoginControllerHelper.emptyCredentials,
                 Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
