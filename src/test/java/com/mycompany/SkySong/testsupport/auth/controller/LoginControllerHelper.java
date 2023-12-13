@@ -17,6 +17,7 @@ public class LoginControllerHelper {
             "{\"usernameOrEmail\": \"invalid\",\"password\": \"invalid\"}";
     public static final String malformedJson =
             "{\"usernameOrEmail\": \"mail@mail.com\",\"password\": \"Password#3\"";
+    public static final String emptyCredentials = "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
     public static void setup(UserDAO userDAO) {
         Role role = new Role(UserRole.ROLE_USER);
         Set<Role> roles = Set.of(role);
