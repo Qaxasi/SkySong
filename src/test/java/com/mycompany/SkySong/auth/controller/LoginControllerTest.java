@@ -36,30 +36,32 @@ public class LoginControllerTest {
     @Test
     void shouldRespondWithOkStatusOnSuccessfulLogin() throws Exception {
         PostRequestAssertions.assertPostStatusReturns(
-                mockMvc,"/api/v1/users/login", LoginControllerHelper.validJson, 200);
+                mockMvc,"/api/v1/users/login", LoginControllerHelper.validCredentials, 200);
     }
     @Test
     void shouldSetAuthTokenCookieOnSuccessfulLogin() throws Exception {
         CookieAssertions.assertCookieExist(
-                mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
     void shouldNotSetAuthTokenCookieOnFailedLogin() throws Exception {
         CookieAssertions.assertCookieNotExist(
-                mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
     void shouldSetAuthTokenCookieHttpOnlyOnSuccessfulLogin() throws Exception {
         CookieAssertions.assertCookieIsHttpOnly(
-                mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
     void shouldSetCorrectExpirationForAuthTokenCookie() throws Exception {
-        CookieAssertions.assertCookieMaxAge(mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
+        CookieAssertions.assertCookieMaxAge(
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
     void shouldMarkAuthTokenCookieAsSecureOnLogin() throws Exception {
-        CookieAssertions.assertCookieIsSecure(mockMvc, "/api/v1/users/login", LoginControllerHelper.validJson);
+        CookieAssertions.assertCookieIsSecure(
+                mockMvc, "/api/v1/users/login", LoginControllerHelper.validCredentials);
     }
     @Test
     void shouldReturnNonEmptyAccessTokenOnSuccessfulLogin() throws Exception {
