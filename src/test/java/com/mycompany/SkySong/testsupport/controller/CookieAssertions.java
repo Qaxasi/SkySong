@@ -2,6 +2,7 @@ package com.mycompany.SkySong.testsupport.controller;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -44,7 +45,8 @@ public class CookieAssertions {
     }
 
     public static void assertCookieIsDeleted(MockMvc mockMvc, String endpoint, Cookie cookie) throws Exception {
-        mockMvc.perform(post(endpoint).cookie(cookie))
+        mockMvc.perform(post(endpoint).cookie(cookie)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(result -> {
                     String setCookieHeader = result.getResponse().getHeader("Set-Cookie");
                     assertNotNull(setCookieHeader);
