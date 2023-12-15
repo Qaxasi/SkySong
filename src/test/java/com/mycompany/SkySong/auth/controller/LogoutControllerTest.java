@@ -25,7 +25,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(LogoutController.class)
-@Import(SecurityConfig.class)
 public class LogoutControllerTest {
     @Autowired
     private MockMvc mockMvc;
