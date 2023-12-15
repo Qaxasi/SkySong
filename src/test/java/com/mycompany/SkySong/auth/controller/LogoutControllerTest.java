@@ -41,7 +41,7 @@ public class LogoutControllerTest {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @Test
     @WithMockUser
-    void shouldReturnStatusOkAfterSuccessfulLogout() throws Exception {
+    void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
         Cookie mockCookie = new Cookie("auth_token", "token-value");
         PostRequestAssertions.assertPostStatusForNoBody(
                 mockMvc,
@@ -51,7 +51,7 @@ public class LogoutControllerTest {
     }
     @Test
     @WithMockUser
-    void shouldReturnMessageAfterSuccessfulLogout() throws Exception {
+    void whenSuccessfulLogout_ReturnMessage() throws Exception {
         Cookie mockCookie = new Cookie("auth_token", "token-value");
         String expectedMessage = "{\"message\":\"User logged out successfully\"}";
         when(messageService.getMessage("logout.success")).thenReturn("User logged out successfully");
@@ -63,7 +63,7 @@ public class LogoutControllerTest {
     }
     @Test
     @WithMockUser
-    void shouldDeleteAuthTokenCookieOnLogout() throws Exception {
+    void whenSuccessfulLogout_DeleteAuthTokenCookie() throws Exception {
         doAnswer(invocation -> {
             HttpServletResponse response = invocation.getArgument(1);
             Cookie modifiedCookie = new Cookie("auth_token", null);
@@ -79,7 +79,7 @@ public class LogoutControllerTest {
     }
     @Test
     @WithMockUser
-    void shouldHandleServiceFailureException() throws Exception {
+    void whenLogoutFails_HandleException() throws Exception {
         doThrow(new RuntimeException("Internal Error")).when(cookieDeleter).deleteCookie(any(), any(), any());
 
         PostRequestAssertions.assertPostStatusNoBodyWithCookie(
@@ -89,7 +89,7 @@ public class LogoutControllerTest {
     }
     @Test
     @WithMockUser
-    void shouldReturnErrorMessageWhenHandleServiceFailureException() throws Exception {
+    void whenLogoutFails_ReturnErrorMessage() throws Exception {
         doThrow(new RuntimeException("Internal Error")).when(cookieDeleter).deleteCookie(any(), any(), any());
         String expectedMessage = "{\"error\":\"Logout failed due to an internal error\"}";
         when(messageService.getMessage("logout.failure")).thenReturn("Logout failed due to an internal error");
@@ -100,8 +100,8 @@ public class LogoutControllerTest {
                 expectedMessage);
     }
     @Test
-    @WithMockUser
-    void shouldReturnStatusOkWhenLogoutWithoutCookie() throws Exception {
+    @WithMockUser 
+    void whenLogoutWithoutCookie_ReturnStatusOk() throws Exception {
         PostRequestAssertions.assertPostStatusNoBodyWithCookie(
                 mockMvc,
                 "/api/v1/users/logout",
