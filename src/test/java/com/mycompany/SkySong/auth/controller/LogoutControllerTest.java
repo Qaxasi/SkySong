@@ -9,6 +9,7 @@ import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,6 +36,10 @@ public class LogoutControllerTest {
     @MockBean
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final String endpoint = "/api/v1/users/logout";
+    @BeforeEach
+    void setup() {
+        LogoutControllerHelper.setupCookieDeletion(cookieDeleter, "auth_token");
+    }
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
         LogoutControllerHelper.setupCookieDeletion(cookieDeleter, "auth_token");
