@@ -38,12 +38,12 @@ public class LogoutControllerTest {
     }
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
-        Cookie mockCookie = new Cookie("auth_token", "token-value");
+        Cookie mockCookie = LogoutControllerTestHelper.mockedTokenCookie();
         LogoutControllerTestHelper.assertStatus(mockMvc, endpoint, mockCookie, 200);
     }
     @Test
     void whenSuccessfulLogout_DeleteAuthTokenCookie() throws Exception {
-        Cookie mockCookie = new Cookie("auth_token", "token-value");
+        Cookie mockCookie = LogoutControllerTestHelper.mockedTokenCookie();
         CookieAssertions.assertCookieIsDeleted(mockMvc, endpoint, mockCookie);
     }
     @Test
