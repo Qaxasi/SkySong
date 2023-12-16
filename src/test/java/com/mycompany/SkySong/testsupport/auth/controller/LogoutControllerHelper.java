@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
@@ -31,5 +33,15 @@ public class LogoutControllerHelper {
         mockMvc.perform(post(endpoint)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(expectedStatusCode));
+    }
+    public static void assertCookieIsDeleted(MockMvc mockMvc, String endpoint, Cookie cookie) throws Exception {
+        mockMvc.perform(post(endpoint).cookie(cookie)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(result -> {
+                    String setCookieHeader = result.getResponse().getHeader("Set-Cookie");
+                    assertNotNull(setCookieHeader);
+                    assertTrue(setCookieHeader.contains("auth_token=") &&
+                            (setCookieHeader.contains("Max-Age=0") || setCookieHeader.contains("Expires")));
+                });
     }
 }
