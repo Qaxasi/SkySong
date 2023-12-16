@@ -36,7 +36,7 @@ public class LogoutControllerHelper {
                 .andExpect(status().is(expectedStatusCode))
                 .andExpect(content().string(expectedMessage));
     }
-    public static void assertResponse(MockMvc mockMvc, String endpoint, Cookie cookieName,
+    public static void assertStatus(MockMvc mockMvc, String endpoint, Cookie cookieName,
                                       int expectedStatusCode) throws Exception {
         mockMvc.perform(post(endpoint).cookie(cookieName)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
