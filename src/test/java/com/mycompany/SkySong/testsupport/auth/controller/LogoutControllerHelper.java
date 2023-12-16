@@ -13,6 +13,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class LogoutControllerHelper {
@@ -28,11 +29,12 @@ public class LogoutControllerHelper {
                 any(HttpServletResponse.class), eq(cookieName));
 
     }
-    public static void assertPostStatusNoBodyWithCookie(MockMvc mockMvc, String endpoint,
-                                                        int expectedStatusCode) throws Exception {
+    public static void assertPostStatusNoBodyWithCookie(MockMvc mockMvc, String endpoint, int expectedStatusCode,
+                                                        String expectedMessage) throws Exception {
         mockMvc.perform(post(endpoint)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(status().is(expectedStatusCode));
+                .andExpect(status().is(expectedStatusCode))
+                .andExpect(content().string(expectedMessage));
     }
     public static void assertPostStatusForNoBody(MockMvc mockMvc, String endpoint, Cookie cookieName,
                                                  int expectedStatusCode) throws Exception {
