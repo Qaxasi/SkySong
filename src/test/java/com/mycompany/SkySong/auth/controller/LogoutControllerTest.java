@@ -42,7 +42,7 @@ public class LogoutControllerTest {
         String expectedMessage = "{\"message\":\"User logged out successfully\"}";
         when(messageService.getMessage("logout.success")).thenReturn("User logged out successfully");
 
-        LogoutControllerHelper.assertPostStatusForNoBody(
+        LogoutControllerHelper.assertResponse(
                 mockMvc,
                 "/api/v1/users/logout",
                 mockCookie,
