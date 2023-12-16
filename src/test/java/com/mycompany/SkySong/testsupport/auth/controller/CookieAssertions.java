@@ -46,7 +46,8 @@ public class CookieAssertions {
 
     public static void assertCookieIsDeleted(MockMvc mockMvc, String endpoint, Cookie cookie) throws Exception {
         mockMvc.perform(post(endpoint).cookie(cookie)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.user("User").roles("USER")))
                 .andExpect(result -> {
                     String setCookieHeader = result.getResponse().getHeader("Set-Cookie");
                     assertNotNull(setCookieHeader);
