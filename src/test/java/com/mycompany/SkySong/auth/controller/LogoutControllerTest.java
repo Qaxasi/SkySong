@@ -1,23 +1,18 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.auth.security.*;
-import com.mycompany.SkySong.shared.config.SecurityConfig;
-import com.mycompany.SkySong.auth.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import com.mycompany.SkySong.testsupport.controller.CookieAssertions;
+import com.mycompany.SkySong.testsupport.auth.controller.CookieAssertions;
+import com.mycompany.SkySong.testsupport.auth.controller.LogoutControllerHelper;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -39,6 +34,7 @@ public class LogoutControllerTest {
     private CookieRetriever cookieRetriever;
     @MockBean
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final String endpoint = "/api/v1/users/logout";
     @Test
     @WithMockUser
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
