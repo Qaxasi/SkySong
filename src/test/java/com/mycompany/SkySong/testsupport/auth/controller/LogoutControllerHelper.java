@@ -34,14 +34,4 @@ public class LogoutControllerHelper {
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(expectedStatusCode));
     }
-    public static void assertCookieIsDeleted(MockMvc mockMvc, String endpoint, Cookie cookie) throws Exception {
-        mockMvc.perform(post(endpoint).cookie(cookie)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(result -> {
-                    String setCookieHeader = result.getResponse().getHeader("Set-Cookie");
-                    assertNotNull(setCookieHeader);
-                    assertTrue(setCookieHeader.contains("auth_token=") &&
-                            (setCookieHeader.contains("Max-Age=0") || setCookieHeader.contains("Expires")));
-                });
-    }
 }
