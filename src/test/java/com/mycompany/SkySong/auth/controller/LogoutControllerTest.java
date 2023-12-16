@@ -43,11 +43,7 @@ public class LogoutControllerTest {
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
         Cookie mockCookie = new Cookie("auth_token", "token-value");
-        LogoutControllerHelper.assertStatus(
-                mockMvc,
-                "/api/v1/users/logout",
-                mockCookie,
-                200);
+        LogoutControllerHelper.assertStatus(mockMvc, endpoint, mockCookie, 200);
     }
     @Test
     @WithMockUser
