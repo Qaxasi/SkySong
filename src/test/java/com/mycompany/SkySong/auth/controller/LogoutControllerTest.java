@@ -51,16 +51,9 @@ public class LogoutControllerTest {
         CookieAssertions.assertCookieIsDeleted(mockMvc, endpoint, mockCookie);
     }
     @Test
-    @WithMockUser
     void whenLogoutFails_HandleException() throws Exception {
         doThrow(new RuntimeException("Internal Error")).when(cookieDeleter).deleteCookie(any(), any(), any());
-        String expectedMessage = "{\"error\":\"Logout failed due to an internal error\"}";
-        when(messageService.getMessage("logout.failure")).thenReturn("Logout failed due to an internal error");
-
-        PostRequestAssertions.assertPostStatusNoBodyWithCookie(
-                mockMvc,
-                "/api/v1/users/logout",
-                500);
+        LogoutControllerHelper.assertStatusWithoutCookie(mockMvc, endpoint, 500);
     }
     @Test
     @WithMockUser
