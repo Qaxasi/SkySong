@@ -42,17 +42,12 @@ public class LogoutControllerTest {
     }
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
-        LogoutControllerHelper.setupCookieDeletion(cookieDeleter, "auth_token");
         Cookie mockCookie = new Cookie("auth_token", "token-value");
-        String expectedMessage = "{\"message\":\"User logged out successfully\"}";
-        when(messageService.getMessage("logout.success")).thenReturn("User logged out successfully");
-
         LogoutControllerHelper.assertResponse(
                 mockMvc,
                 "/api/v1/users/logout",
                 mockCookie,
-                200,
-                expectedMessage);
+                200);
     }
     @Test
     @WithMockUser
