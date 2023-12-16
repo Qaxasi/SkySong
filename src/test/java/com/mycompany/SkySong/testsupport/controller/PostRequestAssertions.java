@@ -62,8 +62,7 @@ public class PostRequestAssertions {
     public static void assertResponseMessageWithoutCookie(MockMvc mockMvc, String endpoint,
                                                           String expectedMessage) throws Exception {
         mockMvc.perform(post(endpoint)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .with(SecurityMockMvcRequestPostProcessors.user("User").roles("USER")))
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(content().string(expectedMessage));
     }
 }
