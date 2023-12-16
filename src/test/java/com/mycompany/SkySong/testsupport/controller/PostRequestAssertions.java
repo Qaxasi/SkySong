@@ -2,6 +2,7 @@ package com.mycompany.SkySong.testsupport.controller;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -21,12 +22,14 @@ public class PostRequestAssertions {
     }
     public static void assertPostStatusForNoBody(MockMvc mockMvc, String endpoint, Cookie cookieName,
                                                  int expectedStatusCode) throws Exception {
-        mockMvc.perform(post(endpoint).cookie(cookieName))
+        mockMvc.perform(post(endpoint).cookie(cookieName)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(expectedStatusCode));
     }
     public static void assertPostStatusNoBodyWithCookie(MockMvc mockMvc, String endpoint,
                                                         int expectedStatusCode) throws Exception {
-        mockMvc.perform(post(endpoint))
+        mockMvc.perform(post(endpoint)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().is(expectedStatusCode));
     }
     public static void assertPostJsonResponse(MockMvc mockMvc, String endpoint, String requestBody, Map<String,
@@ -51,13 +54,16 @@ public class PostRequestAssertions {
     }
     public static void assertResponseMessage(MockMvc mockMvc, String endpoint, Cookie cookie,
                                              String expectedMessage) throws Exception {
-        mockMvc.perform(post(endpoint).cookie(cookie))
+        mockMvc.perform(post(endpoint).cookie(cookie)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedMessage));
     }
     public static void assertResponseMessageWithoutCookie(MockMvc mockMvc, String endpoint,
                                                           String expectedMessage) throws Exception {
-        mockMvc.perform(post(endpoint))
+        mockMvc.perform(post(endpoint)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.user("User").roles("USER")))
                 .andExpect(content().string(expectedMessage));
     }
 }
