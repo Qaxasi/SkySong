@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.auth.controller;
+package com.mycompany.SkySong.testsupport.auth.controller;
 
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
