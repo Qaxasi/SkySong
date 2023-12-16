@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class LogoutControllerHelper {
+public class LogoutControllerTestHelper {
     public static void setupCookieDeletion(CookieDeleter cookieDeleter, String cookieName) {
         doAnswer(invocation -> {
             HttpServletResponse response = invocation.getArgument(1);
