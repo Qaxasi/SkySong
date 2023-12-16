@@ -56,11 +56,7 @@ public class LogoutControllerTest {
         LogoutControllerHelper.assertStatusWithoutCookie(mockMvc, endpoint, 500);
     }
     @Test
-    @WithMockUser
     void whenLogoutWithoutCookie_ReturnStatusOk() throws Exception {
-        PostRequestAssertions.assertPostStatusNoBodyWithCookie(
-                mockMvc,
-                "/api/v1/users/logout",
-                200);
+        PostRequestAssertions.assertPostStatusNoBodyWithCookie(mockMvc, endpoint,200);
     }
 }
