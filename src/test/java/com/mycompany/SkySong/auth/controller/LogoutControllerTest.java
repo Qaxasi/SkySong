@@ -46,20 +46,9 @@ public class LogoutControllerTest {
         LogoutControllerHelper.assertStatus(mockMvc, endpoint, mockCookie, 200);
     }
     @Test
-    @WithMockUser
     void whenSuccessfulLogout_DeleteAuthTokenCookie() throws Exception {
-        doAnswer(invocation -> {
-            HttpServletResponse response = invocation.getArgument(1);
-            Cookie modifiedCookie = new Cookie("auth_token", null);
-            modifiedCookie.setMaxAge(0);
-            modifiedCookie.setPath("/");
-            response.addCookie(modifiedCookie);
-            return null;
-        }).when(cookieDeleter).deleteCookie(any(HttpServletRequest.class),
-                any(HttpServletResponse.class), eq("auth_token"));
-
         Cookie mockCookie = new Cookie("auth_token", "token-value");
-        CookieAssertions.assertCookieIsDeleted(mockMvc, "/api/v1/users/logout", mockCookie);
+        CookieAssertions.assertCookieIsDeleted(mockMvc, endpoint, mockCookie);
     }
     @Test
     @WithMockUser
