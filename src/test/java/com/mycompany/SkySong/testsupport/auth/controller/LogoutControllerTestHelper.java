@@ -29,13 +29,6 @@ public class LogoutControllerTestHelper {
                 any(HttpServletResponse.class), eq(cookieName));
 
     }
-    public static void assertPostStatusNoBodyWithCookie(MockMvc mockMvc, String endpoint, int expectedStatusCode,
-                                                        String expectedMessage) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(status().is(expectedStatusCode))
-                .andExpect(content().string(expectedMessage));
-    }
     public static void assertStatus(MockMvc mockMvc, String endpoint, Cookie cookieName,
                                       int expectedStatusCode) throws Exception {
         mockMvc.perform(post(endpoint).cookie(cookieName)
