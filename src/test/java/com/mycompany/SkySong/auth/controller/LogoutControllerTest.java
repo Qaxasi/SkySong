@@ -36,10 +36,10 @@ public class LogoutControllerTest {
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final String endpoint = "/api/v1/users/logout";
     @Test
-    @WithMockUser
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
+        LogoutControllerHelper.setupCookieDeletion(cookieDeleter, "auth_token");
         Cookie mockCookie = new Cookie("auth_token", "token-value");
-        PostRequestAssertions.assertPostStatusForNoBody(
+        LogoutControllerHelper.assertPostStatusForNoBody(
                 mockMvc,
                 "/api/v1/users/logout",
                 mockCookie,
