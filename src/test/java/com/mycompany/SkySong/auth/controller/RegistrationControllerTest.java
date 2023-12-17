@@ -2,9 +2,6 @@ package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.auth.security.*;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
-import com.mycompany.SkySong.shared.exception.RegisterException;
-import com.mycompany.SkySong.shared.dto.ApiResponse;
-import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.service.RegistrationService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.testsupport.auth.controller.RegistrationControllerTestHelper;
@@ -19,8 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(RegistrationController.class)
