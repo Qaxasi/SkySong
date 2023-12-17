@@ -8,7 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class RegistrationControllerTestHelper {
-    private static final String VALID_REQUEST =
+    public static final String VALID_REQUEST =
             "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
             "\"password\": \"testPassword@123\"}";
 
