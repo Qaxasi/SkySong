@@ -63,6 +63,7 @@ public class RegistrationControllerTest {
     }
     @Test
     void whenUsernameExist_ReturnBadRequest() throws Exception {
+        RegistrationControllerTestHelper.mockExistUsername(registrationService);
         PostRequestAssertions.assertPostStatus(
                 mockMvc,
                 endpoint,
