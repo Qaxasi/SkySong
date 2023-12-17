@@ -118,14 +118,12 @@ public class RegistrationControllerTest {
                 RegistrationControllerTestHelper.MALFORMED_REQUEST,
                 400);
     }
-
     @Test
-    void shouldReturnCorrectErrorMessageWhenTryRegisterWithEmptyCredentials() throws Exception {
-        final var requestBody =
-                "{\"username\": \"\", \"email\": \"\", " +
-                        "\"password\": \"\"}";
-
-        PostRequestAssertions.assertPostJsonResponse(mockMvc, "/api/v1/users/register", requestBody,
+    void whenEmptyCredentials_ReturnErrorMessages() throws Exception {
+        PostRequestAssertions.assertPostJsonResponse(
+                mockMvc,
+                endpoint,
+                RegistrationControllerTestHelper.EMPTY_CREDENTIALS,
                 Map.of("$.errors.username", "The username field cannot be empty.",
                         "$.errors.email","The email field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
