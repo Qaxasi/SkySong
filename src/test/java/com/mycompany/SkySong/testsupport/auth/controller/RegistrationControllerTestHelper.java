@@ -14,8 +14,8 @@ public class RegistrationControllerTestHelper {
     public static final String EXIST_USERNAME =
             "{\"username\": \"existUser\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"}";
 
-    public static void mockSuccessRegistration(RegistrationService registrationService) {
-        when(registrationService.register(any(RegisterRequest.class))).thenReturn(
+    public static void mockSuccessRegistration(RegistrationService registration) {
+        when(registration.register(any(RegisterRequest.class))).thenReturn(
                 new ApiResponse("User registered successfully"));
     }
     public static void mockExistUsername(RegistrationService registration) {
