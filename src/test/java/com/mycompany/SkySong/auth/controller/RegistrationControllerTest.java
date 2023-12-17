@@ -91,16 +91,13 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    void shouldReturnBadRequestWhenUserTryRegisterWithInvalidEmailFormat() throws Exception {
-        final var requestBody =
-                "{\"username\": \"testUniqueUsername\", \"email\": \"test-invalid-email-format\", " +
-                        "\"password\": \"testPassword@123\"}";
-
-        when(registrationService.register(any(RegisterRequest.class))).thenThrow(
-                new RegisterException("Invalid email format"));
-
-        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
-                requestBody, 400);
+    void whenInvalidEmailFormat_ReturnBadRequest() throws Exception {
+        RegistrationControllerTestHelper.mockInvalidEmailFormat(registrationService);
+        PostRequestAssertions.assertPostStatus(
+                mockMvc,
+                endpoint,
+                RegistrationControllerTestHelper.INVALID_EMAIL_FORMAT,
+                400);
     }
 
     @Test
