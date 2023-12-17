@@ -47,7 +47,7 @@ public class LogoutControllerTest {
     }
     @Test
     void whenLogoutFails_HandleException() throws Exception {
-        doThrow(new RuntimeException("Internal Error")).when(cookieDeleter).deleteCookie(any(), any(), any());
+        LogoutControllerTestHelper.configureCookieDeleterToThrowException(cookieDeleter);
         LogoutControllerTestHelper.assertStatusWithoutCookie(mockMvc, endpoint, 500);
     }
     @Test
