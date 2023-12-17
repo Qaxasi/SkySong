@@ -41,6 +41,7 @@ public class RegistrationControllerTest {
     private CookieRetriever cookieRetriever;
     @MockBean
     private ApplicationMessageService messageService;
+    private final String endpoint = "/api/v1/users/register";
     @Test
     void shouldReturn201ForValidRegistrationRequest() throws Exception {
         final var requestBody =
@@ -50,7 +51,7 @@ public class RegistrationControllerTest {
         when(registrationService.register(any(RegisterRequest.class))).thenReturn(
                 new ApiResponse("User registered successfully"));
 
-        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
                 requestBody, 201);
     }
     @Test
@@ -62,7 +63,7 @@ public class RegistrationControllerTest {
         when(registrationService.register(any(RegisterRequest.class))).thenReturn(
                 new ApiResponse("User registered successfully"));
 
-        PostRequestAssertions.assertPostFieldsReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostRequestFields(mockMvc,"/api/v1/users/register",
                 requestBody,
                 jsonPath("$.message").isNotEmpty());
     }
@@ -76,7 +77,7 @@ public class RegistrationControllerTest {
         when(registrationService.register(any(RegisterRequest.class))).thenThrow(new RegisterException(
                 "Username is already exist"));
 
-        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
     @Test
@@ -88,7 +89,7 @@ public class RegistrationControllerTest {
         when(registrationService.register(any(RegisterRequest.class))).thenThrow(
                 new RegisterException("Email is already exist"));
 
-        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -101,7 +102,7 @@ public class RegistrationControllerTest {
         when(registrationService.register(any(RegisterRequest.class))).thenThrow(
                 new RegisterException("Invalid username format"));
 
-        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -114,7 +115,7 @@ public class RegistrationControllerTest {
         when(registrationService.register(any(RegisterRequest.class))).thenThrow(
                 new RegisterException("Invalid email format"));
 
-        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -127,7 +128,7 @@ public class RegistrationControllerTest {
         when(registrationService.register(any(RegisterRequest.class))).thenThrow(
                 new RegisterException("Invalid password format"));
 
-       PostRequestAssertions.assertPostStatusReturns(mockMvc, "/api/v1/users/register",
+       PostRequestAssertions.assertPostStatus(mockMvc, "/api/v1/users/register",
                requestBody, 400);
     }
 
@@ -137,7 +138,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
                         "\"password\": \"testPassword@123\"";
 
-        PostRequestAssertions.assertPostStatusReturns(mockMvc,"/api/v1/users/register",
+        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
                 requestBody, 400);
     }
 
@@ -147,7 +148,7 @@ public class RegistrationControllerTest {
                 "{\"username\": \"\", \"email\": \"\", " +
                         "\"password\": \"\"}";
 
-        PostRequestAssertions.assertPostJsonReturns(mockMvc, "/api/v1/users/register", requestBody,
+        PostRequestAssertions.assertPostJsonResponse(mockMvc, "/api/v1/users/register", requestBody,
                 Map.of("$.errors.username", "The username field cannot be empty.",
                         "$.errors.email","The email field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
