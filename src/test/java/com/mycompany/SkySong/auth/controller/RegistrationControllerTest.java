@@ -61,7 +61,6 @@ public class RegistrationControllerTest {
                 RegistrationControllerTestHelper.VALID_REQUEST,
                 jsonPath("$.message").isNotEmpty());
     }
-
     @Test
     void whenUsernameExist_ReturnBadRequest() throws Exception {
         PostRequestAssertions.assertPostStatus(
@@ -71,16 +70,13 @@ public class RegistrationControllerTest {
                 400);
     }
     @Test
-    void shouldReturnBadRequestWhenUserTryRegisterWithExistingEmail() throws Exception {
-        final var requestBody =
-                "{\"username\": \"testUniqueUsername\", \"email\": \"testEmail@gmail.com\", " +
-                        "\"password\": \"testPassword@123\"}";
-
-        when(registrationService.register(any(RegisterRequest.class))).thenThrow(
-                new RegisterException("Email is already exist"));
-
-        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
-                requestBody, 400);
+    void whenEmailExist_ReturnBadRequest() throws Exception {
+        RegistrationControllerTestHelper.mockExistEmail(registrationService);
+        PostRequestAssertions.assertPostStatus(
+                mockMvc,
+                "/api/v1/users/register",
+                RegistrationControllerTestHelper.EXIST_EMAIL,
+                400);
     }
 
     @Test
