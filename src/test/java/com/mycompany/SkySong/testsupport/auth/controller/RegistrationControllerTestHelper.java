@@ -3,6 +3,7 @@ package com.mycompany.SkySong.testsupport.auth.controller;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.service.RegistrationService;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
+import com.mycompany.SkySong.shared.exception.RegisterException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -16,5 +17,9 @@ public class RegistrationControllerTestHelper {
     public static void mockSuccessRegistration(RegistrationService registrationService) {
         when(registrationService.register(any(RegisterRequest.class))).thenReturn(
                 new ApiResponse("User registered successfully"));
+    }
+    public static void mockExistUsername(RegistrationService registration) {
+        when(registration.register(any(RegisterRequest.class))).thenThrow(new RegisterException(
+                "Username is already exist"));
     }
 }
