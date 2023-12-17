@@ -21,6 +21,8 @@ public class RegistrationControllerTestHelper {
             "{\"username\": \"User\", \"email\": \"invalidEmail\", \"password\": \"Password#3\"}";
     public static final String INVALID_PASSWORD_FORMAT =
             "{\"username\": \"User\", \"email\": \"mail@mail.com\", \"password\": \"invalidFormat\"}";
+    public static final String MALFORMED_REQUEST =
+            "{\"username\": \"User\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"";
 
     public static void mockSuccessRegistration(RegistrationService registration) {
         when(registration.register(any(RegisterRequest.class))).thenReturn(
