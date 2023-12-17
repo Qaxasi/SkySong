@@ -36,4 +36,8 @@ public class RegistrationControllerTestHelper {
         when(registration.register(any(RegisterRequest.class))).thenThrow(
                 new RegisterException("Invalid username format"));
     }
+    public static void mockInvalidEmailFormat(RegistrationService registration) {
+        when(registration.register(any(RegisterRequest.class))).thenThrow(
+                new RegisterException("Invalid email format"));
+    }
 }
