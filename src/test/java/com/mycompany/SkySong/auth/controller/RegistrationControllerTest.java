@@ -7,6 +7,7 @@ import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.service.RegistrationService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.testsupport.auth.controller.RegistrationControllerTestHelper;
 import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,16 +44,10 @@ public class RegistrationControllerTest {
     private ApplicationMessageService messageService;
     private final String endpoint = "/api/v1/users/register";
     @Test
-    void shouldReturn201ForValidRegistrationRequest() throws Exception {
-        final var requestBody =
-                "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
-                        "\"password\": \"testPassword@123\"}";
-
-        when(registrationService.register(any(RegisterRequest.class))).thenReturn(
-                new ApiResponse("User registered successfully"));
-
-        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
-                requestBody, 201);
+    void whenRegistrationSuccess_Return201() throws Exception {
+        RegistrationControllerTestHelper.mockSuccessRegistration(registrationService);
+        PostRequestAssertions.assertPostStatus(
+                mockMvc, endpoint, RegistrationControllerTestHelper.VALID_REQUEST, 201);
     }
     @Test
     void shouldHaveCorrectFieldsNamesOnSuccessfulRegistration() throws Exception {
