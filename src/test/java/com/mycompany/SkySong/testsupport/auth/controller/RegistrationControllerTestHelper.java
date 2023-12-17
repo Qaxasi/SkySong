@@ -22,4 +22,8 @@ public class RegistrationControllerTestHelper {
         when(registration.register(any(RegisterRequest.class))).thenThrow(new RegisterException(
                 "Username is already exist"));
     }
+    public static void mockExistEmail(RegistrationService registration) {
+        when(registration.register(any(RegisterRequest.class))).thenThrow(
+                new RegisterException("Email is already exist"));
+    }
 }
