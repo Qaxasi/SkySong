@@ -47,19 +47,18 @@ public class RegistrationControllerTest {
     void whenRegistrationSuccess_Return201() throws Exception {
         RegistrationControllerTestHelper.mockSuccessRegistration(registrationService);
         PostRequestAssertions.assertPostStatus(
-                mockMvc, endpoint, RegistrationControllerTestHelper.VALID_REQUEST, 201);
+                mockMvc,
+                endpoint,
+                RegistrationControllerTestHelper.VALID_REQUEST,
+                201);
     }
     @Test
-    void shouldHaveCorrectFieldsNamesOnSuccessfulRegistration() throws Exception {
-        final var requestBody =
-                "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
-                        "\"password\": \"testPassword@123\"}";
-
-        when(registrationService.register(any(RegisterRequest.class))).thenReturn(
-                new ApiResponse("User registered successfully"));
-
-        PostRequestAssertions.assertPostRequestFields(mockMvc,"/api/v1/users/register",
-                requestBody,
+    void whenRegistrationSuccess_ReturnCorrectFieldName() throws Exception {
+        RegistrationControllerTestHelper.mockSuccessRegistration(registrationService);
+        PostRequestAssertions.assertPostRequestFields(
+                mockMvc,
+                endpoint,
+                RegistrationControllerTestHelper.VALID_REQUEST,
                 jsonPath("$.message").isNotEmpty());
     }
 
