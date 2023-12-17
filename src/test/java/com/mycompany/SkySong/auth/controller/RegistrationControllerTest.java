@@ -111,13 +111,12 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    void shouldReturnBadRequestForMalformedRegisterRequestBody() throws Exception {
-        final var requestBody =
-                "{\"username\": \"testUniqueUsername\", \"email\": \"testUniqeEmail@gmail.com\", " +
-                        "\"password\": \"testPassword@123\"";
-
-        PostRequestAssertions.assertPostStatus(mockMvc,"/api/v1/users/register",
-                requestBody, 400);
+    void whenMalformedRequest_ReturnBadRequest() throws Exception {
+        PostRequestAssertions.assertPostStatus(
+                mockMvc,
+                endpoint,
+                RegistrationControllerTestHelper.MALFORMED_REQUEST,
+                400);
     }
 
     @Test
