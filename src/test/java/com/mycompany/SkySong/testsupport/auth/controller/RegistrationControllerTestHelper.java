@@ -13,6 +13,8 @@ public class RegistrationControllerTestHelper {
             "{\"username\": \"User\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"}";
     public static final String EXIST_USERNAME =
             "{\"username\": \"existUser\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"}";
+    public static final String EXIST_EMAIL =
+            "{\"username\": \"User\", \"email\": \"existEmail\", \"password\": \"Password#3\"}";
 
     public static void mockSuccessRegistration(RegistrationService registration) {
         when(registration.register(any(RegisterRequest.class))).thenReturn(
