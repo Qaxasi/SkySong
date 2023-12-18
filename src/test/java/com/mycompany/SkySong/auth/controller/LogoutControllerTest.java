@@ -22,11 +22,11 @@ public class LogoutControllerTest {
     @MockBean
     private ApplicationMessageService messageService;
     @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider tokenProvider;
     @MockBean
     private CookieRetriever cookieRetriever;
     @MockBean
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthenticationEntryPoint authEntryPoint;
     private final String endpoint = "/api/v1/users/logout";
     @BeforeEach
     void setup() {
