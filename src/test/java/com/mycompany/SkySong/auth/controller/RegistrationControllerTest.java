@@ -24,15 +24,15 @@ public class RegistrationControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private RegistrationService registrationService;
+    private RegistrationService registration;
     @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider tokenProvider;
     @MockBean
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetails;
     @MockBean
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthenticationEntryPoint authEntryPoint;
     @MockBean
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
+    private CustomAccessDeniedHandler accessDeniedHandler;
     @MockBean
     private CookieRetriever cookieRetriever;
     @MockBean
@@ -40,7 +40,7 @@ public class RegistrationControllerTest {
     private final String endpoint = "/api/v1/users/register";
     @Test
     void whenRegistrationSuccess_Return201() throws Exception {
-        RegistrationControllerTestHelper.mockSuccessRegistration(registrationService);
+        RegistrationControllerTestHelper.mockSuccessRegistration(registration);
         PostRequestAssertions.assertPostStatus(
                 mockMvc,
                 endpoint,
@@ -49,7 +49,7 @@ public class RegistrationControllerTest {
     }
     @Test
     void whenRegistrationSuccess_ReturnCorrectFieldName() throws Exception {
-        RegistrationControllerTestHelper.mockSuccessRegistration(registrationService);
+        RegistrationControllerTestHelper.mockSuccessRegistration(registration);
         PostRequestAssertions.assertPostRequestFields(
                 mockMvc,
                 endpoint,
@@ -58,7 +58,7 @@ public class RegistrationControllerTest {
     }
     @Test
     void whenUsernameExist_ReturnBadRequest() throws Exception {
-        RegistrationControllerTestHelper.mockExistUsername(registrationService);
+        RegistrationControllerTestHelper.mockExistUsername(registration);
         PostRequestAssertions.assertPostStatus(
                 mockMvc,
                 endpoint,
@@ -67,7 +67,7 @@ public class RegistrationControllerTest {
     }
     @Test
     void whenEmailExist_ReturnBadRequest() throws Exception {
-        RegistrationControllerTestHelper.mockExistEmail(registrationService);
+        RegistrationControllerTestHelper.mockExistEmail(registration);
         PostRequestAssertions.assertPostStatus(
                 mockMvc,
                 "/api/v1/users/register",
@@ -77,7 +77,7 @@ public class RegistrationControllerTest {
 
     @Test
     void whenInvalidUsernameFormat_ReturnBadRequest() throws Exception {
-      RegistrationControllerTestHelper.mockInvalidUsernameFormat(registrationService);
+      RegistrationControllerTestHelper.mockInvalidUsernameFormat(registration);
       PostRequestAssertions.assertPostStatus(
               mockMvc,
               endpoint,
@@ -87,7 +87,7 @@ public class RegistrationControllerTest {
 
     @Test
     void whenInvalidEmailFormat_ReturnBadRequest() throws Exception {
-        RegistrationControllerTestHelper.mockInvalidEmailFormat(registrationService);
+        RegistrationControllerTestHelper.mockInvalidEmailFormat(registration);
         PostRequestAssertions.assertPostStatus(
                 mockMvc,
                 endpoint,
@@ -97,7 +97,7 @@ public class RegistrationControllerTest {
 
     @Test
     void whenInvalidPasswordFormat_ReturnBadRequest() throws Exception {
-        RegistrationControllerTestHelper.mockInvalidPasswordFormat(registrationService);
+        RegistrationControllerTestHelper.mockInvalidPasswordFormat(registration);
         PostRequestAssertions.assertPostStatus(
                 mockMvc,
                 endpoint,
