@@ -30,8 +30,8 @@ public class CookieAdderImplTest {
                 "/", true, true);
     }
     @Test
-    void shouldHandleNullResponse() {
-        assertThrows(NullPointerException.class, () -> cookieAdder.addCookie(
-                null, "testCookie", "testValue",  3600));
+    void whenResponseNull_HandleException() {
+        assertThrows(NullPointerException.class, () -> CookieAdderImplTestHelper.addCookie(
+                cookieAdder, null, "testCookie", "testValue",  3600));
     }
 }
