@@ -26,20 +26,4 @@ public class RegistrationControllerTestHelper {
         when(registration.register(any(RegisterRequest.class))).thenThrow(new RegisterException(
                 "Invalid input"));
     }
-    public static void mockExistEmail(RegistrationService registration) {
-        when(registration.register(any(RegisterRequest.class))).thenThrow(
-                new RegisterException("Email is already exist"));
-    }
-    public static void mockInvalidUsernameFormat(RegistrationService registration) {
-        when(registration.register(any(RegisterRequest.class))).thenThrow(
-                new RegisterException("Invalid username format"));
-    }
-    public static void mockInvalidEmailFormat(RegistrationService registration) {
-        when(registration.register(any(RegisterRequest.class))).thenThrow(
-                new RegisterException("Invalid email format"));
-    }
-    public static void mockInvalidPasswordFormat(RegistrationService registration) {
-        when(registration.register(any(RegisterRequest.class))).thenThrow(
-                new RegisterException("Invalid password format"));
-    }
 }
