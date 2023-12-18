@@ -57,12 +57,12 @@ public class RegistrationControllerTest {
                 jsonPath("$.message").isNotEmpty());
     }
     @Test
-    void whenUsernameExist_ReturnBadRequest() throws Exception {
-        RegistrationControllerTestHelper.mockExistUsername(registration);
+    void whenInvalidCredentials_ReturnBadRequest() throws Exception {
+        RegistrationControllerTestHelper.mockInvalidCredentials(registration);
         PostRequestAssertions.assertPostStatus(
                 mockMvc,
                 endpoint,
-                RegistrationControllerTestHelper.EXIST_USERNAME,
+                RegistrationControllerTestHelper.INVALID_CREDENTIALS,
                 400);
     }
     @Test
