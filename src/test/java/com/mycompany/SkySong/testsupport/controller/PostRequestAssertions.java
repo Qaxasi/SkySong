@@ -22,14 +22,12 @@ public class PostRequestAssertions {
     }
     public static void assertPostStatusForNoBody(MockMvc mockMvc, String endpoint, Cookie cookieName,
                                                  int expectedStatusCode) throws Exception {
-        mockMvc.perform(post(endpoint).cookie(cookieName)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mockMvc.perform(post(endpoint).cookie(cookieName))
                 .andExpect(status().is(expectedStatusCode));
     }
     public static void assertPostStatusNoBodyWithCookie(MockMvc mockMvc, String endpoint,
                                                         int expectedStatusCode) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mockMvc.perform(post(endpoint))
                 .andExpect(status().is(expectedStatusCode));
     }
     public static void assertPostJsonResponse(MockMvc mockMvc, String endpoint, String requestBody, Map<String,
@@ -54,15 +52,13 @@ public class PostRequestAssertions {
     }
     public static void assertResponseMessage(MockMvc mockMvc, String endpoint, Cookie cookie,
                                              String expectedMessage) throws Exception {
-        mockMvc.perform(post(endpoint).cookie(cookie)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mockMvc.perform(post(endpoint).cookie(cookie))
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedMessage));
     }
     public static void assertResponseMessageWithoutCookie(MockMvc mockMvc, String endpoint,
                                                           String expectedMessage) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mockMvc.perform(post(endpoint))
                 .andExpect(content().string(expectedMessage));
     }
 }
