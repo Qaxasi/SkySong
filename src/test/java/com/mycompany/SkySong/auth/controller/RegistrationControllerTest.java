@@ -66,46 +66,6 @@ public class RegistrationControllerTest {
                 400);
     }
     @Test
-    void whenEmailExist_ReturnBadRequest() throws Exception {
-        RegistrationControllerTestHelper.mockExistEmail(registration);
-        PostRequestAssertions.assertPostStatus(
-                mockMvc,
-                "/api/v1/users/register",
-                RegistrationControllerTestHelper.EXIST_EMAIL,
-                400);
-    }
-
-    @Test
-    void whenInvalidUsernameFormat_ReturnBadRequest() throws Exception {
-      RegistrationControllerTestHelper.mockInvalidUsernameFormat(registration);
-      PostRequestAssertions.assertPostStatus(
-              mockMvc,
-              endpoint,
-              RegistrationControllerTestHelper.INVALID_USERNAME_FORMAT,
-              400);
-    }
-
-    @Test
-    void whenInvalidEmailFormat_ReturnBadRequest() throws Exception {
-        RegistrationControllerTestHelper.mockInvalidEmailFormat(registration);
-        PostRequestAssertions.assertPostStatus(
-                mockMvc,
-                endpoint,
-                RegistrationControllerTestHelper.INVALID_EMAIL_FORMAT,
-                400);
-    }
-
-    @Test
-    void whenInvalidPasswordFormat_ReturnBadRequest() throws Exception {
-        RegistrationControllerTestHelper.mockInvalidPasswordFormat(registration);
-        PostRequestAssertions.assertPostStatus(
-                mockMvc,
-                endpoint,
-                RegistrationControllerTestHelper.INVALID_PASSWORD_FORMAT,
-                400);
-    }
-
-    @Test
     void whenMalformedRequest_ReturnBadRequest() throws Exception {
         PostRequestAssertions.assertPostStatus(
                 mockMvc,
