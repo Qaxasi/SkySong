@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTestHelper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
@@ -20,20 +21,13 @@ public class CookieAdderImplTest {
     private HttpServletResponse response;
 
     @Test
-    void shouldCreateCookieWithCorrectProperties() {
-        cookieAdder.addCookie(response,  "testCookie", "testValue", 3600);
+    void whenCreateCookie_HaveCorrectProperties() {
+        Cookie cookie = CookieAdderImplTestHelper.addCookie(
+                cookieAdder, response, "cookie", "value", 3600);
 
-        ArgumentCaptor<Cookie> cookieCaptor = ArgumentCaptor.forClass(Cookie.class);
-        verify(response).addCookie(cookieCaptor.capture());
-
-        Cookie capturedCookie = cookieCaptor.getValue();
-        assertAll("cookie",
-                () -> assertEquals("testCookie", capturedCookie.getName()),
-                () -> assertEquals("testValue", capturedCookie.getValue()),
-                () -> assertEquals(3600, capturedCookie.getMaxAge()),
-                () -> assertEquals("/", capturedCookie.getPath()),
-                () -> assertTrue(capturedCookie.isHttpOnly()),
-                () -> assertTrue(capturedCookie.getSecure()));
+        CookieAdderImplTestHelper.assertCookieProperties(
+                cookie, "cookie", "value", 3600,
+                "/", true, true);
     }
     @Test
     void shouldHandleNullResponse() {
