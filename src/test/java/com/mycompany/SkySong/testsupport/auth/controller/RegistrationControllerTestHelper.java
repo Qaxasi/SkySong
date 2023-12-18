@@ -13,14 +13,6 @@ public class RegistrationControllerTestHelper {
             "{\"username\": \"User\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"}";
     public static final String EXIST_USERNAME =
             "{\"username\": \"existUser\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"}";
-    public static final String EXIST_EMAIL =
-            "{\"username\": \"User\", \"email\": \"existEmail\", \"password\": \"Password#3\"}";
-    public static final String INVALID_USERNAME_FORMAT =
-            "{\"username\": \"invalidFormat\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"}";
-    public static final String INVALID_EMAIL_FORMAT =
-            "{\"username\": \"User\", \"email\": \"invalidEmail\", \"password\": \"Password#3\"}";
-    public static final String INVALID_PASSWORD_FORMAT =
-            "{\"username\": \"User\", \"email\": \"mail@mail.com\", \"password\": \"invalidFormat\"}";
     public static final String MALFORMED_REQUEST =
             "{\"username\": \"User\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"";
     public static final String EMPTY_CREDENTIALS =
@@ -30,9 +22,9 @@ public class RegistrationControllerTestHelper {
         when(registration.register(any(RegisterRequest.class))).thenReturn(
                 new ApiResponse("User registered successfully"));
     }
-    public static void mockExistUsername(RegistrationService registration) {
+    public static void mockInvalidInput(RegistrationService registration) {
         when(registration.register(any(RegisterRequest.class))).thenThrow(new RegisterException(
-                "Username is already exist"));
+                "Invalid input"));
     }
     public static void mockExistEmail(RegistrationService registration) {
         when(registration.register(any(RegisterRequest.class))).thenThrow(
