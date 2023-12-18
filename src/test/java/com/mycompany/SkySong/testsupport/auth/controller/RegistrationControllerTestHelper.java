@@ -23,7 +23,7 @@ public class RegistrationControllerTestHelper {
                 new ApiResponse("User registered successfully"));
     }
     public static void mockInvalidCredentials(RegistrationService registration) {
-        when(registration.register(any(RegisterRequest.class))).thenThrow(new RegisterException(
-                "Invalid input"));
+        when(registration.register(any(RegisterRequest.class))).thenThrow(
+                new RegisterException("Invalid credentials"));
     }
 }
