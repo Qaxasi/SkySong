@@ -15,6 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Map;
 
+import static com.mycompany.SkySong.testsupport.auth.controller.CookieAssertions.*;
+import static com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper.*;
+import static com.mycompany.SkySong.testsupport.controller.PostRequestAssertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -31,59 +34,50 @@ public class LoginControllerTest {
     }
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
-        PostRequestAssertions.assertPostStatus(
-                mockMvc, endpoint, LoginControllerHelper.validCredentials, 200);
+        assertPostStatus(mockMvc, endpoint, validCredentials, 200);
     }
     @Test
     void whenLoginSuccess_TokenCookieIsSet() throws Exception {
-        CookieAssertions.assertCookieExist(
-                mockMvc, endpoint, LoginControllerHelper.validCredentials);
+        assertCookieExist(mockMvc, endpoint, validCredentials);
     }
     @Test
     void whenLoginFails_TokenCookieIsNotSet() throws Exception {
-        CookieAssertions.assertCookieNotExist(
-                mockMvc, endpoint, LoginControllerHelper.invalidCredentials);
+        assertCookieNotExist(mockMvc, endpoint, invalidCredentials);
     }
     @Test
     void whenUserLogsIn_TokenCookieIsSetHttpOnly() throws Exception {
-        CookieAssertions.assertCookieIsHttpOnly(
-                mockMvc, endpoint, LoginControllerHelper.validCredentials);
+        assertCookieIsHttpOnly(mockMvc, endpoint, validCredentials);
     }
     @Test
     void whenUserLogsIn_TokenCookieExpirationIsSetCorrectly() throws Exception {
-        CookieAssertions.assertCookieMaxAge(
-                mockMvc, endpoint, LoginControllerHelper.validCredentials);
+        assertCookieMaxAge(mockMvc, endpoint, validCredentials);
     }
     @Test
     void whenUserLogsIn_TokenCookieIsMarkedAsSecure() throws Exception {
-        CookieAssertions.assertCookieIsSecure(
-                mockMvc, endpoint, LoginControllerHelper.validCredentials);
+        assertCookieIsSecure(mockMvc, endpoint, validCredentials);
     }
     @Test
     void whenLoginSuccess_ReturnNotEmptyTokenField() throws Exception {
-        PostRequestAssertions.assertPostRequestFields(
-                mockMvc, endpoint, LoginControllerHelper.validCredentials,
+        assertPostRequestFields(
+                mockMvc, endpoint, validCredentials,
                 jsonPath("$.accessToken").isNotEmpty());
     }
     @Test
     void whenInvalidLogin_ReturnUnauthorizedStatus() throws Exception {
-        PostRequestAssertions.assertPostStatus(
-                mockMvc, endpoint, LoginControllerHelper.invalidCredentials, 401);
+        assertPostStatus(mockMvc, endpoint, invalidCredentials, 401);
     }
     @Test
     void whenMalformedJson_ReturnBadRequest() throws Exception {
-        PostRequestAssertions.assertPostStatus(
-                mockMvc, endpoint, LoginControllerHelper.malformedJson, 400);
+        assertPostStatus(mockMvc, endpoint, malformedJson, 400);
     }
     @Test
     public void whenInvalidCredentials_ReturnBadRequest() throws Exception {
-        PostRequestAssertions.assertPostStatus(
-                mockMvc, endpoint, LoginControllerHelper.emptyCredentials, 400);
+        assertPostStatus(mockMvc, endpoint, emptyCredentials, 400);
     }
     @Test
     void whenEmptyCredentials_ReturnCorrectErrorMessage() throws Exception {
-        PostRequestAssertions.assertPostJsonResponse(
-                mockMvc, endpoint, LoginControllerHelper.emptyCredentials,
+        assertPostJsonResponse(
+                mockMvc, endpoint, emptyCredentials,
                 Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
                         "$.errors.password", "The password field cannot be empty"));
     }
