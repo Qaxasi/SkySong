@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.testsupport.auth.security.CookieDeleterImplTestHelper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static com.mycompany.SkySong.testsupport.auth.security.CookieDeleterImplTestHelper.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CookieDeleterImplTest {
@@ -22,15 +23,12 @@ public class CookieDeleterImplTest {
     @Test
     void whenCookiePresent_Delete() {
         Cookie cookie = new Cookie("testCookie", "testValue");
-        CookieDeleterImplTestHelper.deleteAndGetCookie(
-                cookieDeleter, request, response, "testCookie", cookie);
-
-        CookieDeleterImplTestHelper.assertDeletedCookie(cookie, "testCookie");
+        deleteAndGetCookie(cookieDeleter, request, response, "testCookie", cookie);
+        assertDeletedCookie(cookie, "testCookie");
     }
     @Test
     void whenCookieNotPresent_ResponseNotModified() {
         Cookie cookie = new Cookie("testCookie", "testValue");
-        CookieDeleterImplTestHelper.verifyNoCookieDeletion(
-                cookieDeleter,  request, response, "different", cookie);
+        verifyNoCookieDeletion(cookieDeleter,  request, response, "different", cookie);
     }
 }
