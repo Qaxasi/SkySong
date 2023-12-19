@@ -10,8 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.mycompany.SkySong.testsupport.auth.security.CookieRetrieverImplTestHelper.assertCookieNotInRequestReturnsEmptyOptional;
-import static com.mycompany.SkySong.testsupport.auth.security.CookieRetrieverImplTestHelper.assertNoCookiesReturnEmptyOptional;
+import static com.mycompany.SkySong.testsupport.auth.security.CookieRetrieverImplTestHelper.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,25 +28,17 @@ public class CookieRetrieverImplTest {
         assertNoCookiesReturnEmptyOptional(cookieRetriever, request, "cookie");
     }
     @Test
-    void whenNoRequestCookieInRequest_ReturnOptionalEmpty() {
+    void whenNoCookieInRequest_ReturnOptionalEmpty() {
         Cookie[] cookies = {new Cookie("cookie", "testValue")};
         assertCookieNotInRequestReturnsEmptyOptional(cookieRetriever, request, cookies, "different");
     }
-
     @Test
-    void shouldReturnCookieWhenRequestedCookieInRequest() {
+    void whenCookiePresentInRequest_ReturnCookie() {
         Cookie expectedCookie = new Cookie("testCookie", "testValue");
-        Cookie[] cookies = {expectedCookie, new Cookie("differentName", "differentValue")};
-
-        when(request.getCookies()).thenReturn(cookies);
-
-        Optional<Cookie> result = cookieRetriever.getCookie(request, "testCookie");
-
-        assertTrue(result.isPresent());
-        assertThat(result.get(), is(expectedCookie));
+        assertCookieRetrievedSuccessfully(cookieRetriever, request, expectedCookie, "testCookie");
     }
     @Test
-    void shouldThrowNullPointerExceptionWhenRequestIsNull() {
+    void whenRequestNull_ThrowException() {
         assertThrows(NullPointerException.class, () -> cookieRetriever.getCookie(null, "testCookie"));
     }
 }
