@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.mockito.ArgumentCaptor;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -23,5 +24,11 @@ public class CookieDeleterImplTestHelper {
         ArgumentCaptor<Cookie> cookieCaptor = ArgumentCaptor.forClass(Cookie.class);
         verify(response).addCookie(cookieCaptor.capture());
         return cookieCaptor.getValue();
+    }
+    public static void assertDeletedCookie(Cookie cookie, String expectedName) {
+        assertAll("modifiedCookie",
+                () -> assertEquals(expectedName, cookie.getName()),
+                () -> assertNull(cookie.getValue()),
+                () -> assertEquals(0, cookie.getMaxAge()));
     }
 }
