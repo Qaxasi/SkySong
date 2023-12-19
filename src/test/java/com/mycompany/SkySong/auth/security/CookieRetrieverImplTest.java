@@ -10,6 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static com.mycompany.SkySong.testsupport.auth.security.CookieRetrieverImplTestHelper.assertCookieNotInRequestReturnsEmptyOptional;
+import static com.mycompany.SkySong.testsupport.auth.security.CookieRetrieverImplTestHelper.assertNoCookiesReturnEmptyOptional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,22 +25,13 @@ public class CookieRetrieverImplTest {
     private HttpServletRequest request;
 
     @Test
-    void shouldReturnEmptyOptionalWhenNoCookieRequest() {
-        when(request.getCookies()).thenReturn(null);
-
-        Optional<Cookie> result = cookieRetriever.getCookie(request, "testCookie");
-
-        assertEquals(result, Optional.empty());
+    void whenNoCookieRequest_ReturnEmptyOptional() {
+        assertNoCookiesReturnEmptyOptional(cookieRetriever, request, "cookie");
     }
-
     @Test
-    void shouldReturnEmptyOptionalWhenRequestedCookieNotInRequest() {
-        Cookie[] cookies = {new Cookie("differentName", "testValue")};
-        when(request.getCookies()).thenReturn(cookies);
-
-        Optional<Cookie> result = cookieRetriever.getCookie(request, "testCookie");
-
-        assertEquals(result, Optional.empty());
+    void whenNoRequestCookieInRequest_ReturnOptionalEmpty() {
+        Cookie[] cookies = {new Cookie("cookie", "testValue")};
+        assertCookieNotInRequestReturnsEmptyOptional(cookieRetriever, request, cookies, "different");
     }
 
     @Test
