@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTestHelper;
+import com.mycompany.SkySong.testsupport.auth.security.CookieDeleterImplTestHelper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,20 +25,12 @@ public class CookieDeleterImplTest {
     private HttpServletResponse response;
 
     @Test
-    void shouldDeleteNamedCookieWhenPresent() {
-        Cookie[] cookies = { new Cookie("testCookie", "testValue")};
-        when(request.getCookies()).thenReturn(cookies);
+    void whenCookiePresent_Delete() {
+        Cookie cookie = new Cookie("testCookie", "testValue");
+        CookieDeleterImplTestHelper.performCookieDeletionAndGetModifiedCookie(
+                cookieDeleter, request, response, "testCookie", cookie);
 
-        cookieDeleter.deleteCookie(request, response, "testCookie");
-
-        ArgumentCaptor<Cookie> cookieCaptor = ArgumentCaptor.forClass(Cookie.class);
-        verify(response).addCookie(cookieCaptor.capture());
-        Cookie modifiedCookie = cookieCaptor.getValue();
-
-        assertAll("modifiedCookie",
-                () -> assertEquals("testCookie", modifiedCookie.getName()),
-                () -> assertNull(modifiedCookie.getValue()),
-                () -> assertEquals(0, modifiedCookie.getMaxAge()));
+        CookieDeleterImplTestHelper.assertDeletedCookie(cookie, "testCookie");
     }
     @Test
     void shouldNotModifyResponseWhenCookieNotPresent() {
