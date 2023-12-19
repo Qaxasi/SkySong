@@ -11,11 +11,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CookieDeleterImplTestHelper {
-    public static Cookie performCookieDeletionAndGetModifiedCookie(CookieDeleter deleter,
-                                                                   HttpServletRequest request,
-                                                                   HttpServletResponse response,
-                                                                   String cookieName,
-                                                                   Cookie... cookies) {
+    public static void performCookieDeletionAndGetModifiedCookie(CookieDeleter deleter,
+                                                                 HttpServletRequest request,
+                                                                 HttpServletResponse response,
+                                                                 String cookieName,
+                                                                 Cookie... cookies) {
 
         when(request.getCookies()).thenReturn(cookies);
 
@@ -23,7 +23,7 @@ public class CookieDeleterImplTestHelper {
 
         ArgumentCaptor<Cookie> cookieCaptor = ArgumentCaptor.forClass(Cookie.class);
         verify(response).addCookie(cookieCaptor.capture());
-        return cookieCaptor.getValue();
+        cookieCaptor.getValue();
     }
     public static void assertDeletedCookie(Cookie cookie, String expectedName) {
         assertAll("modifiedCookie",
