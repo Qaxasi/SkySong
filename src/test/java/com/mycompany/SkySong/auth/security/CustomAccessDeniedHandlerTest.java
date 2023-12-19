@@ -2,8 +2,6 @@ package com.mycompany.SkySong.auth.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,40 +10,23 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static com.mycompany.SkySong.testsupport.auth.security.AccessDeniedTestHelper.assertAccessDeniedMessage;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomAccessDeniedHandlerTest {
     @InjectMocks
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
+    private CustomAccessDeniedHandler handler;
     @Mock
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
     @Mock
     private AccessDeniedException exception;
-    private StringWriter stringWriter;
-    private PrintWriter printWriter;
-    @BeforeEach
-    void setUp() {
-        stringWriter = new StringWriter();
-        printWriter = new PrintWriter(stringWriter);
-    }
+
     @Test
-    void shouldReturnMessageWhenHandlingAccessDenied() throws IOException {
-        when(response.getWriter()).thenReturn(printWriter);
-
-        customAccessDeniedHandler.handle(request, response, exception);
-
-        String jsonResponse = stringWriter.toString();
-
-        JSONObject jsonObject = new JSONObject(jsonResponse);
-
-        assertEquals("You do not have permission to perform this operation.",
-                jsonObject.getString("error"));
+    void whenHandleException_ReturnMessage() throws IOException {
+        assertAccessDeniedMessage(handler, request, response, exception,
+                "You do not have permission to perform this operation.");
     }
 }
