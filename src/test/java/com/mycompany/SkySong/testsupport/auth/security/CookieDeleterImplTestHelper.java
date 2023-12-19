@@ -7,8 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.mockito.ArgumentCaptor;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CookieDeleterImplTestHelper {
     public static void performCookieDeletionAndGetModifiedCookie(CookieDeleter deleter,
@@ -30,5 +29,11 @@ public class CookieDeleterImplTestHelper {
                 () -> assertEquals(expectedName, cookie.getName()),
                 () -> assertNull(cookie.getValue()),
                 () -> assertEquals(0, cookie.getMaxAge()));
+    }
+    public static void verifyNoCookieDeletion(CookieDeleter deleter, HttpServletRequest request,
+                                              HttpServletResponse response, String cookieName, Cookie... cookie) {
+        when(request.getCookies()).thenReturn(cookie);
+        deleter.deleteCookie(request, response, cookieName);
+        verify(response, never()).addCookie(any(Cookie.class));
     }
 }
