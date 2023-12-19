@@ -33,12 +33,9 @@ public class CookieDeleterImplTest {
         CookieDeleterImplTestHelper.assertDeletedCookie(cookie, "testCookie");
     }
     @Test
-    void shouldNotModifyResponseWhenCookieNotPresent() {
-        Cookie[] cookies = { new Cookie("testCookie", "testValue")};
-        when(request.getCookies()).thenReturn(cookies);
-
-        cookieDeleter.deleteCookie(request, response, "differentName");
-
-        verify(response, never()).addCookie(any(Cookie.class));
+    void whenCookieNotPresent_ResponseNotModified() {
+        Cookie cookie = new Cookie("testCookie", "testValue");
+        CookieDeleterImplTestHelper.verifyNoCookieDeletion(
+                cookieDeleter,  request, response, "different", cookie);
     }
 }
