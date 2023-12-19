@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class LoginControllerTest {
     private final String endpoint = "/api/v1/users/login";
     @BeforeEach
     void setUp() {
-        LoginControllerHelper.setup(userDAO);
+        setup(userDAO);
     }
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
