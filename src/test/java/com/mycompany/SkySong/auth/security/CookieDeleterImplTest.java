@@ -22,7 +22,7 @@ public class CookieDeleterImplTest {
     @Test
     void whenCookiePresent_Delete() {
         Cookie cookie = new Cookie("testCookie", "testValue");
-        CookieDeleterImplTestHelper.performCookieDeletionAndGetModifiedCookie(
+        CookieDeleterImplTestHelper.deleteAndGetCookie(
                 cookieDeleter, request, response, "testCookie", cookie);
 
         CookieDeleterImplTestHelper.assertDeletedCookie(cookie, "testCookie");

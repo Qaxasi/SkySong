@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class CookieDeleterImplTestHelper {
-    public static void performCookieDeletionAndGetModifiedCookie(CookieDeleter deleter,
-                                                                 HttpServletRequest request,
-                                                                 HttpServletResponse response,
-                                                                 String cookieName,
-                                                                 Cookie... cookies) {
+    public static void deleteAndGetCookie(CookieDeleter deleter,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          String cookieName,
+                                          Cookie... cookies) {
 
         when(request.getCookies()).thenReturn(cookies);
 
