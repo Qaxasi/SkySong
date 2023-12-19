@@ -1,9 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.testsupport.auth.controller.CookieAssertions;
 import com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper;
-import com.mycompany.SkySong.testsupport.controller.PostRequestAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
