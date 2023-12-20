@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
+import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.setupUsers;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +24,10 @@ public class CustomUserDetailsServiceTest {
     private UserDAO userDAO;
     @Mock
     private ApplicationMessageService messageService;
+    @BeforeEach
+    public void setUp() {
+        setupUsers(userDAO);
+    }
     @Test
     void shouldThrowExceptionWhenLoadingMissingUserByUsername() {
         String nonExistentUsername = "nonExistentUsername";
