@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 import static org.mockito.Mockito.when;
 
 public class UserTestConfigurator {
+    private static final Role USER_ROLE = new Role(UserRole.ROLE_USER);
+    private static final Role ADMIN_ROLE = new Role(UserRole.ROLE_ADMIN);
     public static User createUser(String username, String email, String password, Role... roles) {
         Set<Role> rolesSet = Stream.of(roles).collect(Collectors.toSet());
         return new User(username, email, password, rolesSet);
