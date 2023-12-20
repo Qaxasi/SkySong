@@ -19,16 +19,14 @@ public class UserTestConfigurator {
         Set<Role> rolesSet = Stream.of(roles).collect(Collectors.toSet());
         return new User(username, email, password, rolesSet);
     }
-    public static void setupUsers(UserDAO userDAO) {
-        Role userRole = new Role(UserRole.ROLE_USER);
-        Role adminRole = new Role(UserRole.ROLE_ADMIN);
-
+    public static void setupRegularUser(UserDAO userDAO) {
         User regularUser = createUser("User", "mail@mail.com",
-                "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", userRole);
+                "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", USER_ROLE);
         setupExistingUser(userDAO, regularUser);
-
+    }
+    public static void setupAdminUser(UserDAO userDAO) {
         User adminUser = createUser("Admin", "adminMail@mail.com",
-                "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", userRole, adminRole);
+                "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", USER_ROLE, ADMIN_ROLE);
         setupExistingUser(userDAO, adminUser);
     }
     public static void setupExistingUser(UserDAO userDAO, User user) {
