@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
+import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.setupNonExistentUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -23,13 +24,10 @@ public class CustomUserDetailsServiceTest {
     @Mock
     private ApplicationMessageService messageService;
     @Test
-    void shouldThrowExceptionWhenLoadingMissingUserByUsername() {
-        String nonExistentUsername = "nonExistentUsername";
-
-        when(userDAO.findByUsername(nonExistentUsername)).thenReturn(Optional.empty());
-
+    void whenMissingUserByUsername_ThrowException() {
+        setupNonExistentUser(userDAO, "mark");
         assertThrows(UsernameNotFoundException.class,
-                () -> customUserDetailsService.loadUserByUsername(nonExistentUsername));
+                () -> customUserDetailsService.loadUserByUsername("mark"));
     }
     @Test
     void shouldThrowExceptionWhenLoadingMissingUserByEmail() {
