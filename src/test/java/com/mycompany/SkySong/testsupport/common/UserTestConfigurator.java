@@ -29,4 +29,8 @@ public class UserTestConfigurator {
                 "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", userRole, adminRole);
         setupExistingUser(userDAO, adminUser);
     }
+    public static void setupExistingUser(UserDAO userDAO, User user) {
+        when(userDAO.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(userDAO.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+    }
 }
