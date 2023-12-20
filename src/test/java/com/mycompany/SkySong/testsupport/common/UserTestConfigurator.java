@@ -7,10 +7,16 @@ import com.mycompany.SkySong.shared.repository.UserDAO;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
 
 public class UserTestConfigurator {
+    public static User createUser(String username, String email, String password, Role... roles) {
+        Set<Role> rolesSet = Stream.of(roles).collect(Collectors.toSet());
+        return new User(username, email, password, rolesSet);
+    }
     public static void setupUsers(UserDAO userDAO) {
         Role userRole = new Role(UserRole.ROLE_USER);
         Set<Role> userRoles = Set.of(userRole);
