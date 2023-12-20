@@ -30,13 +30,10 @@ public class CustomUserDetailsServiceTest {
                 () -> customUserDetailsService.loadUserByUsername("mark"));
     }
     @Test
-    void shouldThrowExceptionWhenLoadingMissingUserByEmail() {
-        String nonExistentEmail = "nonExistentEmail@gmail.com";
-
-        when(userDAO.findByUsername(nonExistentEmail)).thenReturn(Optional.empty());
-
+    void whenMissingUserByEmail_ThrowException() {
+        setupNonExistentUser(userDAO, "tom@mail.com");
         //In our implementation, the email can serve as the username
         assertThrows(UsernameNotFoundException.class,
-                () -> customUserDetailsService.loadUserByUsername(nonExistentEmail));
+                () -> customUserDetailsService.loadUserByUsername("tom@mail.com"));
     }
 }
