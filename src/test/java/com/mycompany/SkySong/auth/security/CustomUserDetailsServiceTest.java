@@ -24,10 +24,6 @@ public class CustomUserDetailsServiceTest {
     private UserDAO userDAO;
     @Mock
     private ApplicationMessageService messageService;
-    @BeforeEach
-    public void setUp() {
-        setupUsers(userDAO);
-    }
     @Test
     void shouldThrowExceptionWhenLoadingMissingUserByUsername() {
         String nonExistentUsername = "nonExistentUsername";
