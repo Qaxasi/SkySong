@@ -7,11 +7,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
+import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.assertUserHasAuthorities;
 import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.setupNonExistentUser;
+import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.setupRegularUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -35,5 +38,11 @@ public class CustomUserDetailsServiceTest {
         //In our implementation, the email can serve as the username
         assertThrows(UsernameNotFoundException.class,
                 () -> customUserDetailsService.loadUserByUsername("tom@mail.com"));
+    }
+    @Test
+    void whenLoadedRegularUserByUsername_AssignsUserRole() {
+        setupRegularUser(userDAO);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("User");
+        assertUserHasAuthorities(userDetails, "ROLE_USER");
     }
 }
