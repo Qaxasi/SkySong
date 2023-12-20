@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CustomUserDetailsServiceTestHelper {
-    public static boolean hasAuthority(UserDetails userDetails, String... authority) {
+    public static boolean assertUserHasAuthorities(UserDetails userDetails, String... authority) {
         Set<String> requiredAuthorities = new HashSet<>(Arrays.asList(authority));
         return userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
