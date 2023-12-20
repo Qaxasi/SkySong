@@ -28,6 +28,6 @@ public class UserTestConfigurator {
         when(userDAO.findByEmail("mail@mail.com")).thenReturn(Optional.of(user));
 
         when(userDAO.findByUsername("Admin")).thenReturn(Optional.of(admin));
-        when(userDAO.findByUsername("adminMail@mail.com")).thenReturn(Optional.of(admin));
+        when(userDAO.findByEmail("adminMail@mail.com")).thenReturn(Optional.of(admin));
     }
 }
