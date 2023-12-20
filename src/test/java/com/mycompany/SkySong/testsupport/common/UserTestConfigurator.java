@@ -35,5 +35,6 @@ public class UserTestConfigurator {
     }
     public static void setupNonExistentUser(UserDAO userDAO, User user) {
         when(userDAO.findByUsername(user.getUsername())).thenReturn(Optional.empty());
+        when(userDAO.findByEmail(user.getEmail())).thenReturn(Optional.empty());
     }
 }
