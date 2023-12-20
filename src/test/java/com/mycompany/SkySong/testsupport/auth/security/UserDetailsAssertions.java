@@ -21,10 +21,9 @@ public class UserDetailsAssertions {
                 .containsAll(requiredAuthorities);
     }
     public static void assertUserDetails(UserDetails userDetails,
-                                             PasswordEncoder passwordEncoder,
-                                             String expectedUsername,
-                                             String expectedPassword) {
+                                         String expectedUsername,
+                                         String expectedPassword) {
         assertEquals(expectedUsername, userDetails.getUsername());
-        assertTrue(passwordEncoder.matches(expectedPassword, userDetails.getPassword()));
+        assertEquals(expectedPassword, userDetails.getPassword());
     }
 }
