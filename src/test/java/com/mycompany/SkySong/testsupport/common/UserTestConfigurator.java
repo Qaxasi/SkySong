@@ -19,15 +19,13 @@ public class UserTestConfigurator {
         Set<Role> rolesSet = Stream.of(roles).collect(Collectors.toSet());
         return new User(username, email, password, rolesSet);
     }
-    public static void setupRegularUser(UserDAO userDAO) {
-        User regularUser = createUser("User", "user@mail.com",
+    public static User setupRegularUser() {
+        return createUser("User", "user@mail.com",
                 "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", USER_ROLE);
-        setupExistingUser(userDAO, regularUser);
     }
-    public static void setupAdminUser(UserDAO userDAO) {
-        User adminUser = createUser("Admin", "admin@mail.com",
+    public static User setupAdminUser() {
+        return createUser("Admin", "admin@mail.com",
                 "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", USER_ROLE, ADMIN_ROLE);
-        setupExistingUser(userDAO, adminUser);
     }
     public static void setupExistingUser(UserDAO userDAO, User user) {
         when(userDAO.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
