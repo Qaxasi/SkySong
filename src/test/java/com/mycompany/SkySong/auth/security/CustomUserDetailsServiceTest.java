@@ -11,8 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.assertUserHasAuthorities;
-import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.setupAndLoadRegularUserByUsername;
+import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.*;
 import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,10 +46,7 @@ public class CustomUserDetailsServiceTest {
     }
     @Test
     void whenLoadedRegularUserByEmail_AssignsUserRole() {
-        User user = createRegularUser();
-        setupExistingUserByEmail(userDAO, user);
-
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername("user@mail.com");
+        UserDetails userDetails = setupAndLoadRegularUserByEmail(userDAO, customUserDetailsService);
 
         assertUserHasAuthorities(userDetails, "ROLE_USER");
     }
