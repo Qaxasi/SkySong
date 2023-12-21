@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.junit.jupiter.api.Test;
