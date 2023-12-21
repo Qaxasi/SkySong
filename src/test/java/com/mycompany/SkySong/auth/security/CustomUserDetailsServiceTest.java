@@ -39,6 +39,12 @@ public class CustomUserDetailsServiceTest {
                 () -> customUserDetailsService.loadUserByUsername("mark@mail.com"));
     }
     @Test
+    void whenUserRegular_AdminRoleIsNotAssigned() {
+        UserDetails userDetails = setupAndLoadRegularUserByUsername(userDAO, customUserDetailsService);
+
+        assertUserDoesNotHaveAuthorities(userDetails, "ROLE_ADMIN");
+    }
+    @Test
     void whenLoadedRegularUserByUsername_AssignsUserRole() {
         UserDetails userDetails = setupAndLoadRegularUserByUsername(userDAO, customUserDetailsService);
 
