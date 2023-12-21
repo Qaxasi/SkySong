@@ -28,13 +28,6 @@ public class JwtAuthenticationEntryPointTest {
     private HttpServletResponse response;
     @Mock
     private AuthenticationException authenticationException;
-    private StringWriter stringWriter;
-    private PrintWriter printWriter;
-    @BeforeEach
-    void setUp() {
-        stringWriter = new StringWriter();
-        printWriter = new PrintWriter(stringWriter);
-    }
     @Test
     void shouldReturnMessageOnAuthFailure() throws IOException {
         when(response.getWriter()).thenReturn(printWriter);
