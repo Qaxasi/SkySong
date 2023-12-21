@@ -26,12 +26,14 @@ public class CustomUserDetailsServiceTest {
     @Test
     void whenMissingUserByUsername_ThrowException() {
         setupNonExistentUserByUsername(userDAO, "mark");
+
         assertThrows(UsernameNotFoundException.class,
                 () -> customUserDetailsService.loadUserByUsername("mark"));
     }
     @Test
     void whenMissingUserByEmail_ThrowException() {
         setupNonExistentUserByEmail(userDAO, "mark@mail.com");
+
         //In our implementation, the email can serve as the username
         assertThrows(UsernameNotFoundException.class,
                 () -> customUserDetailsService.loadUserByUsername("mark@mail.com"));
@@ -40,7 +42,20 @@ public class CustomUserDetailsServiceTest {
     void whenLoadedRegularUserByUsername_AssignsUserRole() {
         User user = createRegularUser();
         setupExistingUserByUsername(userDAO, user);
+
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("User");
+
         assertUserHasAuthorities(userDetails, "ROLE_USER");
     }
+    @Test
+    void whenLoadedRegularUserByEmail_AssignsUserRole() {
+        User user = createRegularUser();
+        setupExistingUserByEmail(userDAO, user);
+
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("user@mail.com");
+
+        assertUserHasAuthorities(userDetails, "ROLE_USER");
+    }
+
+
 }
