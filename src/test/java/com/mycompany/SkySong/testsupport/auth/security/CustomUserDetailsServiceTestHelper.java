@@ -33,4 +33,16 @@ public class CustomUserDetailsServiceTestHelper {
         setupExistingUserByEmail(userDAO, regularUser);
         return detailsService.loadUserByUsername(regularUser.getEmail());
     }
+    public static UserDetails setupAndLoadAdminUserByUsername(UserDAO userDAO,
+                                                              CustomUserDetailsService detailsService) {
+        User adminUser = createAdminUser();
+        setupExistingUserByUsername(userDAO, adminUser);
+        return detailsService.loadUserByUsername(adminUser.getUsername());
+    }
+    public static UserDetails setupAndLoadAdminUserByEmail(UserDAO userDAO,
+                                                              CustomUserDetailsService detailsService) {
+        User adminUser = createAdminUser();
+        setupExistingUserByEmail(userDAO, adminUser);
+        return detailsService.loadUserByUsername(adminUser.getEmail());
+    }
 }
