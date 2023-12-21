@@ -14,12 +14,16 @@ import java.util.stream.Collectors;
 import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.*;
 
 public class CustomUserDetailsServiceTestHelper {
-    public static boolean assertUserHasAuthorities(UserDetails userDetails, String... authority) {
-        Set<String> requiredAuthorities = new HashSet<>(Arrays.asList(authority));
-        return userDetails.getAuthorities().stream()
+    public static void assertUserHasAuthorities(UserDetails userDetails, String... authorities) {
+        Set<String> requiredAuthorities = new HashSet<>(Arrays.asList(authorities));
+        Set<String> userAuthorities =  userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet())
-                .containsAll(requiredAuthorities);
+                .collect(Collectors.toSet());
+
+        if (!userAuthorities.containsAll(requiredAuthorities)) {
+            throw new AssertionError("User does not have all the required authorities. Expected: " +
+                    Arrays.toString(authorities) + ", but has: " + userAuthorities);
+        }
     }
     public static void assertUserDoesNotHaveAuthorities(UserDetails userDetails, String... authorities) {
         Set<String> forbiddenAuthorities = new HashSet<>(Arrays.asList(authorities));
