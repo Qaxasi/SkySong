@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.assertUserHasAuthorities;
+import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.setupAndLoadRegularUserByUsername;
 import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,10 +41,7 @@ public class CustomUserDetailsServiceTest {
     }
     @Test
     void whenLoadedRegularUserByUsername_AssignsUserRole() {
-        User user = createRegularUser();
-        setupExistingUserByUsername(userDAO, user);
-
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername("User");
+        UserDetails userDetails = setupAndLoadRegularUserByUsername(userDAO, customUserDetailsService);
 
         assertUserHasAuthorities(userDetails, "ROLE_USER");
     }
@@ -56,6 +54,4 @@ public class CustomUserDetailsServiceTest {
 
         assertUserHasAuthorities(userDetails, "ROLE_USER");
     }
-
-
 }
