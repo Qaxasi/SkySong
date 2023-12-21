@@ -21,6 +21,18 @@ public class CustomUserDetailsServiceTestHelper {
                 .collect(Collectors.toSet())
                 .containsAll(requiredAuthorities);
     }
+    public static void assertUserDoesNotHaveAuthorities(UserDetails userDetails, String... authorities) {
+        Set<String> forbiddenAuthorities = new HashSet<>(Arrays.asList(authorities));
+        Set<String> userAuthorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        for (String authority : forbiddenAuthorities) {
+            if (userAuthorities.contains(authority)) {
+                throw new AssertionError("User have forbidden authority: " + authority);
+            }
+        }
+    }
     public static UserDetails setupAndLoadRegularUserByUsername(UserDAO userDAO,
                                                                 CustomUserDetailsService detailsService) {
         User regularUser = createRegularUser();
