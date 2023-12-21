@@ -27,12 +27,16 @@ public class UserTestConfigurator {
         return createUser("Admin", "admin@mail.com",
                 "$2a$10$px7fuh00336krhkSkZ9cQ.FRCVpTo5MLy90cx3rSYN5tISQxsRebq", USER_ROLE, ADMIN_ROLE);
     }
-    public static void setupExistingUser(UserDAO userDAO, User user) {
+    public static void setupExistingUserByUsername(UserDAO userDAO, User user) {
         when(userDAO.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+    }
+    public static void setupExistingUserByEmail(UserDAO userDAO, User user) {
         when(userDAO.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
     }
-    public static void setupNonExistentUser(UserDAO userDAO, String usernameOrEmail) {
+    public static void setupNonExistentUserByUsername(UserDAO userDAO, String usernameOrEmail) {
         when(userDAO.findByUsername(usernameOrEmail)).thenReturn(Optional.empty());
+    }
+    public static void setupNonExistentUserByEmail(UserDAO userDAO, String usernameOrEmail) {
         when(userDAO.findByEmail(usernameOrEmail)).thenReturn(Optional.empty());
     }
 }
