@@ -56,4 +56,10 @@ public class CustomUserDetailsServiceTest {
 
         assertUserHasAuthorities(userDetails, "ROLE_USER", "ROLE_ADMIN");
     }
+    @Test
+    void whenLoadedAdminUserByEmail_AssignsUserAndAdminRole() {
+        UserDetails userDetails = setupAndLoadAdminUserByEmail(userDAO, customUserDetailsService);
+
+        assertUserHasAuthorities(userDetails, "ROLE_USER", "ROLE_ADMIN");
+    }
 }
