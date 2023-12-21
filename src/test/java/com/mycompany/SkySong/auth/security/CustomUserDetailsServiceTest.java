@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.junit.jupiter.api.Test;
@@ -10,13 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Optional;
-
 import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.assertUserHasAuthorities;
-import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.setupNonExistentUser;
-import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.setupRegularUser;
+import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomUserDetailsServiceTest {
@@ -28,20 +25,21 @@ public class CustomUserDetailsServiceTest {
     private ApplicationMessageService messageService;
     @Test
     void whenMissingUserByUsername_ThrowException() {
-        setupNonExistentUser(userDAO, "mark");
+        setupNonExistentUserByUsername(userDAO, "mark");
         assertThrows(UsernameNotFoundException.class,
                 () -> customUserDetailsService.loadUserByUsername("mark"));
     }
     @Test
     void whenMissingUserByEmail_ThrowException() {
-        setupNonExistentUser(userDAO, "tom@mail.com");
+        setupNonExistentUserByEmail(userDAO, "mark@mail.com");
         //In our implementation, the email can serve as the username
         assertThrows(UsernameNotFoundException.class,
-                () -> customUserDetailsService.loadUserByUsername("tom@mail.com"));
+                () -> customUserDetailsService.loadUserByUsername("mark@mail.com"));
     }
     @Test
     void whenLoadedRegularUserByUsername_AssignsUserRole() {
-        setupRegularUser(userDAO);
+        User user = createRegularUser();
+        setupExistingUserByUsername(userDAO, user);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername("User");
         assertUserHasAuthorities(userDetails, "ROLE_USER");
     }
