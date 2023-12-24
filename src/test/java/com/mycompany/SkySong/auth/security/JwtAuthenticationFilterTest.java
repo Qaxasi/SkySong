@@ -25,21 +25,21 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class JwtAuthenticationFilterTest {
     @InjectMocks
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private JwtAuthenticationFilter authFilter;
     @Mock
     private CookieRetriever cookieRetriever;
     @Mock
-    private JwtTokenProviderImpl jwtTokenProviderImpl;
+    private JwtTokenProvider tokenProvider;
     @Mock
-    private CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsService userDetails;
     @Mock
     private HttpServletResponse response;
     @Mock
     private HttpServletRequest request;
     @Mock
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthenticationEntryPoint authEntryPoint;
     @Mock
-    private ApplicationMessageService messageService;
+    private ApplicationMessageService message;
     @Mock
     private FilterChain filterChain;
     @Test
@@ -53,7 +53,7 @@ public class JwtAuthenticationFilterTest {
     @Test
     void whenLoginPath_NotInvokeTokenValidation() throws ServletException, IOException {
         assertNoTokenValidationOnPath(jwtAuthenticationFilter, request, response, filterChain,
-                jwtTokenProviderImpl, "/api/v1/users/login");
+                tokenProvider, "/api/v1/users/login");
     }
     @Test
     void whenRegisterPath_InvokeFilterChain() throws ServletException, IOException {
@@ -66,7 +66,7 @@ public class JwtAuthenticationFilterTest {
     @Test
     void whenRegisterPath_NotInvokeTokenValidation() throws ServletException, IOException {
         assertNoTokenValidationOnPath(jwtAuthenticationFilter, request, response, filterChain,
-                jwtTokenProviderImpl, "/api/v1/users/register");
+                tokenProvider, "/api/v1/users/register");
     }
     @Test
     void whenLogoutPath_InvokeFilterChain() throws ServletException, IOException {
@@ -79,7 +79,7 @@ public class JwtAuthenticationFilterTest {
     @Test
     void whenLogoutPath_NotInvokeTokenValidation() throws ServletException, IOException {
         assertNoTokenValidationOnPath(jwtAuthenticationFilter, request, response, filterChain,
-                jwtTokenProviderImpl, "/api/v1/users/logout");
+                tokenProvider, "/api/v1/users/logout");
     }
     @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
@@ -87,7 +87,7 @@ public class JwtAuthenticationFilterTest {
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", "invalidToken")));
-        when(jwtTokenProviderImpl.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
+        when(tokenProvider.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
 
         assertThrows(TokenException.class, () -> jwtAuthenticationFilter
                 .doFilterInternal(request, response, filterChain));
@@ -100,7 +100,7 @@ public class JwtAuthenticationFilterTest {
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", "invalidToken")));
-        when(jwtTokenProviderImpl.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
+        when(tokenProvider.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
 
         assertThrows(TokenException.class, () -> jwtAuthenticationFilter
                 .doFilterInternal(request, response, filterChain));
@@ -125,7 +125,7 @@ public class JwtAuthenticationFilterTest {
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
-        verify(jwtAuthenticationEntryPoint).commence(eq(request), eq(response),
+        verify(authEntryPoint).commence(eq(request), eq(response),
                 any(InsufficientAuthenticationException.class));
     }
     @Test
@@ -145,7 +145,7 @@ public class JwtAuthenticationFilterTest {
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", expiredToken)));
-        when(jwtTokenProviderImpl.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
+        when(tokenProvider.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
 
         assertThrows(TokenException.class, () -> jwtAuthenticationFilter
                 .doFilterInternal(request, response, filterChain));
@@ -159,7 +159,7 @@ public class JwtAuthenticationFilterTest {
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", expiredToken)));
-        when(jwtTokenProviderImpl.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
+        when(tokenProvider.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
 
         assertThrows(TokenException.class, () -> jwtAuthenticationFilter
                 .doFilterInternal(request, response, filterChain));
@@ -172,12 +172,12 @@ public class JwtAuthenticationFilterTest {
         when(request.getRequestURI()).thenReturn("/api/v1/users/1");
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", malformedToken)));
-        when(jwtTokenProviderImpl.validateToken(malformedToken))
+        when(tokenProvider.validateToken(malformedToken))
                 .thenReturn(false);
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
 
-        verify(jwtAuthenticationEntryPoint).commence(
+        verify(authEntryPoint).commence(
                 eq(request), eq(response), any(InsufficientAuthenticationException.class));
     }
     @Test
@@ -186,7 +186,7 @@ public class JwtAuthenticationFilterTest {
         when(request.getRequestURI()).thenReturn("/api/v1/users/1");
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", malformedToken)));
-        when(jwtTokenProviderImpl.validateToken(malformedToken))
+        when(tokenProvider.validateToken(malformedToken))
                 .thenReturn(false);
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
@@ -199,7 +199,7 @@ public class JwtAuthenticationFilterTest {
         when(request.getRequestURI()).thenReturn("/api/v1/users/1");
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", malformedToken)));
-        when(jwtTokenProviderImpl.validateToken(malformedToken))
+        when(tokenProvider.validateToken(malformedToken))
                 .thenReturn(false);
 
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
