@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.mycompany.SkySong.testsupport.auth.security.JwtAuthenticationFilterTestHelper.assertNoTokenValidationOnPath;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -41,6 +42,45 @@ public class JwtAuthenticationFilterTest {
     private ApplicationMessageService messageService;
     @Mock
     private FilterChain filterChain;
+    @Test
+    void whenLoginPath_InvokeFilterChain() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/login");
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+    @Test
+    void whenLoginPath_NotInvokeTokenValidation() throws ServletException, IOException {
+        assertNoTokenValidationOnPath(jwtAuthenticationFilter, request, response, filterChain,
+                jwtTokenProviderImpl, "/api/v1/users/login");
+    }
+    @Test
+    void whenRegisterPath_InvokeFilterChain() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/register");
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+    @Test
+    void whenRegisterPath_NotInvokeTokenValidation() throws ServletException, IOException {
+        assertNoTokenValidationOnPath(jwtAuthenticationFilter, request, response, filterChain,
+                jwtTokenProviderImpl, "/api/v1/users/register");
+    }
+    @Test
+    void whenLogoutPath_InvokeFilterChain() throws ServletException, IOException {
+        when(request.getRequestURI()).thenReturn("/api/v1/users/logout");
+
+        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+    @Test
+    void whenLogoutPath_NotInvokeTokenValidation() throws ServletException, IOException {
+        assertNoTokenValidationOnPath(jwtAuthenticationFilter, request, response, filterChain,
+                jwtTokenProviderImpl, "/api/v1/users/logout");
+    }
     @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
         when(request.getRequestURI()).thenReturn("/api/v1/users/1");
@@ -125,54 +165,6 @@ public class JwtAuthenticationFilterTest {
                 .doFilterInternal(request, response, filterChain));
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
-    }
-    @Test
-    void shouldInvokeFilterChainForLoginPath() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/login");
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain).doFilter(request, response);
-    }
-    @Test
-    void shouldNotInvokeTokenValidationForLoginPath() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/login");
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(jwtTokenProviderImpl, never()).validateToken(anyString());
-    }
-    @Test
-    void shouldInvokeFilterChainForRegisterPath() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/register");
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain).doFilter(request, response);
-    }
-    @Test
-    void shouldNotInvokeTokenValidationForRegisterPath() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/register");
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(jwtTokenProviderImpl, never()).validateToken(anyString());
-    }
-    @Test
-    void shouldInvokeFilterChainForLogoutPath() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/logout");
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain).doFilter(request, response);
-    }
-    @Test
-    void shouldNotInvokeTokenValidationForLogoutPath() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/logout");
-
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        verify(jwtTokenProviderImpl, never()).validateToken(anyString());
     }
     @Test
     void shouldInvokeEntryPointForMalformedToken() throws ServletException, IOException {
