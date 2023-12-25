@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.mycompany.SkySong.testsupport.auth.security.JwtAuthenticationFilterTestHelper.assertFilterChainInvoked;
 import static com.mycompany.SkySong.testsupport.auth.security.JwtAuthenticationFilterTestHelper.assertNoTokenValidationOnPath;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -44,11 +45,7 @@ public class JwtAuthenticationFilterTest {
     private FilterChain filterChain;
     @Test
     void whenLoginPath_InvokeFilterChain() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/login");
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain).doFilter(request, response);
+        assertFilterChainInvoked(request, response, authFilter, filterChain, "/api/v1/users/login");
     }
     @Test
     void whenLoginPath_NotInvokeTokenValidation() throws ServletException, IOException {
@@ -57,11 +54,7 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void whenRegisterPath_InvokeFilterChain() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/register");
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain).doFilter(request, response);
+        assertFilterChainInvoked(request, response, authFilter, filterChain, "/api/v1/users/register");
     }
     @Test
     void whenRegisterPath_NotInvokeTokenValidation() throws ServletException, IOException {
@@ -70,11 +63,7 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void whenLogoutPath_InvokeFilterChain() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/logout");
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain).doFilter(request, response);
+        assertFilterChainInvoked(request, response, authFilter, filterChain, "/api/v1/users/logout");
     }
     @Test
     void whenLogoutPath_NotInvokeTokenValidation() throws ServletException, IOException {
