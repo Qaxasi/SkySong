@@ -8,7 +8,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -26,8 +25,8 @@ public class JwtAuthenticationFilterTestHelper {
     }
 
     public static void assertNoTokenValidationOnPath(JwtAuthenticationFilter authenticationFilter,
-                                                     HttpServletRequest request,
-                                                     HttpServletResponse response,
+                                                     MockHttpServletRequest request,
+                                                     MockHttpServletResponse response,
                                                      FilterChain filterChain,
                                                      JwtTokenProvider jwtTokenProvider,
                                                      String path) throws ServletException, IOException {
@@ -35,8 +34,8 @@ public class JwtAuthenticationFilterTestHelper {
         authenticationFilter.doFilterInternal(request, response, filterChain);
         verify(jwtTokenProvider, never()).validateToken(anyString());
     }
-    public static void assertFilterChainInvoked(HttpServletRequest request,
-                                                HttpServletResponse response,
+    public static void assertFilterChainInvoked(MockHttpServletRequest request,
+                                                MockHttpServletResponse response,
                                                 JwtAuthenticationFilter authFilter,
                                                 FilterChain filterChain,
                                                 String path) throws ServletException, IOException {
