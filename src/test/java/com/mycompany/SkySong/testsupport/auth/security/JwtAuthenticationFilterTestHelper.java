@@ -28,4 +28,13 @@ public class JwtAuthenticationFilterTestHelper {
         authenticationFilter.doFilterInternal(request, response, filterChain);
         verify(jwtTokenProvider, never()).validateToken(anyString());
     }
+    public static void assertFilterChainInvoked(HttpServletRequest request,
+                                                HttpServletResponse response,
+                                                JwtAuthenticationFilter authFilter,
+                                                FilterChain filterChain,
+                                                String path) throws ServletException, IOException {
+        setupRequestPath(request, path);
+        authFilter.doFilterInternal(request, response, filterChain);
+        verify(filterChain).doFilter(request, response);
+    }
 }
