@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.testsupport.auth.security;
 
 import com.mycompany.SkySong.auth.security.CookieRetriever;
+import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationFilter;
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.shared.exception.TokenException;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
@@ -92,5 +94,20 @@ public class JwtAuthenticationFilterTestHelper {
         authFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain, never()).doFilter(request, response);
+    }
+    public static void assertEntryPointInvokedForNoToken(JwtAuthenticationFilter authFilter,
+                                                         MockHttpServletRequest request,
+                                                         MockHttpServletResponse response,
+                                                         FilterChain filterChain,
+                                                         CookieRetriever cookieRetriever,
+                                                         JwtAuthenticationEntryPoint authEntryPoint,
+                                                         String path) throws ServletException, IOException {
+        setupRequestPath(request, path);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
+
+        authFilter.doFilterInternal(request, response, filterChain);
+
+        verify(authEntryPoint).commence(eq(request), eq(response),
+                any(InsufficientAuthenticationException.class));
     }
 }
