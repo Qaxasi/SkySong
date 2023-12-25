@@ -80,4 +80,17 @@ public class JwtAuthenticationFilterTestHelper {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
+    public static void assertNoProcessRequestForMissingToken(JwtAuthenticationFilter authFilter,
+                                                             MockHttpServletRequest request,
+                                                             MockHttpServletResponse response,
+                                                             FilterChain filterChain,
+                                                             CookieRetriever cookieRetriever,
+                                                             String path) throws ServletException, IOException {
+        setupRequestPath(request, path);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
+
+        authFilter.doFilterInternal(request, response, filterChain);
+
+        verify(filterChain, never()).doFilter(request, response);
+    }
 }
