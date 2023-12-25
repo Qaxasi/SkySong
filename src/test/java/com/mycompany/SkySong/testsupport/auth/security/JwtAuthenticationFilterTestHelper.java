@@ -10,10 +10,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -59,5 +61,23 @@ public class JwtAuthenticationFilterTestHelper {
         assertThrows(TokenException.class, () -> authFilter
                 .doFilterInternal(request, response, filterChain));
         verify(filterChain, never()).doFilter(request, response);
+    }
+    public static void assertNoAuthForInvalidToken(JwtAuthenticationFilter authFilter,
+                                                   MockHttpServletRequest request,
+                                                   MockHttpServletResponse response,
+                                                   FilterChain filterChain,
+                                                   CookieRetriever cookieRetriever,
+                                                   JwtTokenProvider tokenProvider,
+                                                   String path,
+                                                   String token) {
+        setupRequestPath(request, path);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", token)));
+        when(tokenProvider.validateToken(token)).thenThrow(new TokenException("Invalid token."));
+
+        assertThrows(TokenException.class, () -> authFilter
+                .doFilterInternal(request, response, filterChain));
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
