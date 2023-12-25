@@ -110,4 +110,17 @@ public class JwtAuthenticationFilterTestHelper {
         verify(authEntryPoint).commence(eq(request), eq(response),
                 any(InsufficientAuthenticationException.class));
     }
+    public static void assertNoAuthForNoToken(JwtAuthenticationFilter authFilter,
+                                              MockHttpServletRequest request,
+                                              MockHttpServletResponse response,
+                                              FilterChain filterChain,
+                                              CookieRetriever cookieRetriever,
+                                              String path) throws ServletException, IOException {
+        setupRequestPath(request, path);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
+
+        authFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
 }
