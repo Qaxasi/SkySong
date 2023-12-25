@@ -72,22 +72,14 @@ public class JwtAuthenticationFilterTest {
                 tokenProvider, "/api/v1/users/logout");
     }
     @Test
-    void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
+    void whenInvalidToken_NotProcessRequest() throws ServletException, IOException {
         assertInvalidTokenNotProcessRequest(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, "/api/v1/users/1", "invalidToken");
     }
     @Test
-    void shouldNotSetSecurityContextForInvalidJwtToken() {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", "invalidToken")));
-        when(tokenProvider.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
-
-        assertThrows(TokenException.class, () -> authFilter
-                .doFilterInternal(request, response, filterChain));
-
-        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    void whenInvalidToken_NoSetSecurityContext() {
+        assertNoAuthForInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, "/api/v1/users/1", "invalidToken");
     }
     @Test
     void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
