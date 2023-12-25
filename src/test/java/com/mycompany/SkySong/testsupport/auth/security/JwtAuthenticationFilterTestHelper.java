@@ -56,7 +56,7 @@ public class JwtAuthenticationFilterTestHelper {
         setupRequestPath(request, path);
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", token)));
-        when(tokenProvider.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
+        when(tokenProvider.validateToken(token)).thenThrow(new TokenException("Invalid token."));
 
         assertThrows(TokenException.class, () -> authFilter
                 .doFilterInternal(request, response, filterChain));
