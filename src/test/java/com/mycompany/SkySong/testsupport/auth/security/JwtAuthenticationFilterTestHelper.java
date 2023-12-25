@@ -123,4 +123,23 @@ public class JwtAuthenticationFilterTestHelper {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
+    public static void assertEntryPointForInvalidToken(JwtAuthenticationFilter authFilter,
+                                                       MockHttpServletRequest request,
+                                                       MockHttpServletResponse response,
+                                                       FilterChain filterChain,
+                                                       JwtTokenProvider tokenProvider,
+                                                       CookieRetriever cookieRetriever,
+                                                       JwtAuthenticationEntryPoint authEntryPoint,
+                                                       String token,
+                                                       String path) throws IOException, ServletException {
+        setupRequestPath(request, path);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", token)));
+        when(tokenProvider.validateToken(token)).thenReturn(false);
+
+        authFilter.doFilterInternal(request, response, filterChain);
+
+        verify(authEntryPoint).commence(
+                eq(request), eq(response), any(InsufficientAuthenticationException.class));
+    }
 }
