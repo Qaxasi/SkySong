@@ -82,14 +82,9 @@ public class JwtAuthenticationFilterTest {
                 tokenProvider, "/api/v1/users/1", "invalidToken");
     }
     @Test
-    void shouldNotProcessRequestWithoutToken() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain, never()).doFilter(request, response);
+    void whenNoToken_NoProcessRequest() throws ServletException, IOException {
+        assertNoProcessRequestForMissingToken(
+                authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
     }
     @Test
     void shouldInvokeEntryPointForRequestWithoutToken() throws ServletException, IOException {
