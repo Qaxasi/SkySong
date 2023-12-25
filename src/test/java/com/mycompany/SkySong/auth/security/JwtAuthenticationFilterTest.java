@@ -12,14 +12,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.mycompany.SkySong.testsupport.auth.security.JwtAuthenticationFilterTestHelper.assertFilterChainInvoked;
-import static com.mycompany.SkySong.testsupport.auth.security.JwtAuthenticationFilterTestHelper.assertNoTokenValidationOnPath;
+import static com.mycompany.SkySong.testsupport.auth.security.JwtAuthenticationFilterTestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -34,9 +35,9 @@ public class JwtAuthenticationFilterTest {
     @Mock
     private CustomUserDetailsService userDetails;
     @Mock
-    private HttpServletResponse response;
+    private MockHttpServletResponse response;
     @Mock
-    private HttpServletRequest request;
+    private MockHttpServletRequest request;
     @Mock
     private JwtAuthenticationEntryPoint authEntryPoint;
     @Mock
@@ -72,16 +73,8 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void shouldNotProcessRequestForInvalidJwtToken() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", "invalidToken")));
-        when(tokenProvider.validateToken("invalidToken")).thenThrow(new TokenException("Invalid token."));
-
-        assertThrows(TokenException.class, () -> authFilter
-                .doFilterInternal(request, response, filterChain));
-
-        verify(filterChain, never()).doFilter(request, response);
+        assertInvalidTokenNotProcessRequest(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, "/api/v1/users/1", "invalidToken");
     }
     @Test
     void shouldNotSetSecurityContextForInvalidJwtToken() {
