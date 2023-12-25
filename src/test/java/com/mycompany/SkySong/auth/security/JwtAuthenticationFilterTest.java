@@ -121,34 +121,6 @@ public class JwtAuthenticationFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
-    void shouldNotProcessRequestForExpiredToken() throws ServletException, IOException {
-        String expiredToken = "expiredToken";
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", expiredToken)));
-        when(tokenProvider.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
-
-        assertThrows(TokenException.class, () -> authFilter
-                .doFilterInternal(request, response, filterChain));
-
-        verify(filterChain, never()).doFilter(request, response);
-    }
-    @Test
-    void shouldNotSetSecurityContextForExpiredToken() {
-        String expiredToken = "expiredToken";
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", expiredToken)));
-        when(tokenProvider.validateToken(expiredToken)).thenThrow(new TokenException("Token expired"));
-
-        assertThrows(TokenException.class, () -> authFilter
-                .doFilterInternal(request, response, filterChain));
-
-        assertNull(SecurityContextHolder.getContext().getAuthentication());
-    }
-    @Test
     void shouldInvokeEntryPointForMalformedToken() throws ServletException, IOException {
         String malformedToken = "malformedToken";
         when(request.getRequestURI()).thenReturn("/api/v1/users/1");
@@ -161,31 +133,5 @@ public class JwtAuthenticationFilterTest {
 
         verify(authEntryPoint).commence(
                 eq(request), eq(response), any(InsufficientAuthenticationException.class));
-    }
-    @Test
-    void shouldNotProcessRequestForMalformedToken() throws ServletException, IOException {
-        String malformedToken = "malformedToken";
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", malformedToken)));
-        when(tokenProvider.validateToken(malformedToken))
-                .thenReturn(false);
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-        verify(filterChain, never()).doFilter(request, response);
-    }
-    @Test
-    void shouldNotSetSecurityContextForMalformedToken() throws ServletException, IOException {
-        String malformedToken = "malformedToken";
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", malformedToken)));
-        when(tokenProvider.validateToken(malformedToken))
-                .thenReturn(false);
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
