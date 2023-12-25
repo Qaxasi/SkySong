@@ -87,25 +87,13 @@ public class JwtAuthenticationFilterTest {
                 authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
     }
     @Test
-    void shouldInvokeEntryPointForRequestWithoutToken() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-        verify(authEntryPoint).commence(eq(request), eq(response),
-                any(InsufficientAuthenticationException.class));
+    void whenNoToken_InvokeEntryPoint() throws ServletException, IOException {
+        assertEntryPointInvokedForNoToken(
+                authFilter, request, response, filterChain, cookieRetriever, authEntryPoint, "/api/v1/users/1");
     }
     @Test
-    void shouldNotSetSecurityContextForRequestWithoutToken() throws ServletException, IOException {
-        when(request.getRequestURI()).thenReturn("/api/v1/users/1");
-
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-        assertNull(SecurityContextHolder.getContext().getAuthentication());
+    void whenNoToken_NoSetSecurityContext() throws ServletException, IOException {
+        assertNoAuthForNoToken(authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
     }
     @Test
     void shouldInvokeEntryPointForMalformedToken() throws ServletException, IOException {
