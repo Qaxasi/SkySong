@@ -257,4 +257,22 @@ public class JwtAuthenticationFilterTestHelper {
 
         verify(filterChain, never()).doFilter(request, response);
     }
+    public static void assertNoSecurityContextForMissingUser(JwtAuthenticationFilter authFilter,
+                                                             MockHttpServletRequest request,
+                                                             MockHttpServletResponse response,
+                                                             FilterChain filterChain,
+                                                             CookieRetriever cookieRetriever,
+                                                             JwtTokenProvider tokenProvider,
+                                                             UserDetailsService userDetailsService,
+                                                             String token,
+                                                             String nonExistUsername,
+                                                             String path) {
+
+        simulateMissingUserAuth(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, userDetailsService, token, nonExistUsername, path);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        assertNull(auth);
+    }
 }
