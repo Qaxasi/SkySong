@@ -241,4 +241,20 @@ public class JwtAuthenticationFilterTestHelper {
         assertThrows(UsernameNotFoundException.class,
                 () -> authFilter.doFilterInternal(request, response, filterChain));
     }
+    public static void assertNoProcessingForMissingUser(JwtAuthenticationFilter authFilter,
+                                                        MockHttpServletRequest request,
+                                                        MockHttpServletResponse response,
+                                                        FilterChain filterChain,
+                                                        CookieRetriever cookieRetriever,
+                                                        JwtTokenProvider tokenProvider,
+                                                        UserDetailsService userDetailsService,
+                                                        String token,
+                                                        String nonExistUsername,
+                                                        String path) throws ServletException, IOException {
+
+        simulateMissingUserAuth(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, userDetailsService, token, nonExistUsername, path);
+
+        verify(filterChain, never()).doFilter(request, response);
+    }
 }
