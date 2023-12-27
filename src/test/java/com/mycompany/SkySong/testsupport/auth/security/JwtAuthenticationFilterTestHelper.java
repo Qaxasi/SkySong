@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -216,5 +217,28 @@ public class JwtAuthenticationFilterTestHelper {
 
         assertNotNull(authContext);
         assertEquals(username, authContext.getName());
+    }
+    private static void simulateMissingUserAuth(JwtAuthenticationFilter authFilter,
+                                                MockHttpServletRequest request,
+                                                MockHttpServletResponse response,
+                                                FilterChain filterChain,
+                                                CookieRetriever cookieRetriever,
+                                                JwtTokenProvider tokenProvider,
+                                                UserDetailsService userDetailsService,
+                                                String token,
+                                                String nonExistUsername,
+                                                String path) {
+        setupRequestPath(request, path);
+
+        when(cookieRetriever.getCookie(request, "auth_token"))
+                .thenReturn(Optional.of(new Cookie("auth_token", token)));
+        when(tokenProvider.validateToken(token)).thenReturn(true);
+        when(tokenProvider.getClaimsFromToken(token))
+                .thenReturn(Jwts.claims().setSubject(nonExistUsername));
+        when(userDetailsService.loadUserByUsername(nonExistUsername))
+                .thenThrow(new UsernameNotFoundException("User not found"));
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> authFilter.doFilterInternal(request, response, filterChain));
     }
 }
