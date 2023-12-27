@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +46,7 @@ public class JwtAuthenticationFilterTest {
     private ApplicationMessageService message;
     @Mock
     private FilterChain filterChain;
-    @BeforeEach
+    @AfterEach
     void setUp() {
         SecurityContextHolder.clearContext();
     }
