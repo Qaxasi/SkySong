@@ -105,4 +105,9 @@ public class JwtAuthenticationFilterTest {
         assertSuccessfulAuthContinuesChain(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetails, "token", "User", "/api/v1/users/1");
     }
+    @Test
+    void whenAuthSuccess_SetSecurityContext() throws ServletException, IOException {
+        assertSecurityContextSetAfterAuth(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, userDetails, "token", "User", "/api/v1/users/1");
+    }
 }
