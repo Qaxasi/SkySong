@@ -116,4 +116,9 @@ public class JwtAuthenticationFilterTest {
         assertSecurityContextSetAfterAuth(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetails, "token", "User", "/api/v1/users/1");
     }
+    @Test
+    void whenNoUser_NoProcessRequest() throws ServletException, IOException {
+        assertNoProcessingForMissingUser(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, userDetails, "token", "Tom", "/api/v1/users/1");
+    }
 }
