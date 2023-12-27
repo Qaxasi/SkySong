@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,8 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -177,5 +177,26 @@ public class JwtAuthenticationFilterTestHelper {
 
         authFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain).doFilter(request, response);
+    }
+    public static void assertSecurityContextSetAfterAuth(JwtAuthenticationFilter authFilter,
+                                                         MockHttpServletRequest request,
+                                                         MockHttpServletResponse response,
+                                                         FilterChain filterChain,
+                                                         CookieRetriever cookieRetriever,
+                                                         JwtTokenProvider tokenProvider,
+                                                         UserDetailsService userDetailsService,
+                                                         String token,
+                                                         String username,
+                                                         String path) throws ServletException, IOException {
+        setupRequestPath(request, path);
+
+        simulateSuccessfulAuthentication(request, cookieRetriever, tokenProvider, userDetailsService, token, username);
+
+        authFilter.doFilterInternal(request, response, filterChain);
+
+        Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
+
+        assertNotNull(authContext);
+        assertEquals(username, authContext.getName());
     }
 }
