@@ -123,10 +123,8 @@ public class JwtAuthenticationFilterTestHelper {
                                                              FilterChain filterChain,
                                                              CookieRetriever cookieRetriever,
                                                              String path) throws ServletException, IOException {
-        setupRequestPath(request, path);
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
 
-        authFilter.doFilterInternal(request, response, filterChain);
+        setupRequestForNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
 
         verify(filterChain, never()).doFilter(request, response);
     }
@@ -137,10 +135,8 @@ public class JwtAuthenticationFilterTestHelper {
                                                          CookieRetriever cookieRetriever,
                                                          JwtAuthenticationEntryPoint authEntryPoint,
                                                          String path) throws ServletException, IOException {
-        setupRequestPath(request, path);
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
 
-        authFilter.doFilterInternal(request, response, filterChain);
+        setupRequestForNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
 
         verify(authEntryPoint).commence(eq(request), eq(response),
                 any(InsufficientAuthenticationException.class));
@@ -151,10 +147,8 @@ public class JwtAuthenticationFilterTestHelper {
                                               FilterChain filterChain,
                                               CookieRetriever cookieRetriever,
                                               String path) throws ServletException, IOException {
-        setupRequestPath(request, path);
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
 
-        authFilter.doFilterInternal(request, response, filterChain);
+        setupRequestForNoToken(authFilter, request, response, filterChain, cookieRetriever, path);;
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
