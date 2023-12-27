@@ -19,7 +19,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -152,16 +151,16 @@ public class JwtAuthenticationFilterTestHelper {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
-    private static void simulateSuccessfulAuthentication(JwtAuthenticationFilter authFilter,
-                                                         MockHttpServletRequest request,
-                                                         MockHttpServletResponse response,
-                                                         FilterChain filterChain,
-                                                         CookieRetriever cookieRetriever,
-                                                         JwtTokenProvider tokenProvider,
-                                                         UserDetailsService userDetailsService,
-                                                         String token,
-                                                         String username,
-                                                         String path) throws ServletException, IOException {
+    private static void setupSuccessfulAuthentication(JwtAuthenticationFilter authFilter,
+                                                      MockHttpServletRequest request,
+                                                      MockHttpServletResponse response,
+                                                      FilterChain filterChain,
+                                                      CookieRetriever cookieRetriever,
+                                                      JwtTokenProvider tokenProvider,
+                                                      UserDetailsService userDetailsService,
+                                                      String token,
+                                                      String username,
+                                                      String path) throws ServletException, IOException {
         setupRequestPath(request, path);
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
@@ -185,7 +184,7 @@ public class JwtAuthenticationFilterTestHelper {
                                                           String username,
                                                           String path) throws ServletException, IOException {
 
-        simulateSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
+        setupSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetailsService, token, username, path);
 
         verify(filterChain).doFilter(request, response);
@@ -201,7 +200,7 @@ public class JwtAuthenticationFilterTestHelper {
                                                          String username,
                                                          String path) throws ServletException, IOException {
 
-        simulateSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
+        setupSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetailsService, token, username, path);
 
         Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
