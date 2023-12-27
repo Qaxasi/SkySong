@@ -88,7 +88,7 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void whenNoToken_NoProcessRequest() throws ServletException, IOException {
-        assertNoProcessRequestForMissingToken(
+        assertNoProcessRequestForNoToken(
                 authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
     }
     @Test
