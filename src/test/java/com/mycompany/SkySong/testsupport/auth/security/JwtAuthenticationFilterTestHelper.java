@@ -5,6 +5,7 @@ import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationFilter;
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.shared.exception.TokenException;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -13,8 +14,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -141,5 +146,19 @@ public class JwtAuthenticationFilterTestHelper {
 
         verify(authEntryPoint).commence(
                 eq(request), eq(response), any(InsufficientAuthenticationException.class));
+    }
+    private static void simulateSuccessfulAuthentication(MockHttpServletRequest request,
+                                                         CookieRetriever cookieRetriever,
+                                                         JwtTokenProvider tokenProvider,
+                                                         UserDetailsService userDetailsService,
+                                                         String token,
+                                                         String username) {
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", token)));
+        when(tokenProvider.validateToken(token)).thenReturn(true);
+        when(tokenProvider.getClaimsFromToken(token)).thenReturn(Jwts.claims().setSubject(username));
+        when(userDetailsService.loadUserByUsername(username)).thenReturn(
+                new User(username, "", Collections.emptyList()));
+
     }
 }
