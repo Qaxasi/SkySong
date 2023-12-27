@@ -100,4 +100,9 @@ public class JwtAuthenticationFilterTest {
     void whenNoToken_NoSetSecurityContext() throws ServletException, IOException {
         assertNoAuthForNoToken(authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
     }
+    @Test
+    void whenAuthSuccess_FilterChainContinues() throws ServletException, IOException {
+        assertSuccessfulAuthContinuesChain(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, userDetails, "token", "User", "/api/v1/users/1");
+    }
 }
