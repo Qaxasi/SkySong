@@ -27,9 +27,15 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class JwtAuthenticationFilterTestHelper {
-    private static void setupRequestPath(HttpServletRequest request,
-                                         String path) {
+    private static void setupRequest(HttpServletRequest request,
+                                     CookieRetriever cookieRetriever,
+                                     String path,
+                                     String tokenName,
+                                     String tokenValue) {
         when(request.getRequestURI()).thenReturn(path);
+        Optional<Cookie> cookie = tokenValue != null ?
+                Optional.of(new Cookie(tokenName, tokenValue)) : Optional.empty();
+        when(cookieRetriever.getCookie(request, tokenName)).thenReturn(cookie);
     }
 
     public static void assertNoTokenValidationOnPath(JwtAuthenticationFilter authenticationFilter,
