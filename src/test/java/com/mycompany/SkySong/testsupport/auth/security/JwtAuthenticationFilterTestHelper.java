@@ -52,14 +52,14 @@ public class JwtAuthenticationFilterTestHelper {
         authFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain).doFilter(request, response);
     }
-    private static void setupRequestForInvalidToken(JwtAuthenticationFilter authFilter,
-                                                    MockHttpServletRequest request,
-                                                    MockHttpServletResponse response,
-                                                    FilterChain filterChain,
-                                                    CookieRetriever cookieRetriever,
-                                                    JwtTokenProvider tokenProvider,
-                                                    String path,
-                                                    String token) {
+    private static void simulateInvalidToken(JwtAuthenticationFilter authFilter,
+                                             MockHttpServletRequest request,
+                                             MockHttpServletResponse response,
+                                             FilterChain filterChain,
+                                             CookieRetriever cookieRetriever,
+                                             JwtTokenProvider tokenProvider,
+                                             String path,
+                                             String token) {
         setupRequestPath(request, path);
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", token)));
@@ -68,16 +68,16 @@ public class JwtAuthenticationFilterTestHelper {
         assertThrows(TokenException.class, () -> authFilter
                 .doFilterInternal(request, response, filterChain));
     }
-    public static void assertInvalidTokenNotProcessRequest(JwtAuthenticationFilter authFilter,
-                                                           MockHttpServletRequest request,
-                                                           MockHttpServletResponse response,
-                                                           FilterChain filterChain,
-                                                           CookieRetriever cookieRetriever,
-                                                           JwtTokenProvider tokenProvider,
-                                                           String path,
-                                                           String token) throws ServletException, IOException {
+    public static void assertNoProcessRequestForInvalidToken(JwtAuthenticationFilter authFilter,
+                                                             MockHttpServletRequest request,
+                                                             MockHttpServletResponse response,
+                                                             FilterChain filterChain,
+                                                             CookieRetriever cookieRetriever,
+                                                             JwtTokenProvider tokenProvider,
+                                                             String path,
+                                                             String token) throws ServletException, IOException {
 
-       setupRequestForInvalidToken(authFilter, request, response, filterChain,
+       simulateInvalidToken(authFilter, request, response, filterChain,
                 cookieRetriever, tokenProvider, path, token);
 
         verify(filterChain, never()).doFilter(request, response);
@@ -91,7 +91,7 @@ public class JwtAuthenticationFilterTestHelper {
                                                    String path,
                                                    String token) {
 
-        setupRequestForInvalidToken(authFilter, request, response, filterChain,
+        simulateInvalidToken(authFilter, request, response, filterChain,
                 cookieRetriever, tokenProvider, path, token);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
@@ -115,12 +115,12 @@ public class JwtAuthenticationFilterTestHelper {
         verify(authEntryPoint).commence(
                 eq(request), eq(response), any(InsufficientAuthenticationException.class));
     }
-    private static void setupRequestForNoToken(JwtAuthenticationFilter authFilter,
-                                               MockHttpServletRequest request,
-                                               MockHttpServletResponse response,
-                                               FilterChain filterChain,
-                                               CookieRetriever cookieRetriever,
-                                               String path) throws ServletException, IOException {
+    private static void simulateNoToken(JwtAuthenticationFilter authFilter,
+                                        MockHttpServletRequest request,
+                                        MockHttpServletResponse response,
+                                        FilterChain filterChain,
+                                        CookieRetriever cookieRetriever,
+                                        String path) throws ServletException, IOException {
         setupRequestPath(request, path);
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
 
@@ -133,7 +133,7 @@ public class JwtAuthenticationFilterTestHelper {
                                                              CookieRetriever cookieRetriever,
                                                              String path) throws ServletException, IOException {
 
-        setupRequestForNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
+        simulateNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
 
         verify(filterChain, never()).doFilter(request, response);
     }
@@ -145,7 +145,7 @@ public class JwtAuthenticationFilterTestHelper {
                                                          JwtAuthenticationEntryPoint authEntryPoint,
                                                          String path) throws ServletException, IOException {
 
-        setupRequestForNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
+        simulateNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
 
         verify(authEntryPoint).commence(eq(request), eq(response),
                 any(InsufficientAuthenticationException.class));
@@ -157,7 +157,7 @@ public class JwtAuthenticationFilterTestHelper {
                                               CookieRetriever cookieRetriever,
                                               String path) throws ServletException, IOException {
 
-        setupRequestForNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
+        simulateNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
