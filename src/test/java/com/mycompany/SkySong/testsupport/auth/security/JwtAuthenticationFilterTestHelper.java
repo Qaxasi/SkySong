@@ -30,12 +30,11 @@ public class JwtAuthenticationFilterTestHelper {
     private static void setupRequest(HttpServletRequest request,
                                      CookieRetriever cookieRetriever,
                                      String path,
-                                     String tokenName,
-                                     String tokenValue) {
+                                     String cookieName,
+                                     Optional<String> cookieValue) {
         when(request.getRequestURI()).thenReturn(path);
-        Optional<Cookie> cookie = tokenValue != null ?
-                Optional.of(new Cookie(tokenName, tokenValue)) : Optional.empty();
-        when(cookieRetriever.getCookie(request, tokenName)).thenReturn(cookie);
+        cookieValue.ifPresent(value -> when(cookieRetriever.getCookie(request, cookieName)).thenReturn(
+                Optional.of(new Cookie(cookieName, value))));
     }
 
     public static void assertNoTokenValidationOnPath(JwtAuthenticationFilter authenticationFilter,
