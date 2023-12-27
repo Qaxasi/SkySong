@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,6 +45,10 @@ public class JwtAuthenticationFilterTest {
     private ApplicationMessageService message;
     @Mock
     private FilterChain filterChain;
+    @BeforeEach
+    void setUp() {
+        SecurityContextHolder.clearContext();
+    }
     @Test
     void whenLoginPath_InvokeFilterChain() throws ServletException, IOException {
         assertFilterChainInvoked(request, response, authFilter, filterChain, "/api/v1/users/login");
