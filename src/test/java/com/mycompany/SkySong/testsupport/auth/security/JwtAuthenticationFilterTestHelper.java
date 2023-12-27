@@ -148,22 +148,30 @@ public class JwtAuthenticationFilterTestHelper {
                                               CookieRetriever cookieRetriever,
                                               String path) throws ServletException, IOException {
 
-        setupRequestForNoToken(authFilter, request, response, filterChain, cookieRetriever, path);;
+        setupRequestForNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
-    private static void simulateSuccessfulAuthentication(MockHttpServletRequest request,
+    private static void simulateSuccessfulAuthentication(JwtAuthenticationFilter authFilter,
+                                                         MockHttpServletRequest request,
+                                                         MockHttpServletResponse response,
+                                                         FilterChain filterChain,
                                                          CookieRetriever cookieRetriever,
                                                          JwtTokenProvider tokenProvider,
                                                          UserDetailsService userDetailsService,
                                                          String token,
-                                                         String username) {
+                                                         String username,
+                                                         String path) throws ServletException, IOException {
+        setupRequestPath(request, path);
+
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
                 Optional.of(new Cookie("auth_token", token)));
         when(tokenProvider.validateToken(token)).thenReturn(true);
         when(tokenProvider.getClaimsFromToken(token)).thenReturn(Jwts.claims().setSubject(username));
         when(userDetailsService.loadUserByUsername(username)).thenReturn(
                 new User(username, "", Collections.emptyList()));
+
+        authFilter.doFilterInternal(request, response, filterChain);
 
     }
     public static void assertSuccessfulAuthContinuesChain(JwtAuthenticationFilter authFilter,
@@ -176,11 +184,10 @@ public class JwtAuthenticationFilterTestHelper {
                                                           String token,
                                                           String username,
                                                           String path) throws ServletException, IOException {
-        setupRequestPath(request, path);
 
-        simulateSuccessfulAuthentication(request, cookieRetriever, tokenProvider, userDetailsService, token, username);
+        simulateSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, userDetailsService, token, username, path);
 
-        authFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain).doFilter(request, response);
     }
     public static void assertSecurityContextSetAfterAuth(JwtAuthenticationFilter authFilter,
@@ -193,11 +200,9 @@ public class JwtAuthenticationFilterTestHelper {
                                                          String token,
                                                          String username,
                                                          String path) throws ServletException, IOException {
-        setupRequestPath(request, path);
 
-        simulateSuccessfulAuthentication(request, cookieRetriever, tokenProvider, userDetailsService, token, username);
-
-        authFilter.doFilterInternal(request, response, filterChain);
+        simulateSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, userDetailsService, token, username, path);
 
         Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
 
