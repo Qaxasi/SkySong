@@ -70,7 +70,7 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void whenInvalidToken_NotProcessRequest() throws ServletException, IOException {
-        assertInvalidTokenNotProcessRequest(authFilter, request, response, filterChain, cookieRetriever,
+        assertNoProcessRequestForInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, "/api/v1/users/1", "invalidToken");
     }
     @Test
