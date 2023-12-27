@@ -161,16 +161,16 @@ public class JwtAuthenticationFilterTestHelper {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
-    private static void setupSuccessfulAuthentication(JwtAuthenticationFilter authFilter,
-                                                      MockHttpServletRequest request,
-                                                      MockHttpServletResponse response,
-                                                      FilterChain filterChain,
-                                                      CookieRetriever cookieRetriever,
-                                                      JwtTokenProvider tokenProvider,
-                                                      UserDetailsService userDetailsService,
-                                                      String token,
-                                                      String username,
-                                                      String path) throws ServletException, IOException {
+    private static void simulateSuccessfulAuthentication(JwtAuthenticationFilter authFilter,
+                                                         MockHttpServletRequest request,
+                                                         MockHttpServletResponse response,
+                                                         FilterChain filterChain,
+                                                         CookieRetriever cookieRetriever,
+                                                         JwtTokenProvider tokenProvider,
+                                                         UserDetailsService userDetailsService,
+                                                         String token,
+                                                         String username,
+                                                         String path) throws ServletException, IOException {
         setupRequestPath(request, path);
 
         when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
@@ -194,7 +194,7 @@ public class JwtAuthenticationFilterTestHelper {
                                                           String username,
                                                           String path) throws ServletException, IOException {
 
-        setupSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
+        simulateSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetailsService, token, username, path);
 
         verify(filterChain).doFilter(request, response);
@@ -210,7 +210,7 @@ public class JwtAuthenticationFilterTestHelper {
                                                          String username,
                                                          String path) throws ServletException, IOException {
 
-        setupSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
+        simulateSuccessfulAuthentication(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetailsService, token, username, path);
 
         Authentication authContext = SecurityContextHolder.getContext().getAuthentication();
