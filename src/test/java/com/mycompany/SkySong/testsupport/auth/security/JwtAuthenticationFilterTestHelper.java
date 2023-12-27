@@ -51,6 +51,22 @@ public class JwtAuthenticationFilterTestHelper {
         authFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain).doFilter(request, response);
     }
+    private static void setupRequestForInvalidToken(JwtAuthenticationFilter authFilter,
+                                                    MockHttpServletRequest request,
+                                                    MockHttpServletResponse response,
+                                                    FilterChain filterChain,
+                                                    CookieRetriever cookieRetriever,
+                                                    JwtTokenProvider tokenProvider,
+                                                    String path,
+                                                    String token) {
+        setupRequestPath(request, path);
+        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
+                Optional.of(new Cookie("auth_token", token)));
+        when(tokenProvider.validateToken(token)).thenThrow(new TokenException("Invalid token."));
+
+        assertThrows(TokenException.class, () -> authFilter
+                .doFilterInternal(request, response, filterChain));
+    }
     public static void assertInvalidTokenNotProcessRequest(JwtAuthenticationFilter authFilter,
                                                            MockHttpServletRequest request,
                                                            MockHttpServletResponse response,
