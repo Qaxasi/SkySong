@@ -161,4 +161,21 @@ public class JwtAuthenticationFilterTestHelper {
                 new User(username, "", Collections.emptyList()));
 
     }
+    public static void assertSuccessfulAuthContinuesChain(JwtAuthenticationFilter authFilter,
+                                                          MockHttpServletRequest request,
+                                                          MockHttpServletResponse response,
+                                                          FilterChain filterChain,
+                                                          CookieRetriever cookieRetriever,
+                                                          JwtTokenProvider tokenProvider,
+                                                          UserDetailsService userDetailsService,
+                                                          String token,
+                                                          String username,
+                                                          String path) throws ServletException, IOException {
+        setupRequestPath(request, path);
+
+        simulateSuccessfulAuthentication(request, cookieRetriever, tokenProvider, userDetailsService, token, username);
+
+        authFilter.doFilterInternal(request, response, filterChain);
+        verify(filterChain).doFilter(request, response);
+    }
 }
