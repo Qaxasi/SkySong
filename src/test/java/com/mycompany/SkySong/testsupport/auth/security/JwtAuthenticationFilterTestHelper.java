@@ -75,13 +75,10 @@ public class JwtAuthenticationFilterTestHelper {
                                                            JwtTokenProvider tokenProvider,
                                                            String path,
                                                            String token) throws ServletException, IOException {
-        setupRequestPath(request, path);
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", token)));
-        when(tokenProvider.validateToken(token)).thenThrow(new TokenException("Invalid token."));
 
-        assertThrows(TokenException.class, () -> authFilter
-                .doFilterInternal(request, response, filterChain));
+       setupRequestForInvalidToken(authFilter, request, response, filterChain,
+                cookieRetriever, tokenProvider, path, token);
+
         verify(filterChain, never()).doFilter(request, response);
     }
     public static void assertNoAuthForInvalidToken(JwtAuthenticationFilter authFilter,
@@ -92,13 +89,9 @@ public class JwtAuthenticationFilterTestHelper {
                                                    JwtTokenProvider tokenProvider,
                                                    String path,
                                                    String token) {
-        setupRequestPath(request, path);
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", token)));
-        when(tokenProvider.validateToken(token)).thenThrow(new TokenException("Invalid token."));
 
-        assertThrows(TokenException.class, () -> authFilter
-                .doFilterInternal(request, response, filterChain));
+        setupRequestForInvalidToken(authFilter, request, response, filterChain,
+                cookieRetriever, tokenProvider, path, token);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
