@@ -3,7 +3,7 @@ package com.mycompany.SkySong.auth.security;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,7 +37,7 @@ public class JwtAuthenticationFilterTest {
     private ApplicationMessageService message;
     @Mock
     private FilterChain filterChain;
-    @AfterEach
+    @BeforeEach
     void setUp() {
         SecurityContextHolder.clearContext();
     }
