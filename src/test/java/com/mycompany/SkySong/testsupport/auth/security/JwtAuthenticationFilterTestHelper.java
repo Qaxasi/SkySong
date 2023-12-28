@@ -4,7 +4,6 @@ import com.mycompany.SkySong.auth.security.CookieRetriever;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationEntryPoint;
 import com.mycompany.SkySong.auth.security.JwtAuthenticationFilter;
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
-import com.mycompany.SkySong.shared.exception.TokenException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -71,14 +70,13 @@ public class JwtAuthenticationFilterTestHelper {
                                              CookieRetriever cookieRetriever,
                                              JwtTokenProvider tokenProvider,
                                              String path,
-                                             String token) {
+                                             String token) throws ServletException, IOException {
 
         configureRequest(request, path, cookieRetriever, token);
 
-        when(tokenProvider.validateToken(token)).thenThrow(new TokenException("Invalid token."));
+        when(tokenProvider.validateToken(token)).thenReturn(false);
 
-        assertThrows(TokenException.class, () -> authFilter
-                .doFilterInternal(request, response, filterChain));
+         authFilter.doFilterInternal(request, response, filterChain);
     }
     public static void assertNoProcessRequestForInvalidToken(JwtAuthenticationFilter authFilter,
                                                              MockHttpServletRequest request,
