@@ -44,6 +44,76 @@ public class JwtAuthenticationFilterTestHelper {
         when(request.getRequestURI()).thenReturn(path);
     }
 
+    public static void simulateSuccessfulAuthentication(JwtAuthenticationFilter authFilter,
+                                                         MockHttpServletRequest request,
+                                                         MockHttpServletResponse response,
+                                                         FilterChain filterChain,
+                                                         CookieRetriever cookieRetriever,
+                                                         JwtTokenProvider tokenProvider,
+                                                         UserDetailsService userDetailsService,
+                                                         String token,
+                                                         String username,
+                                                         String path) throws ServletException, IOException {
+
+        configureRequest(request, path, cookieRetriever, token);
+
+        when(tokenProvider.validateToken(token)).thenReturn(true);
+        when(tokenProvider.getClaimsFromToken(token)).thenReturn(Jwts.claims().setSubject(username));
+        when(userDetailsService.loadUserByUsername(username)).thenReturn(
+                new User(username, "", Collections.emptyList()));
+
+        authFilter.doFilterInternal(request, response, filterChain);
+
+    }
+    public static void simulateInvalidToken(JwtAuthenticationFilter authFilter,
+                                             MockHttpServletRequest request,
+                                             MockHttpServletResponse response,
+                                             FilterChain filterChain,
+                                             CookieRetriever cookieRetriever,
+                                             JwtTokenProvider tokenProvider,
+                                             String path,
+                                             String token) throws ServletException, IOException {
+
+        configureRequest(request, path, cookieRetriever, token);
+
+        when(tokenProvider.validateToken(token)).thenReturn(false);
+
+        authFilter.doFilterInternal(request, response, filterChain);
+    }
+    public static void simulateNoToken(JwtAuthenticationFilter authFilter,
+                                        MockHttpServletRequest request,
+                                        MockHttpServletResponse response,
+                                        FilterChain filterChain,
+                                        CookieRetriever cookieRetriever,
+                                        String path) throws ServletException, IOException {
+
+        configureRequest(request, path, cookieRetriever, null);
+
+        authFilter.doFilterInternal(request, response, filterChain);
+    }
+    public static void simulateMissingUserAuth(JwtAuthenticationFilter authFilter,
+                                                MockHttpServletRequest request,
+                                                MockHttpServletResponse response,
+                                                FilterChain filterChain,
+                                                CookieRetriever cookieRetriever,
+                                                JwtTokenProvider tokenProvider,
+                                                UserDetailsService userDetailsService,
+                                                String token,
+                                                String nonExistUsername,
+                                                String path) {
+
+        configureRequest(request, path, cookieRetriever, token);
+
+        when(tokenProvider.validateToken(token)).thenReturn(true);
+        when(tokenProvider.getClaimsFromToken(token))
+                .thenReturn(Jwts.claims().setSubject(nonExistUsername));
+        when(userDetailsService.loadUserByUsername(nonExistUsername))
+                .thenThrow(new UsernameNotFoundException("User not found"));
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> authFilter.doFilterInternal(request, response, filterChain));
+    }
+
     public static void assertNoTokenValidationOnPath(JwtAuthenticationFilter authenticationFilter,
                                                      MockHttpServletRequest request,
                                                      MockHttpServletResponse response,
@@ -62,21 +132,6 @@ public class JwtAuthenticationFilterTestHelper {
         setupRequestPath(request, path);
         authFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain).doFilter(request, response);
-    }
-    private static void simulateInvalidToken(JwtAuthenticationFilter authFilter,
-                                             MockHttpServletRequest request,
-                                             MockHttpServletResponse response,
-                                             FilterChain filterChain,
-                                             CookieRetriever cookieRetriever,
-                                             JwtTokenProvider tokenProvider,
-                                             String path,
-                                             String token) throws ServletException, IOException {
-
-        configureRequest(request, path, cookieRetriever, token);
-
-        when(tokenProvider.validateToken(token)).thenReturn(false);
-
-         authFilter.doFilterInternal(request, response, filterChain);
     }
     public static void assertNoProcessRequestForInvalidToken(JwtAuthenticationFilter authFilter,
                                                              MockHttpServletRequest request,
@@ -123,17 +178,7 @@ public class JwtAuthenticationFilterTestHelper {
         verify(authEntryPoint).commence(
                 eq(request), eq(response), any(InsufficientAuthenticationException.class));
     }
-    private static void simulateNoToken(JwtAuthenticationFilter authFilter,
-                                        MockHttpServletRequest request,
-                                        MockHttpServletResponse response,
-                                        FilterChain filterChain,
-                                        CookieRetriever cookieRetriever,
-                                        String path) throws ServletException, IOException {
 
-        configureRequest(request, path, cookieRetriever, null);
-
-        authFilter.doFilterInternal(request, response, filterChain);
-    }
     public static void assertNoProcessRequestForNoToken(JwtAuthenticationFilter authFilter,
                                                         MockHttpServletRequest request,
                                                         MockHttpServletResponse response,
@@ -169,27 +214,7 @@ public class JwtAuthenticationFilterTestHelper {
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
-    private static void simulateSuccessfulAuthentication(JwtAuthenticationFilter authFilter,
-                                                         MockHttpServletRequest request,
-                                                         MockHttpServletResponse response,
-                                                         FilterChain filterChain,
-                                                         CookieRetriever cookieRetriever,
-                                                         JwtTokenProvider tokenProvider,
-                                                         UserDetailsService userDetailsService,
-                                                         String token,
-                                                         String username,
-                                                         String path) throws ServletException, IOException {
 
-        configureRequest(request, path, cookieRetriever, token);
-
-        when(tokenProvider.validateToken(token)).thenReturn(true);
-        when(tokenProvider.getClaimsFromToken(token)).thenReturn(Jwts.claims().setSubject(username));
-        when(userDetailsService.loadUserByUsername(username)).thenReturn(
-                new User(username, "", Collections.emptyList()));
-
-        authFilter.doFilterInternal(request, response, filterChain);
-
-    }
     public static void assertSuccessfulAuthContinuesChain(JwtAuthenticationFilter authFilter,
                                                           MockHttpServletRequest request,
                                                           MockHttpServletResponse response,
@@ -225,28 +250,7 @@ public class JwtAuthenticationFilterTestHelper {
         assertNotNull(authContext);
         assertEquals(username, authContext.getName());
     }
-    private static void simulateMissingUserAuth(JwtAuthenticationFilter authFilter,
-                                                MockHttpServletRequest request,
-                                                MockHttpServletResponse response,
-                                                FilterChain filterChain,
-                                                CookieRetriever cookieRetriever,
-                                                JwtTokenProvider tokenProvider,
-                                                UserDetailsService userDetailsService,
-                                                String token,
-                                                String nonExistUsername,
-                                                String path) {
 
-        configureRequest(request, path, cookieRetriever, token);
-
-        when(tokenProvider.validateToken(token)).thenReturn(true);
-        when(tokenProvider.getClaimsFromToken(token))
-                .thenReturn(Jwts.claims().setSubject(nonExistUsername));
-        when(userDetailsService.loadUserByUsername(nonExistUsername))
-                .thenThrow(new UsernameNotFoundException("User not found"));
-
-        assertThrows(UsernameNotFoundException.class,
-                () -> authFilter.doFilterInternal(request, response, filterChain));
-    }
     public static void assertNoProcessingForMissingUser(JwtAuthenticationFilter authFilter,
                                                         MockHttpServletRequest request,
                                                         MockHttpServletResponse response,
