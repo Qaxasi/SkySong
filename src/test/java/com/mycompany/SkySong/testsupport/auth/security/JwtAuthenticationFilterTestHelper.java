@@ -99,7 +99,7 @@ public class JwtAuthenticationFilterTestHelper {
                                                    CookieRetriever cookieRetriever,
                                                    JwtTokenProvider tokenProvider,
                                                    String path,
-                                                   String token) {
+                                                   String token) throws ServletException, IOException {
 
         simulateInvalidToken(authFilter, request, response, filterChain,
                 cookieRetriever, tokenProvider, path, token);
@@ -116,11 +116,9 @@ public class JwtAuthenticationFilterTestHelper {
                                                        String token,
                                                        String path) throws IOException, ServletException {
 
-        configureRequest(request, path, cookieRetriever, token);
 
-        when(tokenProvider.validateToken(token)).thenReturn(false);
-
-        authFilter.doFilterInternal(request, response, filterChain);
+        simulateInvalidToken(authFilter, request, response, filterChain,
+                cookieRetriever, tokenProvider, path, token);
 
         verify(authEntryPoint).commence(
                 eq(request), eq(response), any(InsufficientAuthenticationException.class));
