@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class JwtAuthenticationFilterTestHelper {
@@ -113,12 +112,12 @@ public class JwtAuthenticationFilterTestHelper {
         assertThrows(UsernameNotFoundException.class,
                 () -> authFilter.doFilterInternal(request, response, filterChain));
     }
-    public static void executeFilterChain(JwtAuthenticationFilter authenticationFilter,
+    public static void executeFilterChain(JwtAuthenticationFilter authFilter,
                                           MockHttpServletRequest request,
                                           MockHttpServletResponse response,
                                           FilterChain filterChain,
                                           String path) throws ServletException, IOException {
         setupRequestPath(request, path);
-        authenticationFilter.doFilterInternal(request, response, filterChain);
+        authFilter.doFilterInternal(request, response, filterChain);
     }
 }
