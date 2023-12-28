@@ -44,7 +44,7 @@ public class JwtAuthenticationFilterTestHelper {
         when(request.getRequestURI()).thenReturn(path);
     }
 
-    public static void simulateSuccessfulAuthentication(JwtAuthenticationFilter authFilter,
+    public static void simulateSuccessAuth(JwtAuthenticationFilter authFilter,
                                                          MockHttpServletRequest request,
                                                          MockHttpServletResponse response,
                                                          FilterChain filterChain,
