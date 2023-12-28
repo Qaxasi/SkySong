@@ -11,11 +11,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 
 import static com.mycompany.SkySong.testsupport.auth.security.JwtAuthenticationFilterTestHelper.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtAuthenticationFilterTest {
@@ -43,78 +49,105 @@ public class JwtAuthenticationFilterTest {
     }
     @Test
     void whenLoginPath_InvokeFilterChain() throws ServletException, IOException {
-        assertFilterChainInvoked(request, response, authFilter, filterChain, "/api/v1/users/login");
+        executeFilterChain(authFilter, request, response, filterChain, "/api/v1/users/login");
+
+        verify(filterChain).doFilter(request, response);
     }
     @Test
     void whenLoginPath_NotInvokeTokenValidation() throws ServletException, IOException {
-        assertNoTokenValidationOnPath(authFilter, request, response, filterChain,
-                tokenProvider, "/api/v1/users/login");
+        executeFilterChain(authFilter, request, response, filterChain, "/api/v1/users/login");
+
+        verify(tokenProvider, never()).validateToken(anyString());
     }
     @Test
     void whenRegisterPath_InvokeFilterChain() throws ServletException, IOException {
-        assertFilterChainInvoked(request, response, authFilter, filterChain, "/api/v1/users/register");
+        executeFilterChain(authFilter, request, response, filterChain, "/api/v1/users/register");
+
+        verify(filterChain).doFilter(request, response);
     }
     @Test
     void whenRegisterPath_NotInvokeTokenValidation() throws ServletException, IOException {
-        assertNoTokenValidationOnPath(authFilter, request, response, filterChain,
-                tokenProvider, "/api/v1/users/register");
+        executeFilterChain(authFilter, request, response, filterChain, "/api/v1/users/register");
+
+        verify(tokenProvider, never()).validateToken(anyString());
     }
     @Test
     void whenLogoutPath_InvokeFilterChain() throws ServletException, IOException {
-        assertFilterChainInvoked(request, response, authFilter, filterChain, "/api/v1/users/logout");
+        executeFilterChain(authFilter, request, response, filterChain, "/api/v1/users/logout");
+
+        verify(filterChain).doFilter(request, response);
     }
     @Test
     void whenLogoutPath_NotInvokeTokenValidation() throws ServletException, IOException {
-        assertNoTokenValidationOnPath(authFilter, request, response, filterChain,
-                tokenProvider, "/api/v1/users/logout");
+        executeFilterChain(authFilter, request, response, filterChain, "/api/v1/users/logout");
+
+        verify(tokenProvider, never()).validateToken(anyString());
     }
     @Test
     void whenInvalidToken_NotProcessRequest() throws ServletException, IOException {
-        assertNoProcessRequestForInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
-                tokenProvider, "/api/v1/users/1", "invalidToken");
+        simulateInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, "invalid", "/api/v1/users/1");
+
+        verify(filterChain, never()).doFilter(request, response);
     }
     @Test
     void whenInvalidToken_NoSetSecurityContext() throws ServletException, IOException {
-        assertNoAuthForInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
-                tokenProvider, "/api/v1/users/1", "invalidToken");
+        simulateInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, "invalid", "/api/v1/users/1");
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
     void whenInvalidToken_InvokeEntryPoint() throws IOException, ServletException {
-        assertEntryPointForInvalidToken(authFilter, request, response, filterChain, tokenProvider, cookieRetriever,
-                authEntryPoint, "invalid", "/api/v1/users/1");
+        simulateInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
+                tokenProvider, "invalid", "/api/v1/users/1");
+
+        verify(authEntryPoint).commence(eq(request), eq(response), any(InsufficientAuthenticationException.class));
     }
     @Test
     void whenNoToken_NoProcessRequest() throws ServletException, IOException {
-        assertNoProcessRequestForNoToken(
-                authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
+        simulateNoToken(authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
+
+        verify(filterChain, never()).doFilter(request, response);
     }
     @Test
     void whenNoToken_InvokeEntryPoint() throws ServletException, IOException {
-        assertEntryPointInvokedForNoToken(
-                authFilter, request, response, filterChain, cookieRetriever, authEntryPoint, "/api/v1/users/1");
+        simulateNoToken(authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
+
+        verify(authEntryPoint).commence(eq(request), eq(response), any(InsufficientAuthenticationException.class));
     }
     @Test
     void whenNoToken_NoSetSecurityContext() throws ServletException, IOException {
-        assertNoAuthForNoToken(authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
+        simulateNoToken(authFilter, request, response, filterChain, cookieRetriever, "/api/v1/users/1");
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
     void whenAuthSuccess_FilterChainContinues() throws ServletException, IOException {
-        assertSuccessfulAuthContinuesChain(authFilter, request, response, filterChain, cookieRetriever,
+       simulateSuccessAuth(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetails, "token", "User", "/api/v1/users/1");
-    }
+
+        verify(filterChain).doFilter(request, response);
+   }
     @Test
     void whenAuthSuccess_SetSecurityContext() throws ServletException, IOException {
-        assertSecurityContextSetAfterAuth(authFilter, request, response, filterChain, cookieRetriever,
+       simulateSuccessAuth(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetails, "token", "User", "/api/v1/users/1");
+
+       assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
-    @Test
-    void whenNoUser_NoProcessRequest() throws ServletException, IOException {
-        assertNoProcessingForMissingUser(authFilter, request, response, filterChain, cookieRetriever,
+   @Test
+   void whenNoUser_NoProcessRequest() throws ServletException, IOException {
+       simulateMissingUser(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, userDetails, "token", "Tom", "/api/v1/users/1");
+
+       verify(filterChain, never()).doFilter(request, response);
     }
     @Test
     void whenNoUser_SecurityContextNotSet() {
-        assertNoSecurityContextForMissingUser(authFilter, request, response, filterChain, cookieRetriever,
-                tokenProvider, userDetails, "token", "Tom", "/api/v1/users/1");
+        simulateMissingUser(authFilter, request, response, filterChain, cookieRetriever, tokenProvider,
+                userDetails, "token", "Tom", "/api/v1/users/1");
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
