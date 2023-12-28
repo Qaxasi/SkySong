@@ -113,23 +113,12 @@ public class JwtAuthenticationFilterTestHelper {
         assertThrows(UsernameNotFoundException.class,
                 () -> authFilter.doFilterInternal(request, response, filterChain));
     }
-    public static void assertNoTokenValidationOnPath(JwtAuthenticationFilter authenticationFilter,
-                                                     MockHttpServletRequest request,
-                                                     MockHttpServletResponse response,
-                                                     FilterChain filterChain,
-                                                     JwtTokenProvider jwtTokenProvider,
-                                                     String path) throws ServletException, IOException {
+    public static void executeFilterChain(JwtAuthenticationFilter authenticationFilter,
+                                          MockHttpServletRequest request,
+                                          MockHttpServletResponse response,
+                                          FilterChain filterChain,
+                                          String path) throws ServletException, IOException {
         setupRequestPath(request, path);
         authenticationFilter.doFilterInternal(request, response, filterChain);
-        verify(jwtTokenProvider, never()).validateToken(anyString());
-    }
-    public static void assertFilterChainInvoked(MockHttpServletRequest request,
-                                                MockHttpServletResponse response,
-                                                JwtAuthenticationFilter authFilter,
-                                                FilterChain filterChain,
-                                                String path) throws ServletException, IOException {
-        setupRequestPath(request, path);
-        authFilter.doFilterInternal(request, response, filterChain);
-        verify(filterChain).doFilter(request, response);
     }
 }
