@@ -74,7 +74,7 @@ public class JwtAuthenticationFilterTest {
                 tokenProvider, "/api/v1/users/1", "invalidToken");
     }
     @Test
-    void whenInvalidToken_NoSetSecurityContext() {
+    void whenInvalidToken_NoSetSecurityContext() throws ServletException, IOException {
         assertNoAuthForInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
                 tokenProvider, "/api/v1/users/1", "invalidToken");
     }
