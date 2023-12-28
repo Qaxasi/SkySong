@@ -30,7 +30,8 @@ import static org.mockito.Mockito.*;
 public class JwtAuthenticationFilterTestHelper {
     private static void configureRequest(MockHttpServletRequest request, String path,
                                          CookieRetriever cookieRetriever, String token) {
-        when(request.getRequestURI()).thenReturn(path);
+        setupRequestPath(request, path);
+
         if (token != null) {
             when(cookieRetriever.getCookie(request, "auth_token"))
                     .thenReturn(Optional.of(new Cookie("auth_token", token)));
