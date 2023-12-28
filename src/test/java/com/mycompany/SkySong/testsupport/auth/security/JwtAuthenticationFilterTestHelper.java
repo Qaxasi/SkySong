@@ -71,9 +71,9 @@ public class JwtAuthenticationFilterTestHelper {
                                              JwtTokenProvider tokenProvider,
                                              String path,
                                              String token) {
-        setupRequestPath(request, path);
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", token)));
+
+        configureRequest(request, path, cookieRetriever, token);
+
         when(tokenProvider.validateToken(token)).thenThrow(new TokenException("Invalid token."));
 
         assertThrows(TokenException.class, () -> authFilter
@@ -116,9 +116,9 @@ public class JwtAuthenticationFilterTestHelper {
                                                        JwtAuthenticationEntryPoint authEntryPoint,
                                                        String token,
                                                        String path) throws IOException, ServletException {
-        setupRequestPath(request, path);
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", token)));
+
+        configureRequest(request, path, cookieRetriever, token);
+
         when(tokenProvider.validateToken(token)).thenReturn(false);
 
         authFilter.doFilterInternal(request, response, filterChain);
@@ -132,17 +132,17 @@ public class JwtAuthenticationFilterTestHelper {
                                         FilterChain filterChain,
                                         CookieRetriever cookieRetriever,
                                         String path) throws ServletException, IOException {
-        setupRequestPath(request, path);
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(Optional.empty());
+
+        configureRequest(request, path, cookieRetriever, null);
 
         authFilter.doFilterInternal(request, response, filterChain);
     }
     public static void assertNoProcessRequestForNoToken(JwtAuthenticationFilter authFilter,
-                                                             MockHttpServletRequest request,
-                                                             MockHttpServletResponse response,
-                                                             FilterChain filterChain,
-                                                             CookieRetriever cookieRetriever,
-                                                             String path) throws ServletException, IOException {
+                                                        MockHttpServletRequest request,
+                                                        MockHttpServletResponse response,
+                                                        FilterChain filterChain,
+                                                        CookieRetriever cookieRetriever,
+                                                        String path) throws ServletException, IOException {
 
         simulateNoToken(authFilter, request, response, filterChain, cookieRetriever, path);
 
@@ -182,10 +182,9 @@ public class JwtAuthenticationFilterTestHelper {
                                                          String token,
                                                          String username,
                                                          String path) throws ServletException, IOException {
-        setupRequestPath(request, path);
 
-        when(cookieRetriever.getCookie(request, "auth_token")).thenReturn(
-                Optional.of(new Cookie("auth_token", token)));
+        configureRequest(request, path, cookieRetriever, token);
+
         when(tokenProvider.validateToken(token)).thenReturn(true);
         when(tokenProvider.getClaimsFromToken(token)).thenReturn(Jwts.claims().setSubject(username));
         when(userDetailsService.loadUserByUsername(username)).thenReturn(
@@ -239,10 +238,9 @@ public class JwtAuthenticationFilterTestHelper {
                                                 String token,
                                                 String nonExistUsername,
                                                 String path) {
-        setupRequestPath(request, path);
 
-        when(cookieRetriever.getCookie(request, "auth_token"))
-                .thenReturn(Optional.of(new Cookie("auth_token", token)));
+        configureRequest(request, path, cookieRetriever, token);
+
         when(tokenProvider.validateToken(token)).thenReturn(true);
         when(tokenProvider.getClaimsFromToken(token))
                 .thenReturn(Jwts.claims().setSubject(nonExistUsername));
