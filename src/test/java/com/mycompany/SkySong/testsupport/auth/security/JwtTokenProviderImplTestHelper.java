@@ -3,6 +3,7 @@ package com.mycompany.SkySong.testsupport.auth.security;
 import com.mycompany.SkySong.auth.security.DateProvider;
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.auth.security.JwtTokenProviderImplTest;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -66,5 +67,8 @@ public class JwtTokenProviderImplTestHelper {
         when(auth.getName()).thenReturn("user");
         when(dateProvider.getCurrentDate()).thenReturn(getCurrentDate());
         return tokenProvider.generateToken(auth);
+    }
+    private static Claims getClaimsFromToken(String token, JwtTokenProvider tokenProvider) {
+        return tokenProvider.getClaimsFromToken(token);
     }
 }
