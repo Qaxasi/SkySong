@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.testsupport.auth.security.InvalidTokenGenerator;
+import com.mycompany.SkySong.testsupport.auth.security.JwtTokenProviderImplTestHelper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -16,6 +16,7 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
+import static com.mycompany.SkySong.testsupport.auth.security.JwtTokenProviderImplTestHelper.*;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,33 +82,23 @@ public class JwtTokenProviderImplTest {
         assertNotNull(claims.getExpiration());
     }
     @Test
-    void shouldReturnFalseForExpiredJwtTokenValidation() {
-        String expiredToken = InvalidTokenGenerator.generateExpiredToken(key);
-
-        assertFalse(jwtTokenProvider.validateToken(expiredToken));
+    void whenExpiredToken_ValidationFalse() {
+        assertFalse(jwtTokenProvider.validateToken(generateExpiredToken(key)));
     }
     @Test
-    void shouldReturnFalseForMalformedTokenValidation() {
-        String malformedToken = InvalidTokenGenerator.generateMalformedToken(key);
-
-        assertFalse(jwtTokenProvider.validateToken(malformedToken));
+    void whenMalformedToken_ValidationFalse() {
+        assertFalse(jwtTokenProvider.validateToken(generateMalformedToken(key)));
     }
     @Test
-    void shouldReturnFalseForTokenWithUnsupportedSignature() {
-        String invalidToken = InvalidTokenGenerator.generateTokenWithUnsupportedSignature(key);
-
-        assertFalse(jwtTokenProvider.validateToken(invalidToken));
+    void whenTokenHasUnsupportedSignature_ValidationFalse() {
+        assertFalse(jwtTokenProvider.validateToken(generateTokenWithUnsupportedSignature(key)));
     }
     @Test
-    void shouldReturnFalseForTokenWithInvalidSignature() {
-        String invalidToken = InvalidTokenGenerator.generateTokenWithInvalidSignature(key);
-
-        assertFalse(jwtTokenProvider.validateToken(invalidToken));
+    void whenTokenHasInvalidSignature_ValidationFalse() {
+        assertFalse(jwtTokenProvider.validateToken(generateTokenWithInvalidSignature(key)));
     }
     @Test
-    void shouldReturnFalseForTokenWithEmptyClaims() {
-        String invalidToken = InvalidTokenGenerator.generateTokenWithEmptyClaims(key);
-
-        assertFalse(jwtTokenProvider.validateToken(invalidToken));
+    void whenTokenHasEmptyClaims_ValidationFalse() {
+        assertFalse(jwtTokenProvider.validateToken(generateTokenWithEmptyClaims(key)));
     }
 }
