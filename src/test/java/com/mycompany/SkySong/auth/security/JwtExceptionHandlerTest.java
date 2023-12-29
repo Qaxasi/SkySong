@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.mycompany.SkySong.testsupport.auth.security.JwtExceptionHandlerTestHelper.assertThrowsTokenException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,27 +23,19 @@ public class JwtExceptionHandlerTest {
 
     @Test
     void whenExpiredJwtException_ThrowTokenException() {
-        ExpiredJwtException exception = new ExpiredJwtException(null, null, null);
-
-        assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(exception));
+        assertThrowsTokenException(handler, new ExpiredJwtException(null, null, null));
     }
     @Test
     void whenMalformedJwtException_ThrowTokenException() {
-        MalformedJwtException malformedJwtException = new MalformedJwtException("JWT is malformed");
-
-        assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(malformedJwtException));
+        assertThrowsTokenException(handler, new MalformedJwtException("JWT is malformed");
     }
     @Test
     void whenUnsupportedJwtException_ThrowTokenException() {
-        UnsupportedJwtException unsupportedJwtException = new UnsupportedJwtException("JWT is unsupported");
-
-        assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(unsupportedJwtException));
+        assertThrowsTokenException(handler, new UnsupportedJwtException("JWT is unsupported"));
     }
     @Test
     void whenIllegalArgumentException_ThrowTokenException() {
-        IllegalArgumentException illegalArgumentException = new IllegalArgumentException("Claims are empty");
-
-        assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(illegalArgumentException));
+        assertThrowsTokenException(handler, new IllegalArgumentException("Claims are empty"));
     }
     @Test
     void whenUnhandledExceptionType_NotIntercept() {
