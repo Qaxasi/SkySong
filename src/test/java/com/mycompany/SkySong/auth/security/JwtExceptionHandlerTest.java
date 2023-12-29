@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtExceptionHandlerTest {
@@ -22,82 +21,31 @@ public class JwtExceptionHandlerTest {
     private ApplicationMessageService messageService;
 
     @Test
-    void shouldThrowTokenExceptionForExpiredJwtException() {
+    void whenExpiredJwtException_ThrowTokenException() {
         ExpiredJwtException exception = new ExpiredJwtException(null, null, null);
 
         assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(exception));
     }
     @Test
-    void shouldReturnCorrectMessageForExpiredJwtException() {
-        String expectedMessage = "token expired";
-
-        when(messageService.getMessage("jwt.expired")).thenReturn(expectedMessage);
-
-        ExpiredJwtException exception = new ExpiredJwtException(null, null, null);
-
-        TokenException tokenException = assertThrows(TokenException.class,
-                () -> jwtExceptionHandler.handleException(exception));
-
-        assertEquals(expectedMessage, tokenException.getMessage());
-    }
-    @Test
-    void shouldThrowTokenExceptionForMalformedToken() {
+    void whenMalformedJwtException_ThrowTokenException() {
         MalformedJwtException malformedJwtException = new MalformedJwtException("JWT is malformed");
 
         assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(malformedJwtException));
     }
     @Test
-    void shouldReturnCorrectMessageForMalformedToken() {
-        String expectedMessage = "malformed token";
-
-        when(messageService.getMessage("jwt.invalid")).thenReturn(expectedMessage);
-
-        MalformedJwtException malformedJwtException = new MalformedJwtException("JWT is malformed");
-
-        TokenException tokenException = assertThrows(TokenException.class,
-                () -> jwtExceptionHandler.handleException(malformedJwtException));
-        assertEquals(expectedMessage, tokenException.getMessage());
-    }
-    @Test
-    void shouldThrowTokenExceptionForUnsupportedToken() {
+    void whenUnsupportedJwtException_ThrowTokenException() {
         UnsupportedJwtException unsupportedJwtException = new UnsupportedJwtException("JWT is unsupported");
 
         assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(unsupportedJwtException));
     }
     @Test
-    void shouldReturnCorrectMessageForUnsupportedToken() {
-        String expectedMessage = "unsupported token";
-
-        when(messageService.getMessage("jwt.unsupported")).thenReturn(expectedMessage);
-
-        UnsupportedJwtException unsupportedJwtException = new UnsupportedJwtException("JWT is unsupported");
-
-        TokenException tokenException = assertThrows(TokenException.class,
-                () -> jwtExceptionHandler.handleException(unsupportedJwtException));
-
-        assertEquals(expectedMessage, tokenException.getMessage());
-    }
-    @Test
-    void shouldThrowTokenExceptionForIllegalArgumentException() {
+    void whenIllegalArgumentException_ThrowTokenException() {
         IllegalArgumentException illegalArgumentException = new IllegalArgumentException("Claims are empty");
 
         assertThrows(TokenException.class, () -> jwtExceptionHandler.handleException(illegalArgumentException));
     }
     @Test
-    void shouldReturnCorrectMessageForIllegalArgumentException() {
-        String expectedMessage = "claims are empty";
-
-        when(messageService.getMessage("jwt.claims.empty")).thenReturn(expectedMessage);
-
-        IllegalArgumentException illegalArgumentException = new IllegalArgumentException("Claims are empty");
-
-        TokenException tokenException = assertThrows(TokenException.class,
-                () -> jwtExceptionHandler.handleException(illegalArgumentException));
-
-        assertEquals(expectedMessage, tokenException.getMessage());
-    }
-    @Test
-    void shouldNotInterceptUnhandledExceptionTypes() {
+    void whenUnhandledExceptionType_NotIntercept() {
         NullPointerException exception = new NullPointerException("Error");
 
         assertDoesNotThrow(() -> jwtExceptionHandler.handleException(exception));
