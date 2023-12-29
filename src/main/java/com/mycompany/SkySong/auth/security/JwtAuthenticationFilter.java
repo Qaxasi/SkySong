@@ -86,8 +86,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .map(Cookie::getValue)
                 .orElse(null);
     }
-
-
+    private boolean isValidToken(String token) {
+        return StringUtils.hasText(token) && jwtTokenProvider.validateToken(token);
+    }
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
