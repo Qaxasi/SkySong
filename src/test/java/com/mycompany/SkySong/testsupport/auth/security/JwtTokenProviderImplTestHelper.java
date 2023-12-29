@@ -60,7 +60,9 @@ public class JwtTokenProviderImplTestHelper {
                 .compact();
         return token + "invalid";
     }
-    private String generateTestToken(Authentication auth, JwtTokenProvider tokenProvider, DateProvider dateProvider) {
+    public static String generateValidToken(Authentication auth,
+                                            JwtTokenProvider tokenProvider,
+                                            DateProvider dateProvider) {
         when(auth.getName()).thenReturn("user");
         when(dateProvider.getCurrentDate()).thenReturn(getCurrentDate());
         return tokenProvider.generateToken(auth);
