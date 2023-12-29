@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 public class JwtTokenProviderImplTestHelper {
@@ -74,5 +75,9 @@ public class JwtTokenProviderImplTestHelper {
     public static void assertUsernameInToken(String username, String token, JwtTokenProvider tokenProvider) {
         Claims claims = getClaimsFromToken(token, tokenProvider);
         assertEquals(username, claims.getSubject());
+    }
+    public static void assertTokenHasExpiration(String token, JwtTokenProvider tokenProvider) {
+        Claims claims = getClaimsFromToken(token, tokenProvider);
+        assertNotNull(claims.getExpiration());
     }
 }
