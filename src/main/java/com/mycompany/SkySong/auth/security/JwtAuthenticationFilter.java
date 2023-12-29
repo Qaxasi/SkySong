@@ -55,25 +55,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = cookieRetriever.getCookie(request, "auth_token")
-                .map(Cookie::getValue)
-                .orElse(null);
+        String token = extractToken(request);
 
-
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
-
-            Claims claims = jwtTokenProvider.getClaimsFromToken(token);
-
-            String username = claims.getSubject();
-
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        if (isValidToken(token)) {
+            authenticateUser(request, token);
             filterChain.doFilter(request, response);
         } else {
             jwtAuthenticationEntryPoint.commence(request, response, new InsufficientAuthenticationException(
