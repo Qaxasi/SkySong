@@ -38,25 +38,13 @@ public class JwtTokenProviderImplTest {
         tokenProvider = new JwtTokenProviderImpl(base64Secret, jwtExpirationTime, handler, dateProvider);
     }
     @Test
-    void shouldGenerateTokenForGivenAuthentication() {
-        when(mockAuth.getName()).thenReturn("testUser");
-
-        when(dateProvider.getCurrentDate()).thenReturn(new Date());
-
-        String token = tokenProvider.generateToken(mockAuth);
-        assertNotNull(token);
-        assertFalse(token.isEmpty());
+    void whenGivenAuth_GenerateToken() {
+        assertNotNull(generateValidToken(mockAuth, tokenProvider, dateProvider));
     }
     @Test
-    void shouldValidateTokenGeneratedForGivenAuthentication() {
-        when(mockAuth.getName()).thenReturn("testUser");
-
-        when(dateProvider.getCurrentDate()).thenReturn(new Date());
-
-        String token = tokenProvider.generateToken(mockAuth);
-        assertTrue(tokenProvider.validateToken(token));
+    void whenGivenAuth_ValidateToken() {
+        assertTrue(tokenProvider.validateToken(generateValidToken(mockAuth, tokenProvider, dateProvider)));
     }
-
     @Test
     void shouldRetrieveUsernameFromValidToken() {
         when(mockAuth.getName()).thenReturn("testUser");
