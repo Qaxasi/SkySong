@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class JwtExceptionHandlerTest {
     @InjectMocks
-    private JwtExceptionHandler jwtExceptionHandler;
+    private JwtExceptionHandler handler;
     @Mock
     private ApplicationMessageService messageService;
 
