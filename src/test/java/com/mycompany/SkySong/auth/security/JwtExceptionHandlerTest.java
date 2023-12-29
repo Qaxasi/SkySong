@@ -26,7 +26,7 @@ public class JwtExceptionHandlerTest {
     }
     @Test
     void whenMalformedJwtException_ThrowTokenException() {
-        assertThrowsTokenException(handler, new MalformedJwtException("JWT is malformed");
+        assertThrowsTokenException(handler, new MalformedJwtException("JWT is malformed"));
     }
     @Test
     void whenUnsupportedJwtException_ThrowTokenException() {
