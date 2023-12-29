@@ -81,6 +81,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             ));
         }
     }
+    private void authenticateUser(HttpServletRequest request, String token) {
+        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+
+        String username = claims.getSubject();
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
     private String extractToken(HttpServletRequest request) {
         return cookieRetriever.getCookie(request, "auth_token")
                 .map(Cookie::getValue)
