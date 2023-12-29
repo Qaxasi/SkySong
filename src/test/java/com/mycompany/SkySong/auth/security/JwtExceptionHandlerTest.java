@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -39,8 +38,6 @@ public class JwtExceptionHandlerTest {
     }
     @Test
     void whenUnhandledExceptionType_NotIntercept() {
-        NullPointerException exception = new NullPointerException("Error");
-
-        assertDoesNotThrow(() -> jwtExceptionHandler.handleException(exception));
+        assertDoesNotThrow(() -> handler.handleException(new NullPointerException("Error")));
     }
 }
