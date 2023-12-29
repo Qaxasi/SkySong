@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.testsupport.auth.security.JwtTokenProviderImplTestHelper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -22,11 +21,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtTokenProviderImplTest {
-    private JwtTokenProviderImpl jwtTokenProvider;
+    private JwtTokenProviderImpl tokenProvider;
     @Mock
     private Authentication mockAuth;
     @Mock
-    private JwtExceptionHandler jwtExceptionHandler;
+    private JwtExceptionHandler handler;
     @Mock
     private DateProvider dateProvider;
     private Key key;
@@ -36,7 +35,7 @@ public class JwtTokenProviderImplTest {
         String base64Secret = Base64.getEncoder().encodeToString(key.getEncoded());
         long jwtExpirationTime = 1000L;
 
-        jwtTokenProvider = new JwtTokenProviderImpl(base64Secret, jwtExpirationTime, jwtExceptionHandler, dateProvider);
+        tokenProvider = new JwtTokenProviderImpl(base64Secret, jwtExpirationTime, handler, dateProvider);
     }
     @Test
     void shouldGenerateTokenForGivenAuthentication() {
@@ -44,7 +43,7 @@ public class JwtTokenProviderImplTest {
 
         when(dateProvider.getCurrentDate()).thenReturn(new Date());
 
-        String token = jwtTokenProvider.generateToken(mockAuth);
+        String token = tokenProvider.generateToken(mockAuth);
         assertNotNull(token);
         assertFalse(token.isEmpty());
     }
@@ -54,8 +53,8 @@ public class JwtTokenProviderImplTest {
 
         when(dateProvider.getCurrentDate()).thenReturn(new Date());
 
-        String token = jwtTokenProvider.generateToken(mockAuth);
-        assertTrue(jwtTokenProvider.validateToken(token));
+        String token = tokenProvider.generateToken(mockAuth);
+        assertTrue(tokenProvider.validateToken(token));
     }
 
     @Test
@@ -64,8 +63,8 @@ public class JwtTokenProviderImplTest {
 
         when(dateProvider.getCurrentDate()).thenReturn(new Date());
 
-        String token = jwtTokenProvider.generateToken(mockAuth);
-        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        String token = tokenProvider.generateToken(mockAuth);
+        Claims claims = tokenProvider.getClaimsFromToken(token);
         String retrieveUsername = claims.getSubject();
 
         assertEquals("testUser", retrieveUsername);
@@ -76,29 +75,29 @@ public class JwtTokenProviderImplTest {
 
         when(dateProvider.getCurrentDate()).thenReturn(new Date());
 
-        String token = jwtTokenProvider.generateToken(mockAuth);
-        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        String token = tokenProvider.generateToken(mockAuth);
+        Claims claims = tokenProvider.getClaimsFromToken(token);
 
         assertNotNull(claims.getExpiration());
     }
     @Test
     void whenExpiredToken_ValidationFalse() {
-        assertFalse(jwtTokenProvider.validateToken(generateExpiredToken(key)));
+        assertFalse(tokenProvider.validateToken(generateExpiredToken(key)));
     }
     @Test
     void whenMalformedToken_ValidationFalse() {
-        assertFalse(jwtTokenProvider.validateToken(generateMalformedToken(key)));
+        assertFalse(tokenProvider.validateToken(generateMalformedToken(key)));
     }
     @Test
     void whenTokenHasUnsupportedSignature_ValidationFalse() {
-        assertFalse(jwtTokenProvider.validateToken(generateTokenWithUnsupportedSignature(key)));
+        assertFalse(tokenProvider.validateToken(generateTokenWithUnsupportedSignature(key)));
     }
     @Test
     void whenTokenHasInvalidSignature_ValidationFalse() {
-        assertFalse(jwtTokenProvider.validateToken(generateTokenWithInvalidSignature(key)));
+        assertFalse(tokenProvider.validateToken(generateTokenWithInvalidSignature(key)));
     }
     @Test
     void whenTokenHasEmptyClaims_ValidationFalse() {
-        assertFalse(jwtTokenProvider.validateToken(generateTokenWithEmptyClaims(key)));
+        assertFalse(tokenProvider.validateToken(generateTokenWithEmptyClaims(key)));
     }
 }
