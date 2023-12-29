@@ -61,8 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authenticateUser(request, token);
             filterChain.doFilter(request, response);
         } else {
-            jwtAuthenticationEntryPoint.commence(request, response, new InsufficientAuthenticationException(
-                    messageService.getMessage("unauthorized.token.invalid")));
+            handleInvalidToken(request, response);
         }
     }
     private void handleInvalidToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
