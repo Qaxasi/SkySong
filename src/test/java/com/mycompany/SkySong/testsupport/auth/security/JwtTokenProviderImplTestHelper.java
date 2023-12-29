@@ -1,13 +1,19 @@
 package com.mycompany.SkySong.testsupport.auth.security;
 
+import com.mycompany.SkySong.auth.security.DateProvider;
+import com.mycompany.SkySong.auth.security.JwtTokenProvider;
+import com.mycompany.SkySong.auth.security.JwtTokenProviderImplTest;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.Authentication;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+
+import static org.mockito.Mockito.when;
 
 public class JwtTokenProviderImplTestHelper {
     private static final long EXPIRATION_MS = 1000L;
@@ -53,5 +59,10 @@ public class JwtTokenProviderImplTestHelper {
                 .setSubject("testUser")
                 .compact();
         return token + "invalid";
+    }
+    private String generateTestToken(Authentication auth, JwtTokenProvider tokenProvider, DateProvider dateProvider) {
+        when(auth.getName()).thenReturn("user");
+        when(dateProvider.getCurrentDate()).thenReturn(getCurrentDate());
+        return tokenProvider.generateToken(auth);
     }
 }
