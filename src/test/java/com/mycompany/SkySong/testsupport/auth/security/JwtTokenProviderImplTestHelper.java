@@ -2,7 +2,6 @@ package com.mycompany.SkySong.testsupport.auth.security;
 
 import com.mycompany.SkySong.auth.security.DateProvider;
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
-import com.mycompany.SkySong.auth.security.JwtTokenProviderImplTest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +13,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class JwtTokenProviderImplTestHelper {
@@ -70,5 +70,9 @@ public class JwtTokenProviderImplTestHelper {
     }
     private static Claims getClaimsFromToken(String token, JwtTokenProvider tokenProvider) {
         return tokenProvider.getClaimsFromToken(token);
+    }
+    public static void assertUsernameInToken(String username, String token, JwtTokenProvider tokenProvider) {
+        Claims claims = getClaimsFromToken(token, tokenProvider);
+        assertEquals(username, claims.getSubject());
     }
 }
