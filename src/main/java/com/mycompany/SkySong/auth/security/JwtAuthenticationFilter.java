@@ -81,6 +81,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             ));
         }
     }
+    private String extractToken(HttpServletRequest request) {
+        return cookieRetriever.getCookie(request, "auth_token")
+                .map(Cookie::getValue)
+                .orElse(null);
+    }
 
 
     @Override
