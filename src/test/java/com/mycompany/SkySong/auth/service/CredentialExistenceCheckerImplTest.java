@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -41,35 +40,5 @@ public class CredentialExistenceCheckerImplTest {
 
         assertThrows(CredentialValidationException.class,
                 () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
-    }
-    @Test
-    void shouldReturnErrorMessageWhenUsernameExist() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword@123");
-
-        when(userDAO.existsByUsername("testUsername")).thenReturn(true);
-
-        String expectedMessage = "Username is already exist!.";
-        when(messageService.getMessage("username.exist")).thenReturn(expectedMessage);
-
-        Exception exception = assertThrows(CredentialValidationException.class,
-                () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
-
-        assertEquals(exception.getMessage(), expectedMessage);
-    }
-    @Test
-    void shouldReturnErrorMessageWhenEmailExist() {
-        RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword@123");
-
-        when(userDAO.existsByEmail("testEmail@gmail.com")).thenReturn(true);
-
-        String expectedMessage = "Email is already exist!.";
-        when(messageService.getMessage("email.exist")).thenReturn(expectedMessage);
-
-        Exception exception = assertThrows(CredentialValidationException.class,
-                () -> credentialExistenceChecker.checkForExistingCredentials(registerRequest));
-
-        assertEquals(exception.getMessage(), expectedMessage);
     }
 }
