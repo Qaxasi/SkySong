@@ -20,15 +20,15 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class LoginServiceImplTest {
     @InjectMocks
-    private LoginServiceImpl loginService;
+    private LoginServiceImpl login;
     @Mock
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider tokenProvider;
     @Mock
-    private AuthenticationManager authenticationManager;
+    private AuthenticationManager authManager;
     @Mock
-    private Authentication authentication;
+    private Authentication auth;
     @Mock
-    private ApplicationMessageService messageService;
+    private ApplicationMessageService message;
     @Test
     void shouldReturnTokenOnSuccessfulLogin() {
         LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
