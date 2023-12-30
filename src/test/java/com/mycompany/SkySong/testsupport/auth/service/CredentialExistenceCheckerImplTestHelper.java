@@ -22,4 +22,17 @@ public class CredentialExistenceCheckerImplTestHelper {
         assertThrows(exception,
                 () -> checker.checkForExistingCredentials(request));
     }
+    public static void assertEmailException(UserDAO userDAO,
+                                            CredentialExistenceChecker checker,
+                                            String email,
+                                            boolean existEmail,
+                                            Class<? extends Exception> exception) {
+
+        RegisterRequest request = new RegisterRequest("User", email, "Password#3");
+
+        when(userDAO.existsByEmail(email)).thenReturn(existEmail);
+
+        assertThrows(exception,
+                () -> checker.checkForExistingCredentials(request));
+    }
 }
