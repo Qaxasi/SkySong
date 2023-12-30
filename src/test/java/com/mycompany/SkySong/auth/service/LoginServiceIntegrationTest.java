@@ -74,7 +74,7 @@ public class LoginServiceIntegrationTest {
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
-    void whenValidCre_ReturnCorrectUsernameInAuth() {
+    void whenValidCredentials_ReturnCorrectUsernameInAuth() {
         assertUserAuthWithUsername("User", login);
     }
 }
