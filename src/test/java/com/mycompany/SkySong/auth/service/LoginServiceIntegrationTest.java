@@ -37,16 +37,11 @@ public class LoginServiceIntegrationTest {
     private DatabaseHelper databaseHelper;
     @BeforeEach
     void init() throws Exception {
-        try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/test-data-setup.sql"));
-        }
+        databaseHelper.setup("data_sql/test-data-setup.sql");
     }
     @AfterEach
     void cleanup() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update("DELETE FROM user_roles");
-        jdbcTemplate.update("DELETE FROM users");
-        jdbcTemplate.update("DELETE FROM roles");
+        databaseHelper.removeUsersAndRoles();
     }
     @Test
     void shouldReturnValidTokenAfterSuccessfulLogin() {
