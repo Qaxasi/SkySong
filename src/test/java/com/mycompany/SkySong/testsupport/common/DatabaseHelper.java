@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.auth.service;
+package com.mycompany.SkySong.testsupport.common;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
