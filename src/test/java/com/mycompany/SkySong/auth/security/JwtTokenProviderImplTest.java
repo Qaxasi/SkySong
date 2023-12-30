@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.security;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,13 +9,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 
-
 import java.security.Key;
 import java.util.Base64;
-import java.util.Date;
 
 import static com.mycompany.SkySong.testsupport.auth.security.JwtTokenProviderImplTestHelper.*;
-import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,27 +42,16 @@ public class JwtTokenProviderImplTest {
         assertTrue(tokenProvider.validateToken(generateValidToken(mockAuth, tokenProvider, dateProvider)));
     }
     @Test
-    void shouldRetrieveUsernameFromValidToken() {
-        when(mockAuth.getName()).thenReturn("testUser");
+    void whenValidToken_RetrieveUsername() {
+        String token = generateValidToken(mockAuth, tokenProvider, dateProvider);
 
-        when(dateProvider.getCurrentDate()).thenReturn(new Date());
-
-        String token = tokenProvider.generateToken(mockAuth);
-        Claims claims = tokenProvider.getClaimsFromToken(token);
-        String retrieveUsername = claims.getSubject();
-
-        assertEquals("testUser", retrieveUsername);
+        assertUsernameInToken("user", token, tokenProvider);
     }
     @Test
-    void shouldRetrieveExpirationTimeFromToken() {
-        when(mockAuth.getName()).thenReturn("testUser");
+    void whenValidToken_RetrieveExpirationTime() {
+        String token = generateValidToken(mockAuth, tokenProvider, dateProvider);
 
-        when(dateProvider.getCurrentDate()).thenReturn(new Date());
-
-        String token = tokenProvider.generateToken(mockAuth);
-        Claims claims = tokenProvider.getClaimsFromToken(token);
-
-        assertNotNull(claims.getExpiration());
+        assertTokenHasExpiration(token, tokenProvider);
     }
     @Test
     void whenExpiredToken_ValidationFalse() {
