@@ -46,7 +46,7 @@ public class LoginServiceIntegrationTest {
     }
     @Test
     void whenLoginSuccess_ReturnValidToken() {
-        String token = validLogin(login);
+        String token = login.login(validRequest);
         assertTrue(tokenProvider.validateToken(token));
     }
     @Test
