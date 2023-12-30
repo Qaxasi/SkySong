@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
+import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,8 @@ public class LoginServiceIntegrationTest {
     private DataSource dataSource;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private DatabaseHelper databaseHelper;
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
