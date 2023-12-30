@@ -45,15 +45,18 @@ public class LoginServiceIntegrationTest {
     }
     @Test
     void whenInvalidPassword_ThrowException() {
-        assertLoginFailureWithMessage(login, invalidPassword, "Incorrect username/email or password.");
+        assertLoginFailureWithMessage(
+                login, invalidPassword, BadCredentialsException.class, "Incorrect username/email or password.");
     }
     @Test
     void whenInvalidEmail_ThrowException() {
-        assertLoginFailureWithMessage(login, invalidEmail, "Incorrect username/email or password.");
+        assertLoginFailureWithMessage(
+                login, invalidEmail, BadCredentialsException.class, "Incorrect username/email or password.");
     }
     @Test
     void whenInvalidUsername_ThrowException() {
-        assertLoginFailureWithMessage(login, invalidUsername, "Incorrect username/email or password.");
+        assertLoginFailureWithMessage(
+                login, invalidUsername, BadCredentialsException.class, "Incorrect username/email or password.");
     }
     @Test
     void whenInvalidCredentials_NotSetAuthContext() {
