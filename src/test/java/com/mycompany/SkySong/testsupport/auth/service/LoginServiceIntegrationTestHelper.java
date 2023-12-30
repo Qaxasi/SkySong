@@ -21,8 +21,9 @@ public class LoginServiceIntegrationTestHelper {
 
         assertEquals(username, authentication.getName());
     }
-    public static void assertLoginFailureWithMessage(LoginService login, LoginRequest request, String message) {
-        Exception exception = assertThrows(BadCredentialsException.class, () -> login.login(request));
+    public static void assertLoginFailureWithMessage(LoginService login, LoginRequest request,
+                                                     Class<? extends Exception> expectedException, String message) {
+        Exception exception = assertThrows(expectedException, () -> login.login(request));
         assertEquals(message, exception.getMessage());
     }
 }
