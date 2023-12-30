@@ -77,15 +77,4 @@ public class LoginServiceIntegrationTest {
     void whenValidCre_ReturnCorrectUsernameInAuth() {
         assertUserAuthWithUsername("User", login);
     }
-//    @Test
-//    void shouldReturnErrorMessageAfterLoginWithInvalidCredentials() {
-//        LoginRequest loginRequest = new LoginRequest(
-//                "testWrongUsername", "testWrongPassword@123");
-//
-//        String expectedMessage = "Incorrect username/email or password.";
-//
-//        Exception exception = assertThrows(BadCredentialsException.class, () -> loginService.login(loginRequest));
-//
-//        assertEquals(expectedMessage, exception.getMessage());
-//    }
 }
