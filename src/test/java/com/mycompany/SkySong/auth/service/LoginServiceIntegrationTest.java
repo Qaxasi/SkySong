@@ -73,16 +73,10 @@ public class LoginServiceIntegrationTest {
 
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
-//    @Test
-//    void shouldReturnCorrectUsernameInAuthenticationWhenCredentialsAreValid() {
-//        LoginRequest loginRequest = new LoginRequest("testUsername", "testPassword@123");
-//
-//        loginService.login(loginRequest);
-//
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        assertEquals(loginRequest.usernameOrEmail(), authentication.getName());
-//    }
+    @Test
+    void whenValidCre_ReturnCorrectUsernameInAuth() {
+        assertUserAuthWithUsername("User", login);
+    }
 //    @Test
 //    void shouldReturnErrorMessageAfterLoginWithInvalidCredentials() {
 //        LoginRequest loginRequest = new LoginRequest(
