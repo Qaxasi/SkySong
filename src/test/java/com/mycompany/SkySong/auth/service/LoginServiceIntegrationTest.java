@@ -26,13 +26,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 public class LoginServiceIntegrationTest {
     @Autowired
-    private LoginService loginService;
+    private LoginService login;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider tokenProvider;
     @Autowired
     private DataSource dataSource;
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthenticationManager authManager;
     @Autowired
     private DatabaseHelper databaseHelper;
     @BeforeEach
