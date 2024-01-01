@@ -34,10 +34,4 @@ class LoginServiceImpl implements LoginService {
             throw new BadCredentialsException(messageService.getMessage("login.failure"));
         }
     }
-
-    private Authentication authenticationUser(LoginRequest loginRequest) {
-        return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.usernameOrEmail(), loginRequest.password()));
-    }
 }
