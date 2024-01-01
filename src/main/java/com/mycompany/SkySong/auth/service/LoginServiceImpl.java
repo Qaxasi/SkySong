@@ -5,7 +5,6 @@ import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ class LoginServiceImpl implements LoginService {
     @Override
     public String login(LoginRequest loginRequest) {
         try {
-            Authentication authentication = authenticationUser(loginRequest);
+            Authentication authentication = userAuth.authenticateUser(loginRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return jwtTokenProvider.generateToken(authentication);
         } catch (BadCredentialsException e) {
