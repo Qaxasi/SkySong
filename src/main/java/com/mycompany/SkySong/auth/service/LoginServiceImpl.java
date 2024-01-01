@@ -4,7 +4,6 @@ import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,10 +15,12 @@ import org.springframework.stereotype.Service;
 class LoginServiceImpl implements LoginService {
     private final JwtTokenProvider jwtTokenProvider;
     private final ApplicationMessageService messageService;
+    private final UserAuthenticationService userAuth;
     public LoginServiceImpl(JwtTokenProvider jwtTokenProvider,
-                            ApplicationMessageService messageService) {
+                            ApplicationMessageService messageService, UserAuthenticationService userAuth) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.messageService = messageService;
+        this.userAuth = userAuth;
     }
 
     @Override
