@@ -25,21 +25,21 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetails;
     private final CookieRetriever cookieRetriever;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final ApplicationMessageService messageService;
+    private final JwtAuthenticationEntryPoint authEntryPoint;
+    private final ApplicationMessageService message;
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
-                                   UserDetailsService userDetailsService,
+                                   UserDetailsService userDetails,
                                    CookieRetriever cookieRetriever,
-                                   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                                   ApplicationMessageService messageService) {
+                                   JwtAuthenticationEntryPoint authEntryPoint,
+                                   ApplicationMessageService message) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.userDetailsService = userDetailsService;
+        this.userDetails = userDetails;
         this.cookieRetriever = cookieRetriever;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.messageService = messageService;
+        this.authEntryPoint = authEntryPoint;
+        this.message = message;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
     private void handleInvalidToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        jwtAuthenticationEntryPoint.commence(request, response, new InsufficientAuthenticationException(
+        authEntryPoint.commence(request, response, new InsufficientAuthenticationException(
                 messageService.getMessage("unauthorized.token.invalid")));
     }
     private void authenticateUser(HttpServletRequest request, String token) {
@@ -73,7 +73,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String username = claims.getSubject();
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = this.userDetails.loadUserByUsername(username);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
