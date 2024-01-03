@@ -1,4 +1,10 @@
 package com.mycompany.SkySong.auth.security;
 
-public class TokenGeneratorImpl {
+import org.springframework.security.core.Authentication;
+
+public class TokenGeneratorImpl implements TokenGenerator {
+    @Override
+    public String generateToken(Authentication authentication) {
+        return null;
+    }
 }
