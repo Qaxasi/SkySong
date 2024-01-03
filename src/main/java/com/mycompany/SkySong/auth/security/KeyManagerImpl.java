@@ -1,4 +1,10 @@
 package com.mycompany.SkySong.auth.security;
 
-public class KeyManagerImpl {
+import java.security.Key;
+
+public class KeyManagerImpl implements KeyManager {
+    @Override
+    public Key getKey() {
+        return null;
+    }
 }
