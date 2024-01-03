@@ -1,8 +1,11 @@
 package com.mycompany.SkySong.auth.security;
 
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class TokenGeneratorImpl implements TokenGenerator {
@@ -19,6 +22,15 @@ public class TokenGeneratorImpl implements TokenGenerator {
     }
     @Override
     public String generateToken(Authentication authentication) {
-        return null;
+        String username = authentication.getName();
+        Date currentDate = dateProvider.getCurrentDate();
+        Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
+
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(currentDate)
+                .setExpiration(expireDate)
+                .signWith(key.getKey())
+                .compact();
     }
 }
