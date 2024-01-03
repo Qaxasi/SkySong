@@ -75,12 +75,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         UserDetails userDetails = this.userDetails.loadUserByUsername(username);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
 
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authToken);
     }
     private String extractToken(HttpServletRequest request) {
         return cookieRetriever.getCookie(request, "auth_token")
