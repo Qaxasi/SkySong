@@ -1,14 +1,16 @@
 package com.mycompany.SkySong.auth.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TokenValidatorImpl implements TokenValidator {
-    private final KeyManager keyManager;
+    private final KeyManager key;
     private final JwtExceptionHandler jwtExceptionHandler;
 
-    public TokenValidatorImpl(KeyManager keyManager, JwtExceptionHandler jwtExceptionHandler) {
-        this.keyManager = keyManager;
+    public TokenValidatorImpl(KeyManager key, JwtExceptionHandler jwtExceptionHandler) {
+        this.key = key;
         this.jwtExceptionHandler = jwtExceptionHandler;
     }
     @Override
