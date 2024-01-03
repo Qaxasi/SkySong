@@ -27,15 +27,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final CookieRetriever cookieRetriever;
     private final JwtAuthenticationEntryPoint authEntryPoint;
     private final ApplicationMessageService message;
+    private final ClaimsExtractor extractor;
+    private final TokenValidator validator;
 
     public JwtAuthenticationFilter(UserDetailsService userDetails,
                                    CookieRetriever cookieRetriever,
                                    JwtAuthenticationEntryPoint authEntryPoint,
-                                   ApplicationMessageService message) {
+                                   ApplicationMessageService message, ClaimsExtractor extractor, TokenValidator validator) {
         this.userDetails = userDetails;
         this.cookieRetriever = cookieRetriever;
         this.authEntryPoint = authEntryPoint;
         this.message = message;
+        this.extractor = extractor;
+        this.validator = validator;
     }
 
     @Override
@@ -62,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
     private void handleInvalidToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         authEntryPoint.commence(request, response, new InsufficientAuthenticationException(
-                messageService.getMessage("unauthorized.token.invalid")));
+                message.getMessage("unauthorized.token.invalid")));
     }
     private void authenticateUser(HttpServletRequest request, String token) {
         Claims claims = jwtTokenProvider.getClaimsFromToken(token);
