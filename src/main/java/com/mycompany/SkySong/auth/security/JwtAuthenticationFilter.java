@@ -23,19 +23,15 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-    private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetails;
     private final CookieRetriever cookieRetriever;
     private final JwtAuthenticationEntryPoint authEntryPoint;
     private final ApplicationMessageService message;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
-                                   UserDetailsService userDetails,
+    public JwtAuthenticationFilter(UserDetailsService userDetails,
                                    CookieRetriever cookieRetriever,
                                    JwtAuthenticationEntryPoint authEntryPoint,
                                    ApplicationMessageService message) {
-        this.jwtTokenProvider = jwtTokenProvider;
         this.userDetails = userDetails;
         this.cookieRetriever = cookieRetriever;
         this.authEntryPoint = authEntryPoint;
