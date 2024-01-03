@@ -69,7 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 message.getMessage("unauthorized.token.invalid")));
     }
     private void authenticateUser(HttpServletRequest request, String token) {
-        Claims claims = jwtTokenProvider.getClaimsFromToken(token);
+        Claims claims = extractor.getClaimsFromToken(token);
 
         String username = claims.getSubject();
 
@@ -88,7 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .orElse(null);
     }
     private boolean isValidToken(String token) {
-        return StringUtils.hasText(token) && jwtTokenProvider.validateToken(token);
+        return StringUtils.hasText(token) && validator.validateToken(token);
     }
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
