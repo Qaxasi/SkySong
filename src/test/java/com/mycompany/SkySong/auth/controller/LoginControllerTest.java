@@ -16,9 +16,7 @@ import static com.mycompany.SkySong.testsupport.auth.controller.CookieAssertions
 import static com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper.*;
 import static com.mycompany.SkySong.testsupport.controller.PostRequestAssertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 public class LoginControllerTest {
     @Autowired
     private MockMvc mockMvc;
