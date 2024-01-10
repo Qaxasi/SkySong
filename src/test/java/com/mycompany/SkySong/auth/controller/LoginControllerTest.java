@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.testsupport.BaseIT;
+import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,8 @@ public class LoginControllerTest extends BaseIT {
     private MockMvc mockMvc;
     @MockBean
     private UserDAO userDAO;
+    @Autowired
+    private DatabaseHelper databaseHelper;
     private final String endpoint = "/api/v1/users/login";
     @BeforeEach
     void init() throws Exception {
