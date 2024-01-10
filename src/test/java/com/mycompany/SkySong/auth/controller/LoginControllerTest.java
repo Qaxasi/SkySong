@@ -24,10 +24,6 @@ public class LoginControllerTest extends BaseIT {
     @MockBean
     private UserDAO userDAO;
     private final String endpoint = "/api/v1/users/login";
-    @BeforeEach
-    void setUp() {
-        setup(userDAO);
-    }
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
         assertPostStatus(mockMvc, endpoint, validCredentials, 200);
