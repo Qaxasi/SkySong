@@ -10,10 +10,6 @@ INSERT INTO users (username, email, password)
     VALUES('testAdmin', 'testAdmin@gmail.com',
      '$2a$10$WeBMjqOaJviwm/DV1BRvdOl19JrCMsJyrPUCFDaP.FnxJ.sqwSFiW');
 
-INSERT INTO roles (name)
-    VALUES('ROLE_USER'),
-          ('ROLE_ADMIN');
-
 INSERT INTO user_roles (user_id, role_id)
 SELECT u.id, r.id
 FROM users u, roles r
