@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
+import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import static com.mycompany.SkySong.testsupport.auth.controller.LoginControllerH
 import static com.mycompany.SkySong.testsupport.controller.PostRequestAssertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 @AutoConfigureMockMvc
-public class LoginControllerTest {
+public class LoginControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
