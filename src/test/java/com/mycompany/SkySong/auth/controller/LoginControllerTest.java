@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.testsupport.BaseIT;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,15 @@ public class LoginControllerTest extends BaseIT {
     @MockBean
     private UserDAO userDAO;
     private final String endpoint = "/api/v1/users/login";
+    @BeforeEach
+    void init() throws Exception {
+        databaseHelper.setup("data_sql/test-tables-setup.sql");
+        databaseHelper.setup("data_sql/test-data-setup.sql");
+    }
+    @AfterEach
+    void cleanup() {
+        databaseHelper.removeUsersAndRoles();
+    }
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
         assertPostStatus(mockMvc, endpoint, validCredentials, 200);
