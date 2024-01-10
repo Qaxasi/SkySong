@@ -23,8 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LoginControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private UserDAO userDAO;
     @Autowired
     private DatabaseHelper databaseHelper;
     private final String endpoint = "/api/v1/users/login";
