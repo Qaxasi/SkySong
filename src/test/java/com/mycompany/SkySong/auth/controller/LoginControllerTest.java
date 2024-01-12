@@ -1,87 +1,103 @@
 package com.mycompany.SkySong.auth.controller;
 
-import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.testsupport.BaseIT;
+import com.mycompany.SkySong.testsupport.auth.controller.LoginHelper;
 import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.Map;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import static com.mycompany.SkySong.testsupport.auth.controller.CookieAssertions.*;
-import static com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper.*;
-import static com.mycompany.SkySong.testsupport.controller.PostRequestAssertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 @AutoConfigureMockMvc
 public class LoginControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private DatabaseHelper databaseHelper;
-    private final String endpoint = "/api/v1/users/login";
-    @BeforeEach
-    void init() throws Exception {
-        databaseHelper.setup("data_sql/test-tables-setup.sql");
-        databaseHelper.setup("data_sql/test-data-setup.sql");
-    }
-    @AfterEach
-    void cleanup() {
-        databaseHelper.removeUsersAndRoles();
-    }
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
-        assertPostStatus(mockMvc, endpoint, validCredentials, 200);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.validCredentials))
+                .andExpect(status().is(200));
     }
     @Test
     void whenLoginSuccess_TokenCookieIsSet() throws Exception {
-        assertCookieExist(mockMvc, endpoint, validCredentials);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.validCredentials))
+                .andExpect(cookie().exists("auth_token"));
     }
     @Test
     void whenLoginFails_TokenCookieIsNotSet() throws Exception {
-        assertCookieNotExist(mockMvc, endpoint, invalidCredentials);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.invalidCredentials))
+                .andExpect(cookie().doesNotExist("auth_token"));
     }
     @Test
     void whenUserLogsIn_TokenCookieIsSetHttpOnly() throws Exception {
-        assertCookieIsHttpOnly(mockMvc, endpoint, validCredentials);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.validCredentials))
+                .andExpect(cookie().httpOnly("auth_token", true));
     }
     @Test
     void whenUserLogsIn_TokenCookieExpirationIsSetCorrectly() throws Exception {
-        assertCookieMaxAge(mockMvc, endpoint, validCredentials);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.validCredentials))
+                .andExpect(cookie().maxAge("auth_token", 86400));
     }
     @Test
     void whenUserLogsIn_TokenCookieIsMarkedAsSecure() throws Exception {
-        assertCookieIsSecure(mockMvc, endpoint, validCredentials);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.validCredentials))
+                .andExpect(cookie().secure("auth_token", true));
     }
     @Test
     void whenLoginSuccess_ReturnNotEmptyTokenField() throws Exception {
-        assertPostRequestFields(
-                mockMvc, endpoint, validCredentials,
-                jsonPath("$.accessToken").isNotEmpty());
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.validCredentials))
+                .andExpect(jsonPath("$.accessToken").isNotEmpty());
     }
     @Test
     void whenInvalidLogin_ReturnUnauthorizedStatus() throws Exception {
-        assertPostStatus(mockMvc, endpoint, invalidCredentials, 401);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.invalidCredentials))
+                .andExpect(status().is(401));
     }
     @Test
     void whenMalformedJson_ReturnBadRequest() throws Exception {
-        assertPostStatus(mockMvc, endpoint, malformedJson, 400);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.malformedJson))
+                .andExpect(status().is(400));
     }
     @Test
     public void whenInvalidCredentials_ReturnBadRequest() throws Exception {
-        assertPostStatus(mockMvc, endpoint, emptyCredentials, 400);
+        mockMvc.perform(post(LoginHelper.loginUri)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(LoginHelper.emptyCredentials))
+                .andExpect(status().is(400));
     }
     @Test
     void whenEmptyCredentials_ReturnCorrectErrorMessage() throws Exception {
-        assertPostJsonResponse(
-                mockMvc, endpoint, emptyCredentials,
-                Map.of("$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
-                        "$.errors.password", "The password field cannot be empty"));
+        ResultActions actions = mockMvc.perform(post(LoginHelper.loginUri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(LoginHelper.emptyCredentials));
+
+        actions.andExpect(jsonPath("$.errors.usernameOrEmail")
+                        .value("The usernameOrEmail field cannot be empty"))
+                .andExpect(jsonPath("$.errors.password")
+                        .value("The password field cannot be empty"));
     }
 }
