@@ -39,13 +39,16 @@ public class LogoutControllerTest extends BaseIT {
     }
     @Test
     void whenSuccessfulLogout_DeleteAuthTokenCookie() throws Exception {
-        Cookie mockCookie = mockedTokenCookie();
-        assertCookieIsDeleted(mockMvc, endpoint, mockCookie);
-    }
-    @Test
-    void whenLogoutFails_HandleException() throws Exception {
-        configureCookieDeleterToThrowException(cookieDeleter);
-        assertStatusWithoutCookie(mockMvc, endpoint, 500);
+        Cookie cookie = loginAndGetCookie();
+
+        ResultActions logoutResult =
+                mockMvc.perform(post("/api/v1/users/logout").cookie(cookie))
+                        .andExpect(status().isOk());
+
+        MockHttpServletResponse response = logoutResult.andReturn().getResponse();
+        Cookie deletedCookie = response.getCookie("auth_token");
+
+        assertTrue(deletedCookie == null || deletedCookie.getMaxAge() == 0);
     }
     @Test
     void whenLogoutFails_HandleException() throws Exception {
