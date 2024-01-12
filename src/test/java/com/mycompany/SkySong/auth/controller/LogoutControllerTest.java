@@ -57,7 +57,8 @@ public class LogoutControllerTest extends BaseIT {
     }
     @Test
     void whenLogoutWithoutCookie_ReturnStatusOk() throws Exception {
-        assertStatusWithoutCookie(mockMvc, endpoint,200);
+        mockMvc.perform(post("/api/v1/users/logout"))
+                .andExpect(status().is(200));
     }
 
     private Cookie loginAndGetCookie() throws Exception {
