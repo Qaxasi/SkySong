@@ -32,13 +32,20 @@ public class LogoutControllerTest extends BaseIT {
     private final String endpoint = "/api/v1/users/logout";
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
-        Cookie mockCookie = mockedTokenCookie();
-        assertStatus(mockMvc, endpoint, mockCookie, 200);
+        Cookie cookie = loginAndGetCookie();
+
+        mockMvc.perform(post("/api/v1/users/logout").cookie(cookie))
+                .andExpect(status().is(200));
     }
     @Test
     void whenSuccessfulLogout_DeleteAuthTokenCookie() throws Exception {
         Cookie mockCookie = mockedTokenCookie();
         assertCookieIsDeleted(mockMvc, endpoint, mockCookie);
+    }
+    @Test
+    void whenLogoutFails_HandleException() throws Exception {
+        configureCookieDeleterToThrowException(cookieDeleter);
+        assertStatusWithoutCookie(mockMvc, endpoint, 500);
     }
     @Test
     void whenLogoutFails_HandleException() throws Exception {
