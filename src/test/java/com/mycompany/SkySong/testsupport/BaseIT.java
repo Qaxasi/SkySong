@@ -12,7 +12,7 @@ public class BaseIT {
 
     static {
         container = new MySQLContainer<>("mysql:8.2.0")
-                .withInitScript("data_sql/test-data-setup.sql")
+                .withInitScript("data_sql/test-setup.sql")
                 .withReuse(true);
 
         container.start();
