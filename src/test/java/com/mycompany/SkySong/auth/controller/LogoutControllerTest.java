@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LogoutControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    private final String endpoint = "/api/v1/users/logout";
+    private final String logoutUri = "/api/v1/users/logout";
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
         Cookie cookie = loginAndGetCookie();
