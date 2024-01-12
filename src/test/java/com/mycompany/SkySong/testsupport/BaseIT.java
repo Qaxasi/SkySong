@@ -2,21 +2,23 @@ package com.mycompany.SkySong.testsupport;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class BaseIT {
-    @Container
-    private static MySQLContainer<?> container = new MySQLContainer<>("mysql:8.2.0");
 
-    @DynamicPropertySource
-    public static void containerConfig(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", container::getJdbcUrl);
-        registry.add("spring.datasource.username", container::getUsername);
-        registry.add("spring.datasource.password", container::getPassword);
+    private static final MySQLContainer<?> container;
+
+    static {
+        container = new MySQLContainer<>("mysql:8.2.0")
+                .withInitScript("data_sql/test-data-setup.sql")
+                .withReuse(true);
+
+        container.start();
+
+        System.setProperty("spring.datasource.url", container.getJdbcUrl());
+        System.setProperty("spring.datasource.username", container.getUsername());
+        System.setProperty("spring.datasource.password", container.getPassword());
     }
 }
