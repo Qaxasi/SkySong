@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.testsupport.auth.controller;
 
-public class RegistrationControllerTestHelper {
+public class RegistrationHelper {
     public static final String VALID_REQUEST =
             "{\"username\": \"User\", \"email\": \"mail@mail.com\", \"password\": \"Password#3\"}";
     public static final String INVALID_CREDENTIALS =
