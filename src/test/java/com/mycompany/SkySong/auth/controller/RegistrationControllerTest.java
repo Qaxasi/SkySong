@@ -7,6 +7,7 @@ import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -19,8 +20,7 @@ import static com.mycompany.SkySong.testsupport.auth.controller.RegistrationCont
 import static com.mycompany.SkySong.testsupport.controller.PostRequestAssertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(RegistrationController.class)
-@Import(SecurityConfig.class)
+@AutoConfigureMockMvc
 public class RegistrationControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
