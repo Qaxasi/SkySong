@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.testsupport.auth.controller;
 
 public class RegistrationHelper {
+    public static final String registerUri = "/api/v1/users/register";
     public static final String validRequest =
             "{\"username\": \"New\", \"email\": \"new@mail.com\", \"password\": \"Password#3\"}";
     public static final String invalidRequest =
