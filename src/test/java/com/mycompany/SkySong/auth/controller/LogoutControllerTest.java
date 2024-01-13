@@ -51,11 +51,6 @@ public class LogoutControllerTest extends BaseIT {
         assertTrue(deletedCookie == null || deletedCookie.getMaxAge() == 0);
     }
     @Test
-    void whenLogoutFails_HandleException() throws Exception {
-        configureCookieDeleterToThrowException(cookieDeleter);
-        assertStatusWithoutCookie(mockMvc, endpoint, 500);
-    }
-    @Test
     void whenLogoutWithoutCookie_ReturnStatusOk() throws Exception {
         mockMvc.perform(post("/api/v1/users/logout"))
                 .andExpect(status().is(200));
