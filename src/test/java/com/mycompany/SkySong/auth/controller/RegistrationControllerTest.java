@@ -24,20 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RegistrationControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private RegistrationService registration;
-    @MockBean
-    private JwtTokenProvider tokenProvider;
-    @MockBean
-    private UserDetailsService userDetails;
-    @MockBean
-    private JwtAuthenticationEntryPoint authEntryPoint;
-    @MockBean
-    private CustomAccessDeniedHandler accessDeniedHandler;
-    @MockBean
-    private CookieRetriever cookieRetriever;
-    @MockBean
-    private ApplicationMessageService messageService;
     private final String endpoint = "/api/v1/users/register";
     @Test
     void whenRegistrationSuccess_Return201() throws Exception {
