@@ -25,36 +25,36 @@ public class RegistrationControllerTest extends BaseIT {
     @Test
     @Transactional
     void whenRegistrationSuccess_Return201() throws Exception {
-        mockMvc.perform(post(endpoint)
+        mockMvc.perform(post(registrationUri)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(validRequest))
+                        .content(validCredentials))
                 .andExpect(status().is(201));
     }
     @Test
     @Transactional
     void whenRegistrationSuccess_ReturnCorrectFieldName() throws Exception {
-        mockMvc.perform(post(endpoint)
+        mockMvc.perform(post(registrationUri)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(RegistrationHelper.validRequest))
+                        .content(validCredentials))
                 .andExpect(jsonPath("$.message").isNotEmpty());
     }
     @Test
     void whenInvalidCredentials_ReturnBadRequest() throws Exception {
-        mockMvc.perform(post(endpoint)
+        mockMvc.perform(post(registrationUri)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidRequest))
+                        .content(invalidCredentials))
                 .andExpect(status().is(400));
     }
     @Test
     void whenMalformedRequest_ReturnBadRequest() throws Exception {
-        mockMvc.perform(post(endpoint)
+        mockMvc.perform(post(registrationUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(malformedRequest))
                 .andExpect(status().is(400));
     }
     @Test
     void whenEmptyCredentials_ReturnErrorMessages() throws Exception {
-        ResultActions actions = mockMvc.perform(post(endpoint)
+        ResultActions actions = mockMvc.perform(post(registrationUri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(emptyCredentials));
 
