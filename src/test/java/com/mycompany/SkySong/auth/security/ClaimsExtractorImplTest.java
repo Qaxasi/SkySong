@@ -1,4 +1,8 @@
 package com.mycompany.SkySong.auth.security;
 
-public class ClaimsExtractorImplTest {
+import com.mycompany.SkySong.testsupport.BaseIT;
+
+public class ClaimsExtractorImplTest extends BaseIT {
+
+
 }
