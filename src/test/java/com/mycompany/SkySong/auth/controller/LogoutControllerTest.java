@@ -24,7 +24,7 @@ public class LogoutControllerTest extends BaseIT {
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
         Cookie cookie = loginAndGetCookie();
 
-        mockMvc.perform(post("/api/v1/users/logout").cookie(cookie))
+        mockMvc.perform(post(logoutUri).cookie(cookie))
                 .andExpect(status().is(200));
     }
     @Test
@@ -32,7 +32,7 @@ public class LogoutControllerTest extends BaseIT {
         Cookie cookie = loginAndGetCookie();
 
         ResultActions logoutResult =
-                mockMvc.perform(post("/api/v1/users/logout").cookie(cookie))
+                mockMvc.perform(post(logoutUri).cookie(cookie))
                         .andExpect(status().isOk());
 
         MockHttpServletResponse response = logoutResult.andReturn().getResponse();
@@ -42,7 +42,7 @@ public class LogoutControllerTest extends BaseIT {
     }
     @Test
     void whenLogoutWithoutCookie_ReturnStatusOk() throws Exception {
-        mockMvc.perform(post("/api/v1/users/logout"))
+        mockMvc.perform(post(logoutUri))
                 .andExpect(status().is(200));
     }
 
