@@ -1,8 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.controller.LoginHelper;
-import com.mycompany.SkySong.testsupport.auth.controller.RegistrationHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,10 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 import static com.mycompany.SkySong.testsupport.auth.controller.RegistrationHelper.*;
-import static com.mycompany.SkySong.testsupport.controller.PostRequestAssertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
