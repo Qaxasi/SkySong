@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RegistrationControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    private final String endpoint = "/api/v1/users/register";
     @Test
     @Transactional
     void whenRegistrationSuccess_Return201() throws Exception {
