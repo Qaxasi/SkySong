@@ -4,6 +4,7 @@ import com.mycompany.SkySong.auth.security.*;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.auth.service.RegistrationService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(RegistrationController.class)
 @Import(SecurityConfig.class)
-public class RegistrationControllerTest {
+public class RegistrationControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
