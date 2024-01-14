@@ -4,7 +4,7 @@ import jakarta.servlet.http.Cookie;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CookieAdderImplTestHelper {
+public class CookieAdderTestHelper {
     public static void assertCookieProperties(Cookie cookie, String expectedName, String expectedValue,
                                               int expectedMaxAge, String expectedPath, boolean isHttpOnly,
                                               boolean isSecure) {
