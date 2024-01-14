@@ -12,7 +12,6 @@ import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTes
 import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTestHelper.assertCookieProperties;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 public class CookieAdderImplTest {
 
     @Test
