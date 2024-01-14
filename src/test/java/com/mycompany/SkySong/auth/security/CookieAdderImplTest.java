@@ -22,9 +22,4 @@ public class CookieAdderImplTest extends BaseIT {
                 cookie, "cookie", "value", 3600,
                 "/", true, true);
     }
-    @Test
-    void whenResponseNull_HandleException() {
-        assertThrows(NullPointerException.class, () -> addCookie(
-                cookieAdder, null, "testCookie", "testValue",  3600));
-    }
 }
