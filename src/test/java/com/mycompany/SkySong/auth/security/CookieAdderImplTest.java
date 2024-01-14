@@ -13,10 +13,15 @@ public class CookieAdderImplTest {
 
     @Test
     void whenCreateCookie_HaveCorrectProperties() {
-        Cookie cookie = addCookie(cookieAdder, response, "cookie", "value", 3600);
-        assertCookieProperties(
-                cookie, "cookie", "value", 3600,
-                "/", true, true);
+        CookieAdderImpl cookieAdder = new CookieAdderImpl();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        cookieAdder.addCookie(response, "cookie", "value", 3600);
+
+        Cookie cookie = getCookie(response, "cookie");
+
+        assertCookieProperties(cookie, "cookie", "value",
+                3600, "/", true, true);
     }
     private Cookie getCookie(MockHttpServletResponse response, String name) {
         Cookie[] cookies = response.getCookies();
