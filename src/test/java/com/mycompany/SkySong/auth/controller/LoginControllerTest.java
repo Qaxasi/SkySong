@@ -17,8 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LoginControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private DatabaseHelper databaseHelper;
+
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
         mockMvc.perform(post(LoginHelper.loginUri)
