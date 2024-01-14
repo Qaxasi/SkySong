@@ -8,12 +8,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTestHelper.addCookie;
 import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTestHelper.assertCookieProperties;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CookieAdderImplTest extends BaseIT {
+public class CookieAdderImplTest {
 
     @Test
     void whenCreateCookie_HaveCorrectProperties() {
