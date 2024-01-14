@@ -1,17 +1,12 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.testsupport.BaseIT;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTestHelper.addCookie;
-import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTestHelper.assertCookieProperties;
+import java.util.Arrays;
+
+import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderTestHelper.assertCookieProperties;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CookieAdderImplTest {
@@ -22,5 +17,13 @@ public class CookieAdderImplTest {
         assertCookieProperties(
                 cookie, "cookie", "value", 3600,
                 "/", true, true);
+    }
+    private Cookie getCookie(MockHttpServletResponse response, String name) {
+        Cookie[] cookies = response.getCookies();
+        assertNotNull(cookies);
+        return Arrays.stream(cookies)
+                .filter(c -> name.equals(c.getName()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Cookie not found " + name));
     }
 }
