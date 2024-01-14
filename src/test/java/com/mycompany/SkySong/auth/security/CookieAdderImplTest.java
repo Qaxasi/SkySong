@@ -14,10 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CookieAdderImplTest {
-    @InjectMocks
-    private CookieAdderImpl cookieAdder;
-    @Mock
-    private HttpServletResponse response;
 
     @Test
     void whenCreateCookie_HaveCorrectProperties() {
