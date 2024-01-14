@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.testsupport.BaseIT;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTes
 import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderImplTestHelper.assertCookieProperties;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CookieAdderImplTest {
+public class CookieAdderImplTest extends BaseIT {
 
     @Test
     void whenCreateCookie_HaveCorrectProperties() {
