@@ -11,14 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.mycompany.SkySong.testsupport.auth.security.CookieDeleterImplTestHelper.*;
 
-@ExtendWith(MockitoExtension.class)
 public class CookieDeleterImplTest {
-    @InjectMocks
-    private CookieDeleterImpl cookieDeleter;
-    @Mock
-    private HttpServletRequest request;
-    @Mock
-    private HttpServletResponse response;
 
     @Test
     void whenCookiePresent_Delete() {
