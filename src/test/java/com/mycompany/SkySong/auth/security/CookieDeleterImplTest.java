@@ -35,4 +35,8 @@ public class CookieDeleterImplTest {
         deleteAndGetCookie(cookieDeleter, request, response, "testCookie", cookie);
         assertDeletedCookie(cookie, "testCookie");
     }
+    private void addCookieToRequest(String name, String value) {
+        Cookie cookie = new Cookie(name, value);
+        request.setCookies(cookie);
+    }
 }
