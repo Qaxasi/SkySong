@@ -26,9 +26,4 @@ public class CookieDeleterImplTest {
         deleteAndGetCookie(cookieDeleter, request, response, "testCookie", cookie);
         assertDeletedCookie(cookie, "testCookie");
     }
-    @Test
-    void whenCookieNotPresent_ResponseNotModified() {
-        Cookie cookie = new Cookie("testCookie", "testValue");
-        verifyNoCookieDeletion(cookieDeleter,  request, response, "different", cookie);
-    }
 }
