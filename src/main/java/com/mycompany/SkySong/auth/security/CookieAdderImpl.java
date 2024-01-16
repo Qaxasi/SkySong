@@ -3,7 +3,6 @@ package com.mycompany.SkySong.auth.security;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 class CookieAdderImpl implements CookieAdder {
