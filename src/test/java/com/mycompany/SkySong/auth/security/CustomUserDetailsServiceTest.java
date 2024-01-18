@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +15,7 @@ import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsS
 import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CustomUserDetailsServiceTest {
+public class CustomUserDetailsServiceTest extends BaseIT {
     private CustomUserDetailsService customUserDetailsService;
     private UserDAO userDAO;
     private ApplicationMessageService messageService;
