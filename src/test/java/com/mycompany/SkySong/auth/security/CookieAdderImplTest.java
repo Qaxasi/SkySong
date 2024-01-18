@@ -21,10 +21,11 @@ public class CookieAdderImplTest {
 
     @Test
     void whenCreateCookie_HaveCorrectProperties() {
+        //when
         adder.addCookie(response, "cookie", "value", 3600);
-
         Cookie cookie = getCookie(response, "cookie");
 
+        //then
         assertCookieProperties(cookie, "cookie", "value",
                 3600, "/", true, true);
     }
