@@ -14,13 +14,9 @@ import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsS
 import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 public class CustomUserDetailsServiceTest {
-    @InjectMocks
     private CustomUserDetailsService customUserDetailsService;
-    @Mock
     private UserDAO userDAO;
-    @Mock
     private ApplicationMessageService messageService;
     @Test
     void whenMissingUserByUsername_ThrowException() {
