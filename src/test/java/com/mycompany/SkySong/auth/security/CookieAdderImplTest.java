@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.security;
 
 import jakarta.servlet.http.Cookie;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -10,13 +11,17 @@ import static com.mycompany.SkySong.testsupport.auth.security.CookieAdderTestHel
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CookieAdderImplTest {
+    private CookieAdderImpl adder;
+    private MockHttpServletResponse response;
+    @BeforeEach
+    void setUp() {
+        adder = new CookieAdderImpl();
+        response = new MockHttpServletResponse();
+    }
 
     @Test
     void whenCreateCookie_HaveCorrectProperties() {
-        CookieAdderImpl cookieAdder = new CookieAdderImpl();
-        MockHttpServletResponse response = new MockHttpServletResponse();
-
-        cookieAdder.addCookie(response, "cookie", "value", 3600);
+        adder.addCookie(response, "cookie", "value", 3600);
 
         Cookie cookie = getCookie(response, "cookie");
 
