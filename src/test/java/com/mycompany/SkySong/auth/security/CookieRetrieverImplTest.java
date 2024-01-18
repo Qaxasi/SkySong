@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.util.Optional;
+
 import static com.mycompany.SkySong.testsupport.auth.security.CookieRetrieverImplTestHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,6 +36,9 @@ public class CookieRetrieverImplTest {
         Cookie cookie = new Cookie("cookie", "value");
         request.setCookies(cookie);
 
-        assertEquals(cookie, retriever.getCookie(request, "cookie").orElse(null));
+        Optional<Cookie> retrievedCookie = retriever.getCookie(request, "cookie");
+
+        assertThat(retrievedCookie.isPresent()).isTrue();
+        assertThat(retrievedCookie.get()).isEqualTo(cookie);
     }
 }
