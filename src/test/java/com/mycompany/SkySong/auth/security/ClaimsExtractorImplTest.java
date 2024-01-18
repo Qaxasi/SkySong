@@ -17,11 +17,14 @@ public class ClaimsExtractorImplTest extends BaseIT {
 
     @Test
     void whenTokenExtracted_UsernameMatches() {
+        //given
         String token = loginAndGetToken();
 
+        //when
         Claims claims = claimsExtractor.getClaimsFromToken(token);
         String username = claims.getSubject();
 
+        //then
         assertEquals(username, "User");
     }
 
