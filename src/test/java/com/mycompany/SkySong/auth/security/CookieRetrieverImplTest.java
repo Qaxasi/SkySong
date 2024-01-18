@@ -11,13 +11,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import static com.mycompany.SkySong.testsupport.auth.security.CookieRetrieverImplTestHelper.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CookieRetrieverImplTest {
 
     private CookieRetrieverImpl retriever;
 
-    private HttpServletRequest request;
+    private MockHttpServletRequest request;
     @BeforeEach
     void setUp() {
         retriever = new CookieRetrieverImpl();
@@ -26,12 +27,13 @@ public class CookieRetrieverImplTest {
 
     @Test
     void whenNoCookieInRequest_ReturnOptionalEmpty() {
-        Cookie[] cookies = {new Cookie("cookie", "testValue")};
-        assertCookieNotInRequestReturnsEmptyOptional(cookieRetriever, request, cookies, "different");
+       assertTrue(retriever.getCookie(request, "cookie").isEmpty());
     }
     @Test
     void whenCookiePresentInRequest_ReturnCookie() {
-        Cookie expectedCookie = new Cookie("testCookie", "testValue");
-        assertCookieRetrievedSuccessfully(cookieRetriever, request, expectedCookie, "testCookie");
+        Cookie cookie = new Cookie("cookie", "value");
+        request.setCookies(cookie);
+
+        assertEquals(cookie, retriever.getCookie(request, "cookie").orElse(null));
     }
 }
