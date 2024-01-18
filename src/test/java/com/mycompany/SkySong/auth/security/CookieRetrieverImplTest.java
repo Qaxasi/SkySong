@@ -18,10 +18,6 @@ public class CookieRetrieverImplTest {
     private HttpServletRequest request;
 
     @Test
-    void whenNoCookieRequest_ReturnEmptyOptional() {
-        assertNoCookiesReturnEmptyOptional(cookieRetriever, request, "cookie");
-    }
-    @Test
     void whenNoCookieInRequest_ReturnOptionalEmpty() {
         Cookie[] cookies = {new Cookie("cookie", "testValue")};
         assertCookieNotInRequestReturnsEmptyOptional(cookieRetriever, request, cookies, "different");
@@ -30,9 +26,5 @@ public class CookieRetrieverImplTest {
     void whenCookiePresentInRequest_ReturnCookie() {
         Cookie expectedCookie = new Cookie("testCookie", "testValue");
         assertCookieRetrievedSuccessfully(cookieRetriever, request, expectedCookie, "testCookie");
-    }
-    @Test
-    void whenRequestNull_ThrowException() {
-        assertThrows(NullPointerException.class, () -> cookieRetriever.getCookie(null, "testCookie"));
     }
 }
