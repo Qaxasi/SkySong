@@ -29,7 +29,11 @@ public class CookieRetrieverImplTest {
 
     @Test
     void whenNoCookieInRequest_ReturnOptionalEmpty() {
-       assertTrue(retriever.getCookie(request, "cookie").isEmpty());
+        //when
+        Optional<Cookie> retrievedCookie = retriever.getCookie(request, "cookie");
+
+        //then
+        assertThat(retrievedCookie).isEmpty();
     }
     @Test
     void whenCookiePresentInRequest_ReturnCookie() {
