@@ -34,11 +34,14 @@ public class CookieDeleterImplTest {
     }
     @Test
     void whenCookiePresent_AssertProperDeletion() {
+        //given
         Cookie cookie = new Cookie("cookie", "value");
         request.setCookies(cookie);
 
+        //when
         deleter.deleteCookie(request, response, "cookie");
 
+        //then
         Optional<Cookie> optionalCookie = Arrays.stream(response.getCookies())
                 .filter(c -> "cookie".equals(c.getName()))
                 .findFirst();
