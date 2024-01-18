@@ -11,11 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static com.mycompany.SkySong.testsupport.auth.security.CookieRetrieverImplTestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 public class CookieRetrieverImplTest {
-    @InjectMocks
+
     private CookieRetrieverImpl cookieRetriever;
-    @Mock
+
     private HttpServletRequest request;
 
     @Test
