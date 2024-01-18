@@ -33,7 +33,7 @@ public class CookieDeleterImplTest {
         response = new MockHttpServletResponse();
     }
     @Test
-    void whenCookiePresent_Delete() {
+    void whenCookiePresent_AssertProperDeletion() {
         Cookie cookie = new Cookie("cookie", "value");
         request.setCookies(cookie);
 
