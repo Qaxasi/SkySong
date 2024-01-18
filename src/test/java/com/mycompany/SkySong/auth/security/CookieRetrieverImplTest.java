@@ -33,11 +33,14 @@ public class CookieRetrieverImplTest {
     }
     @Test
     void whenCookiePresentInRequest_ReturnCookie() {
+        //given
         Cookie cookie = new Cookie("cookie", "value");
         request.setCookies(cookie);
 
+        //when
         Optional<Cookie> retrievedCookie = retriever.getCookie(request, "cookie");
 
+        //then
         assertThat(retrievedCookie.isPresent()).isTrue();
         assertThat(retrievedCookie.get()).isEqualTo(cookie);
     }
