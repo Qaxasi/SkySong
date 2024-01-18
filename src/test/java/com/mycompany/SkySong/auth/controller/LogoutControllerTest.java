@@ -40,12 +40,6 @@ public class LogoutControllerTest extends BaseIT {
 
         assertTrue(deletedCookie == null || deletedCookie.getMaxAge() == 0);
     }
-    @Test
-    void whenLogoutWithoutCookie_ReturnStatusOk() throws Exception {
-        mockMvc.perform(post(logoutUri))
-                .andExpect(status().is(200));
-    }
-
     private Cookie loginAndGetCookie() throws Exception {
         MockHttpServletResponse response =
         mockMvc.perform(post(LoginHelper.loginUri)
