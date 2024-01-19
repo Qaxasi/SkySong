@@ -19,7 +19,8 @@ import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomUserDetailsServiceTest extends BaseIT {
-    private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private CustomUserDetailsService detailsService;
 
     @Test
     void whenMissingUserByUsername_ThrowException() {
