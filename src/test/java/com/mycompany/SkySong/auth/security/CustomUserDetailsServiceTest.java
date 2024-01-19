@@ -51,16 +51,20 @@ public class CustomUserDetailsServiceTest extends BaseIT {
     }
     @Test
     void whenLoadedAdminUserByUsername_AssignsUserAndAdminRole() {
+        //when
         UserDetails userDetails = detailsService.loadUserByUsername("testAdmin");
 
+        //then
         assertUserHasAuthorities(userDetails, "ROLE_USER", "ROLE_ADMIN");
     }
     @Test
     void whenLoadedAdminUserByEmail_AssignsUserAndAdminRole() {
-
         //In our implementation, the email can serve as the username
+
+        //when
         UserDetails userDetails = detailsService.loadUserByUsername("testAdmin@mail.com");
 
+        //then
         assertUserHasAuthorities(userDetails, "ROLE_USER", "ROLE_ADMIN");
     }
 }
