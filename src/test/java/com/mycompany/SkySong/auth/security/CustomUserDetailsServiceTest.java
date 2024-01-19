@@ -1,21 +1,12 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.*;
-import static com.mycompany.SkySong.testsupport.common.UserTestConfigurator.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomUserDetailsServiceTest extends BaseIT {
