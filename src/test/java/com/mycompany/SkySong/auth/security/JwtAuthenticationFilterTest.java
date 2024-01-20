@@ -1,25 +1,16 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
 
-import static com.mycompany.SkySong.testsupport.auth.security.JwtAuthenticationFilterTestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.*;
@@ -30,21 +21,17 @@ import static org.mockito.Mockito.verify;
 public class JwtAuthenticationFilterTest {
     @Autowired
     private CustomUserDetailsService userDetails;
-
     @Autowired
     private CookieRetriever retriever;
-
     @Autowired
     private JwtAuthenticationEntryPoint authEntryPoint;
-
     @Autowired
     private ApplicationMessageService message;
-
     @Autowired
     private ClaimsExtractor extractor;
-
     @Autowired
     private TokenValidator validator;
+
     @BeforeEach
     void setUp() {
         SecurityContextHolder.clearContext();
