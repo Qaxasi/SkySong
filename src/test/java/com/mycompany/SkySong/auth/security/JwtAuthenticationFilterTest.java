@@ -23,26 +23,8 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
 public class JwtAuthenticationFilterTest {
-    @InjectMocks
     private JwtAuthenticationFilter authFilter;
-    @Mock
-    private CookieRetriever cookieRetriever;
-    @Mock
-    private JwtTokenProvider tokenProvider;
-    @Mock
-    private CustomUserDetailsService userDetails;
-    @Mock
-    private MockHttpServletResponse response;
-    @Mock
-    private MockHttpServletRequest request;
-    @Mock
-    private JwtAuthenticationEntryPoint authEntryPoint;
-    @Mock
-    private ApplicationMessageService message;
-    @Mock
-    private FilterChain filterChain;
     @BeforeEach
     void setUp() {
         SecurityContextHolder.clearContext();
