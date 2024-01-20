@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.testsupport.BaseIT;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-public class JwtAuthenticationFilterTest {
+public class JwtAuthenticationFilterTest extends BaseIT {
     @Autowired
     private CustomUserDetailsService userDetails;
     @Autowired
