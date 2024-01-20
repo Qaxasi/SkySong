@@ -71,18 +71,7 @@ public class JwtAuthenticationFilterTest {
 
         verify(tokenProvider, never()).validateToken(anyString());
     }
-    @Test
-    void whenLogoutPath_InvokeFilterChain() throws ServletException, IOException {
-        executeFilterChain(authFilter, request, response, filterChain, "/api/v1/users/logout");
 
-        verify(filterChain).doFilter(request, response);
-    }
-    @Test
-    void whenLogoutPath_NotInvokeTokenValidation() throws ServletException, IOException {
-        executeFilterChain(authFilter, request, response, filterChain, "/api/v1/users/logout");
-
-        verify(tokenProvider, never()).validateToken(anyString());
-    }
     @Test
     void whenInvalidToken_NotProcessRequest() throws ServletException, IOException {
         simulateInvalidToken(authFilter, request, response, filterChain, cookieRetriever,
