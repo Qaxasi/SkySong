@@ -9,10 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
 
@@ -24,7 +26,23 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class JwtAuthenticationFilterTest {
-    private JwtAuthenticationFilter authFilter;
+    @Autowired
+    private CustomUserDetailsService userDetails;
+
+    @Autowired
+    private CookieRetriever retriever;
+
+    @Autowired
+    private JwtAuthenticationEntryPoint authEntryPoint;
+
+    @Autowired
+    private ApplicationMessageService message;
+
+    @Autowired
+    private ClaimsExtractor extractor;
+
+    @Autowired
+    private TokenValidator validator;
     @BeforeEach
     void setUp() {
         SecurityContextHolder.clearContext();
