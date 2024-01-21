@@ -62,22 +62,4 @@ public class JwtTokenProviderImplTestHelper {
                 .compact();
         return token + "invalid";
     }
-    public static String generateValidToken(Authentication auth,
-                                            JwtTokenProvider tokenProvider,
-                                            DateProvider dateProvider) {
-        when(auth.getName()).thenReturn("user");
-        when(dateProvider.getCurrentDate()).thenReturn(getCurrentDate());
-        return tokenProvider.generateToken(auth);
-    }
-    private static Claims getClaimsFromToken(String token, JwtTokenProvider tokenProvider) {
-        return tokenProvider.getClaimsFromToken(token);
-    }
-    public static void assertUsernameInToken(String username, String token, JwtTokenProvider tokenProvider) {
-        Claims claims = getClaimsFromToken(token, tokenProvider);
-        assertEquals(username, claims.getSubject());
-    }
-    public static void assertTokenHasExpiration(String token, JwtTokenProvider tokenProvider) {
-        Claims claims = getClaimsFromToken(token, tokenProvider);
-        assertNotNull(claims.getExpiration());
-    }
 }
