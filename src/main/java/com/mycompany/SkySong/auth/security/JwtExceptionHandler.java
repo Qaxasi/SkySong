@@ -2,11 +2,11 @@ package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JwtExceptionHandler {
     private final ApplicationMessageService messageService;
@@ -15,14 +15,8 @@ public class JwtExceptionHandler {
         this.messageService = messageService;
     }
     public void handleException(Exception e) {
-        if (e instanceof ExpiredJwtException) {
-            throw new TokenException(messageService.getMessage("jwt.expired"));
-        } else if (e instanceof MalformedJwtException) {
-            throw new TokenException(messageService.getMessage("jwt.invalid"));
-        } else if (e instanceof UnsupportedJwtException) {
-            throw new TokenException(messageService.getMessage("jwt.unsupported"));
-        } else if (e instanceof IllegalArgumentException) {
-            throw new TokenException(messageService.getMessage("jwt.claims.empty"));
-        }
+        log.error("Error validating JWT token: {}", e.getMessage());
+
+        throw new TokenException(messageService.getMessage("jwt.authentication.failed"));
     }
 }
