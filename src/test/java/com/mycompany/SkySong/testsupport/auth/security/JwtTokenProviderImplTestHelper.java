@@ -1,21 +1,13 @@
 package com.mycompany.SkySong.testsupport.auth.security;
 
-import com.mycompany.SkySong.auth.security.DateProvider;
-import com.mycompany.SkySong.auth.security.JwtTokenProvider;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.Authentication;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
 
 public class JwtTokenProviderImplTestHelper {
     private static final long EXPIRATION_MS = 1000L;
