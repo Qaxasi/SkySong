@@ -9,7 +9,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 
-public class JwtTokenProviderImplTestHelper {
+public class TokenValidatorTestHelper {
     private static final long EXPIRATION_MS = 1000L;
     private static Date getCurrentDate() {
         return new Date();
