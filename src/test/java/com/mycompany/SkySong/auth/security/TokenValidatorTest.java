@@ -31,5 +31,13 @@ public class TokenValidatorTest extends BaseIT {
         // when & then
         assertThrows(TokenException.class, () -> validator.validateToken(token));
     }
+    @Test
+    void whenTokenHasUnsupportedSignature_ThrowException() {
+        // given
+        String token = TokenValidatorTestHelper.generateTokenWithUnsupportedSignature();
+
+        // when & then
+        assertThrows(TokenException.class, () -> validator.validateToken(token));
+    }
 
 }
