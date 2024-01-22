@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 public class TokenValidatorTestHelper {
     private static final long EXPIRATION_MS = 1000L;
+    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static Date getCurrentDate() {
         return new Date();
     }
