@@ -49,4 +49,12 @@ public class TokenValidatorTest extends BaseIT {
         assertThrows(TokenException.class, () -> validator.validateToken(token));
     }
 
+    @Test
+    void whenTokenHasEmptyClaims_ThrowException() {
+        // given
+        String token = TokenValidatorTestHelper.generateTokenWithEmptyClaims();
+
+        // when & then
+        assertThrows(TokenException.class, () -> validator.validateToken(token));
+    }
 }
