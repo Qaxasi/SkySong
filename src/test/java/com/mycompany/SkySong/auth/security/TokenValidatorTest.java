@@ -15,5 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TokenValidatorTest extends BaseIT {
     @Autowired
     private TokenValidator validator;
+    @Test
+    void whenExpiredToken_ThrowException() {
+        // given
+        String token = TokenValidatorTestHelper.generateExpiredToken();
+
+        // when & then
+        assertThrows(TokenException.class, () -> validator.validateToken(token));
+    }
 
 }
