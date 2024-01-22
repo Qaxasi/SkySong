@@ -1,4 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-public class TokenValidatorTest {
+import com.mycompany.SkySong.testsupport.BaseIT;
+
+public class TokenValidatorTest extends BaseIT {
 }
