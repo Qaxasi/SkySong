@@ -19,38 +19,38 @@ public class TokenValidatorTestHelper {
         Date now = getCurrentDate();
         return new Date(now.getTime() + (expired ? -EXPIRATION_MS : EXPIRATION_MS));
     }
-    private static JwtBuilder createBaseBuilder(Date now, Date expirationDate, Key key) {
+    private static JwtBuilder createBaseBuilder(Date now, Date expirationDate) {
         return Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(expirationDate)
                 .signWith(key);
     }
-    public static String generateMalformedToken(Key key) {
-        String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
+    public static String generateMalformedToken() {
+        String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false))
                 .setSubject("User")
                 .compact();
         return token.substring(0, token.length() / 2);
     }
-    public static String generateTokenWithUnsupportedSignature(Key key) {
+    public static String generateTokenWithUnsupportedSignature() {
         Key strongerKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
-        return createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
+        return createBaseBuilder(getCurrentDate(), getExpirationDate(false))
                 .setSubject("User")
                 .signWith(strongerKey, SignatureAlgorithm.HS512)
                 .compact();
     }
-    public static String generateTokenWithEmptyClaims(Key key) {
-        return createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
+    public static String generateTokenWithEmptyClaims() {
+        return createBaseBuilder(getCurrentDate(), getExpirationDate(false))
                 .setClaims(new HashMap<>())
                 .compact();
     }
-    public static String generateExpiredToken(Key key) {
-        return createBaseBuilder(getCurrentDate(), getExpirationDate(true), key)
+    public static String generateExpiredToken() {
+        return createBaseBuilder(getCurrentDate(), getExpirationDate(true))
                 .setSubject("User")
                 .compact();
     }
-    public static String generateTokenWithInvalidSignature(Key key) {
-        String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
+    public static String generateTokenWithInvalidSignature() {
+        String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false))
                 .setSubject("User")
                 .compact();
         return token + "invalid";
