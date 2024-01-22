@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.controller.LoginHelper;
+import com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,19 @@ public class LogoutControllerTest extends BaseIT {
     private final String logoutUri = "/api/v1/users/logout";
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
+        // given
         Cookie cookie = loginAndGetCookie();
 
+        // when & then
         mockMvc.perform(post(logoutUri).cookie(cookie))
                 .andExpect(status().is(200));
     }
     @Test
     void whenSuccessfulLogout_DeleteAuthTokenCookie() throws Exception {
+        // given
         Cookie cookie = loginAndGetCookie();
 
+        // when
         ResultActions logoutResult =
                 mockMvc.perform(post(logoutUri).cookie(cookie))
                         .andExpect(status().isOk());
@@ -38,13 +42,14 @@ public class LogoutControllerTest extends BaseIT {
         MockHttpServletResponse response = logoutResult.andReturn().getResponse();
         Cookie deletedCookie = response.getCookie("auth_token");
 
+        // then
         assertTrue(deletedCookie == null || deletedCookie.getMaxAge() == 0);
     }
     private Cookie loginAndGetCookie() throws Exception {
         MockHttpServletResponse response =
-        mockMvc.perform(post(LoginHelper.loginUri)
+        mockMvc.perform(post(LoginControllerHelper.loginUri)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(LoginHelper.validCredentials))
+                .content(LoginControllerHelper.validCredentials))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
