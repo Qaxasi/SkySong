@@ -23,5 +23,13 @@ public class TokenValidatorTest extends BaseIT {
         // when & then
         assertThrows(TokenException.class, () -> validator.validateToken(token));
     }
+    @Test
+    void whenMalformedToken_ThrowException() {
+        // given
+        String token = TokenValidatorTestHelper.generateMalformedToken();
+
+        // when & then
+        assertThrows(TokenException.class, () -> validator.validateToken(token));
+    }
 
 }
