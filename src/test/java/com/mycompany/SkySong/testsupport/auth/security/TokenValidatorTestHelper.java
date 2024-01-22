@@ -26,7 +26,7 @@ public class TokenValidatorTestHelper {
     }
     public static String generateMalformedToken(Key key) {
         String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
-                .setSubject("testUser")
+                .setSubject("User")
                 .compact();
         return token.substring(0, token.length() / 2);
     }
@@ -34,7 +34,7 @@ public class TokenValidatorTestHelper {
         Key strongerKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
         return createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
-                .setSubject("testUser")
+                .setSubject("User")
                 .signWith(strongerKey, SignatureAlgorithm.HS512)
                 .compact();
     }
@@ -45,12 +45,12 @@ public class TokenValidatorTestHelper {
     }
     public static String generateExpiredToken(Key key) {
         return createBaseBuilder(getCurrentDate(), getExpirationDate(true), key)
-                .setSubject("testUser")
+                .setSubject("User")
                 .compact();
     }
     public static String generateTokenWithInvalidSignature(Key key) {
         String token = createBaseBuilder(getCurrentDate(), getExpirationDate(false), key)
-                .setSubject("testUser")
+                .setSubject("User")
                 .compact();
         return token + "invalid";
     }
