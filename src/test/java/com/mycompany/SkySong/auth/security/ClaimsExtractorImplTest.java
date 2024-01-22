@@ -23,8 +23,4 @@ public class ClaimsExtractorImplTest extends BaseIT {
         //then
         assertEquals(username, "User");
     }
-
-    private String loginAndGetToken() {
-        return login.login(new LoginRequest("User", "Password#3"));
-    }
 }
