@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.testsupport.auth.controller;
 
-public class LoginHelper {
+public class LoginControllerHelper {
     public static final String validCredentials =
             "{\"usernameOrEmail\": \"User\",\"password\": \"Password#3\"}";
     public static final String invalidCredentials =
