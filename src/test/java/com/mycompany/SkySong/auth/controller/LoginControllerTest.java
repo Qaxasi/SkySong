@@ -16,6 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LoginControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
+    private final String loginUri = "/api/v1/users/login";
+
 
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
