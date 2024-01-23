@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RegistrationControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    private final String registrationUri = "/api/v1/users/register";
+    private final String REGISTRATION_URI = "/api/v1/users/register";
 
     @Test
     @Transactional
@@ -26,7 +26,7 @@ public class RegistrationControllerTest extends BaseIT {
         String registrationJson = RegistrationRequests.validCredentials;
 
         // when & then
-        mockMvc.perform(post(registrationUri)
+        mockMvc.perform(post(REGISTRATION_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registrationJson))
                 .andExpect(status().is(201));
@@ -38,7 +38,7 @@ public class RegistrationControllerTest extends BaseIT {
         String registrationJson = RegistrationRequests.validCredentials;
 
         // when & then
-        mockMvc.perform(post(registrationUri)
+        mockMvc.perform(post(REGISTRATION_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registrationJson))
                 .andExpect(jsonPath("$.message").isNotEmpty());
@@ -49,7 +49,7 @@ public class RegistrationControllerTest extends BaseIT {
         String registrationJson = RegistrationRequests.invalidCredentials;
 
         // when & then
-        mockMvc.perform(post(registrationUri)
+        mockMvc.perform(post(REGISTRATION_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registrationJson))
                 .andExpect(status().is(400));
@@ -60,7 +60,7 @@ public class RegistrationControllerTest extends BaseIT {
         String registrationJson = RegistrationRequests.malformedRequest;
 
         // when & then
-        mockMvc.perform(post(registrationUri)
+        mockMvc.perform(post(REGISTRATION_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registrationJson))
                 .andExpect(status().is(400));
@@ -71,7 +71,7 @@ public class RegistrationControllerTest extends BaseIT {
         String registrationRequest = RegistrationRequests.emptyCredentials;
 
         // when
-        ResultActions actions = mockMvc.perform(post(registrationUri)
+        ResultActions actions = mockMvc.perform(post(REGISTRATION_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(registrationRequest));
 

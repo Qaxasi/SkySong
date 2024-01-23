@@ -19,14 +19,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LogoutControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    private final String logoutUri = "/api/v1/users/logout";
+    private final String LOGOUT_URI = "/api/v1/users/logout";
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
         // given
         Cookie cookie = loginAndGetCookie();
 
         // when & then
-        mockMvc.perform(post(logoutUri).cookie(cookie))
+        mockMvc.perform(post(LOGOUT_URI).cookie(cookie))
                 .andExpect(status().is(200));
     }
     @Test
@@ -36,7 +36,7 @@ public class LogoutControllerTest extends BaseIT {
 
         // when
         ResultActions logoutResult =
-                mockMvc.perform(post(logoutUri).cookie(cookie))
+                mockMvc.perform(post(LOGOUT_URI).cookie(cookie))
                         .andExpect(status().isOk());
 
         MockHttpServletResponse response = logoutResult.andReturn().getResponse();
