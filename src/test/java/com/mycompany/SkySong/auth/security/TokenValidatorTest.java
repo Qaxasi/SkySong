@@ -7,12 +7,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.Key;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-public class TokenValidatorTest extends BaseIT {
+@SpringBootTest
+public class TokenValidatorTest {
     @Autowired
     private TokenValidator validator;
     @Test
