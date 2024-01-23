@@ -9,7 +9,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 
-public class TokenValidatorTestHelper {
+public class TokenGeneratorHelper {
     private static final long EXPIRATION_MS = 1000L;
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static Date getCurrentDate() {
