@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper;
+import com.mycompany.SkySong.testsupport.auth.controller.LoginRequests;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +47,9 @@ public class LogoutControllerTest extends BaseIT {
     }
     private Cookie loginAndGetCookie() throws Exception {
         MockHttpServletResponse response =
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post("/api/v1/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(LoginControllerHelper.validCredentials))
+                .content(LoginRequests.validCredentials))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
