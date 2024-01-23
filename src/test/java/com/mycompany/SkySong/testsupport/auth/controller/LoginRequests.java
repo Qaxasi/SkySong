@@ -9,6 +9,4 @@ public class LoginRequests {
             "{\"usernameOrEmail\": \"mail@mail.com\",\"password\": \"Password#3\"";
     public static final String emptyCredentials =
             "{\"usernameOrEmail\": \"\",\"password\": \"\"}";
-    public static final String loginUri = "/api/v1/users/login";
-
 }
