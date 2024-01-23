@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.controller.LoginControllerHelper;
+import com.mycompany.SkySong.testsupport.auth.controller.LoginRequests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,10 +20,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.validCredentials;
+        String loginJson = LoginRequests.validCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(status().is(200));
@@ -31,10 +31,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenLoginSuccess_TokenCookieIsSet() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.validCredentials;
+        String loginJson = LoginRequests.validCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(cookie().exists("auth_token"));
@@ -42,10 +42,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenLoginFails_TokenCookieIsNotSet() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.invalidCredentials;
+        String loginJson = LoginRequests.invalidCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(cookie().doesNotExist("auth_token"));
@@ -53,10 +53,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenUserLogsIn_TokenCookieIsSetHttpOnly() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.validCredentials;
+        String loginJson = LoginRequests.validCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(cookie().httpOnly("auth_token", true));
@@ -64,10 +64,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenUserLogsIn_TokenCookieExpirationIsSetCorrectly() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.validCredentials;
+        String loginJson = LoginRequests.validCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(cookie().maxAge("auth_token", 86400));
@@ -75,10 +75,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenUserLogsIn_TokenCookieIsMarkedAsSecure() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.validCredentials;
+        String loginJson = LoginRequests.validCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(cookie().secure("auth_token", true));
@@ -86,10 +86,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenLoginSuccess_ReturnNotEmptyTokenField() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.validCredentials;
+        String loginJson = LoginRequests.validCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(jsonPath("$.accessToken").isNotEmpty());
@@ -97,10 +97,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenInvalidLogin_ReturnUnauthorizedStatus() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.invalidCredentials;
+        String loginJson = LoginRequests.invalidCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(status().is(401));
@@ -108,10 +108,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenMalformedJson_ReturnBadRequest() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.malformedJson;
+        String loginJson = LoginRequests.malformedJson;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(status().is(400));
@@ -119,10 +119,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     public void whenInvalidCredentials_ReturnBadRequest() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.emptyCredentials;
+        String loginJson = LoginRequests.emptyCredentials;
 
         // when & then
-        mockMvc.perform(post(LoginControllerHelper.loginUri)
+        mockMvc.perform(post(LoginRequests.loginUri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
                 .andExpect(status().is(400));
@@ -130,10 +130,10 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenEmptyCredentials_ReturnCorrectErrorMessage() throws Exception {
         // given
-        String loginJson = LoginControllerHelper.emptyCredentials;
+        String loginJson = LoginRequests.emptyCredentials;
 
         // when
-        ResultActions actions = mockMvc.perform(post(LoginControllerHelper.loginUri)
+        ResultActions actions = mockMvc.perform(post(LoginRequests.loginUri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(loginJson));
 
