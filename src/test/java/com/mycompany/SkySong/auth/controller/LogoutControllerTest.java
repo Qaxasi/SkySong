@@ -1,13 +1,11 @@
 package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.UriConstants;
-import com.mycompany.SkySong.testsupport.auth.controller.LoginRequests;
+import com.mycompany.SkySong.testsupport.auth.controller.AuthenticationHelper;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -21,6 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LogoutControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private AuthenticationHelper authHelper;
 
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
