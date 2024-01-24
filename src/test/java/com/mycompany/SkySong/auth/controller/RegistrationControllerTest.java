@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.controller.RegistrationRequests;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,57 +25,57 @@ public class RegistrationControllerTest extends BaseIT {
     @Transactional
     void whenRegistrationSuccess_Return201() throws Exception {
         // given
-        String registrationJson = RegistrationRequests.validCredentials;
+        RegisterRequest request = RegistrationRequests.VALID_CREDENTIALS;
 
         // when & then
         mockMvc.perform(post(REGISTRATION_URI)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(registrationJson))
+                        .content(asJsonString(request)))
                 .andExpect(status().is(201));
     }
     @Test
     @Transactional
     void whenRegistrationSuccess_ReturnCorrectFieldName() throws Exception {
         // given
-        String registrationJson = RegistrationRequests.validCredentials;
+        RegisterRequest request = RegistrationRequests.VALID_CREDENTIALS;
 
         // when & then
         mockMvc.perform(post(REGISTRATION_URI)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(registrationJson))
+                        .content(asJsonString(request)))
                 .andExpect(jsonPath("$.message").isNotEmpty());
     }
     @Test
     void whenInvalidCredentials_ReturnBadRequest() throws Exception {
         // given
-        String registrationJson = RegistrationRequests.invalidCredentials;
+        RegisterRequest request = RegistrationRequests.INVALID_CREDENTIALS;
 
         // when & then
         mockMvc.perform(post(REGISTRATION_URI)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(registrationJson))
+                        .content(asJsonString(request)))
                 .andExpect(status().is(400));
     }
     @Test
     void whenMalformedRequest_ReturnBadRequest() throws Exception {
         // given
-        String registrationJson = RegistrationRequests.malformedRequest;
+        String request = RegistrationRequests.MALFORMED_REQUEST;
 
         // when & then
         mockMvc.perform(post(REGISTRATION_URI)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(registrationJson))
+                        .content(request))
                 .andExpect(status().is(400));
     }
     @Test
     void whenEmptyCredentials_ReturnErrorMessages() throws Exception {
         // given
-        String registrationRequest = RegistrationRequests.emptyCredentials;
+        RegisterRequest request = RegistrationRequests.EMPTY_CREDENTIALS;
 
         // when
         ResultActions actions = mockMvc.perform(post(REGISTRATION_URI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(registrationRequest));
+                .content(asJsonString(request)));
 
         // then
         actions.andExpect(jsonPath("$.errors.username")
