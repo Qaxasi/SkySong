@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.testsupport.auth.controller;
 
-import com.mycompany.SkySong.testsupport.UriConstants;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
-public class LogoutHelper {
+public class AuthenticationHelper {
     @Autowired
     private MockMvc mockMvc;
     public Cookie loginAndGetCookie() throws Exception {
