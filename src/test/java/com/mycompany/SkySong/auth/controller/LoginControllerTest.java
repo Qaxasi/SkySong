@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
+import static com.mycompany.SkySong.testsupport.UriConstants.LOGIN_URI;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -18,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LoginControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    private final String LOGIN_URI = "/api/v1/users/login";
 
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
