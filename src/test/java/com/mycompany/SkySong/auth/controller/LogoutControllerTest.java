@@ -25,7 +25,7 @@ public class LogoutControllerTest extends BaseIT {
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
         // given
-        Cookie cookie = loginAndGetCookie();
+        Cookie cookie = authHelper.loginAndGetCookie();
 
         // when & then
         mockMvc.perform(post(LOGOUT_URI).cookie(cookie))
@@ -34,7 +34,7 @@ public class LogoutControllerTest extends BaseIT {
     @Test
     void whenSuccessfulLogout_DeleteAuthTokenCookie() throws Exception {
         // given
-        Cookie cookie = loginAndGetCookie();
+        Cookie cookie = authHelper.loginAndGetCookie();
 
         // when
         ResultActions logoutResult =
