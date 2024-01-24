@@ -16,7 +16,7 @@ public class ClaimsExtractorImplTest extends BaseIT {
     @Test
     void whenTokenExtracted_UsernameMatches() {
         //given
-        String token = loginAndGetToken();
+        String token = tokenHelper.generateCorrectToken();
 
         //when
         Claims claims = claimsExtractor.getClaimsFromToken(token);
