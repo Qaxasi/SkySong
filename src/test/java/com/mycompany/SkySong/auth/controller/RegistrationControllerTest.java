@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
+import static com.mycompany.SkySong.testsupport.UriConstants.REGISTRATION_URI;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -19,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RegistrationControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    private final String REGISTRATION_URI = "/api/v1/users/register";
 
     @Test
     @Transactional
