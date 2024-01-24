@@ -45,14 +45,4 @@ public class LogoutControllerTest extends BaseIT {
         // then
         assertTrue(deletedCookie == null || deletedCookie.getMaxAge() == 0);
     }
-    private Cookie loginAndGetCookie() throws Exception {
-        MockHttpServletResponse response =
-        mockMvc.perform(post("/api/v1/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(LoginRequests.validCredentials))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-
-        return response.getCookie("auth_token");
-    }
 }
