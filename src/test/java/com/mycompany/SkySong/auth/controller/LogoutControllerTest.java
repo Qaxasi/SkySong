@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.testsupport.auth.controller.LogoutControllerHelper;
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.controller.AuthenticationHelper;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ public class LogoutControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private AuthenticationHelper authHelper;
+    private LogoutControllerHelper logoutHelper;
 
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
         // given
-        Cookie cookie = authHelper.loginAndGetCookie();
+        Cookie cookie = logoutHelper.loginAndGetCookie();
 
         // when & then
         mockMvc.perform(post(LOGOUT_URI).cookie(cookie))
@@ -34,7 +34,7 @@ public class LogoutControllerTest extends BaseIT {
     @Test
     void whenSuccessfulLogout_DeleteAuthTokenCookie() throws Exception {
         // given
-        Cookie cookie = authHelper.loginAndGetCookie();
+        Cookie cookie = logoutHelper.loginAndGetCookie();
 
         // when
         ResultActions logoutResult =
