@@ -28,7 +28,7 @@ public class TokenValidatorTest extends BaseIT {
         assertTrue(result);
     }
     @Test
-    void whenExpiredToken_ThrowException() {
+    void whenExpiredToken_ValidationReturnFalse() {
         // given
         String token = invalidTokenGenerator.generateExpiredToken();
 
@@ -36,7 +36,7 @@ public class TokenValidatorTest extends BaseIT {
         assertThrows(TokenException.class, () -> validator.validateToken(token));
     }
     @Test
-    void whenMalformedToken_ThrowException() {
+    void whenMalformedToken_ValidationReturnFalse() {
         // given
         String token = invalidTokenGenerator.generateMalformedToken();
 
@@ -44,7 +44,7 @@ public class TokenValidatorTest extends BaseIT {
         assertThrows(TokenException.class, () -> validator.validateToken(token));
     }
     @Test
-    void whenTokenHasUnsupportedSignature_ThrowException() {
+    void whenTokenHasUnsupportedSignature_ValidationReturnFalse() {
         // given
         String token = invalidTokenGenerator.generateTokenWithUnsupportedSignature();
 
@@ -53,7 +53,7 @@ public class TokenValidatorTest extends BaseIT {
     }
 
     @Test
-    void whenTokenHasInvalidSignature_ThrowException() {
+    void whenTokenHasInvalidSignature_ValidationReturnFalse() {
         // given
         String token = invalidTokenGenerator.generateTokenWithInvalidSignature();
 
@@ -62,7 +62,7 @@ public class TokenValidatorTest extends BaseIT {
     }
 
     @Test
-    void whenTokenHasEmptyClaims_ThrowException() {
+    void whenTokenHasEmptyClaims_ValidationReturnFalse() {
         // given
         String token = invalidTokenGenerator.generateTokenWithEmptyClaims();
 
