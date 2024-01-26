@@ -1,10 +1,8 @@
 package com.mycompany.SkySong.testsupport.auth.controller;
 
 import jakarta.servlet.http.Cookie;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
@@ -12,10 +10,11 @@ import static com.mycompany.SkySong.testsupport.UriConstants.LOGIN_URI;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Component
 public class LogoutControllerHelper {
-    @Autowired
-    private MockMvc mockMvc;
+    private final MockMvc mockMvc;
+    public LogoutControllerHelper(MockMvc mockMvc) {
+        this.mockMvc = mockMvc;
+    }
     public Cookie loginAndGetCookie() throws Exception {
         MockHttpServletResponse response =
                 mockMvc.perform(post(LOGIN_URI)
