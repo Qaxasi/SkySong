@@ -24,7 +24,6 @@ public class TokenValidatorImpl implements TokenValidator {
 
             return claims.getSubject() != null && !claims.getSubject().isEmpty();
         } catch (Exception e) {
-            jwtExceptionHandler.handleException(e);
             return false;
         }
     }
