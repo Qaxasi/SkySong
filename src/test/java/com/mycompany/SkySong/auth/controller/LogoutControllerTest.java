@@ -3,6 +3,7 @@ package com.mycompany.SkySong.auth.controller;
 import com.mycompany.SkySong.testsupport.auth.controller.LogoutControllerHelper;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import jakarta.servlet.http.Cookie;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,8 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LogoutControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
     private LogoutControllerHelper logoutHelper;
+    @BeforeEach
+    void setUp() {
+        logoutHelper = new LogoutControllerHelper(mockMvc);
+    }
 
     @Test
     void whenSuccessfulLogout_ReturnStatusOk() throws Exception {
