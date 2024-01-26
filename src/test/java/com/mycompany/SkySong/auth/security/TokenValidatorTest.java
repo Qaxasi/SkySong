@@ -17,7 +17,7 @@ public class TokenValidatorTest extends BaseIT {
     @Autowired
     private TokenGeneratorHelper validTokenGenerator;
     @Test
-    void whenValidToken_ValidateIsCorrect() {
+    void whenValidToken_ValidationReturnTrue() {
         // given
         String token = validTokenGenerator.generateCorrectToken();
 
