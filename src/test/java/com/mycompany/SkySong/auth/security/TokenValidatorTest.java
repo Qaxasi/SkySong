@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.shared.exception.TokenException;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.TokenGeneratorHelper;
 import com.mycompany.SkySong.testsupport.auth.security.InvalidTokenGeneratorHelper;
@@ -32,24 +31,33 @@ public class TokenValidatorTest extends BaseIT {
         // given
         String token = invalidTokenGenerator.generateExpiredToken();
 
-        // when & then
-        assertThrows(TokenException.class, () -> validator.validateToken(token));
+        // when
+        boolean result = validator.validateToken(token);
+
+        // then
+        assertFalse(result);
     }
     @Test
     void whenMalformedToken_ValidationReturnFalse() {
         // given
         String token = invalidTokenGenerator.generateMalformedToken();
 
-        // when & then
-        assertThrows(TokenException.class, () -> validator.validateToken(token));
+        // when
+        boolean result = validator.validateToken(token);
+
+        // then
+        assertFalse(result);
     }
     @Test
     void whenTokenHasUnsupportedSignature_ValidationReturnFalse() {
         // given
         String token = invalidTokenGenerator.generateTokenWithUnsupportedSignature();
 
-        // when & then
-        assertThrows(TokenException.class, () -> validator.validateToken(token));
+        // when
+        boolean result = validator.validateToken(token);
+
+        // then
+        assertFalse(result);
     }
 
     @Test
@@ -57,8 +65,11 @@ public class TokenValidatorTest extends BaseIT {
         // given
         String token = invalidTokenGenerator.generateTokenWithInvalidSignature();
 
-        // when & then
-        assertThrows(TokenException.class, () -> validator.validateToken(token));
+        // when
+        boolean result = validator.validateToken(token);
+
+        // then
+        assertFalse(result);
     }
 
     @Test
@@ -66,7 +77,10 @@ public class TokenValidatorTest extends BaseIT {
         // given
         String token = invalidTokenGenerator.generateTokenWithEmptyClaims();
 
-        // when & then
-        assertThrows(TokenException.class, () -> validator.validateToken(token));
+        // when
+        boolean result = validator.validateToken(token);
+
+        // then
+        assertFalse(result);
     }
 }
