@@ -12,11 +12,11 @@ public class ClaimsExtractorImplTest extends BaseIT {
     @Autowired
     private ClaimsExtractor claimsExtractor;
     @Autowired
-    private TokenGeneratorHelper tokenHelper;
+    private TokenGeneratorHelper tokenGenerator;
     @Test
     void whenTokenExtracted_UsernameMatches() {
         //given
-        String token = tokenHelper.generateCorrectToken();
+        String token = tokenGenerator.generateCorrectToken();
 
         //when
         Claims claims = claimsExtractor.getClaimsFromToken(token);
