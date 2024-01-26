@@ -7,8 +7,7 @@ import com.mycompany.SkySong.testsupport.auth.security.InvalidTokenGeneratorHelp
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TokenValidatorTest extends BaseIT {
     @Autowired
@@ -22,8 +21,11 @@ public class TokenValidatorTest extends BaseIT {
         // given
         String token = validTokenGenerator.generateCorrectToken();
 
-        // when & then
-        assertTrue(validator.validateToken(token));
+        // when
+        boolean result = validator.validateToken(token);
+
+        // then
+        assertTrue(result);
     }
     @Test
     void whenExpiredToken_ThrowException() {
