@@ -1,12 +1,14 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.shared.exception.TokenException;
+import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.TokenGeneratorHelper;
 import com.mycompany.SkySong.testsupport.auth.security.InvalidTokenGeneratorHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenValidatorTest {
     @Autowired
@@ -15,6 +17,14 @@ public class TokenValidatorTest {
     private InvalidTokenGeneratorHelper invalidTokenGenerator;
     @Autowired
     private TokenGeneratorHelper validTokenGenerator;
+    @Test
+    void whenValidToken_ValidateIsCorrect() {
+        // given
+        String token = validTokenGenerator.generateCorrectToken();
+
+        // when & then
+        assertTrue(validator.validateToken(token));
+    }
     @Test
     void whenExpiredToken_ThrowException() {
         // given
