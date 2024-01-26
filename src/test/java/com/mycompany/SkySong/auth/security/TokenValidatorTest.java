@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TokenValidatorTest {
+public class TokenValidatorTest extends BaseIT {
     @Autowired
     private TokenValidator validator;
     @Autowired
