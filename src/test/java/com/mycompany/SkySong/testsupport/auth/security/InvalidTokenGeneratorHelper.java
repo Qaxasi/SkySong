@@ -4,20 +4,21 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 
 public class InvalidTokenGeneratorHelper {
-    private final long EXPIRATION_MS = 1000L;
+    private final long expiration_ms = 1000L;
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static Date getCurrentDate() {
         return new Date();
     }
     private Date getExpirationDate(boolean expired) {
         Date now = getCurrentDate();
-        return new Date(now.getTime() + (expired ? -EXPIRATION_MS : EXPIRATION_MS));
+        return new Date(now.getTime() + (expired ? -expiration_ms : expiration_ms));
     }
     private JwtBuilder createBaseBuilder(Date now, Date expirationDate) {
         return Jwts.builder()
