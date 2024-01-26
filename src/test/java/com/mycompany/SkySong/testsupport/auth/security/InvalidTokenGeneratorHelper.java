@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
-
+@Component
 public class InvalidTokenGeneratorHelper {
     private final long expiration_ms = 1000L;
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
