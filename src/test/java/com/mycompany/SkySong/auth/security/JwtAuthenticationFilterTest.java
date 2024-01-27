@@ -20,17 +20,4 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class JwtAuthenticationFilterTest extends BaseIT {
-    @Autowired
-    private CustomUserDetailsService userDetails;
-    @Autowired
-    private CookieRetriever retriever;
-    @Autowired
-    private JwtAuthenticationEntryPoint authEntryPoint;
-    @Autowired
-    private ApplicationMessageService message;
-    @Autowired
-    private ClaimsExtractor extractor;
-    @Autowired
-    private TokenValidator validator;
-
 }
