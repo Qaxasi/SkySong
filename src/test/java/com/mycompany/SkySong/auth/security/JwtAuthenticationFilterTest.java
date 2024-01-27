@@ -33,9 +33,4 @@ public class JwtAuthenticationFilterTest extends BaseIT {
     @Autowired
     private TokenValidator validator;
 
-    @BeforeEach
-    void setUp() {
-        SecurityContextHolder.clearContext();
-    }
-  
 }
