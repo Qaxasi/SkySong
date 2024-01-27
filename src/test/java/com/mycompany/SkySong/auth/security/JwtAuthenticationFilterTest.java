@@ -18,6 +18,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest
+
 public class JwtAuthenticationFilterTest extends BaseIT {
 }
