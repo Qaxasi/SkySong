@@ -7,6 +7,7 @@ import com.mycompany.SkySong.testsupport.TokenGeneratorHelper;
 import com.mycompany.SkySong.testsupport.auth.controller.LoginRequests;
 import com.mycompany.SkySong.testsupport.auth.controller.RegistrationRequests;
 import com.mycompany.SkySong.testsupport.auth.security.InvalidTokenGeneratorHelper;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,6 +29,16 @@ public class JwtAuthenticationFilterTest extends BaseIT {
     private TokenGeneratorHelper tokenGenerator;
     @Autowired
     private InvalidTokenGeneratorHelper invalidTokenGenerator;
+    @Test
+    void whenInvalidToken_ThenUnauthorized() throws Exception {
+        // given
+        String token = invalidTokenGenerator.generateExpiredToken();
+
+        // when & then
+        mockMvc.perform(post(LOGOUT_URI).cookie(new Cookie("auth_cookie", token)))
+                .andExpect(status().isUnauthorized());
+
+    }
     @Test
     void whenNoToken_ThenUnauthorized() throws Exception {
         // when & then
