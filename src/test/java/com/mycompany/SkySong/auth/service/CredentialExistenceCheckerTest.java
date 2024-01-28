@@ -12,14 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static com.mycompany.SkySong.testsupport.auth.service.CredentialExistenceCheckerImplTestHelper.assertEmailException;
 import static com.mycompany.SkySong.testsupport.auth.service.CredentialExistenceCheckerImplTestHelper.assertUsernameException;
 
-@ExtendWith(MockitoExtension.class)
 public class CredentialExistenceCheckerTest {
-    @InjectMocks
-    private CredentialExistenceCheckerImpl credentialExistenceChecker;
-    @Mock
-    private UserDAO userDAO;
-    @Mock
-    private ApplicationMessageService messageService;
     @Test
     void whenUsernameExist_ThrowException() {
         assertUsernameException(
