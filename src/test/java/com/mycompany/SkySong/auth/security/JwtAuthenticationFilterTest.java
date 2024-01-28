@@ -19,6 +19,7 @@ import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
 import static com.mycompany.SkySong.testsupport.UriConstants.LOGOUT_URI;
 import static com.mycompany.SkySong.testsupport.UriConstants.REGISTRATION_URI;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -36,14 +37,16 @@ public class JwtAuthenticationFilterTest extends BaseIT {
 
         // when & then
         mockMvc.perform(post(LOGOUT_URI).cookie(new Cookie("auth_cookie", token)))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("Unauthorized access. Please log in."));
 
     }
     @Test
     void whenNoToken_ThenUnauthorized() throws Exception {
         // when & then
         mockMvc.perform(post(LOGOUT_URI))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("Unauthorized access. Please log in."));;
     }
 
     @Test
