@@ -21,12 +21,17 @@ public class CredentialExistenceCheckerTest extends BaseIT {
     private CredentialExistenceChecker existenceChecker;
     @Test
     void whenUsernameExist_ThrowException() {
-        assertUsernameException(
-                userDAO, credentialExistenceChecker, "User", true, CredentialValidationException.class);
+        RegisterRequest request = new RegisterRequest("Max", "mail@mail.com", "Password#3");
+
+        assertThrows(CredentialValidationException.class,
+                () -> existenceChecker.checkForExistingCredentials(request));
+
     }
     @Test
     void whenEmailExist_ThrowException() {
-        assertEmailException(
-                userDAO, credentialExistenceChecker, "mail@mail.com", true, CredentialValidationException.class);
+        RegisterRequest request = new RegisterRequest("User", "max@mail.com", "Password#3");
+
+        assertThrows(CredentialValidationException.class,
+                () -> existenceChecker.checkForExistingCredentials(request));
     }
 }
