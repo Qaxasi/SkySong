@@ -48,6 +48,15 @@ public class JwtAuthenticationFilterTest extends BaseIT {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.error").value("Unauthorized access. Please log in."));;
     }
+    @Test
+    void whenValidToken_ThenAuthenticate() throws Exception {
+        // given
+        String token = tokenGenerator.generateCorrectToken();
+
+        // when & then
+        mockMvc.perform(post(LOGOUT_URI).cookie(new Cookie("auth_token", token)))
+                .andExpect(status().isOk());
+    }
 
     @Test
     void whenLoginPath_ThenBypassSecurityFilter() throws Exception {
