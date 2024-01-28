@@ -8,7 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenGeneratorTest {
     private TokenGenerator tokenGenerator;
@@ -34,6 +37,21 @@ public class TokenGeneratorTest {
 
         // then
         assertEquals("User", parsedToken.getBody().getSubject());
+    }
+    @Test
+    void whenTokenGenerated_ContainsFutureExpirationTime() {
+        // given
+        Authentication authentication = new UsernamePasswordAuthenticationToken("User", null);
+
+        // when
+        String token = tokenGenerator.generateToken(authentication);
+        Jws<Claims> parsedToken = Jwts.parserBuilder()
+                .setSigningKey(keyManager.getKey())
+                .build()
+                .parseClaimsJws(token);
+
+        // then
+        assertTrue(parsedToken.getBody().getExpiration().after(new Date()));
     }
 }
 
