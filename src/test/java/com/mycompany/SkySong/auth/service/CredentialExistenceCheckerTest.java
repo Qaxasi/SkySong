@@ -13,7 +13,7 @@ import static com.mycompany.SkySong.testsupport.auth.service.CredentialExistence
 import static com.mycompany.SkySong.testsupport.auth.service.CredentialExistenceCheckerImplTestHelper.assertUsernameException;
 
 @ExtendWith(MockitoExtension.class)
-public class CredentialExistenceCheckerImplTest {
+public class CredentialExistenceCheckerTest {
     @InjectMocks
     private CredentialExistenceCheckerImpl credentialExistenceChecker;
     @Mock
