@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
+import static com.mycompany.SkySong.testsupport.UriConstants.LOGOUT_URI;
 import static com.mycompany.SkySong.testsupport.UriConstants.REGISTRATION_URI;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,6 +28,12 @@ public class JwtAuthenticationFilterTest extends BaseIT {
     private TokenGeneratorHelper tokenGenerator;
     @Autowired
     private InvalidTokenGeneratorHelper invalidTokenGenerator;
+    @Test
+    void whenNoToken_ThenUnauthorized() throws Exception {
+        // when & then
+        mockMvc.perform(post(LOGOUT_URI))
+                .andExpect(status().isUnauthorized());
+    }
 
     @Test
     void whenLoginPath_ThenBypassSecurityFilter() throws Exception {
