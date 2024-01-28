@@ -43,7 +43,7 @@ WHERE u.username = 'User' AND r.name = 'ROLE_USER';
 INSERT INTO user_roles (user_id, role_id)
 SELECT u.id, r.id
 FROM users u, roles r
-WHERE u.username = 'existUser' AND r.name = 'ROLE_USER';
+WHERE u.username = 'Mark' AND r.name = 'ROLE_USER';
 
 INSERT INTO user_roles (user_id, role_id)
 SELECT u.id, r.id
