@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class LoginServiceIntegrationTestHelper {
+public class LoginServiceHelper {
     public static LoginRequest validRequest = new LoginRequest("User", "Password#3");
     public static LoginRequest invalidPassword = new LoginRequest("User", "invalid");
     public static LoginRequest invalidUsername = new LoginRequest("invalid", "Password#3");
