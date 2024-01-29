@@ -1,10 +1,11 @@
 package com.mycompany.SkySong.auth.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class TokenValidatorImpl implements TokenValidator {
     private final KeyManager key;
     public TokenValidatorImpl(KeyManager key) {
@@ -13,14 +14,15 @@ public class TokenValidatorImpl implements TokenValidator {
     @Override
     public boolean validateToken(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
+            Jwts.parserBuilder()
                     .setSigningKey(key.getKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
-            return claims.getSubject() != null && !claims.getSubject().isEmpty();
+            return true;
         } catch (Exception e) {
+            log.error(" Invalid JWT token - " + e.getMessage());
             return false;
         }
     }
