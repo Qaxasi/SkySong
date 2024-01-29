@@ -2,7 +2,7 @@ package com.mycompany.SkySong.auth.controller;
 
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.controller.RegistrationRequests;
+import com.mycompany.SkySong.testsupport.RegistrationRequests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.auth.controller;
+package com.mycompany.SkySong.testsupport;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 
