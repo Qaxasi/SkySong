@@ -1,8 +1,5 @@
 package com.mycompany.SkySong.testsupport.common;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -15,17 +12,6 @@ public class DatabaseHelper {
     private final DataSource dataSource;
     public DatabaseHelper(DataSource dataSource) {
         this.dataSource = dataSource;
-    }
-    public void setup(String scriptPath) throws Exception {
-        try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource(scriptPath));
-        }
-    }
-    public void removeUsersAndRoles() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update("DELETE FROM user_roles");
-        jdbcTemplate.update("DELETE FROM users");
-        jdbcTemplate.update("DELETE FROM roles");
     }
     public boolean userExist(String username) {
         try {
