@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Profile("test")
-public class PasswordServiceImplIntegrationTest {
+public class PasswordServiceTest {
     @Autowired
     private PasswordService passwordService;
     @Autowired
