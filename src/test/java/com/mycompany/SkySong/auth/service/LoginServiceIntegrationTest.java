@@ -1,24 +1,19 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.security.JwtTokenProvider;
 import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.ActiveProfiles;
 
 import javax.sql.DataSource;
 
 import static com.mycompany.SkySong.testsupport.auth.service.LoginServiceIntegrationTestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 public class LoginServiceIntegrationTest {
     @Autowired
     private LoginService login;
