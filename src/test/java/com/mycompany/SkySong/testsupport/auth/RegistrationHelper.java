@@ -16,9 +16,9 @@ public class RegistrationHelper {
             "User", "mail@mail.com", "invalid");
 
     public static RegisterRequest existingUsername = new RegisterRequest(
-            "existUsername", "mail@mail.com", password);
+            "Mark", "mail@mail.com", password);
     public static RegisterRequest existEmail = new RegisterRequest(
-            "User", "existMail@mail.com", password);
+            "User", "mark@mail.com", password);
     public static RegisterRequest register(String username) {
         return new RegisterRequest(username, "mail@mail.com", password);
     }
