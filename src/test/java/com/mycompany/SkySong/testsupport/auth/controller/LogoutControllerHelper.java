@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.testsupport.auth.controller;
 
-import com.mycompany.SkySong.testsupport.LoginRequests;
+import com.mycompany.SkySong.testsupport.auth.LoginRequests;
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
