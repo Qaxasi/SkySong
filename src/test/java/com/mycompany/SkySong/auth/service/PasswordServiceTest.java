@@ -16,7 +16,7 @@ public class PasswordServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Test
-    void shouldEncodePasswordSuccessfully() {
+    void whenEncodePassword_MatchesOriginal() {
         String password = "testPassword";
 
         String encodedPassword = passwordService.encodePassword(password);
