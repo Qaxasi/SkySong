@@ -16,16 +16,10 @@ import static com.mycompany.SkySong.testsupport.auth.service.LoginServiceIntegra
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginServiceTest extends BaseIT {
-    @Autowired
+
+   @Autowired
     private LoginService login;
-    @Autowired
-    private JwtTokenProvider tokenProvider;
-    @Autowired
-    private DataSource dataSource;
-    @Autowired
-    private AuthenticationManager authManager;
-    @Autowired
-    private DatabaseHelper databaseHelper;
+    
     @Test
     void whenLoginSuccess_ReturnValidToken() {
         String token = login.login(validRequest);
