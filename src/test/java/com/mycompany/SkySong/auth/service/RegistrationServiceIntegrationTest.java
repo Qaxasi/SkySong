@@ -28,14 +28,7 @@ public class RegistrationServiceIntegrationTest {
     private DatabaseHelper databaseHelper;
     @Autowired
     private LoginService login;
-    @BeforeEach
-    void init() throws Exception {
-        databaseHelper.setup("data_sql/test-data-setup.sql");
-    }
-    @AfterEach
-    void cleanup() {
-        databaseHelper.removeUsersAndRoles();
-    }
+
     @Test
     void shouldRegisterUser() {
         registration.register(RegistrationHelper.register("User"));
