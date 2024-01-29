@@ -5,8 +5,6 @@ import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 public class LoginRequests {
     public static final LoginRequest VALID_CREDENTIALS =
             new LoginRequest("User", "Password#3");
-    public static final LoginRequest INVALID_CREDENTIALS =
-            new LoginRequest("invalid", "invalid");
     public static final LoginRequest EMPTY_CREDENTIALS =
             new LoginRequest("", "");
 
