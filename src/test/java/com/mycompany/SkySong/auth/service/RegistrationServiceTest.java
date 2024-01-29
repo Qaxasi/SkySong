@@ -3,6 +3,7 @@ package com.mycompany.SkySong.auth.service;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
+import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper;
 import com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import javax.sql.DataSource;
 import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegistrationServiceTest {
+public class RegistrationServiceTest extends BaseIT {
     @Autowired
     private RegistrationService registration;
     @Autowired
