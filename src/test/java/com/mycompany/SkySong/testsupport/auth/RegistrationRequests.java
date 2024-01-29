@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport;
+package com.mycompany.SkySong.testsupport.auth;
 
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
