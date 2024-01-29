@@ -26,14 +26,6 @@ public class LoginServiceTest extends BaseIT {
     private AuthenticationManager authManager;
     @Autowired
     private DatabaseHelper databaseHelper;
-    @BeforeEach
-    void init() throws Exception {
-        databaseHelper.setup("data_sql/test-data-setup.sql");
-    }
-    @AfterEach
-    void cleanup() {
-        databaseHelper.removeUsersAndRoles();
-    }
     @Test
     void whenLoginSuccess_ReturnValidToken() {
         String token = login.login(validRequest);
