@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,7 @@ import javax.sql.DataSource;
 import static com.mycompany.SkySong.testsupport.auth.service.LoginServiceIntegrationTestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LoginServiceTest {
+public class LoginServiceTest extends BaseIT {
     @Autowired
     private LoginService login;
     @Autowired
