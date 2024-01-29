@@ -5,8 +5,6 @@ import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.auth.service.DatabaseHelper;
 import com.mycompany.SkySong.testsupport.auth.service.RegistrationHelper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class RegistrationServiceIntegrationTest {
+public class RegistrationServiceTest {
     @Autowired
     private RegistrationService registration;
     @Autowired
