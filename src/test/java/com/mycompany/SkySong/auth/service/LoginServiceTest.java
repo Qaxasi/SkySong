@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 import static com.mycompany.SkySong.testsupport.auth.service.LoginServiceIntegrationTestHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LoginServiceIntegrationTest {
+public class LoginServiceTest {
     @Autowired
     private LoginService login;
     @Autowired
