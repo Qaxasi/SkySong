@@ -15,8 +15,6 @@ import javax.sql.DataSource;
 import static com.mycompany.SkySong.testsupport.auth.service.UserAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 public class RegistrationServiceTest {
     @Autowired
     private RegistrationService registration;
