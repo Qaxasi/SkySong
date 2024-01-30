@@ -1,10 +1,12 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.BaseIT;
+import com.mycompany.SkySong.testsupport.auth.RegistrationHelper;
 import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenValidCredentials_RegisterUser() {
         // given
-        RegisterRequest request = registrationHelper.register("User");
+        RegisterRequest request = RegistrationHelper.REGISTER("User");
 
         // when
         registration.register(request);
@@ -38,18 +40,19 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenRegistrationSuccess_AllowLoginForRegisterUser() {
         // given
-        RegisterRequest request = registrationHelper.validCredentials;
+        RegisterRequest request = RegistrationHelper.VALID_CREDENTIALS;
 
         // when
         registration.register(request);
 
         // then
-        assertNotNull(registrationHelper.login);
+        LoginRequest loginRequest = RegistrationHelper.LOGIN;
+        assertNotNull(loginRequest);
     }
     @Test
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
         // given
-        RegisterRequest request = registrationHelper.register("User");
+        RegisterRequest request = RegistrationHelper.REGISTER("User");
 
         // when
         registration.register(request);
@@ -60,7 +63,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenRegistrationSuccess_ReturnMessage () {
         // given
-        RegisterRequest request = registrationHelper.validCredentials;
+        RegisterRequest request = RegistrationHelper.VALID_CREDENTIALS;
 
         // when
         ApiResponse response = registration.register(request);
@@ -71,7 +74,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenInvalidUsernameFormat_ThrowException() {
         // given
-        RegisterRequest request = registrationHelper.existUsername;
+        RegisterRequest request = RegistrationHelper.EXIST_USERNAME;
 
         // when & then
         assertException(() -> registration.register(request),
@@ -81,7 +84,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenInvalidEmailFormat_ThrowException() {
         // given
-        RegisterRequest request = registrationHelper.invalidEmail;
+        RegisterRequest request = RegistrationHelper.INVALID_EMAIL;
 
         // when & then
         assertException(() -> registration.register(request),
@@ -91,7 +94,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenInvalidPasswordFormat_ThrowException() {
         // given
-        RegisterRequest request = registrationHelper.invalidPassword;
+        RegisterRequest request = RegistrationHelper.INVALID_PASSWORD;
 
         // when & then
         assertException(() -> registration.register(request),
@@ -101,7 +104,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenUsernameExist_ThrowException() {
         // given
-        RegisterRequest request = registrationHelper.existUsername;
+        RegisterRequest request = RegistrationHelper.EXIST_USERNAME;
 
         // when & then
         assertException(() -> registration.register(request),
@@ -110,7 +113,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenEmailExist_ThrowException() {
         // given
-        RegisterRequest request = registrationHelper.existEmail;
+        RegisterRequest request = RegistrationHelper.EXIST_EMAIL;
 
         // when & then
         assertException(() -> registration.register(request),
