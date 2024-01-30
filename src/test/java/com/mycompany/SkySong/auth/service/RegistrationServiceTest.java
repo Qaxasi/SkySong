@@ -4,7 +4,9 @@ import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.BaseIT;
+import com.mycompany.SkySong.testsupport.auth.RegistrationHelper;
 import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,9 +21,11 @@ public class RegistrationServiceTest extends BaseIT {
     @Autowired
     private DataSource dataSource;
     @Autowired
-    private DatabaseHelper databaseHelper;
-    @Autowired
     private LoginService login;
+    @Autowired
+    private RegistrationHelper registrationHelper;
+    @Autowired
+    private DatabaseHelper databaseHelper;
 
     @Test
     void shouldRegisterUser() {
