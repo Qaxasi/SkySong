@@ -31,13 +31,13 @@ public class RegistrationServiceTest extends BaseIT {
     @Transactional
     void whenValidCredentials_RegisterUser() {
         // given
-        RegisterRequest request = RegistrationHelper.REGISTER("User");
+        RegisterRequest request = RegistrationHelper.REGISTER("Alex");
 
         // when
         registration.register(request);
 
         // then
-        assertTrue(databaseHelper.userExist("User"));
+        assertTrue(databaseHelper.userExist("Alex"));
     }
     @Test
     @Transactional
@@ -56,13 +56,13 @@ public class RegistrationServiceTest extends BaseIT {
     @Transactional
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
         // given
-        RegisterRequest request = RegistrationHelper.REGISTER("User");
+        RegisterRequest request = RegistrationHelper.REGISTER("Alex");
 
         // when
         registration.register(request);
 
         // then
-        assertTrue(databaseHelper.hasUserRole("User", UserRole.ROLE_USER.name()));
+        assertTrue(databaseHelper.hasUserRole("Alex", UserRole.ROLE_USER.name()));
     }
     @Test
     @Transactional
