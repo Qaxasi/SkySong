@@ -4,7 +4,7 @@ import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
 public class RegistrationRequests {
-    public static LoginRequest login =
+    public static LoginRequest LOGIN =
             new LoginRequest("User", "Password#3");
 
     public static final RegisterRequest VALID_CREDENTIALS =
@@ -24,8 +24,8 @@ public class RegistrationRequests {
     public static RegisterRequest INVALID_PASSWORD =
             new RegisterRequest("User", "mail@mail.com", "invalid");
 
-    public static RegisterRequest register(String username) {
-        return new RegisterRequest(username, "mail@mail.com", "Password#3");
+    public static RegisterRequest REGISTER(String username) {
+        return new RegisterRequest(username, "new@mail.com", "Password#3");
     }
     public String MALFORMED_REQUEST =
             "{\"username\": \"New\", \"email\": \"new@mail.com\", \"password\": \"Password#3\"";
