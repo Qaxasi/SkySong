@@ -3,7 +3,7 @@ package com.mycompany.SkySong.testsupport.auth;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
-public class RegistrationRequests {
+public class RegistrationHelper {
     public static LoginRequest LOGIN =
             new LoginRequest("User", "Password#3");
 
