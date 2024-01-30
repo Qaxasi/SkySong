@@ -47,7 +47,7 @@ public class RegistrationServiceTest extends BaseIT {
 
         // then
         LoginRequest loginRequest = RegistrationHelper.LOGIN;
-        assertNotNull(loginRequest);
+        assertNotNull(login.login(loginRequest));
     }
     @Test
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
