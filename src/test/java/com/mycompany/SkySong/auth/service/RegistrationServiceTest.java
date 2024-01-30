@@ -74,7 +74,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenInvalidUsernameFormat_ThrowException() {
         // given
-        RegisterRequest request = RegistrationHelper.EXIST_USERNAME;
+        RegisterRequest request = RegistrationHelper.INVALID_USERNAME;
 
         // when & then
         assertException(() -> registration.register(request),
