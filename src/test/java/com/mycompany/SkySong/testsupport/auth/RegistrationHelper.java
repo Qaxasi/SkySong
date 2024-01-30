@@ -4,29 +4,29 @@ import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
 public class RegistrationHelper {
-    public static LoginRequest LOGIN =
+    public LoginRequest login =
             new LoginRequest("User", "Password#3");
 
-    public static final RegisterRequest VALID_CREDENTIALS =
+    public RegisterRequest validCredentials =
             new RegisterRequest("New", "new@mail.com", "Password#3");
-    public static final RegisterRequest EMPTY_CREDENTIALS =
+    public RegisterRequest emptyCredentials =
             new RegisterRequest("", "", "");
 
-    public static RegisterRequest EXIST_EMAIL =
+    public RegisterRequest existEmail =
             new RegisterRequest("User", "mark@mail.com", "Password#3");
-    public static RegisterRequest EXIST_USERNAME =
+    public RegisterRequest existUsername =
             new RegisterRequest("Mark", "mail@mail.com", "Password#3");
 
-    public static RegisterRequest INVALID_USERNAME =
+    public RegisterRequest invalidUsername =
             new RegisterRequest("invalid#", "mail@mail.com", "Password#3");
-    public static RegisterRequest INVALID_EMAIL =
+    public RegisterRequest invalidEmail =
             new RegisterRequest("User", "invalid", "Password#3");
-    public static RegisterRequest INVALID_PASSWORD =
+    public RegisterRequest invalidPassword =
             new RegisterRequest("User", "mail@mail.com", "invalid");
 
-    public static RegisterRequest REGISTER(String username) {
+    public RegisterRequest register(String username) {
         return new RegisterRequest(username, "new@mail.com", "Password#3");
     }
-    public String MALFORMED_REQUEST =
+    public String malformedRequest =
             "{\"username\": \"New\", \"email\": \"new@mail.com\", \"password\": \"Password#3\"";
 }
