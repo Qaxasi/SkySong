@@ -5,7 +5,7 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
 public class RegistrationHelper {
     public static final LoginRequest LOGIN =
-            new LoginRequest("User", "Password#3");
+            new LoginRequest("New", "Password#3");
 
     public static final RegisterRequest VALID_CREDENTIALS =
             new RegisterRequest("New", "new@mail.com", "Password#3");
