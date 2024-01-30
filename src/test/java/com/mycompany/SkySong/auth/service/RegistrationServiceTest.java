@@ -10,6 +10,7 @@ import com.mycompany.SkySong.testsupport.auth.RegistrationHelper;
 import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
@@ -27,6 +28,7 @@ public class RegistrationServiceTest extends BaseIT {
     private DatabaseHelper databaseHelper;
 
     @Test
+    @Transactional
     void whenValidCredentials_RegisterUser() {
         // given
         RegisterRequest request = RegistrationHelper.REGISTER("User");
@@ -38,6 +40,7 @@ public class RegistrationServiceTest extends BaseIT {
         assertTrue(databaseHelper.userExist("User"));
     }
     @Test
+    @Transactional
     void whenRegistrationSuccess_AllowLoginForRegisterUser() {
         // given
         RegisterRequest request = RegistrationHelper.VALID_CREDENTIALS;
@@ -50,6 +53,7 @@ public class RegistrationServiceTest extends BaseIT {
         assertNotNull(login.login(loginRequest));
     }
     @Test
+    @Transactional
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
         // given
         RegisterRequest request = RegistrationHelper.REGISTER("User");
@@ -61,6 +65,7 @@ public class RegistrationServiceTest extends BaseIT {
         assertTrue(databaseHelper.hasUserRole("User", UserRole.ROLE_USER.name()));
     }
     @Test
+    @Transactional
     void whenRegistrationSuccess_ReturnMessage () {
         // given
         RegisterRequest request = RegistrationHelper.VALID_CREDENTIALS;
