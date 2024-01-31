@@ -13,5 +13,9 @@ public class SqlDatabaseInitializer {
     @Autowired
     private DataSource dataSource;
 
-    
+    public void setup(String scriptPath) throws Exception {
+        try(Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource(scriptPath));
+        }
+    }
 }
