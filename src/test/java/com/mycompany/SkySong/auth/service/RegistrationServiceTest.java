@@ -28,7 +28,6 @@ public class RegistrationServiceTest extends BaseIT {
     private DatabaseHelper databaseHelper;
 
     @Test
-    @Transactional
     void whenValidCredentials_RegisterUser() {
         // given
         RegisterRequest request = RegistrationHelper.REGISTER("Alex");
@@ -40,7 +39,6 @@ public class RegistrationServiceTest extends BaseIT {
         assertTrue(databaseHelper.userExist("Alex"));
     }
     @Test
-    @Transactional
     void whenRegistrationSuccess_AllowLoginForRegisterUser() {
         // given
         RegisterRequest request = RegistrationHelper.VALID_CREDENTIALS;
@@ -53,7 +51,6 @@ public class RegistrationServiceTest extends BaseIT {
         assertNotNull(login.login(loginRequest));
     }
     @Test
-    @Transactional
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
         // given
         RegisterRequest request = RegistrationHelper.REGISTER("Alex");
@@ -65,7 +62,6 @@ public class RegistrationServiceTest extends BaseIT {
         assertTrue(databaseHelper.hasUserRole("Alex", UserRole.ROLE_USER.name()));
     }
     @Test
-    @Transactional
     void whenRegistrationSuccess_ReturnMessage () {
         // given
         RegisterRequest request = RegistrationHelper.VALID_CREDENTIALS;
