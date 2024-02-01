@@ -1,4 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
-public class UserAuthenticationServiceTest {
+import com.mycompany.SkySong.testsupport.BaseIT;
+
+public class UserAuthenticationServiceTest extends BaseIT {
+
 }
