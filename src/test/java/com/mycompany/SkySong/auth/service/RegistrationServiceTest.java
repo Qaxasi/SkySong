@@ -19,20 +19,20 @@ import static com.mycompany.SkySong.ExceptionAssertionUtils.assertException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RegistrationServiceTest extends BaseIT {
+
     @Autowired
     private RegistrationService registration;
     @Autowired
     private LoginService login;
     @Autowired
-    private DatabaseHelper databaseHelper;
+    private UserRoleChecker roleChecker;
+    @Autowired
+    private UserExistenceChecker userChecker;
+
     @Autowired
     private SqlDatabaseInitializer initializer;
     @Autowired
     private SqlDatabaseCleaner cleaner;
-    @Autowired
-    private UserRoleChecker roleChecker;
-    @Autowired
-    private UserExistenceChecker userChecker;
 
     @BeforeEach
     void setUp() throws Exception {
