@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.RegistrationHelper;
@@ -15,21 +14,13 @@ public class CredentialExistenceCheckerTest extends BaseIT {
 
     @Test
     void whenUsernameExist_ThrowException() {
-        // given
-        RegisterRequest request = RegistrationHelper.EXIST_USERNAME;
-
-        // when & then
         assertThrows(CredentialValidationException.class,
-                () -> existenceChecker.checkForExistingCredentials(request));
+                () -> existenceChecker.checkForExistingCredentials(RegistrationHelper.EXIST_USERNAME));
 
     }
     @Test
     void whenEmailExist_ThrowException() {
-        // given
-        RegisterRequest request = RegistrationHelper.EXIST_EMAIL;
-
-        // when & then
         assertThrows(CredentialValidationException.class,
-                () -> existenceChecker.checkForExistingCredentials(request));
+                () -> existenceChecker.checkForExistingCredentials(RegistrationHelper.EXIST_EMAIL));
     }
 }
