@@ -2,7 +2,6 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
-import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.LoginRequests;
 import org.junit.jupiter.api.AfterEach;
@@ -37,74 +36,38 @@ public class LoginServiceTest extends BaseIT {
 
     @Test
     void whenLoginSuccess_ReturnToken() {
-        // given
-        LoginRequest request = LoginRequests.VALID_CREDENTIALS;
-
-        // when
-        String token = login.login(request);
-
-        // then
+        String token = login.login(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(token);
     }
     @Test
     void whenInvalidPassword_ThrowException() {
-        // given
-        LoginRequest request = LoginRequests.INVALID_PASSWORD;
-
-        // when & then
-        assertException(() -> login.login(request), BadCredentialsException.class,
+        assertException(() -> login.login(LoginRequests.INVALID_PASSWORD), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
     @Test
     void whenInvalidEmail_ThrowException() {
-        // given
-        LoginRequest request = LoginRequests.INVALID_EMAIL;
-
-        // when & then
-        assertException(() -> login.login(request), BadCredentialsException.class,
+        assertException(() -> login.login(LoginRequests.INVALID_EMAIL), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
     @Test
     void whenInvalidUsername_ThrowException() {
-        // given
-        LoginRequest request = LoginRequests.INVALID_USERNAME;
-
-        // when & then
-        assertException(() -> login.login(request), BadCredentialsException.class,
+        assertException(() -> login.login(LoginRequests.INVALID_USERNAME), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
     @Test
     void whenLoginFailure_NotSetAuthContext() {
-        // given
-        LoginRequest request = LoginRequests.INVALID_PASSWORD;
-
-        // when
-        assertThrows(BadCredentialsException.class, () -> login.login(request));
-
-        // then
+        assertThrows(BadCredentialsException.class, () -> login.login(LoginRequests.INVALID_PASSWORD));
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
     void whenLoginSuccess_SetAuthContext() {
-        // given
-        LoginRequest request = LoginRequests.VALID_CREDENTIALS;
-
-        // when
-        login.login(request);
-
-        // then
+        login.login(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
     @Test
     void whenLoginSuccess_ReturnCorrectUsernameInAuth() {
-        // given
-        LoginRequest request = LoginRequests.VALID_CREDENTIALS;
-
-        // when
-        login.login(request);
+        login.login(LoginRequests.VALID_CREDENTIALS);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // then
         assertEquals("User", authentication.getName());
     }
 }
