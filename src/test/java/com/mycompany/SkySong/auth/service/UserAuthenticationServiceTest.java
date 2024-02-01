@@ -31,11 +31,19 @@ public class UserAuthenticationServiceTest extends BaseIT {
     void cleanUp() {
         cleaner.clean();
     }
+    
     @Test
     void whenValidCredentials_AuthenticationNotNull() {
         Authentication result = userAuth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(result);
     }
+
+    @Test
+    void whenValidCredentials_UserAuthenticated() {
+        Authentication result = userAuth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
+        assertTrue(result.isAuthenticated());
+    }
+
     @Test
     void whenInvalidCredentials_AuthenticationFails() {
         assertThrows(BadCredentialsException.class,
