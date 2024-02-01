@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.SqlDatabaseCleaner;
+import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.LoginRequests;
@@ -16,6 +18,10 @@ public class LoginServiceTest extends BaseIT {
 
     @Autowired
     private LoginService login;
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
 
     @Test
     void whenLoginSuccess_ReturnToken() {
