@@ -36,4 +36,9 @@ public class UserAuthenticationServiceTest extends BaseIT {
         Authentication result = userAuth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(result);
     }
+    @Test
+    void whenInvalidCredentials_AuthenticationFails() {
+        assertThrows(BadCredentialsException.class,
+                () -> userAuth.authenticateUser(LoginRequests.INVALID_PASSWORD));
+    }
 }
