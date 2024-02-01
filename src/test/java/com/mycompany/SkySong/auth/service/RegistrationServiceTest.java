@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.SqlDatabaseCleaner;
+import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
@@ -8,6 +10,8 @@ import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.RegistrationHelper;
 import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,12 @@ public class RegistrationServiceTest extends BaseIT {
     private LoginService login;
     @Autowired
     private DatabaseHelper databaseHelper;
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
+
+
 
     @Test
     void whenValidCredentials_RegisterUser() {
