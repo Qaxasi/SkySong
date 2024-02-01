@@ -43,99 +43,52 @@ public class RegistrationServiceTest extends BaseIT {
         cleaner.clean();
     }
 
-
-
     @Test
     void whenValidCredentials_RegisterUser() {
-        // given
-        RegisterRequest request = RegistrationHelper.REGISTER("Alex");
-
-        // when
-        registration.register(request);
-
-        // then
+        registration.register(RegistrationHelper.REGISTER("Alex"));
         assertTrue(databaseHelper.userExist("Alex"));
     }
     @Test
     void whenRegistrationSuccess_AllowLoginForRegisterUser() {
-        // given
-        RegisterRequest request = RegistrationHelper.VALID_CREDENTIALS;
-
-        // when
-        registration.register(request);
-
-        // then
-        LoginRequest loginRequest = RegistrationHelper.LOGIN;
-        assertNotNull(login.login(loginRequest));
+        registration.register(RegistrationHelper.VALID_CREDENTIALS);
+        assertNotNull(login.login(RegistrationHelper.LOGIN_REGISTERED_USER));
     }
     @Test
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
-        // given
-        RegisterRequest request = RegistrationHelper.REGISTER("Alex");
-
-        // when
-        registration.register(request);
-
-        // then
+        registration.register(RegistrationHelper.REGISTER("Alex"));
         assertTrue(databaseHelper.hasUserRole("Alex", UserRole.ROLE_USER.name()));
     }
     @Test
     void whenRegistrationSuccess_ReturnMessage () {
-        // given
-        RegisterRequest request = RegistrationHelper.VALID_CREDENTIALS;
-
-        // when
-        ApiResponse response = registration.register(request);
-
-        // then
+        ApiResponse response = registration.register(RegistrationHelper.VALID_CREDENTIALS);
         assertEquals("User registered successfully." , response.message());
     }
     @Test
     void whenInvalidUsernameFormat_ThrowException() {
-        // given
-        RegisterRequest request = RegistrationHelper.INVALID_USERNAME;
-
-        // when & then
-        assertException(() -> registration.register(request),
+        assertException(() -> registration.register(RegistrationHelper.INVALID_USERNAME),
                 CredentialValidationException.class, "Invalid username format. The username can contain only letters" +
                         " and numbers, and should be between 3 and 20 characters long.");
     }
     @Test
     void whenInvalidEmailFormat_ThrowException() {
-        // given
-        RegisterRequest request = RegistrationHelper.INVALID_EMAIL;
-
-        // when & then
-        assertException(() -> registration.register(request),
+        assertException(() -> registration.register(RegistrationHelper.INVALID_EMAIL),
                 CredentialValidationException.class, "Invalid email address format. The email should follow the " +
                         "standard format (e.g., user@example.com) and be between 6 and 30 characters long.");
     }
     @Test
     void whenInvalidPasswordFormat_ThrowException() {
-        // given
-        RegisterRequest request = RegistrationHelper.INVALID_PASSWORD;
-
-        // when & then
-        assertException(() -> registration.register(request),
+        assertException(() -> registration.register(RegistrationHelper.INVALID_PASSWORD),
                 CredentialValidationException.class, "Invalid password format. The password must contain an least 8 " +
                         "characters, including uppercase letters, lowercase letters, numbers, and special characters.");
     }
     @Test
     void whenUsernameExist_ThrowException() {
-        // given
-        RegisterRequest request = RegistrationHelper.EXIST_USERNAME;
-
-        // when & then
-        assertException(() -> registration.register(request),
+        assertException(() -> registration.register(RegistrationHelper.EXIST_USERNAME),
                 CredentialValidationException.class, "Username is already exist!.");
     }
     @Test
     void whenEmailExist_ThrowException() {
-        // given
-        RegisterRequest request = RegistrationHelper.EXIST_EMAIL;
-
-        // when & then
-        assertException(() -> registration.register(request),
+        assertException(() -> registration.register(RegistrationHelper.EXIST_EMAIL),
                 CredentialValidationException.class, "Email is already exist!.");
     }
 }
