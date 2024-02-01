@@ -2,6 +2,8 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
+import com.mycompany.SkySong.UserExistenceChecker;
+import com.mycompany.SkySong.UserRoleChecker;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
@@ -27,6 +29,10 @@ public class RegistrationServiceTest extends BaseIT {
     private SqlDatabaseInitializer initializer;
     @Autowired
     private SqlDatabaseCleaner cleaner;
+    @Autowired
+    private UserRoleChecker roleChecker;
+    @Autowired
+    private UserExistenceChecker userChecker;
 
     @BeforeEach
     void setUp() throws Exception {
