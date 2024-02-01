@@ -17,13 +17,8 @@ public class PasswordServiceTest {
     private PasswordEncoder passwordEncoder;
     @Test
     void whenEncodePassword_MatchesOriginal() {
-        // given
         String password = "testPassword";
-
-        // when
         String encodedPassword = passwordService.encodePassword(password);
-
-        // then
         assertTrue(passwordEncoder.matches(password, encodedPassword));
     }
 }
