@@ -9,7 +9,8 @@ import java.sql.Connection;
 
 @Component
 public class SqlDatabaseInitializer {
-    private DataSource dataSource;
+    
+    private final DataSource dataSource;
 
     public SqlDatabaseInitializer(DataSource dataSource) {
         this.dataSource = dataSource;
