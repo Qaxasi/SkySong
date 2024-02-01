@@ -17,5 +17,9 @@ public class SqlDatabaseCleaner {
     public SqlDatabaseCleaner(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
+    public void clean() {
+        tablesToClean.forEach(table -> {
+            jdbcTemplate.update("DELETE FROM " + table);
+        });
+    }
 }
