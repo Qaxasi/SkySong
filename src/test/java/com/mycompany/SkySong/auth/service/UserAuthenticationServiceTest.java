@@ -32,7 +32,7 @@ public class UserAuthenticationServiceTest extends BaseIT {
         cleaner.clean();
     }
     @Test
-    void whenValidCredentials_ThenAuthenticate() {
+    void whenValidCredentials_AuthenticationNotNull() {
         Authentication result = userAuth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(result);
     }
