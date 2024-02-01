@@ -5,6 +5,8 @@ import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.LoginRequests;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +24,16 @@ public class LoginServiceTest extends BaseIT {
     private SqlDatabaseInitializer initializer;
     @Autowired
     private SqlDatabaseCleaner cleaner;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        initializer.setup("data_sql/test-setup.sql");
+    }
+
+    @AfterEach
+    void cleanUp() {
+        cleaner.clean();
+    }
 
     @Test
     void whenLoginSuccess_ReturnToken() {
