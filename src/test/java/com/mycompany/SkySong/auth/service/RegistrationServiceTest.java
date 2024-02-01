@@ -9,7 +9,6 @@ import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.RegistrationHelper;
-import com.mycompany.SkySong.testsupport.common.DatabaseHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +46,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenValidCredentials_RegisterUser() {
         registration.register(RegistrationHelper.REGISTER("Alex"));
-        assertTrue(databaseHelper.userExist("Alex"));
+        assertTrue(userChecker.userExist("Alex"));
     }
     @Test
     void whenRegistrationSuccess_AllowLoginForRegisterUser() {
@@ -57,7 +56,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
         registration.register(RegistrationHelper.REGISTER("Alex"));
-        assertTrue(databaseHelper.hasUserRole("Alex", UserRole.ROLE_USER.name()));
+        assertTrue(roleChecker.hasUserRole("Alex", UserRole.ROLE_USER.name()));
     }
     @Test
     void whenRegistrationSuccess_ReturnMessage () {
