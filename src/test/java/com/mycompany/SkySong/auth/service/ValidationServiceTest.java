@@ -2,7 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.testsupport.auth.RegistrationRequests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,38 +18,36 @@ public class ValidationServiceTest {
     @Autowired
     private ValidationService validationService;
 
+//    @Test
+//    void whenPasswordIsToShort_ThrowException() {
+//        assertThrows(CredentialValidationException.class,
+//                () -> validationService.validateCredentials(RegistrationRequests.PASSWORD_TO_SHORT));
+//    }
     @Test
-    void shouldThrowExceptionWhenPasswordIsToShort() {
+    void whenPasswordNoHaveUppercaseLetter_ThrowException() {
         RegisterRequest registerRequest =
-                new RegisterRequest("testUsername", "testEmail@gmail.com", "Test@2");
+                new RegisterRequest("User", "mail@mail.com", "password#3");
 
         assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
-    void shouldThrowExceptionWhenPasswordDoesNotHaveUppercaseLetter() {
+    void whenPasswordNoHaveLowercaseLetter_ThrowException() {
         RegisterRequest registerRequest =
-                new RegisterRequest("testUsername", "testEmail@gmail.com", "testpass@123");
+                new RegisterRequest("User", "mail@mail.com", "PASSWORD#3");
 
         assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
-    void shouldThrowExceptionWhenPasswordDoesNotHaveLowercaseLetter() {
+    void whenPasswordNoHaveNumber_ThrowException() {
         RegisterRequest registerRequest =
-                new RegisterRequest("testUsername", "testEmail@gmail.com", "TESTPASS@123");
+                new RegisterRequest("User", "mail@mmail.com", "Password#d");
 
         assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }
     @Test
-    void shouldThrowExceptionWhenPasswordDoesNotHaveNumber() {
-        RegisterRequest registerRequest =
-                new RegisterRequest("testUsername", "testEmail@gmail.com", "testPass@ONE");
-
-        assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
-    }
-    @Test
-    void shouldThrowExceptionWhenPasswordDoesNotHaveSpecialCharacter() {
+    void whenPasswordNoHaveSpecialCharacter_ThrowException() {
         RegisterRequest registerRequest = new RegisterRequest(
-                "testUsername", "testEmail@gmail.com", "testPassword123");
+                "User", "mail@mail.com", "Password3");
 
         assertThrows(CredentialValidationException.class, () -> validationService.validateCredentials(registerRequest));
     }

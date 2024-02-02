@@ -8,7 +8,7 @@ import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.RegistrationHelper;
+import com.mycompany.SkySong.testsupport.auth.RegistrationRequests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,50 +45,50 @@ public class RegistrationServiceTest extends BaseIT {
 
     @Test
     void whenValidCredentials_RegisterUser() {
-        registration.register(RegistrationHelper.REGISTER("Alex"));
+        registration.register(RegistrationRequests.REGISTER("Alex"));
         assertTrue(userChecker.userExist("Alex"));
     }
     @Test
     void whenRegistrationSuccess_AllowLoginForRegisterUser() {
-        registration.register(RegistrationHelper.VALID_CREDENTIALS);
-        assertNotNull(login.login(RegistrationHelper.LOGIN_REGISTERED_USER));
+        registration.register(RegistrationRequests.VALID_CREDENTIALS);
+        assertNotNull(login.login(RegistrationRequests.LOGIN_REGISTERED_USER));
     }
     @Test
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
-        registration.register(RegistrationHelper.REGISTER("Alex"));
+        registration.register(RegistrationRequests.REGISTER("Alex"));
         assertTrue(roleChecker.hasUserRole("Alex", UserRole.ROLE_USER.name()));
     }
     @Test
     void whenRegistrationSuccess_ReturnMessage () {
-        ApiResponse response = registration.register(RegistrationHelper.VALID_CREDENTIALS);
+        ApiResponse response = registration.register(RegistrationRequests.VALID_CREDENTIALS);
         assertEquals("User registered successfully." , response.message());
     }
     @Test
     void whenInvalidUsernameFormat_ThrowException() {
-        assertException(() -> registration.register(RegistrationHelper.INVALID_USERNAME),
+        assertException(() -> registration.register(RegistrationRequests.INVALID_USERNAME),
                 CredentialValidationException.class, "Invalid username format. The username can contain only letters" +
                         " and numbers, and should be between 3 and 20 characters long.");
     }
     @Test
     void whenInvalidEmailFormat_ThrowException() {
-        assertException(() -> registration.register(RegistrationHelper.INVALID_EMAIL),
+        assertException(() -> registration.register(RegistrationRequests.INVALID_EMAIL),
                 CredentialValidationException.class, "Invalid email address format. The email should follow the " +
                         "standard format (e.g., user@example.com) and be between 6 and 30 characters long.");
     }
     @Test
     void whenInvalidPasswordFormat_ThrowException() {
-        assertException(() -> registration.register(RegistrationHelper.INVALID_PASSWORD),
+        assertException(() -> registration.register(RegistrationRequests.INVALID_PASSWORD),
                 CredentialValidationException.class, "Invalid password format. The password must contain an least 8 " +
                         "characters, including uppercase letters, lowercase letters, numbers, and special characters.");
     }
     @Test
     void whenUsernameExist_ThrowException() {
-        assertException(() -> registration.register(RegistrationHelper.EXIST_USERNAME),
+        assertException(() -> registration.register(RegistrationRequests.EXIST_USERNAME),
                 CredentialValidationException.class, "Username is already exist!.");
     }
     @Test
     void whenEmailExist_ThrowException() {
-        assertException(() -> registration.register(RegistrationHelper.EXIST_EMAIL),
+        assertException(() -> registration.register(RegistrationRequests.EXIST_EMAIL),
                 CredentialValidationException.class, "Email is already exist!.");
     }
 }
