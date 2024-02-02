@@ -16,7 +16,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,44 +55,5 @@ public class UserRoleManagerImplTest {
                 assertThrows(InternalErrorException.class, () -> userRoleManagerImpl.getRoleByName(role));
 
         assertEquals(expectedMessage, exception.getMessage());
-    }
-    @Test
-    void shouldUseRoleDAOCorrectlyWhenRoleExist() {
-        UserRole role = UserRole.ROLE_USER;
-        Role expectedRole = new Role(role);
-
-        when(roleDAO.findByName(role)).thenReturn(Optional.of(expectedRole));
-
-        userRoleManagerImpl.getRoleByName(role);
-
-        verify(roleDAO).findByName(role);
-    }
-    @Test
-    void shouldUseRoleDAOCorrectlyWhenRoleDoesNotExist() {
-        UserRole role = UserRole.ROLE_USER;
-
-        when(roleDAO.findByName(role)).thenReturn(Optional.empty());
-
-        try {
-            userRoleManagerImpl.getRoleByName(role);
-        } catch (InternalErrorException  ignored) {
-        }
-
-        verify(roleDAO).findByName(role);
-    }
-    @Test
-    void shouldUseMessageServiceCorrectlyWhenRoleDoesNotExist() {
-        UserRole role = UserRole.ROLE_USER;
-        String expectedMessage = "Error during registration";
-
-        when(messageService.getMessage("user.role.not-set")).thenReturn(expectedMessage);
-        when(roleDAO.findByName(role)).thenReturn(Optional.empty());
-
-        try {
-            userRoleManagerImpl.getRoleByName(role);
-        } catch (InternalErrorException  ignored) {
-        }
-
-        verify(messageService).getMessage("user.role.not-set");
     }
 }
