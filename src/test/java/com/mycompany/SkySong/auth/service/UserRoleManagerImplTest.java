@@ -21,10 +21,7 @@ import static org.mockito.Mockito.when;
 public class UserRoleManagerImplTest {
 
     private UserRoleManagerImpl userRoleManagerImpl;
-    
-    private RoleDAO roleDAO;
 
-    private ApplicationMessageService messageService;
     @Test
     void shouldThrowExceptionWhenRoleNotExist() {
         when(roleDAO.findByName(any())).thenReturn(Optional.empty());
