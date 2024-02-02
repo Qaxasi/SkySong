@@ -1,11 +1,8 @@
 package com.mycompany.SkySong.testsupport.auth;
 
-import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
 public class RegistrationRequests {
-    public static final LoginRequest LOGIN_REGISTERED_USER =
-            new LoginRequest("New", "Password#3");
 
     public static final RegisterRequest VALID_CREDENTIALS =
             new RegisterRequest("New", "new@mail.com", "Password#3");

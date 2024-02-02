@@ -3,6 +3,9 @@ package com.mycompany.SkySong.testsupport.auth;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 
 public class LoginRequests {
+
+    public static final LoginRequest LOGIN_REGISTERED_USER =
+            new LoginRequest("New", "Password#3");
     public static final LoginRequest VALID_CREDENTIALS =
             new LoginRequest("User", "Password#3");
     public static final LoginRequest INVALID_PASSWORD =
