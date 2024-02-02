@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Profile("test")
 public class UserFactoryImplTest {
     @Autowired
-    private UserFactoryImpl userFactory;
+    private UserFactory userFactory;
 
     @Test
     void shouldCreateUserWithGivenDetails() {
