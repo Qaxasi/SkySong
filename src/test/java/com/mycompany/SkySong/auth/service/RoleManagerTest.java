@@ -4,7 +4,6 @@ import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.auth.repository.RoleDAO;
 import com.mycompany.SkySong.shared.exception.InternalErrorException;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.AfterEach;
