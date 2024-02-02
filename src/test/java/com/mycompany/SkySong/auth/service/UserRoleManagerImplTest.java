@@ -18,13 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 public class UserRoleManagerImplTest {
-    @InjectMocks
+
     private UserRoleManagerImpl userRoleManagerImpl;
-    @Mock
+    
     private RoleDAO roleDAO;
-    @Mock
+
     private ApplicationMessageService messageService;
     @Test
     void shouldThrowExceptionWhenRoleNotExist() {
