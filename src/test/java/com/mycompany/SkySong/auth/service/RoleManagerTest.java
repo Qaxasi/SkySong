@@ -26,9 +26,6 @@ public class RoleManagerTest extends BaseIT {
     @Autowired
     private SqlDatabaseCleaner cleaner;
 
-    @Autowired
-    private RoleDAO roleDAO;
-
     @BeforeEach
     void setUp() throws Exception {
         initializer.setup("data_sql/test-setup.sql");
