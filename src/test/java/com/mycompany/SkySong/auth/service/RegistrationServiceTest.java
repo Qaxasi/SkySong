@@ -8,6 +8,7 @@ import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.BaseIT;
+import com.mycompany.SkySong.testsupport.auth.LoginRequests;
 import com.mycompany.SkySong.testsupport.auth.RegistrationRequests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +52,7 @@ public class RegistrationServiceTest extends BaseIT {
     @Test
     void whenRegistrationSuccess_AllowLoginForRegisterUser() {
         registration.register(RegistrationRequests.VALID_CREDENTIALS);
-        assertNotNull(login.login(RegistrationRequests.LOGIN_REGISTERED_USER));
+        assertNotNull(login.login(LoginRequests.LOGIN_REGISTERED_USER));
     }
     @Test
     void whenRegistrationSuccess_AssignRoleUserToNewUser() {
