@@ -4,6 +4,7 @@ import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,9 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ValidationServiceTest {
 
-    private ValidationServiceImpl validationService;
-
-    private ApplicationMessageService messageService;
+    @Autowired
+    private ValidationService validationService;
 
     @Test
     void shouldThrowExceptionWhenPasswordIsToShort() {
