@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Profile("test")
-public class UserFactoryImplTest {
+public class UserFactoryTest {
     @Autowired
     private UserFactory userFactory;
 
