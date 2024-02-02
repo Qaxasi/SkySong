@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,8 +17,6 @@ public class UserFactoryImplTest {
     @Autowired
     private UserFactoryImpl userFactory;
 
-    @Autowired
-    private PasswordService passwordService;
     @Test
     void shouldCreateUserWithGivenDetails() {
         RegisterRequest registerRequest = new RegisterRequest("User", "mail@mail.com", "Pass#3");
