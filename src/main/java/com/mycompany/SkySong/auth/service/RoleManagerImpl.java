@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-class UserRoleManagerImpl implements UserRoleManager {
+class RoleManagerImpl implements RoleManager {
     private final RoleDAO roleDAO;
     private final ApplicationMessageService messageService;
 
-    public UserRoleManagerImpl(RoleDAO roleDAO, ApplicationMessageService messageService) {
+    public RoleManagerImpl(RoleDAO roleDAO, ApplicationMessageService messageService) {
         this.roleDAO = roleDAO;
         this.messageService = messageService;
     }

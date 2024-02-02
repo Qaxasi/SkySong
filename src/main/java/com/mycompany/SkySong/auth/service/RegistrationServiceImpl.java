@@ -19,18 +19,18 @@ class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
     private final ValidationService validationService;
     private final ApplicationMessageService messageService;
-    private final UserRoleManager userRoleManager;
+    private final RoleManager roleManager;
     private final UserFactory userFactory;
     private final CredentialExistenceChecker credentialExistenceChecker;
 
     public RegistrationServiceImpl(UserDAO userDAO, ValidationService validationService,
                                    ApplicationMessageService messageService,
-                                   UserRoleManager userRoleManager, UserFactory userFactory,
+                                   RoleManager roleManager, UserFactory userFactory,
                                    CredentialExistenceChecker credentialExistenceChecker) {
         this.userDAO = userDAO;
         this.validationService = validationService;
         this.messageService = messageService;
-        this.userRoleManager = userRoleManager;
+        this.roleManager = roleManager;
         this.userFactory = userFactory;
         this.credentialExistenceChecker = credentialExistenceChecker;
     }
@@ -43,7 +43,7 @@ class RegistrationServiceImpl implements RegistrationService {
 
         credentialExistenceChecker.checkForExistingCredentials(registerRequest);
 
-        Role role = userRoleManager.getRoleByName(UserRole.ROLE_USER);
+        Role role = roleManager.getRoleByName(UserRole.ROLE_USER);
 
         User user = userFactory.createUser(registerRequest, role);
 
