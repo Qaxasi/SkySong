@@ -2,14 +2,8 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.auth.repository.RoleDAO;
 import com.mycompany.SkySong.shared.exception.InternalErrorException;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
@@ -18,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class UserRoleManagerImplTest {
+public class UserRoleManagerTest {
 
     private UserRoleManagerImpl userRoleManagerImpl;
 
