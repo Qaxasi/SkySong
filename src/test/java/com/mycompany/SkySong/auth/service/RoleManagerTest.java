@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.mycompany.SkySong.ExceptionAssertionUtils.assertException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RoleManagerTest extends BaseIT {
@@ -54,18 +53,4 @@ public class RoleManagerTest extends BaseIT {
                 "An error occurred while processing your request. Please try again later.");
 
     }
-
-//    @Test
-//    void shouldReturnErrorMessageWhenRoleNotFound() {
-//        UserRole role = UserRole.ROLE_USER;
-//        String expectedMessage = "Error during registration";
-//
-//        when(messageService.getMessage("user.role.not-set")).thenReturn(expectedMessage);
-//        when(roleDAO.findByName(role)).thenReturn(Optional.empty());
-//
-//        Exception exception =
-//                assertThrows(InternalErrorException.class, () -> userRoleManagerImpl.getRoleByName(role));
-//
-//        assertEquals(expectedMessage, exception.getMessage());
-//    }
 }
