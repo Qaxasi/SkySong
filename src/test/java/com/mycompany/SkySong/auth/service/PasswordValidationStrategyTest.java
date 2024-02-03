@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.shared.service.ApplicationMessageServiceImpl;
@@ -44,5 +43,11 @@ public class PasswordValidationStrategyTest {
     void whenPasswordWithoutNumber_ThrowException() {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.PASSWORD_NO_NUMBER));
+    }
+
+    @Test
+    void whenPasswordWithoutSpecialCharacter_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> strategy.validate(RegistrationRequests.PASSWORD_NO_SPECIAL_CHARACTER));
     }
 }
