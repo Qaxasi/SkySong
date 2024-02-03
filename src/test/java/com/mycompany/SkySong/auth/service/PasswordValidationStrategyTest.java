@@ -27,4 +27,9 @@ public class PasswordValidationStrategyTest {
                 () -> strategy.validate(RegistrationRequests.PASSWORD_TO_SHORT));
     }
 
+    @Test
+    void whenPasswordNoHaveUppercaseLetter_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> strategy.validate(RegistrationRequests.PASSWORD_NO_UPPERCASE_LETTER));
+    }
 }
