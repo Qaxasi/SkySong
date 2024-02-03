@@ -4,7 +4,9 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import com.mycompany.SkySong.shared.util.ValidationPatterns;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UsernameValidationStrategy implements RegistrationValidationStrategy {
 
     private final ApplicationMessageService message;
