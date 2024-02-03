@@ -12,6 +12,7 @@ public class EmailValidationStrategy implements RegistrationValidationStrategy {
     public EmailValidationStrategy(ApplicationMessageService message) {
         this.message = message;
     }
+
     @Override
     public void validate(RegisterRequest registerRequest) throws CredentialValidationException {
         if (!registerRequest.email().matches(ValidationPatterns.EMAIL_PATTERN)) {
