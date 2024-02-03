@@ -7,10 +7,10 @@ import com.mycompany.SkySong.shared.util.ValidationPatterns;
 import org.springframework.stereotype.Service;
 
 @Service
-class ValidationServiceImpl implements ValidationService {
+class RegistrationValidationServiceImpl implements RegistrationValidationService {
     private final ApplicationMessageService messageService;
 
-    public ValidationServiceImpl(ApplicationMessageService messageService) {
+    public RegistrationValidationServiceImpl(ApplicationMessageService messageService) {
         this.messageService = messageService;
     }
 

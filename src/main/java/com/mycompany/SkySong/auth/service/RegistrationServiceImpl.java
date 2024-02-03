@@ -17,18 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
-    private final ValidationService validationService;
+    private final RegistrationValidationService registrationValidator;
     private final ApplicationMessageService messageService;
     private final RoleManager roleManager;
     private final UserFactory userFactory;
     private final CredentialExistenceChecker credentialExistenceChecker;
 
-    public RegistrationServiceImpl(UserDAO userDAO, ValidationService validationService,
+    public RegistrationServiceImpl(UserDAO userDAO, RegistrationValidationService registrationValidator,
                                    ApplicationMessageService messageService,
                                    RoleManager roleManager, UserFactory userFactory,
                                    CredentialExistenceChecker credentialExistenceChecker) {
         this.userDAO = userDAO;
-        this.validationService = validationService;
+        this.registrationValidator = registrationValidator;
         this.messageService = messageService;
         this.roleManager = roleManager;
         this.userFactory = userFactory;
@@ -39,7 +39,7 @@ class RegistrationServiceImpl implements RegistrationService {
     @Override
     public ApiResponse register(RegisterRequest registerRequest) throws DatabaseException {
 
-        validationService.validateCredentials(registerRequest);
+        registrationValidator.validateCredentials(registerRequest);
 
         credentialExistenceChecker.checkForExistingCredentials(registerRequest);
 

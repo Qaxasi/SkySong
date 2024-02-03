@@ -18,11 +18,11 @@ public class ValidationServiceTest {
     @Autowired
     private ValidationService validationService;
 
-//    @Test
-//    void whenPasswordIsToShort_ThrowException() {
-//        assertThrows(CredentialValidationException.class,
-//                () -> validationService.validateCredentials(RegistrationRequests.PASSWORD_TO_SHORT));
-//    }
+    @Test
+    void whenPasswordIsToShort_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> validationService.validateCredentials(RegistrationRequests.PASSWORD_TO_SHORT));
+    }
     @Test
     void whenPasswordNoHaveUppercaseLetter_ThrowException() {
         RegisterRequest registerRequest =
