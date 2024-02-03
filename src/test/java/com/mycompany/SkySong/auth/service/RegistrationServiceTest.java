@@ -66,19 +66,19 @@ public class RegistrationServiceTest extends BaseIT {
     }
     @Test
     void whenInvalidUsernameFormat_ThrowException() {
-        assertException(() -> registration.register(RegistrationRequests.INVALID_USERNAME),
+        assertException(() -> registration.register(RegistrationRequests.USERNAME_TO_SHORT),
                 CredentialValidationException.class, "Invalid username format. The username can contain only letters" +
                         " and numbers, and should be between 3 and 20 characters long.");
     }
     @Test
     void whenInvalidEmailFormat_ThrowException() {
-        assertException(() -> registration.register(RegistrationRequests.INVALID_EMAIL),
+        assertException(() -> registration.register(RegistrationRequests.EMAIL_TO_SHORT),
                 CredentialValidationException.class, "Invalid email address format. The email should follow the " +
                         "standard format (e.g., user@example.com) and be between 6 and 30 characters long.");
     }
     @Test
     void whenInvalidPasswordFormat_ThrowException() {
-        assertException(() -> registration.register(RegistrationRequests.INVALID_PASSWORD),
+        assertException(() -> registration.register(RegistrationRequests.PASSWORD_NO_NUMBER),
                 CredentialValidationException.class, "Invalid password format. The password must contain an least 8 " +
                         "characters, including uppercase letters, lowercase letters, numbers, and special characters.");
     }
