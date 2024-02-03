@@ -20,22 +20,4 @@ class RegistrationValidationServiceImpl implements RegistrationValidationService
         validateEmail(registerRequest);
         validatePassword(registerRequest);
     }
-
-    private void validateUsername(RegisterRequest registerRequest) {
-        if (!registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
-            throw new CredentialValidationException(messageService.getMessage("validation.username.error"));
-        }
-    }
-
-    private void validateEmail(RegisterRequest registerRequest) {
-        if (!registerRequest.email().matches(ValidationPatterns.EMAIL_PATTERN)) {
-            throw new CredentialValidationException(messageService.getMessage("validation.email.error"));
-        }
-    }
-
-    private void validatePassword(RegisterRequest registerRequest) {
-        if (!registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
-            throw new CredentialValidationException(messageService.getMessage("validation.password.error"));
-        }
-    }
 }
