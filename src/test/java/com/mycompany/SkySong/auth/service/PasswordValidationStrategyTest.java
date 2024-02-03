@@ -29,13 +29,13 @@ public class PasswordValidationStrategyTest {
     }
 
     @Test
-    void whenPasswordNoHaveUppercaseLetter_ThrowException() {
+    void whenPasswordWithoutUppercaseLetter_ThrowException() {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.PASSWORD_NO_UPPERCASE_LETTER));
     }
 
     @Test
-    void whenPasswordNoHaveLowercaseLetter_ThrowException() {
+    void whenPasswordWithoutLowercaseLetter_ThrowException() {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.PASSWORD_NO_LOWERCASE_LETTER));
     }
