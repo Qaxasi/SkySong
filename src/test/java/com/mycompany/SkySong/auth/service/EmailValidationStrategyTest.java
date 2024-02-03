@@ -32,4 +32,10 @@ public class EmailValidationStrategyTest {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.EMAIL_TO_SHORT));
     }
+
+    @Test
+    void whenEmailToLong_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> strategy.validate(RegistrationRequests.EMAIL_TO_LONG));
+    }
 }
