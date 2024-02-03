@@ -26,4 +26,10 @@ public class EmailValidationStrategyTest {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.EMAIL_INVALID_FORMAT));
     }
+
+    @Test
+    void whenEmailToShort_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> strategy.validate(RegistrationRequests.EMAIL_TO_SHORT));
+    }
 }
