@@ -39,4 +39,10 @@ public class PasswordValidationStrategyTest {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.PASSWORD_NO_LOWERCASE_LETTER));
     }
+
+    @Test
+    void whenPasswordWithoutNumber_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> strategy.validate(RegistrationRequests.PASSWORD_NO_NUMBER));
+    }
 }
