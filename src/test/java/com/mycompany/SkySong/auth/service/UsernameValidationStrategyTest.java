@@ -18,11 +18,17 @@ public class UsernameValidationStrategyTest {
         message = new ApplicationMessageServiceImpl();
         strategy = new UsernameValidationStrategy(message);
     }
+
     @Test
     void whenUsernameIsToShort_ThrowException() {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.USERNAME_TO_SHORT));
     }
 
+    @Test
+    void whenUsernameIsToLong_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> strategy.validate(RegistrationRequests.USERNAME_TO_LONG));
+    }
 
 }
