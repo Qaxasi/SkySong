@@ -31,4 +31,10 @@ public class UsernameValidationStrategyTest {
                 () -> strategy.validate(RegistrationRequests.USERNAME_TO_LONG));
     }
 
+    @Test
+    void whenUsernameContainsSpecialCharacter_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> strategy.validate(RegistrationRequests.USERNAME_WITH_SPECIAL_CHARACTER));
+    }
+
 }
