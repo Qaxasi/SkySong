@@ -3,6 +3,7 @@ package com.mycompany.SkySong.auth.service;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.exception.CredentialValidationException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.shared.util.ValidationPatterns;
 
 public class UsernameValidationStrategy implements RegistrationValidationStrategy {
 
@@ -14,6 +15,8 @@ public class UsernameValidationStrategy implements RegistrationValidationStrateg
 
     @Override
     public void validate(RegisterRequest registerRequest) throws CredentialValidationException {
-
+        if (!registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
+            throw new CredentialValidationException(message.getMessage("validation.username.error"));
+        }
     }
 }
