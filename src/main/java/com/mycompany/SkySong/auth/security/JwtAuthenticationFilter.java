@@ -20,22 +20,22 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @Component
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetails;
-    private final CookieRetriever cookieRetriever;
     private final JwtAuthenticationEntryPoint authEntryPoint;
     private final ApplicationMessageService message;
     private final ClaimsExtractor extractor;
     private final TokenValidator validator;
 
     public JwtAuthenticationFilter(UserDetailsService userDetails,
-                                   CookieRetriever cookieRetriever,
                                    JwtAuthenticationEntryPoint authEntryPoint,
-                                   ApplicationMessageService message, ClaimsExtractor extractor, TokenValidator validator) {
+                                   ApplicationMessageService message,
+                                   ClaimsExtractor extractor,
+                                   TokenValidator validator) {
         this.userDetails = userDetails;
-        this.cookieRetriever = cookieRetriever;
         this.authEntryPoint = authEntryPoint;
         this.message = message;
         this.extractor = extractor;
