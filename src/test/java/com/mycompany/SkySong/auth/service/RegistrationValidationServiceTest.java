@@ -15,5 +15,9 @@ public class RegistrationValidationServiceTest {
     @Autowired
     private RegistrationValidationService validator;
 
+    @Test
+    void whenValidRequest_NotThrowException() {
+        assertDoesNotThrow(() -> validator.validateCredentials(RegistrationRequests.VALID_CREDENTIALS));
+    }
 }
 
