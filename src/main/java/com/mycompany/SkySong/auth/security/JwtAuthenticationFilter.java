@@ -23,6 +23,7 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private final UserDetailsService userDetails;
     private final JwtAuthenticationEntryPoint authEntryPoint;
     private final ApplicationMessageService message;
@@ -63,10 +64,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             handleInvalidToken(request, response);
         }
     }
+
     private void handleInvalidToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         authEntryPoint.commence(request, response, new InsufficientAuthenticationException(
                 message.getMessage("unauthorized.token.invalid")));
     }
+
     private void authenticateUser(HttpServletRequest request, String token) {
         Claims claims = extractor.getClaimsFromToken(token);
 
@@ -81,6 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
+    
     private String extractToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 
