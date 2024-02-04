@@ -84,7 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
-    
+
     private String extractToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 
