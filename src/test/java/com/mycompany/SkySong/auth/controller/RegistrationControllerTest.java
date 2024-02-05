@@ -20,8 +20,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 public class RegistrationControllerTest extends BaseIT {
+
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        initializer.setup("data_sql/test-setup.sql");
+    }
+
+    @AfterEach
+    void cleanUp() {
+        cleaner.clean();
+    }
 
     @Test
     void whenRegistrationSuccess_Return201() throws Exception {
