@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
