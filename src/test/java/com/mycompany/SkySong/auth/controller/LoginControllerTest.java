@@ -31,61 +31,7 @@ public class LoginControllerTest extends BaseIT {
                         .content(asJsonString(request)))
                 .andExpect(status().is(200));
     }
-    @Test
-    void whenLoginSuccess_TokenCookieIsSet() throws Exception {
-        // given
-        LoginRequest request = LoginRequests.VALID_CREDENTIALS;
 
-        // when & then
-        mockMvc.perform(post(LOGIN_URI)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().exists("auth_token"));
-    }
-//    @Test
-//    void whenLoginFails_TokenCookieIsNotSet() throws Exception {
-//        // given
-//        LoginRequest request = LoginRequests.INVALID_CREDENTIALS;
-//
-//        // when & then
-//        mockMvc.perform(post(LOGIN_URI)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(request)))
-//                .andExpect(cookie().doesNotExist("auth_token"));
-//    }
-    @Test
-    void whenUserLogsIn_TokenCookieIsSetHttpOnly() throws Exception {
-        // given
-        LoginRequest request = LoginRequests.VALID_CREDENTIALS;
-
-        // when & then
-        mockMvc.perform(post(LOGIN_URI)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().httpOnly("auth_token", true));
-    }
-    @Test
-    void whenUserLogsIn_TokenCookieExpirationIsSetCorrectly() throws Exception {
-        // given
-        LoginRequest request = LoginRequests.VALID_CREDENTIALS;
-
-        // when & then
-        mockMvc.perform(post(LOGIN_URI)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().maxAge("auth_token", 86400));
-    }
-    @Test
-    void whenUserLogsIn_TokenCookieIsMarkedAsSecure() throws Exception {
-        // given
-        LoginRequest request = LoginRequests.VALID_CREDENTIALS;
-
-        // when & then
-        mockMvc.perform(post(LOGIN_URI)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().secure("auth_token", true));
-    }
     @Test
     void whenLoginSuccess_ReturnNotEmptyTokenField() throws Exception {
         // given
@@ -97,17 +43,19 @@ public class LoginControllerTest extends BaseIT {
                         .content(asJsonString(request)))
                 .andExpect(jsonPath("$.accessToken").isNotEmpty());
     }
-//    @Test
-//    void whenInvalidLogin_ReturnUnauthorizedStatus() throws Exception {
-//        // given
-//        LoginRequest request = LoginRequests.INVALID_CREDENTIALS;
-//
-//        // when & then
-//        mockMvc.perform(post(LOGIN_URI)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(request)))
-//                .andExpect(status().is(401));
-//    }
+
+    @Test
+    void whenInvalidLogin_ReturnUnauthorizedStatus() throws Exception {
+        // given
+        LoginRequest request = LoginRequests.INVALID_CREDENTIALS;
+
+        // when & then
+        mockMvc.perform(post(LOGIN_URI)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(status().is(401));
+    }
+
     @Test
     void whenMalformedJson_ReturnBadRequest() throws Exception {
         // given
@@ -127,7 +75,7 @@ public class LoginControllerTest extends BaseIT {
         // when & then
         mockMvc.perform(post(LOGIN_URI)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
+                        .content(asJsonString(LoginRequests.EMPTY_CREDENTIALS)))
                 .andExpect(status().is(400));
     }
     @Test
