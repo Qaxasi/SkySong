@@ -1,7 +1,11 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.SqlDatabaseCleaner;
+import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.RegistrationRequests;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,21 +24,21 @@ public class RegistrationControllerTest extends BaseIT {
     private MockMvc mockMvc;
 
     @Test
-    @Transactional
     void whenRegistrationSuccess_Return201() throws Exception {
         mockMvc.perform(post("/api/v1/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(RegistrationRequests.VALID_CREDENTIALS)))
                 .andExpect(status().is(201));
     }
+
     @Test
-    @Transactional
     void whenRegistrationSuccess_ReturnCorrectFieldName() throws Exception {
         mockMvc.perform(post("/api/v1/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(RegistrationRequests.VALID_CREDENTIALS)))
                 .andExpect(jsonPath("$.message").isNotEmpty());
     }
+
     @Test
     void whenInvalidCredentials_ReturnBadRequest() throws Exception {
         mockMvc.perform(post("/api/v1/users/register")
@@ -42,6 +46,7 @@ public class RegistrationControllerTest extends BaseIT {
                         .content(asJsonString(RegistrationRequests.EMAIL_INVALID_FORMAT)))
                 .andExpect(status().is(400));
     }
+
     @Test
     void whenMalformedRequest_ReturnBadRequest() throws Exception {
         mockMvc.perform(post("/api/v1/users/register")
@@ -49,6 +54,7 @@ public class RegistrationControllerTest extends BaseIT {
                         .content(RegistrationRequests.MALFORMED_REQUEST))
                 .andExpect(status().is(400));
     }
+
     @Test
     void whenEmptyCredentials_ReturnErrorMessages() throws Exception {
         ResultActions actions = mockMvc.perform(post("/api/v1/users/register")
