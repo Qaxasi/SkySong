@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.auth.model.dto.JWTAuthResponse;
 import com.mycompany.SkySong.auth.model.dto.LoginResponse;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.service.LoginService;
@@ -14,17 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class LoginController {
 
-    private final LoginService loginService;
+    private final LoginService login;
 
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
+    public LoginController(LoginService login) {
+        this.login = login;
     }
-    
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        String token = loginService.login(loginRequest);
-        LoginResponse loginResponse = new LoginResponse(token);
 
-        return ResponseEntity.ok(loginResponse);
+    @PostMapping("/login")
+    public ResponseEntity<JWTAuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+        String token = login.login(loginRequest);
+
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return ResponseEntity.ok(jwtAuthResponse);
     }
 }
