@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.auth.security.unused;
+package com.mycompany.SkySong.auth.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
