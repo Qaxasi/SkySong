@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.auth.security;
+package com.mycompany.SkySong.auth.security.unused;
 
 import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.repository.UserDAO;

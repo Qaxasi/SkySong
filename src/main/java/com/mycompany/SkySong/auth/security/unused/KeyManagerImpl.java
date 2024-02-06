@@ -1,5 +1,6 @@
-package com.mycompany.SkySong.auth.security;
+package com.mycompany.SkySong.auth.security.unused;
 
+import com.mycompany.SkySong.auth.security.unused.KeyManager;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
