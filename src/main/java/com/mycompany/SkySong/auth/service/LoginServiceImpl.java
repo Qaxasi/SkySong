@@ -12,8 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 class LoginServiceImpl implements LoginService {
@@ -34,10 +32,14 @@ class LoginServiceImpl implements LoginService {
     @Override
     public String login(LoginRequest loginRequest) {
         try {
-            Authentication authentication = userAuth.authenticateUser(loginRequest);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication auth = userAuth.authenticateUser(loginRequest);
+            SecurityContextHolder.getContext().setAuthentication(auth);
 
-            return tokenGenerator.generateToken();
+            User user = userDAO.findByUsername(auth.getName())
+                    .orElseThrow(() -> new UsernameNotFoundException(
+                            "User not found with username: " + auth.getName()));
+
+            return sessionCreation.createSession(user.getId());
         } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
             throw new BadCredentialsException(messageService.getMessage("login.failure"));
