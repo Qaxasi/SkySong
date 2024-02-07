@@ -18,11 +18,18 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
 
     @Autowired
     private SessionValidation session;
-    
+
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,
                                     @NotNull HttpServletResponse response,
                                     @NotNull FilterChain filterChain) throws ServletException, IOException {
 
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return  path.startsWith("/api/v1/users/login") ||
+                path.startsWith("/api/v1/users/register");
     }
 }
