@@ -14,4 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/users")
 public class LogoutController {
+
+    private final ApplicationMessageService messageService;
+    private final SessionDeletion sessionDeletion;
+
+    public LogoutController(ApplicationMessageService messageService, SessionDeletion sessionDeletion) {
+        this.messageService = messageService;
+        this.sessionDeletion = sessionDeletion;
+    }
+
 }
