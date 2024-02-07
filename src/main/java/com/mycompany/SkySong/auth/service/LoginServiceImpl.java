@@ -1,8 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
-import com.mycompany.SkySong.auth.security.TokenGenerator;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+    import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -12,12 +11,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 class LoginServiceImpl implements LoginService {
-    private final TokenGenerator generator;
+
     private final ApplicationMessageService messageService;
     private final UserAuthenticationService userAuth;
-    public LoginServiceImpl(TokenGenerator generator, ApplicationMessageService messageService,
+
+    public LoginServiceImpl(ApplicationMessageService messageService,
                             UserAuthenticationService userAuth) {
-        this.generator = generator;
         this.messageService = messageService;
         this.userAuth = userAuth;
     }
