@@ -13,6 +13,7 @@ public class SessionDeletionImpl implements SessionDeletion {
 
     @Override
     public void deleteSession(String sessionId) {
-
+        String hashedSessionId = tokenGenerator.generateHashedToken(sessionId);
+        sessionDAO.deleteById(hashedSessionId);
     }
 }
