@@ -1,5 +1,8 @@
 package com.mycompany.SkySong.auth.security;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -12,5 +15,15 @@ public class SecureTokenGenerator {
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
         return encoder.encodeToString(randomBytes);
+    }
+
+    public String generateHashedToken(String token) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = digest.digest(token.getBytes(StandardCharsets.UTF_8));
+            return encoder.encodeToString(hashedBytes);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 algorithm not found", e);
+        }
     }
 }
