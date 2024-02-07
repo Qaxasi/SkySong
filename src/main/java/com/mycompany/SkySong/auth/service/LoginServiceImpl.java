@@ -29,7 +29,8 @@ class LoginServiceImpl implements LoginService {
         try {
             Authentication authentication = userAuth.authenticateUser(loginRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return generator.generateToken(authentication);
+
+            return tokenGenerator.generateToken();
         } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
             throw new BadCredentialsException(messageService.getMessage("login.failure"));
