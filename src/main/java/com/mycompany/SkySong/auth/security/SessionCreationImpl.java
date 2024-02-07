@@ -25,7 +25,7 @@ public class SessionCreationImpl implements SessionCreation {
         session.setSessionId(hashedToken);
         session.setUserId(userID);
         session.setCreateAt(new Date());
-        session.setExpiresAt(new Date(System.currentTimeMillis() + 1000));
+        session.setExpiresAt(new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 
         sessionDAO.save(session);
         return token;
