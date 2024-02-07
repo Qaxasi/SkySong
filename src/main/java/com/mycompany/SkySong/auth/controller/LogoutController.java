@@ -22,5 +22,9 @@ public class LogoutController {
         this.messageService = messageService;
         this.sessionDeletion = sessionDeletion;
     }
-
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@CookieValue("session_id") String token) {
+        sessionDeletion.deleteSession(token);
+        return ResponseEntity.ok(new ApiResponse(messageService.getMessage("logout.success")));
+    }
 }
