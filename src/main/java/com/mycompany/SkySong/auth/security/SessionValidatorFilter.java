@@ -15,6 +15,10 @@ import java.io.IOException;
 
 @Component
 public class SessionValidatorFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private SessionValidation session;
+    
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,
                                     @NotNull HttpServletResponse response,
