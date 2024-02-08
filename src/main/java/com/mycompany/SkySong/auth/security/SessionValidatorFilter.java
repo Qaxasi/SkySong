@@ -1,11 +1,13 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,13 +24,18 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
     private final SessionValidation session;
     private final CustomUserDetailsService userDetails;
     private final SessionUserInfoProvider userInfoProvider;
+    private final CustomAuthenticationEntryPoint authEntryPoint;
+    private final ApplicationMessageService message;
 
     public SessionValidatorFilter(SessionValidation session,
                                   CustomUserDetailsService userDetails,
-                                  SessionUserInfoProvider userInfoProvider) {
+                                  SessionUserInfoProvider userInfoProvider,
+                                  CustomAuthenticationEntryPoint authEntryPoint, ApplicationMessageService message) {
         this.session = session;
         this.userDetails = userDetails;
         this.userInfoProvider = userInfoProvider;
+        this.authEntryPoint = authEntryPoint;
+        this.message = message;
     }
 
     @Override
