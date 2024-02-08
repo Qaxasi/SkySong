@@ -19,8 +19,8 @@ public class SessionValidationImpl implements SessionValidation {
     @Override
     public boolean validateSession(String sessionId) {
         String hashedSessionId = tokenGenerator.generateHashedToken(sessionId);
-        Session session = sessionDAO.findById(hashedSessionId).orElse(null);
-
-        return session != null && session.getExpiresAt().after(new Date());
+        return sessionDAO.findById(hashedSessionId)
+                .map(session -> session.getExpiresAt().after(new Date()))
+                .orElse(false);
     }
 }
