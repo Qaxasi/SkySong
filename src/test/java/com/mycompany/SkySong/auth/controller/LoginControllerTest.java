@@ -1,7 +1,11 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.SqlDatabaseCleaner;
+import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.LoginRequests;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +22,21 @@ public class LoginControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        initializer.setup("data_sql/test-setup.sql");
+    }
+
+    @AfterEach
+    void cleanUp() {
+        cleaner.clean();
+    }
 
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
