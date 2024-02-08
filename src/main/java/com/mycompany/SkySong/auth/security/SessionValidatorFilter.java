@@ -75,6 +75,10 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
+    private boolean isValidSession(String sessionId) {
+        return sessionId != null && session.validateSession(sessionId)
+    }
     
     private String getSessionIdFromRequest(HttpServletRequest request) {
         return Optional.ofNullable(request.getCookies())
