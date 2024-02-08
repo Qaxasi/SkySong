@@ -100,6 +100,12 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    private void handleAuthenticationFailure(HttpServletRequest request,
+                                             HttpServletResponse response) throws IOException {
+        authEntryPoint.commence(request, response, new InsufficientAuthenticationException(
+                message.getMessage("unauthorized.token.invalid")));
+    }
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
