@@ -55,6 +55,14 @@ public class LoginControllerTest extends BaseIT {
     }
 
     @Test
+    void whenLoginSuccess_SetSessionCookie() throws Exception {
+        mockMvc.perform(post("/api/v1/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                .andExpect(cookie().exists("session_id"));
+    }
+
+    @Test
     void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
