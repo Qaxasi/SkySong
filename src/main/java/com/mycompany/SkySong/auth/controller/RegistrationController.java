@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/users")
 public class RegistrationController {
+
     private final RegistrationService registration;
+
     public RegistrationController(RegistrationService registration) {
         this.registration = registration;
     }
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> register(
             @Valid @RequestBody RegisterRequest registerRequest) throws DatabaseException {
