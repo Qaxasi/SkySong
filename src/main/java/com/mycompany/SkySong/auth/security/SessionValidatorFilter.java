@@ -49,28 +49,12 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
             return;
         }
 
-        String sessionId = Optional.ofNullable(request.getCookies())
-                .stream()
-                .flatMap(Arrays::stream)
-                .filter(cookie -> "session_id".equals(cookie.getName()))
-                .findFirst()
-                .map(Cookie::getValue)
-                .orElse(null);
+        String sessionId = getSessionIdFromRequest(request);
 
-
-        if (sessionId != null && session.validateSession(sessionId)) {
-
-            String username = userInfoProvider.getUsernameForSession(sessionId);
-            UserDetails details = userDetails.loadUserByUsername(username);
-
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        if (isValidSession(sessionId)) {
+            authenticateUser(sessionId);
         } else {
-            authEntryPoint.commence(request, response, new InsufficientAuthenticationException(
-                    message.getMessage("unauthorized.token.invalid")));
+            handleAuthenticationFailure(request, response);
             return;
         }
         filterChain.doFilter(request, response);
