@@ -76,10 +76,6 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean isValidSession(String sessionId) {
-        return sessionId != null && session.validateSession(sessionId)
-    }
-    
     private String getSessionIdFromRequest(HttpServletRequest request) {
         return Optional.ofNullable(request.getCookies())
                 .stream()
@@ -88,6 +84,20 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElse(null);
+    }
+
+    private boolean isValidSession(String sessionId) {
+        return sessionId != null && session.validateSession(sessionId)
+    }
+
+    private void authenticateUser(String sessionId) {
+        String username = userInfoProvider.getUsernameForSession(sessionId);
+        UserDetails details = userDetails.loadUserByUsername(username);
+
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Override
