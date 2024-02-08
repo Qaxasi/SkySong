@@ -69,10 +69,10 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            authEntryPoint.commence(request, response, new InsufficientAuthenticationException(
+                    message.getMessage("unauthorized.token.invalid")));
             return;
         }
-
         filterChain.doFilter(request, response);
     }
 
