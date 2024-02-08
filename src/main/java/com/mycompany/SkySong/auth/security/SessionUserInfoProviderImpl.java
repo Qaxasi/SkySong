@@ -1,8 +1,12 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.auth.repository.SessionDAO;
+import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
@@ -21,6 +25,13 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
 
     @Override
     public String getUsernameForSession(String sessionId) {
-        return null;
+        return Optional.of(sessionId)
+                .map(tokenGenerator::generateHashedToken)
+                .flatMap(sessionDAO::findById)
+                .map(Session::getUserId)
+                .map(Long::valueOf)
+                .flatMap(userDAO::findById)
+                .map(User::getUsername)
+                .orElse(null);
     }
 }
