@@ -1,8 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.auth.repository.SessionDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -10,11 +8,14 @@ import java.util.Date;
 @Service
 public class SessionValidationImpl implements SessionValidation {
 
-    @Autowired
-    private SessionDAO sessionDAO;
+    private final SessionDAO sessionDAO;
 
-    @Autowired
-    private SecureTokenGenerator tokenGenerator;
+    private final SecureTokenGenerator tokenGenerator;
+
+    public SessionValidationImpl(SessionDAO sessionDAO, SecureTokenGenerator tokenGenerator) {
+        this.sessionDAO = sessionDAO;
+        this.tokenGenerator = tokenGenerator;
+    }
 
     @Override
     public boolean validateSession(String sessionId) {

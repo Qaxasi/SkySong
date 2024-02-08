@@ -6,7 +6,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,8 +16,11 @@ import java.util.Optional;
 @Component
 public class SessionValidatorFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private SessionValidation session;
+    private final SessionValidation session;
+
+    public SessionValidatorFilter(SessionValidation session) {
+        this.session = session;
+    }
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,
