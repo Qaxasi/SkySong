@@ -17,9 +17,15 @@ import java.util.Optional;
 public class SessionValidatorFilter extends OncePerRequestFilter {
 
     private final SessionValidation session;
+    private final CustomUserDetailsService userDetails;
+    private final SessionUserInfoProvider userInfoProvider;
 
-    public SessionValidatorFilter(SessionValidation session) {
+    public SessionValidatorFilter(SessionValidation session,
+                                  CustomUserDetailsService userDetails,
+                                  SessionUserInfoProvider userInfoProvider) {
         this.session = session;
+        this.userDetails = userDetails;
+        this.userInfoProvider = userInfoProvider;
     }
 
     @Override
