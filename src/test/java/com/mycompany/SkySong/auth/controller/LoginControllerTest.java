@@ -4,6 +4,7 @@ import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.LoginRequests;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,11 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import javax.swing.text.html.Option;
-
-import java.util.Optional;
-
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -68,6 +66,20 @@ public class LoginControllerTest extends BaseIT {
     }
 
     @Test
+    void whenLoginSuccess_SessionCookieNotEmpty() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                .andReturn();
+
+        Cookie cookie = mvcResult.getResponse().getCookie("session_id");
+        assertNotNull(cookie);
+
+        String cookieValue = cookie.getValue();
+        assertNotNull(cookieValue);
+    }
+
+    @Test
     void whenLoginSuccess_CookieIsSetHttpOnly() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -114,6 +126,7 @@ public class LoginControllerTest extends BaseIT {
                         .content(asJsonString(LoginRequests.EMPTY_CREDENTIALS)))
                 .andExpect(status().is(400));
     }
+    
     @Test
     void whenEmptyCredentials_ReturnErrorMessage() throws Exception {
         ResultActions actions = mockMvc.perform(post("/api/v1/users/login")
