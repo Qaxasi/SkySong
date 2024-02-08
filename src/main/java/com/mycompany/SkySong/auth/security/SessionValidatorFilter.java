@@ -75,6 +75,16 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+    
+    private String getSessionIdFromRequest(HttpServletRequest request) {
+        return Optional.ofNullable(request.getCookies())
+                .stream()
+                .flatMap(Arrays::stream)
+                .filter(cookie -> "session_id".equals(cookie.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
+    }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
