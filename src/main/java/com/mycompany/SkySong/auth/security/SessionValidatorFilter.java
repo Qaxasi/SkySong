@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class SessionValidatorFilter extends OncePerRequestFilter {
@@ -29,15 +31,13 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
             return;
         }
 
-        String sessionId = null;
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("session_id".equals(cookie.getName())) {
-                    sessionId = cookie.getValue();
-                    break;
-                }
-            }
-        }
+        String sessionId = Optional.ofNullable(request.getCookies())
+                .stream()
+                .flatMap(Arrays::stream)
+                .filter(cookie -> "session_id".equals(cookie.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
 
 
         if (sessionId == null || !session.validateSession(sessionId)) {
