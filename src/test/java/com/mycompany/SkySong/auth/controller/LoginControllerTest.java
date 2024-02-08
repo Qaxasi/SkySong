@@ -11,7 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+
+import javax.swing.text.html.Option;
+
+import java.util.Optional;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -63,6 +68,14 @@ public class LoginControllerTest extends BaseIT {
     }
 
     @Test
+    void whenLoginSuccess_CookieIsSetHttpOnly() throws Exception {
+        mockMvc.perform(post("/api/v1/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                .andExpect(cookie().httpOnly("session_id", true));
+    }
+
+    @Test
     void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +90,6 @@ public class LoginControllerTest extends BaseIT {
                         .content(asJsonString(LoginRequests.INVALID_PASSWORD)))
                 .andExpect(cookie().doesNotExist("session_id"));
     }
-
 
     @Test
     void whenMalformedJson_ReturnBadRequest() throws Exception {
