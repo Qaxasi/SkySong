@@ -4,6 +4,8 @@ import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.LoginRequests;
+import com.mycompany.SkySong.testsupport.auth.controller.LogoutControllerHelper;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,8 @@ public class LogoutControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private LogoutControllerHelper logoutHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -41,5 +45,13 @@ public class LogoutControllerTest extends BaseIT {
     void whenLogoutWithoutCookie_ReturnUnauthorized() throws Exception {
         mockMvc.perform(post("/api/v1/users/logout"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void whenLogoutWithValidCookie_StatusOk() throws Exception {
+        Cookie sessionCookie = logoutHelper.loginAndGetCookie();
+
+        mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
+                .andExpect(status().isOk());
     }
 }
