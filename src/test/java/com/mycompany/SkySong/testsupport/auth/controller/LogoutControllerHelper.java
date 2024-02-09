@@ -4,6 +4,7 @@ import com.mycompany.SkySong.testsupport.auth.LoginRequests;
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
@@ -12,18 +13,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class LogoutControllerHelper {
+
     private final MockMvc mockMvc;
+
     public LogoutControllerHelper(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
+
     public Cookie loginAndGetCookie() throws Exception {
         MockHttpServletResponse response =
-                mockMvc.perform(post(LOGIN_URI)
+                mockMvc.perform(post("/api/v1/users/login")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
                         .andExpect(status().isOk())
                         .andReturn().getResponse();
 
-        return response.getCookie("auth_token");
+        return response.getCookie("session_id");
     }
 }
