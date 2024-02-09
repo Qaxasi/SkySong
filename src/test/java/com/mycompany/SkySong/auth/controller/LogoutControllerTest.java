@@ -1,7 +1,9 @@
 package com.mycompany.SkySong.auth.controller;
 
+import com.mycompany.SkySong.SessionExistenceChecker;
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
+import com.mycompany.SkySong.auth.security.SecureTokenGenerator;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.LoginRequests;
 import com.mycompany.SkySong.testsupport.auth.controller.LogoutControllerHelper;
@@ -15,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,6 +29,10 @@ public class LogoutControllerTest extends BaseIT {
     private MockMvc mockMvc;
     @Autowired
     private LogoutControllerHelper logoutHelper;
+    @Autowired
+    private SessionExistenceChecker session;
+    @Autowired
+    private SecureTokenGenerator tokenGenerator;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
