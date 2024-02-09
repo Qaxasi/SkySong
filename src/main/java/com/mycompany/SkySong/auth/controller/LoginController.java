@@ -3,6 +3,7 @@ package com.mycompany.SkySong.auth.controller;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.service.LoginService;
 import com.mycompany.SkySong.shared.dto.ApiResponse;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     private final LoginService login;
+    private final ApplicationMessageService message;
 
-    public LoginController(LoginService login) {
+    public LoginController(LoginService login, ApplicationMessageService message) {
         this.login = login;
+        this.message = message;
     }
 
     @PostMapping("/login")
