@@ -54,7 +54,7 @@ public class LoginControllerTest extends BaseIT {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
-                .andExpect(jsonPath("$.message").isNotEmpty());
+                .andExpect(jsonPath("$.message").value("Logged successfully."));
     }
 
     @Test
