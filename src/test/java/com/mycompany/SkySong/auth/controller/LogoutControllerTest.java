@@ -42,7 +42,7 @@ public class LogoutControllerTest extends BaseIT {
     }
 
     @Test
-    void whenLogoutWithoutCookie_ReturnUnauthorized() throws Exception {
+    void whenLogoutWithoutCookie_StatusUnauthorized() throws Exception {
         mockMvc.perform(post("/api/v1/users/logout"))
                 .andExpect(status().isUnauthorized());
     }
