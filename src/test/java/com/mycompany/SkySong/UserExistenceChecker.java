@@ -10,10 +10,13 @@ import java.sql.SQLException;
 
 @Component
 public class UserExistenceChecker {
+
     private final DataSource dataSource;
+
     public UserExistenceChecker(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
     public boolean userExist(String username) {
         try {
             String query = "SELECT COUNT(*) FROM users WHERE username = ?";
