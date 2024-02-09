@@ -50,7 +50,7 @@ public class LoginControllerTest extends BaseIT {
     }
 
     @Test
-    void whenLoginSuccess_MessageNotEmpty() throws Exception {
+    void whenLoginSuccess_ReturnMessage() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
