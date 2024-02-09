@@ -5,7 +5,6 @@ import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.security.SecureTokenGenerator;
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.LoginRequests;
 import com.mycompany.SkySong.testsupport.auth.controller.LogoutControllerHelper;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
@@ -13,10 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -69,5 +66,17 @@ public class LogoutControllerTest extends BaseIT {
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
                 .andExpect(jsonPath("$.message").value("Logged out successfully."));
+    }
+
+    @Test
+    void whenLogoutSuccess_DeleteSession() throws Exception {
+        Cookie sessionCookie = logoutHelper.loginAndGetCookie();
+
+        String sessionId = tokenGenerator.generateHashedToken(sessionCookie.getValue());
+
+        mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
+                .andExpect(status().isOk());
+
+        assertThat(session.sessionExist(sessionId)).isFalse();
     }
 }
