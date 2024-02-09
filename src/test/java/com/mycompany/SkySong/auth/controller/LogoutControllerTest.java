@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -53,5 +54,13 @@ public class LogoutControllerTest extends BaseIT {
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void whenLogoutWithValidCookie_ReturnMessage() throws Exception {
+        Cookie sessionCookie = logoutHelper.loginAndGetCookie();
+
+        mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
+                .andExpect(jsonPath("$.message").value("Logged out successfully."));
     }
 }
