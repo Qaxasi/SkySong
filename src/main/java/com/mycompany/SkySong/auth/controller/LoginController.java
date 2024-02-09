@@ -35,6 +35,6 @@ public class LoginController {
         sessionCookie.setPath("/");
         response.addCookie(sessionCookie);
 
-        return ResponseEntity.ok(new ApiResponse("Logged successfully"));
+        return ResponseEntity.ok(new ApiResponse(message.getMessage("login.success")));
     }
 }
