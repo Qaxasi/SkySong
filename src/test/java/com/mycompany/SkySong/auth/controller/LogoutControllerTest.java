@@ -3,7 +3,7 @@ package com.mycompany.SkySong.auth.controller;
 import com.mycompany.SkySong.SessionExistenceChecker;
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
-import com.mycompany.SkySong.auth.security.SecureTokenGenerator;
+import com.mycompany.SkySong.auth.security.TokenHasher;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.controller.LogoutControllerHelper;
 import jakarta.servlet.http.Cookie;
@@ -29,7 +29,7 @@ public class LogoutControllerTest extends BaseIT {
     @Autowired
     private SessionExistenceChecker session;
     @Autowired
-    private SecureTokenGenerator tokenGenerator;
+    private TokenHasher tokenHasher;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -72,7 +72,7 @@ public class LogoutControllerTest extends BaseIT {
     void whenLogoutSuccess_DeleteSession() throws Exception {
         Cookie sessionCookie = logoutHelper.loginAndGetCookie();
 
-        String sessionId = tokenGenerator.generateHashedToken(sessionCookie.getValue());
+        String sessionId = tokenHasher.generateHashedToken(sessionCookie.getValue());
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
                 .andExpect(status().isOk());
