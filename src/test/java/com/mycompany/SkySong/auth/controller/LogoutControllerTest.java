@@ -25,11 +25,11 @@ public class LogoutControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private LogoutControllerHelper logoutHelper;
-    @Autowired
     private SessionExistenceChecker session;
     @Autowired
     private TokenHasher tokenHasher;
+
+    private LogoutControllerHelper logoutHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -38,6 +38,8 @@ public class LogoutControllerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
+        logoutHelper = new LogoutControllerHelper(mockMvc);
+
         initializer.setup("data_sql/test-setup.sql");
     }
 
