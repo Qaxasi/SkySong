@@ -1,5 +1,9 @@
 package com.mycompany.SkySong.auth.security;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
 public class UserAuthenticatorImpl implements UserAuthenticator {
 
     private final SessionUserInfoProvider userInfoProvider;
@@ -12,6 +16,12 @@ public class UserAuthenticatorImpl implements UserAuthenticator {
 
     @Override
     public void authenticateUser(String sessionId) {
+        String username = userInfoProvider.getUsernameForSession(sessionId);
+        UserDetails details = userDetails.loadUserByUsername(username);
 
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
