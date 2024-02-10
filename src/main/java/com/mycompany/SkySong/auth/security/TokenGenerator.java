@@ -5,10 +5,10 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 @Service
-public class SecureTokenGenerator {
+public class TokenGenerator {
 
     private final SecureRandom secureRandom = new SecureRandom();
-    
+
     private final Base64.Encoder encoder = Base64.getUrlEncoder();
 
     public String generateToken() {
