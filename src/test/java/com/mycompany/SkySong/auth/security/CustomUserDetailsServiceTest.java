@@ -36,7 +36,7 @@ public class CustomUserDetailsServiceTest extends BaseIT {
     @Test
     void whenMissingUserByUsername_ThrowException() {
         assertThrows(UsernameNotFoundException.class,
-                () -> detailsService.loadUserByUsername("mark"));
+                () -> detailsService.loadUserByUsername("Tomas"));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class CustomUserDetailsServiceTest extends BaseIT {
 
         //In our implementation, the email can serve as the username
         assertThrows(UsernameNotFoundException.class,
-                () -> detailsService.loadUserByUsername("mark@mail.com"));
+                () -> detailsService.loadUserByUsername("tomas@mail.com"));
     }
 
     @Test
