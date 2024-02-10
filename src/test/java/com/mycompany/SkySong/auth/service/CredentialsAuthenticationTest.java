@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CredentialsAuthenticationTest extends BaseIT {
     @Autowired
-    private UserAuthenticationService userAuth;
+    private CredentialsAuthentication auth;
     @Autowired
     private SqlDatabaseInitializer initializer;
     @Autowired
@@ -34,19 +34,19 @@ public class CredentialsAuthenticationTest extends BaseIT {
     
     @Test
     void whenValidCredentials_AuthenticationNotNull() {
-        Authentication result = userAuth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
+        Authentication result = auth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(result);
     }
 
     @Test
     void whenValidCredentials_UserAuthenticated() {
-        Authentication result = userAuth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
+        Authentication result = auth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
         assertTrue(result.isAuthenticated());
     }
 
     @Test
     void whenInvalidCredentials_AuthenticationFails() {
         assertThrows(BadCredentialsException.class,
-                () -> userAuth.authenticateUser(LoginRequests.INVALID_PASSWORD));
+                () -> auth.authenticateUser(LoginRequests.INVALID_PASSWORD));
     }
 }
