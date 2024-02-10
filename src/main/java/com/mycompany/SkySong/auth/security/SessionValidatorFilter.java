@@ -53,7 +53,7 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
         String sessionId = sessionExtractor.getSessionIdFromRequest(request);
 
         if (isValidSession(sessionId)) {
-            authenticateUser(sessionId);
+            authenticator.authenticateUser(sessionId);
         } else {
             handleAuthenticationFailure(request, response);
             return;
@@ -63,16 +63,6 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
 
     private boolean isValidSession(String sessionId) {
         return sessionId != null && session.validateSession(sessionId);
-    }
-
-    private void authenticateUser(String sessionId) {
-        String username = userInfoProvider.getUsernameForSession(sessionId);
-        UserDetails details = userDetails.loadUserByUsername(username);
-
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private void handleAuthenticationFailure(HttpServletRequest request,
