@@ -11,9 +11,9 @@ public class SessionCreationImpl implements SessionCreation {
 
     private final SessionDAO sessionDAO;
 
-    private final SecureTokenGenerator tokenGenerator;
+    private final TokenGenerator tokenGenerator;
 
-    public SessionCreationImpl(SessionDAO sessionDAO, SecureTokenGenerator tokenGenerator) {
+    public SessionCreationImpl(SessionDAO sessionDAO, TokenGenerator tokenGenerator) {
         this.sessionDAO = sessionDAO;
         this.tokenGenerator = tokenGenerator;
     }
