@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-public interface UserAuthenticator {
+public interface SessionAuthentication {
 
     void authenticateUser(String sessionId);
 }
