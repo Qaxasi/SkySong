@@ -18,21 +18,21 @@ class LoginServiceImpl implements LoginService {
 
     private final SessionCreation sessionCreation;
     private final ApplicationMessageService messageService;
-    private final UserAuthenticationService userAuth;
+    private final CredentialsAuthentication authentication;
     private final UserDAO userDAO;
 
     public LoginServiceImpl(SessionCreation sessionCreation, ApplicationMessageService messageService,
-                            UserAuthenticationService userAuth, UserDAO userDAO) {
+                            CredentialsAuthentication authentication, UserDAO userDAO) {
         this.sessionCreation = sessionCreation;
         this.messageService = messageService;
-        this.userAuth = userAuth;
+        this.authentication = authentication;
         this.userDAO = userDAO;
     }
 
     @Override
     public String login(LoginRequest loginRequest) {
         try {
-            Authentication auth = userAuth.authenticateUser(loginRequest);
+            Authentication auth = authentication.authenticateUser(loginRequest);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
             User user = userDAO.findByUsername(auth.getName())
