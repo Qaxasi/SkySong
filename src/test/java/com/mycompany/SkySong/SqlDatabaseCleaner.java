@@ -10,7 +10,7 @@ import java.util.List;
 public class SqlDatabaseCleaner {
 
     private final JdbcTemplate jdbcTemplate;
-    private final List<String> tablesToClean = Arrays.asList("user_roles", "users", "roles");
+    private final List<String> tablesToClean = Arrays.asList("user_roles", "users", "roles", "sessions");
 
     public SqlDatabaseCleaner(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
