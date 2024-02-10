@@ -7,10 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserAuthenticationServiceImpl implements UserAuthenticationService {
+public class CredentialsAuthenticationImpl implements CredentialsAuthentication {
     private final AuthenticationManager authenticationManager;
 
-    public UserAuthenticationServiceImpl(AuthenticationManager authenticationManager) {
+    public CredentialsAuthenticationImpl(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
     @Override
