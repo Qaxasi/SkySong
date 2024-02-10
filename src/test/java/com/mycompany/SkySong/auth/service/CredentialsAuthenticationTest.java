@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class UserAuthenticationServiceTest extends BaseIT {
+public class CredentialsAuthenticationTest extends BaseIT {
     @Autowired
     private UserAuthenticationService userAuth;
     @Autowired
