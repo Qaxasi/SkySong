@@ -5,7 +5,7 @@ import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.security.TokenHasher;
 import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.controller.LogoutControllerHelper;
+import com.mycompany.SkySong.testsupport.auth.controller.AuthTestHelper;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +29,7 @@ public class LogoutControllerTest extends BaseIT {
     @Autowired
     private TokenHasher tokenHasher;
 
-    private LogoutControllerHelper logoutHelper;
+    private AuthTestHelper authHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -38,7 +38,7 @@ public class LogoutControllerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
-        logoutHelper = new LogoutControllerHelper(mockMvc);
+        authHelper = new AuthTestHelper(mockMvc);
 
         initializer.setup("data_sql/test-setup.sql");
     }
@@ -56,7 +56,7 @@ public class LogoutControllerTest extends BaseIT {
 
     @Test
     void whenLogoutWithValidCookie_StatusOk() throws Exception {
-        Cookie sessionCookie = logoutHelper.loginAndGetCookie();
+        Cookie sessionCookie = authHelper.loginAndGetCookie();
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
                 .andExpect(status().isOk());
@@ -64,7 +64,7 @@ public class LogoutControllerTest extends BaseIT {
 
     @Test
     void whenLogoutWithValidCookie_ReturnMessage() throws Exception {
-        Cookie sessionCookie = logoutHelper.loginAndGetCookie();
+        Cookie sessionCookie = authHelper.loginAndGetCookie();
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
                 .andExpect(jsonPath("$.message").value("Logged out successfully."));
@@ -72,7 +72,7 @@ public class LogoutControllerTest extends BaseIT {
 
     @Test
     void whenLogoutSuccess_DeleteSession() throws Exception {
-        Cookie sessionCookie = logoutHelper.loginAndGetCookie();
+        Cookie sessionCookie = authHelper.loginAndGetCookie();
 
         String sessionId = tokenHasher.generateHashedToken(sessionCookie.getValue());
 

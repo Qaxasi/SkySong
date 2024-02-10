@@ -10,11 +10,11 @@ import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class LogoutControllerHelper {
+public class AuthTestHelper {
 
     private final MockMvc mockMvc;
 
-    public LogoutControllerHelper(MockMvc mockMvc) {
+    public AuthTestHelper(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 
