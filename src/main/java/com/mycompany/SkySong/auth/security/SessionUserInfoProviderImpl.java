@@ -15,18 +15,18 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
 
     private final UserDAO userDAO;
 
-    private final SecureTokenGenerator tokenGenerator;
+    private final TokenHasher tokenHasher;
 
-    public SessionUserInfoProviderImpl(SessionDAO sessionDAO, UserDAO userDAO, SecureTokenGenerator tokenGenerator) {
+    public SessionUserInfoProviderImpl(SessionDAO sessionDAO, UserDAO userDAO, TokenHasher tokenHasher) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
-        this.tokenGenerator = tokenGenerator;
+        this.tokenHasher = tokenHasher;
     }
 
     @Override
     public String getUsernameForSession(String sessionId) {
         return Optional.of(sessionId)
-                .map(tokenGenerator::generateHashedToken)
+                .map(tokenHasher::generateHashedToken)
                 .flatMap(sessionDAO::findById)
                 .map(Session::getUserId)
                 .map(Long::valueOf)
