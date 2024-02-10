@@ -34,13 +34,13 @@ public class CustomUserDetailsServiceTest extends BaseIT {
     }
 
     @Test
-    void whenLoadNonExistentUsername_ThrowException() {
+    void whenLoadNonExistentUserUsername_ThrowException() {
         assertThrows(UsernameNotFoundException.class,
                 () -> detailsService.loadUserByUsername("Tomas"));
     }
 
     @Test
-    void whenLoadNonExistentEmail_ThrowException() {
+    void whenLoadNonExistentUserEmail_ThrowException() {
 
         //In our implementation, the email can serve as the username
         assertThrows(UsernameNotFoundException.class,
