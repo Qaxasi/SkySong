@@ -6,12 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserAuthenticatorImpl implements UserAuthenticator {
+public class SessionAuthenticationImpl implements SessionAuthentication {
 
     private final SessionUserInfoProvider userInfoProvider;
     private final CustomUserDetailsService userDetails;
 
-    public UserAuthenticatorImpl(SessionUserInfoProvider userInfoProvider, CustomUserDetailsService userDetails) {
+    public SessionAuthenticationImpl(SessionUserInfoProvider userInfoProvider, CustomUserDetailsService userDetails) {
         this.userInfoProvider = userInfoProvider;
         this.userDetails = userDetails;
     }
