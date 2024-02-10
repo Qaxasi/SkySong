@@ -8,16 +8,16 @@ public class SessionDeletionImpl implements SessionDeletion {
 
     private final SessionDAO sessionDAO;
 
-    private final SecureTokenGenerator tokenGenerator;
+    private final TokenHasher tokenHasher;
 
-    public SessionDeletionImpl(SessionDAO sessionDAO, SecureTokenGenerator tokenGenerator) {
+    public SessionDeletionImpl(SessionDAO sessionDAO, TokenHasher tokenHasher) {
         this.sessionDAO = sessionDAO;
-        this.tokenGenerator = tokenGenerator;
+        this.tokenHasher = tokenHasher;
     }
 
     @Override
     public void deleteSession(String sessionId) {
-        String hashedSessionId = tokenGenerator.generateHashedToken(sessionId);
+        String hashedSessionId = tokenHasher.generateHashedToken(sessionId);
         sessionDAO.deleteById(hashedSessionId);
     }
 }
