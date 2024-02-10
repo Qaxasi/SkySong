@@ -3,7 +3,9 @@ package com.mycompany.SkySong.auth.security;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserAuthenticatorImpl implements UserAuthenticator {
 
     private final SessionUserInfoProvider userInfoProvider;
