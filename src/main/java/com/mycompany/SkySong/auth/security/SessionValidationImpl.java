@@ -10,16 +10,16 @@ public class SessionValidationImpl implements SessionValidation {
 
     private final SessionDAO sessionDAO;
 
-    private final SecureTokenGenerator tokenGenerator;
+    private final TokenHasher tokenHasher;
 
-    public SessionValidationImpl(SessionDAO sessionDAO, SecureTokenGenerator tokenGenerator) {
+    public SessionValidationImpl(SessionDAO sessionDAO, TokenHasher tokenHasher) {
         this.sessionDAO = sessionDAO;
-        this.tokenGenerator = tokenGenerator;
+        this.tokenHasher = tokenHasher;
     }
 
     @Override
     public boolean validateSession(String sessionId) {
-        String hashedSessionId = tokenGenerator.generateHashedToken(sessionId);
+        String hashedSessionId = tokenHasher.generateHashedToken(sessionId);
         return sessionDAO.findById(hashedSessionId)
                 .map(session -> session.getExpiresAt().after(new Date()))
                 .orElse(false);
