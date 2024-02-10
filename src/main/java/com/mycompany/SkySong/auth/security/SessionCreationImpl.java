@@ -13,15 +13,18 @@ public class SessionCreationImpl implements SessionCreation {
 
     private final TokenGenerator tokenGenerator;
 
-    public SessionCreationImpl(SessionDAO sessionDAO, TokenGenerator tokenGenerator) {
+    private final TokenHasher tokenHasher;
+
+    public SessionCreationImpl(SessionDAO sessionDAO, TokenGenerator tokenGenerator, TokenHasher tokenHasher) {
         this.sessionDAO = sessionDAO;
         this.tokenGenerator = tokenGenerator;
+        this.tokenHasher = tokenHasher;
     }
 
     @Override
     public String createSession(Integer userID) {
         String token = tokenGenerator.generateToken();
-        String hashedToken = tokenGenerator.generateHashedToken(token);
+        String hashedToken = tokenHasher.generateHashedToken(token);
 
         Session session = new Session();
         session.setSessionId(hashedToken);
