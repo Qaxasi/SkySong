@@ -51,7 +51,7 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
             return;
         }
 
-        String sessionId = getSessionIdFromRequest(request);
+        String sessionId = sessionExtractor.getSessionIdFromRequest(request);
 
         if (isValidSession(sessionId)) {
             authenticateUser(sessionId);
@@ -60,16 +60,6 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
             return;
         }
         filterChain.doFilter(request, response);
-    }
-
-    private String getSessionIdFromRequest(HttpServletRequest request) {
-        return Optional.ofNullable(request.getCookies())
-                .stream()
-                .flatMap(Arrays::stream)
-                .filter(cookie -> "session_id".equals(cookie.getName()))
-                .findFirst()
-                .map(Cookie::getValue)
-                .orElse(null);
     }
 
     private boolean isValidSession(String sessionId) {
