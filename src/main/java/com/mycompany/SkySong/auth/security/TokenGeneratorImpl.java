@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 @Service
-public class TokenGenerator {
+public class TokenGeneratorImpl {
 
     private final SecureRandom secureRandom = new SecureRandom();
 
