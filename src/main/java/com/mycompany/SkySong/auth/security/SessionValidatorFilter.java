@@ -19,13 +19,13 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
     private final CustomAuthenticationEntryPoint authEntryPoint;
     private final ApplicationMessageService message;
     private final SessionExtractor sessionExtractor;
-    private final UserAuthenticator authenticator;
+    private final SessionAuthentication authenticator;
 
     public SessionValidatorFilter(SessionValidation session,
                                   CustomAuthenticationEntryPoint authEntryPoint,
                                   ApplicationMessageService message,
                                   SessionExtractor sessionExtractor,
-                                  UserAuthenticator authenticator) {
+                                  SessionAuthentication authenticator) {
         this.session = session;
         this.authEntryPoint = authEntryPoint;
         this.message = message;
