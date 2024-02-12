@@ -36,11 +36,11 @@ WHERE u.username = 'testAdmin' AND r.name = 'ROLE_ADMIN';
 
 INSERT INTO sessions (session_id, user_id, create_at, expires_at)
 VALUES
-('ppbK2qEIwHXFK-3aSN0BzxVMPgMqfF7q4Tt1HRLiV1k=', (SELECT id FROM users WHERE username = 'User')
+('xAUpqIbS2L9_ULU39L7ZP07RJufNgFizawVK68qTyrw=', (SELECT id FROM users WHERE username = 'User')
 ,NOW(), DATE_ADD(NOW(), INTERVAL 24 HOUR)),
 
-('3at2PzvRMMxevkqoXBPhKZMgq5_71cjuK2W-fZLesV0=', (SELECT id FROM users WHERE username = 'Mark'),
+('yDCNcRp0UsS0TS68bdzXwti1QToDCPivrJ-Z-1scQ3w=', (SELECT id FROM users WHERE username = 'Mark'),
 NOW(), DATE_ADD(NOW(), INTERVAL 24 HOUR)),
 
-('JCi2k1kVZ6ppsdOFNzPVVqPQ9KUj7HYPoS4Wj7Rze74=', (SELECT id FROM users WHERE username = 'testAdmin'),
+('tRcutVkNlaMucrbedlekAW9n-jRr50hS8emfUYyq01c=', (SELECT id FROM users WHERE username = 'testAdmin'),
  NOW(), DATE_ADD(NOW(), INTERVAL 24 HOUR));
