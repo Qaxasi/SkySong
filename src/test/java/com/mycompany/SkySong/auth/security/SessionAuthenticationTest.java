@@ -8,10 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SessionAuthenticationTest extends BaseIT {
 
@@ -51,4 +51,15 @@ public class SessionAuthenticationTest extends BaseIT {
         assertThat(auth.getName()).isEqualTo("User");
     }
 
+    @Test
+    void whenValidSessionId_AssignCorrectAuthorities() {
+        authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean hasRole = auth.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch("ROLE_USER"::equals);
+
+        assertThat(hasRole).isTrue();
+    }
 }
