@@ -1,6 +1,9 @@
 package com.mycompany.SkySong.auth.security;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TokenGeneratorTest {
 
@@ -9,5 +12,11 @@ public class TokenGeneratorTest {
     @BeforeEach
     void setUp() {
         tokenGenerator = new TokenGeneratorImpl();
+    }
+
+    @Test
+    void whenGeneratingToken_ReturnsNonEmptyString() {
+        String token = tokenGenerator.generateToken();
+        assertThat(token).isNotNull();
     }
 }
