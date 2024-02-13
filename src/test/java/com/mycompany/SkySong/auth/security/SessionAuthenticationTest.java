@@ -42,4 +42,13 @@ public class SessionAuthenticationTest extends BaseIT {
         assertThat(auth.isAuthenticated()).isTrue();
     }
 
+    @Test
+    void whenValidSessionId_SetsExpectedUsername() {
+        authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        assertThat(auth.getName()).isEqualTo("User");
+    }
+
 }
