@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
+import com.mycompany.SkySong.shared.exception.SessionNotFoundException;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,7 +36,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenValidSessionId_AuthenticateUser() {
+    void whenAuthenticateUserWithValidSessionId_SetsAuthenticatedTrue() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -45,7 +45,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenValidSessionId_AuthContainsExpectedUsername() {
+    void whenAuthenticateUserWithValidSessionId_SetsCorrectUsername() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -54,7 +54,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenValidSessionId_AuthContainsExpectedAuthorities() {
+    void whenAuthenticateUserWithValidSessionId_AssignsCorrectAuthorities() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -66,8 +66,8 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenInvalidSessionId_ThrowException() {
-        assertThrows(UsernameNotFoundException.class,
+    void whenAuthenticateUserWithInvalidSessionId_ThrowException() {
+        assertThrows(SessionNotFoundException.class,
                 () -> authentication.authenticateUser("jrYa_WLToysVInvalidLhwUZncJLY8OPgT"));
     }
 }
