@@ -55,7 +55,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenAuthenticateUserWithValidSessionId_AssignsCorrectAuthorities() {
+    void whenAuthenticateRegularUserWithValidSessionId_AssignsCorrectAuthorities() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
