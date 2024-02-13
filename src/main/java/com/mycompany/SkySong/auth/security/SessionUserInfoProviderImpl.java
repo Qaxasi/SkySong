@@ -4,6 +4,7 @@ import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.auth.repository.SessionDAO;
 import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.repository.UserDAO;
+import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,13 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
 
     private final TokenHasher tokenHasher;
 
-    public SessionUserInfoProviderImpl(SessionDAO sessionDAO, UserDAO userDAO, TokenHasher tokenHasher) {
+    private final ApplicationMessageService message;
+
+    public SessionUserInfoProviderImpl(SessionDAO sessionDAO, UserDAO userDAO, TokenHasher tokenHasher, ApplicationMessageService message) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.tokenHasher = tokenHasher;
+        this.message = message;
     }
 
     @Override
