@@ -62,11 +62,13 @@ public class SessionAuthenticationTest extends BaseIT {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        boolean hasRole = auth.getAuthorities().stream()
+        Set<String> expectedRole = Set.of("ROLE_USER");
+        Set<String> userRoles = auth.getAuthorities()
+                .stream()
                 .map(GrantedAuthority::getAuthority)
-                .anyMatch("ROLE_USER"::equals);
+                .collect(Collectors.toSet());
 
-        assertThat(hasRole).isTrue();
+        assertThat(expectedRole).isEqualTo(userRoles);
     }
 
     @Test
@@ -75,7 +77,7 @@ public class SessionAuthenticationTest extends BaseIT {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Set<String> expectedRoles = Set.of("ROLE_USER", "ROLE_ADMIN");
-        Set<String > userRoles = auth.getAuthorities()
+        Set<String> userRoles = auth.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
