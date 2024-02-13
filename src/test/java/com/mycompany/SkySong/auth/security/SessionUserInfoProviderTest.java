@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
+import com.mycompany.SkySong.shared.exception.SessionNotFoundException;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class SessionUserInfoProviderTest extends BaseIT {
@@ -38,9 +40,9 @@ public class SessionUserInfoProviderTest extends BaseIT {
     }
 
     @Test
-    void whenSessionIdNotExist_ReturnNull() {
-        String username = userInfoProvider.getUsernameForSession("jrYa_WLToysV-r08qinvalidncJLY8OPgT");
-        assertThat(username).isNull();
+    void whenSessionIdNotExist_ThrowException() {
+        assertThrows(SessionNotFoundException.class,
+                () -> userInfoProvider.getUsernameForSession("jrYa_WLToysV-r08invalidZncJLY8OPgT"));
     }
 }
 
