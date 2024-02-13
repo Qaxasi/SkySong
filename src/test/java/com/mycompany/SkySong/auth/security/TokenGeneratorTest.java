@@ -27,4 +27,11 @@ public class TokenGeneratorTest {
 
         assertThat(firstToken).isNotEqualTo(secondToken);
     }
+
+    @Test
+    void whenGeneratingToken_HaveExpectedLength() {
+        String token = tokenGenerator.generateToken();
+
+        assertThat(token.length() == 32).isTrue();
+    }
 }
