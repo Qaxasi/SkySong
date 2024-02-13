@@ -27,6 +27,7 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
+        SecurityContextHolder.clearContext();
         initializer.setup("data_sql/test-setup.sql");
     }
 
