@@ -21,7 +21,10 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
 
     private final ApplicationMessageService message;
 
-    public SessionUserInfoProviderImpl(SessionDAO sessionDAO, UserDAO userDAO, TokenHasher tokenHasher, ApplicationMessageService message) {
+    public SessionUserInfoProviderImpl(SessionDAO sessionDAO,
+                                       UserDAO userDAO,
+                                       TokenHasher tokenHasher,
+                                       ApplicationMessageService message) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.tokenHasher = tokenHasher;
