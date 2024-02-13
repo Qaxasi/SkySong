@@ -40,7 +40,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenAuthenticateUserWithValidSessionId_SetsAuthenticatedTrue() {
+    void whenSessionIsValid_AuthenticationIsSuccessful() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -49,7 +49,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenAuthenticateUserWithValidSessionId_SetsCorrectUsername() {
+    void whenAuthenticated_UsernameIsCorrect() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -58,7 +58,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenAuthenticateRegularUserWithValidSessionId_AssignsCorrectAuthorities() {
+    void whenUserIsRegular_AssignsUserRole() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -72,7 +72,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenAuthenticateAdminUserWithValidSessionId_AssignsCorrectAuthorities() {
+    void whenUserIsAdmin_AssignsAdminAndUserRoles() {
         authentication.authenticateUser("5JMDsvOSfM9Mf8qt0s_DB1GeUky8LJLU");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -86,7 +86,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenAuthenticateUserWithInvalidSessionId_ThrowException() {
+    void whenSessionIdIsInvalid_ThrowsException() {
         assertThrows(SessionNotFoundException.class,
                 () -> authentication.authenticateUser("jrYa_WLToysVInvalidLhwUZncJLY8OPgT"));
     }
