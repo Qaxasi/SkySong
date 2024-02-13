@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SessionAuthenticationTest extends BaseIT {
 
@@ -61,5 +63,11 @@ public class SessionAuthenticationTest extends BaseIT {
                 .anyMatch("ROLE_USER"::equals);
 
         assertThat(hasRole).isTrue();
+    }
+
+    @Test
+    void whenInvalidSessionId_ThrowException() {
+        assertThrows(UsernameNotFoundException.class,
+                () -> authentication.authenticateUser("jrYa_WLToysVInvalidLhwUZncJLY8OPgT"));
     }
 }
