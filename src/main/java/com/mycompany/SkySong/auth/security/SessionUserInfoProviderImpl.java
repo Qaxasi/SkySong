@@ -4,6 +4,7 @@ import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.auth.repository.SessionDAO;
 import com.mycompany.SkySong.shared.entity.User;
 import com.mycompany.SkySong.shared.repository.UserDAO;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,6 +33,6 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
                 .map(Long::valueOf)
                 .flatMap(userDAO::findById)
                 .map(User::getUsername)
-                .orElse(null);
+                .orElseThrow(() -> new UsernameNotFoundException("No user associated with session ID: " + sessionId));
     }
 }
