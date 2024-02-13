@@ -43,7 +43,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenValidSessionId_SetsExpectedUsername() {
+    void whenValidSessionId_AuthContainsExpectedUsername() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -52,7 +52,7 @@ public class SessionAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenValidSessionId_AssignCorrectAuthorities() {
+    void whenValidSessionId_AuthContainsExpectedAuthorities() {
         authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
