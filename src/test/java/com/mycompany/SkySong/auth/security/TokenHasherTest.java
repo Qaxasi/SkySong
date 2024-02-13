@@ -23,5 +23,14 @@ public class TokenHasherTest {
         assertThat(firstHash).isEqualTo(secondHash);
     }
 
+    @Test
+    void whenTokenAreDifferent_ReturnUniqueHashes() {
+        String firstToken = "first-token";
+        String secondToken = "second-token";
 
+        String firstHash = tokenHasher.generateHashedToken(firstToken);
+        String secondHash = tokenHasher.generateHashedToken(secondToken);
+
+        assertThat(firstHash).isNotEqualTo(secondHash);
+    }
 }
