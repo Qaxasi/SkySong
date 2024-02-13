@@ -3,9 +3,9 @@ package com.mycompany.SkySong.auth.security;
 import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.auth.repository.SessionDAO;
 import com.mycompany.SkySong.shared.entity.User;
+import com.mycompany.SkySong.shared.exception.SessionNotFoundException;
 import com.mycompany.SkySong.shared.repository.UserDAO;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,6 +37,6 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
                 .map(Long::valueOf)
                 .flatMap(userDAO::findById)
                 .map(User::getUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("No user associated with session ID: " + sessionId));
+                .orElseThrow(() -> new SessionNotFoundException(message.getMessage("session.not.found", sessionId)));
     }
 }
