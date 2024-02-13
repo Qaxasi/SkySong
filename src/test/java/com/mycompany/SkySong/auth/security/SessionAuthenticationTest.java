@@ -12,6 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -64,6 +67,20 @@ public class SessionAuthenticationTest extends BaseIT {
                 .anyMatch("ROLE_USER"::equals);
 
         assertThat(hasRole).isTrue();
+    }
+
+    @Test
+    void whenAuthenticateAdminUserWithValidSessionId_AssignsCorrectAuthorities() {
+        authentication.authenticateUser("5JMDsvOSfM9Mf8qt0s_DB1GeUky8LJLU");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Set<String> expectedRoles = Set.of("ROLE_USER", "ROLE_ADMIN");
+        Set<String > userRoles = auth.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        assertThat(userRoles.containsAll(expectedRoles)).isTrue();
     }
 
     @Test
