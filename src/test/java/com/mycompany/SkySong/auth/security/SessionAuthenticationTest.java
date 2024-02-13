@@ -33,4 +33,13 @@ public class SessionAuthenticationTest extends BaseIT {
         cleaner.clean();
     }
 
+    @Test
+    void whenValidSessionId_AuthenticateUser() {
+        authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        assertThat(auth.isAuthenticated()).isTrue();
+    }
+
 }
