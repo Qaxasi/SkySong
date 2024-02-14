@@ -35,8 +35,10 @@ public class SessionDeletionTest extends BaseIT {
     }
 
     @Test
-    void whenSessionExist_DeletesSessionSuccessfully() {
+    void whenSessionExist_DeletesSession() {
         sessionDeletion.deleteSession("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
         assertThat(checker.sessionExist("jrYa_WLToysV-r08qLhwUZncJLY8OPgT")).isFalse();
     }
+
+
 }
