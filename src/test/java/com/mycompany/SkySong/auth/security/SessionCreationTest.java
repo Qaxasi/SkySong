@@ -20,6 +20,8 @@ public class SessionCreationTest extends BaseIT {
     private SessionCreation session;
     @Autowired
     private SessionExistenceChecker checker;
+    @Autowired
+    private TokenHasher tokenHasher;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -46,5 +48,12 @@ public class SessionCreationTest extends BaseIT {
     void whenCreatingSession_NotStoreRawTokenInDatabase() {
         String token = session.createSession(10);
         assertThat(checker.sessionExist(token)).isFalse();
+    }
+
+    @Test
+    void whenCreatingSession_StoreHashedTokenInDatabase() {
+        String token = session.createSession(10);
+        String hashedToken = tokenHasher.generateHashedToken(token);
+        assertThat(checker.sessionExist(hashedToken)).isTrue();
     }
 }
