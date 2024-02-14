@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.security;
 
 import com.mycompany.SkySong.SessionExistenceChecker;
+import com.mycompany.SkySong.SessionGetter;
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.model.entity.Session;
@@ -10,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionCreationTest extends BaseIT {
@@ -20,6 +19,8 @@ public class SessionCreationTest extends BaseIT {
     private SessionCreation session;
     @Autowired
     private SessionExistenceChecker checker;
+    @Autowired
+    private SessionGetter sessionGetter;
     @Autowired
     private TokenHasher tokenHasher;
 
