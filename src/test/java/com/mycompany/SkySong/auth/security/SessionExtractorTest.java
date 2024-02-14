@@ -34,4 +34,13 @@ public class SessionExtractorTest {
         assertThat(sessionId).isEqualTo("value");
     }
 
+    @Test
+    void whenCookieNotExist_ReturnNull() {
+        Cookie cookie = new Cookie("invalid", "value");
+        when(request.getCookies()).thenReturn(new Cookie[]{cookie});
+
+        String sessionId = sessionExtractor.getSessionIdFromRequest(request);
+
+        assertThat(sessionId).isNull();
+    }
 }
