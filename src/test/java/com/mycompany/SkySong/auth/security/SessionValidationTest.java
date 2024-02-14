@@ -1,4 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-public class SessionValidationTest {
+import com.mycompany.SkySong.testsupport.BaseIT;
+
+public class SessionValidationTest extends BaseIT {
 }
