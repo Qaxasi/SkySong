@@ -40,5 +40,8 @@ public class SessionDeletionTest extends BaseIT {
         assertThat(checker.sessionExist("jrYa_WLToysV-r08qLhwUZncJLY8OPgT")).isFalse();
     }
 
-
+    @Test
+    void whenSessionNotExist_DeleteOperationCompletesGracefully() {
+        assertDoesNotThrow(() -> sessionDeletion.deleteSession("invalid"));
+    }
 }
