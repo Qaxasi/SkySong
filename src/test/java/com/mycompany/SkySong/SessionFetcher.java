@@ -11,11 +11,11 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Component
-public class SessionGetter {
+public class SessionFetcher {
 
     private final DataSource dataSource;
 
-    public SessionGetter(DataSource dataSource) {
+    public SessionFetcher(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
