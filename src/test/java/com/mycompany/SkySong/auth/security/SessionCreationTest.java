@@ -11,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionCreationTest extends BaseIT {
@@ -46,7 +49,25 @@ public class SessionCreationTest extends BaseIT {
     }
 
     @Test
-    void whenCreatingSession_AssignAppropriateUserId() {
+    void whenCreatingSession_SetsCorrectExpirationTime() {
+        Instant now = Instant.now();
+
+        String token = session.createSession(10);
+        String hashedToken = tokenHasher.generateHashedToken(token);
+
+        Session createdSession = sessionFetcher.getSession(hashedToken).orElseThrow(
+                () -> new AssertionError("Expected session not found in database."));
+
+        Instant expirationTime = createdSession.getExpiresAt().toInstant();
+        Duration duration = Duration.between(now, expirationTime);
+
+        long expectedDurationHours = 24;
+        assertThat(duration.toHours() >= expectedDurationHours &&
+                duration.minusHours(expectedDurationHours).toMinutes() <= 1).isTrue();
+    }
+
+    @Test
+    void whenCreatingSession_AssignsAppropriateUserId() {
         String token = session.createSession(10);
         String hashedToken = tokenHasher.generateHashedToken(token);
 
