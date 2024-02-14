@@ -42,4 +42,19 @@ public class SessionExtractorTest {
 
         assertThat(sessionId).isNull();
     }
+
+    @Test
+    void whenMultipleCookiesPresent_ExtractsOnlySessionId() {
+        Cookie[] cookies = {
+                new Cookie("firstCookie", "firstValue"),
+                new Cookie("session_id", "value"),
+                new Cookie("thirdCookie", "thirdValue")
+        };
+
+        when(request.getCookies()).thenReturn(cookies);
+
+        String sessionId = sessionExtractor.getSessionIdFromRequest(request);
+
+        assertThat(sessionId).isEqualTo("value");
+    }
 }
