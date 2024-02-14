@@ -6,7 +6,11 @@ import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class SessionDeletionTest extends BaseIT {
 
@@ -28,5 +32,11 @@ public class SessionDeletionTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenSessionExist_DeletesSessionSuccessfully() {
+        sessionDeletion.deleteSession("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
+        assertThat(checker.sessionExist("jrYa_WLToysV-r08qLhwUZncJLY8OPgT")).isFalse();
     }
 }
