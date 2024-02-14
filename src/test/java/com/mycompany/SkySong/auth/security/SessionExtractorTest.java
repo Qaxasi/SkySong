@@ -25,7 +25,7 @@ public class SessionExtractorTest {
     }
 
     @Test
-    void whenSessionIdCookieExist_ReturnSessionId() {
+    void whenSessionIdCookiePresent_ExtractsSessionId() {
         Cookie cookie = new Cookie("session_id", "value");
         when(request.getCookies()).thenReturn(new Cookie[]{cookie});
 
