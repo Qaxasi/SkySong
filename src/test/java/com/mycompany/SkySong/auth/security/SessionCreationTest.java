@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class SessionCreationTest extends BaseIT {
 
     @Autowired
@@ -26,5 +28,11 @@ public class SessionCreationTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenCreatingSession_ReturnsNonNullToken() {
+        String token = session.createSession(10);
+        assertThat(token).isNotNull();
     }
 }
