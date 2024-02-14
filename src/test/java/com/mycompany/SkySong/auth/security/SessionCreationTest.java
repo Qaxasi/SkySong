@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionCreationTest extends BaseIT {
@@ -43,6 +45,16 @@ public class SessionCreationTest extends BaseIT {
     void whenCreatingSession_ReturnsNonNullToken() {
         String token = session.createSession(10);
         assertThat(token).isNotNull();
+    }
+
+    @Test
+    void whenCreatingSession_AssignAppropriateUserId() {
+        String token = session.createSession(10);
+        String hashedToken = tokenHasher.generateHashedToken(token);
+
+        Integer userId = sessionGetter.getSession(hashedToken).map(Session::getUserId).orElse(null);
+
+        assertThat(userId).isEqualTo(10);
     }
 
     @Test
