@@ -60,8 +60,8 @@ public class SessionCreationTest extends BaseIT {
 
         Instant expirationTime = createdSession.getExpiresAt().toInstant();
         Duration duration = Duration.between(now, expirationTime);
-
         long expectedDurationHours = 24;
+        
         assertThat(duration.toHours() >= expectedDurationHours &&
                 duration.minusHours(expectedDurationHours).toMinutes() <= 1).isTrue();
     }
