@@ -36,8 +36,7 @@ public class SessionExtractorTest {
 
     @Test
     void whenCookieNotExist_ReturnNull() {
-        Cookie cookie = new Cookie("invalid", "value");
-        when(request.getCookies()).thenReturn(new Cookie[]{cookie});
+        when(request.getCookies()).thenReturn(null);
 
         String sessionId = sessionExtractor.getSessionIdFromRequest(request);
 
