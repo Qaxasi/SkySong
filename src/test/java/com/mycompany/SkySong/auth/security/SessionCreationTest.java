@@ -47,7 +47,6 @@ public class SessionCreationTest extends BaseIT {
         int userId = 10;
         String token = sessionCreation.createSession(userId);
         assertThat(token).isNotNull();
-
     }
 
     @Test
