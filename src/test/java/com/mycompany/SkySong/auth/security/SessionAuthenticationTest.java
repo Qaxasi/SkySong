@@ -96,6 +96,7 @@ public class SessionAuthenticationTest extends BaseIT {
     @Test
     void whenSessionIdIsInvalid_ThrowsException() {
         String sessionId = "jrYa_WLToysVInvalidLhwUZncJLY8OPgT";
+        
         assertThrows(SessionNotFoundException.class,
                 () -> authentication.authenticateUser(sessionId));
     }
