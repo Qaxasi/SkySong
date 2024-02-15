@@ -3,6 +3,7 @@ package com.mycompany.SkySong.auth.security;
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.BaseIT;
+import com.mycompany.SkySong.testsupport.auth.security.SessionTestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,8 @@ public class SessionValidationTest extends BaseIT {
 
     @Autowired
     private SessionValidation validation;
+    @Autowired
+    private SessionTestHelper sessionHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -40,6 +43,13 @@ public class SessionValidationTest extends BaseIT {
     @Test
     void whenSessionNotExist_ReturnFalse() {
         String sessionId = "xyz";
+        assertThat(validation.validateSession(sessionId)).isFalse();
+    }
+
+    @Test
+    void whenSessionIsExpired_ReturnFalse() {
+        int userId = 10;
+        String sessionId = sessionHelper.createExpiredSession(userId);
         assertThat(validation.validateSession(sessionId)).isFalse();
     }
 }
