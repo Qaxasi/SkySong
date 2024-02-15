@@ -9,11 +9,13 @@ import java.util.Properties;
 
 @Service
 public class ApplicationMessageServiceImpl implements ApplicationMessageService {
+
     private final Properties messages = new Properties();
 
     public ApplicationMessageServiceImpl() {
         this(ApplicationMessageServiceImpl.class.getClassLoader().getResourceAsStream("messages.properties"));
     }
+
     ApplicationMessageServiceImpl(InputStream propertiesStream) {
         try {
             if (propertiesStream != null) {
