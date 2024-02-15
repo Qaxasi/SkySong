@@ -44,21 +44,24 @@ public class SessionCreationTest extends BaseIT {
 
     @Test
     void whenCreatingSession_ReturnsNonNullToken() {
-        String token = sessionCreation.createSession(10);
+        int userId = 10;
+        String token = sessionCreation.createSession(userId);
         assertThat(token).isNotNull();
+
     }
 
     @Test
     void whenCreatingSession_SetsCorrectExpirationTime() {
         Instant now = Instant.now();
+        int userId = 10;
 
-        String token = sessionCreation.createSession(10);
+        String token = sessionCreation.createSession(userId);
         String hashedToken = tokenHasher.generateHashedToken(token);
 
         Session createdSession = sessionFetcher.getSession(hashedToken).orElseThrow(
                 () -> new AssertionError("Expected session not found in database."));
-
         Instant expirationTime = createdSession.getExpiresAt().toInstant();
+
         Duration duration = Duration.between(now, expirationTime);
         long expectedDurationHours = 24;
 
@@ -68,23 +71,29 @@ public class SessionCreationTest extends BaseIT {
 
     @Test
     void whenCreatingSession_AssignsAppropriateUserId() {
-        String token = sessionCreation.createSession(10);
+        int userId = 10;
+
+        String token = sessionCreation.createSession(userId);
         String hashedToken = tokenHasher.generateHashedToken(token);
 
-        Integer userId = sessionFetcher.getSession(hashedToken).map(Session::getUserId).orElse(null);
+        Integer retrievedUserId = sessionFetcher.getSession(hashedToken)
+                .map(Session::getUserId)
+                .orElse(null);
 
-        assertThat(userId).isEqualTo(10);
+        assertThat(retrievedUserId).isEqualTo(10);
     }
 
     @Test
     void whenCreatingSession_NotStoreRawTokenInDatabase() {
-        String token = sessionCreation.createSession(10);
+        int userId = 10;
+        String token = sessionCreation.createSession(userId);
         assertThat(checker.sessionExist(token)).isFalse();
     }
 
     @Test
     void whenCreatingSession_StoreHashedTokenInDatabase() {
-        String token = sessionCreation.createSession(10);
+        int userId = 10;
+        String token = sessionCreation.createSession(userId);
         String hashedToken = tokenHasher.generateHashedToken(token);
         assertThat(checker.sessionExist(hashedToken)).isTrue();
     }
