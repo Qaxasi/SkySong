@@ -41,7 +41,8 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @Test
     void whenSessionIsValid_AuthenticationIsSuccessful() {
-        authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
+        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -50,7 +51,8 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @Test
     void whenAuthenticated_UsernameIsCorrect() {
-        authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
+        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -59,7 +61,8 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @Test
     void whenUserIsRegular_AssignsUserRole() {
-        authentication.authenticateUser("jrYa_WLToysV-r08qLhwUZncJLY8OPgT");
+        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Set<String> expectedRole = Set.of("ROLE_USER");
@@ -73,7 +76,8 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @Test
     void whenUserIsAdmin_AssignsAdminAndUserRoles() {
-        authentication.authenticateUser("5JMDsvOSfM9Mf8qt0s_DB1GeUky8LJLU");
+        String sessionId = "5JMDsvOSfM9Mf8qt0s_DB1GeUky8LJLU";
+        authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Set<String> expectedRoles = Set.of("ROLE_USER", "ROLE_ADMIN");
@@ -87,7 +91,9 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @Test
     void whenSessionIdIsInvalid_ThrowsException() {
+        String sessionId = "jrYa_WLToysVInvalidLhwUZncJLY8OPgT";
+
         assertThrows(SessionNotFoundException.class,
-                () -> authentication.authenticateUser("jrYa_WLToysVInvalidLhwUZncJLY8OPgT"));
+                () -> authentication.authenticateUser(sessionId));
     }
 }
