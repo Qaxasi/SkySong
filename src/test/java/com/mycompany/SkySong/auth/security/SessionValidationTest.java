@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SessionValidationTest extends BaseIT {
 
@@ -37,7 +36,7 @@ public class SessionValidationTest extends BaseIT {
     @Test
     void whenValidSession_ReturnsTrue() {
         String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
-        assertTrue(validation.validateSession(sessionId));
+        assertThat(validation.validateSession(sessionId)).isTrue();
     }
 
     @Test
