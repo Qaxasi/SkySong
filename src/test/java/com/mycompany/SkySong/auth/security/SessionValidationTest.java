@@ -33,7 +33,8 @@ public class SessionValidationTest extends BaseIT {
 
     @Test
     void whenValidSession_ReturnsTrue() {
-        assertTrue(validation.validateSession("jrYa_WLToysV-r08qLhwUZncJLY8OPgT"));
+        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        assertTrue(validation.validateSession(sessionId));
     }
 
     @Test
