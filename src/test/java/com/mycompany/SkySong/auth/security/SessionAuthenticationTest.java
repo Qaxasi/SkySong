@@ -65,7 +65,9 @@ public class SessionAuthenticationTest extends BaseIT {
         authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         Set<String> expectedRole = Set.of("ROLE_USER");
+
         Set<String> userRoles = auth.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
@@ -80,7 +82,9 @@ public class SessionAuthenticationTest extends BaseIT {
         authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         Set<String> expectedRoles = Set.of("ROLE_USER", "ROLE_ADMIN");
+
         Set<String> userRoles = auth.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
@@ -92,7 +96,6 @@ public class SessionAuthenticationTest extends BaseIT {
     @Test
     void whenSessionIdIsInvalid_ThrowsException() {
         String sessionId = "jrYa_WLToysVInvalidLhwUZncJLY8OPgT";
-
         assertThrows(SessionNotFoundException.class,
                 () -> authentication.authenticateUser(sessionId));
     }
