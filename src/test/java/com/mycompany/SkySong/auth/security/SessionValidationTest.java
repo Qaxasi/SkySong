@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SessionValidationTest extends BaseIT {
@@ -33,5 +34,11 @@ public class SessionValidationTest extends BaseIT {
     @Test
     void whenValidSession_ReturnsTrue() {
         assertTrue(validation.validateSession("jrYa_WLToysV-r08qLhwUZncJLY8OPgT"));
+    }
+
+    @Test
+    void whenSessionNotExist_ReturnFalse() {
+        String sessionId = "xyz";
+        assertThat(validation.validateSession(sessionId)).isFalse();
     }
 }
