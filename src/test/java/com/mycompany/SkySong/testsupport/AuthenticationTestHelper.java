@@ -26,7 +26,7 @@ public class AuthenticationTestHelper {
         return loginAndGetCookie(mockMvc, admin);
     }
 
-    private static Cookie loginAndGetCookie(MockMvc mockMvc, LoginRequest request) throws Exception {
+    private Cookie loginAndGetCookie(LoginRequest request) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
