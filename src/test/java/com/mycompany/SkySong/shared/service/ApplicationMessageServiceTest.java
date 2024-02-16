@@ -11,27 +11,33 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class ApplicationMessageServiceTest {
+
     @Autowired
     private ApplicationMessageService messageService;
+
     @Test
-    void shouldBeInjectedCorrectly() {
+    void whenApplicationStarts_MessageServiceIsInjected() {
         assertNotNull(messageService);
     }
+
     @Test
-    void shouldReturnCorrectMessageForExistingKey() {
+    void whenKeyExist_ReturnMessage() {
         String key = "user.id.required";
         String expectedMessage = "User ID is required and cannot be empty.";
 
         assertEquals(expectedMessage, messageService.getMessage(key));
     }
+
     @Test
-    void shouldReturnDefaultMessageForNonExistingKey() {
+    void whenKeyNotExist_ReturnDefaultMessage() {
         String key = "key.not.exist";
         String expectedMessage = "Default message for " + key;
+        
         assertEquals(expectedMessage, messageService.getMessage(key));
     }
+
     @Test
-    void shouldFormatMessageCorrectly() {
+    void whenFormattingMessageWithArguments_ReturnsFormattedMessage() {
         long id = 100L;
         String key = "user.delete.not-found";
         String expectedMessage = "User with ID 100 does not exist.";
