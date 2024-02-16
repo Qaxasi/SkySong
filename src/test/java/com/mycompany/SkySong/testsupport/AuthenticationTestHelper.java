@@ -6,17 +6,23 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.Arrays;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 public class AuthenticationTestHelper {
+
     public static Cookie regularUser(MockMvc mockMvc) throws Exception {
         final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
         return loginAndGetCookie(mockMvc, requestBody);
     }
+
     public static Cookie adminUser(MockMvc mockMvc) throws Exception {
         final String requestBody = "{\"usernameOrEmail\": \"testAdmin\",\"password\": \"testPassword@123\"}";
         return loginAndGetCookie(mockMvc, requestBody);
     }
+
     private static Cookie loginAndGetCookie(MockMvc mockMvc, String requestBody) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -24,8 +30,9 @@ public class AuthenticationTestHelper {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        String responseString = mvcResult.getResponse().getContentAsString();
-        String jwtToken = JsonPath.parse(responseString).read("$.accessToken");
-        return new Cookie("auth_token", jwtToken);
+        return Arrays.stream(mvcResult.getResponse().getCookies())
+                .filter(cookie -> "session_id".equals(cookie.getName()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Session cookie not found"));
     }
 }
