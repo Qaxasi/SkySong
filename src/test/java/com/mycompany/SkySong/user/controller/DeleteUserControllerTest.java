@@ -4,6 +4,7 @@ import com.mycompany.SkySong.auth.security.*;
 import com.mycompany.SkySong.shared.config.SecurityConfig;
 import com.mycompany.SkySong.shared.exception.UserNotFoundException;
 import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.testsupport.BaseIT;
 import com.mycompany.SkySong.user.service.DeleteUserService;
 import com.mycompany.SkySong.testsupport.controller.DeleteRequestAssertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
 
-public class DeleteUserControllerTest {
+public class DeleteUserControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
