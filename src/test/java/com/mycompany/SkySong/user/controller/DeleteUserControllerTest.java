@@ -26,7 +26,6 @@ public class DeleteUserControllerTest extends BaseIT {
     private MockMvc mockMvc;
 
     @Test
-    @WithMockUser(roles="ADMIN")
     void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
         long userId = 10L;
 
@@ -37,13 +36,11 @@ public class DeleteUserControllerTest extends BaseIT {
                 mockMvc, "/api/v1/users/" + userId, 404);
     }
     @Test
-    @WithMockUser(roles="ADMIN")
     void shouldReturnBadRequestOnDeleteWithNoUserId() throws Exception {
         DeleteRequestAssertions.assertDeleteStatusReturns(
                 mockMvc, "/api/v1/users/",  400);
     }
     @Test
-    @WithMockUser(roles="ADMIN")
     void shouldReturnBadRequestWhenUserDeletionGivenInvalidUserIdFormat() throws Exception {
         String invalidUserId = "invalidFormat";
 
@@ -51,7 +48,6 @@ public class DeleteUserControllerTest extends BaseIT {
                 mockMvc, "/api/v1/users/" + invalidUserId, 400);
     }
     @Test
-    @WithMockUser(roles="ADMIN")
     void shouldReturnMessageOnUserDeletionWithInvalidIdFormat() throws Exception {
         String invalidUserId = "invalidFormat";
         String expectedMessage = "Invalid input data format";
@@ -59,7 +55,6 @@ public class DeleteUserControllerTest extends BaseIT {
         DeleteRequestAssertions.assertDeleteResponse(mockMvc, "/api/v1/users/" + invalidUserId, expectedMessage);
     }
     @Test
-    @WithMockUser(roles="ADMIN")
     void shouldReturnMessageOnUserDeletionWithNoUserId() throws Exception {
         String expectedMessage = "User ID is required and cannot be empty.";
 
