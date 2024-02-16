@@ -32,7 +32,7 @@ public class ApplicationMessageServiceTest {
     void whenKeyNotExist_ReturnDefaultMessage() {
         String key = "key.not.exist";
         String expectedMessage = "Default message for " + key;
-        
+
         assertEquals(expectedMessage, messageService.getMessage(key));
     }
 
