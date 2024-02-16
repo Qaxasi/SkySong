@@ -29,8 +29,6 @@ public class LogoutControllerTest extends BaseIT {
     @Autowired
     private TokenHasher tokenHasher;
 
-    private AuthTestHelper authHelper;
-
     @Autowired
     private SqlDatabaseInitializer initializer;
     @Autowired
@@ -38,8 +36,6 @@ public class LogoutControllerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
-        authHelper = new AuthTestHelper(mockMvc);
-
         initializer.setup("data_sql/test-setup.sql");
     }
 
