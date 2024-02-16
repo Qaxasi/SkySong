@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.testsupport;
 
-import com.jayway.jsonpath.JsonPath;
+import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Arrays;
 
+import static com.mycompany.SkySong.testsupport.JsonUtils.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,10 +24,10 @@ public class AuthenticationTestHelper {
         return loginAndGetCookie(mockMvc, requestBody);
     }
 
-    private static Cookie loginAndGetCookie(MockMvc mockMvc, String requestBody) throws Exception {
+    private static Cookie loginAndGetCookie(MockMvc mockMvc, LoginRequest request) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+                        .content(asJsonString(request)))
                 .andExpect(status().isOk())
                 .andReturn();
 
