@@ -15,13 +15,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthenticationTestHelper {
 
     public static Cookie regularUser(MockMvc mockMvc) throws Exception {
-        final String requestBody = "{\"usernameOrEmail\": \"testUsername\",\"password\": \"testPassword@123\"}";
-        return loginAndGetCookie(mockMvc, requestBody);
+        LoginRequest user = new LoginRequest("User", "Password#3");
+        return loginAndGetCookie(mockMvc, user);
     }
 
     public static Cookie adminUser(MockMvc mockMvc) throws Exception {
-        final String requestBody = "{\"usernameOrEmail\": \"testAdmin\",\"password\": \"testPassword@123\"}";
-        return loginAndGetCookie(mockMvc, requestBody);
+       LoginRequest admin = new LoginRequest("testAdmin", "Password#3");
+        return loginAndGetCookie(mockMvc, admin);
     }
 
     private static Cookie loginAndGetCookie(MockMvc mockMvc, LoginRequest request) throws Exception {
