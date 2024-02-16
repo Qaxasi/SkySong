@@ -16,14 +16,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Component
 public class AuthenticationTestHelper {
 
-    public static Cookie regularUser(MockMvc mockMvc) throws Exception {
+    public Cookie loginRegularUser() throws Exception {
         LoginRequest user = new LoginRequest("User", "Password#3");
-        return loginAndGetCookie(mockMvc, user);
+        return loginAndGetCookie(user);
     }
 
-    public static Cookie adminUser(MockMvc mockMvc) throws Exception {
+    public Cookie loginAdminUser() throws Exception {
        LoginRequest admin = new LoginRequest("testAdmin", "Password#3");
-        return loginAndGetCookie(mockMvc, admin);
+        return loginAndGetCookie(admin);
     }
 
     private Cookie loginAndGetCookie(LoginRequest request) throws Exception {
