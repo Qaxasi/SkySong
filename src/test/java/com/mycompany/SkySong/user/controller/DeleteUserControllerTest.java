@@ -17,25 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(DeleteUserController.class)
-@Import(SecurityConfig.class)
 public class DeleteUserControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private DeleteUserService deleteUserService;
-    @MockBean
-    private JwtTokenProvider jwtTokenProvider;
-    @MockBean
-    private UserDetailsService userDetailsService;
-    @MockBean
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    @MockBean
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-    @MockBean
-    private CookieRetriever cookieRetriever;
-    @MockBean
-    private ApplicationMessageService applicationMessageService;
+
     @Test
     @WithMockUser(roles="ADMIN")
     void shouldReturnStatusNotFoundWhenUserDeletionGivenInvalidUserId() throws Exception {
