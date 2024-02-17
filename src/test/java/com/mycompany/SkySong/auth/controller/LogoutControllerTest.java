@@ -72,11 +72,10 @@ public class LogoutControllerTest extends BaseIT {
     void whenLogoutSuccess_DeleteSession() throws Exception {
         Cookie sessionCookie = authHelper.loginRegularUser();
 
-        String sessionId = tokenHasher.generateHashedToken(sessionCookie.getValue());
-
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
                 .andExpect(status().isOk());
 
-        assertThat(session.sessionExist(sessionId)).isFalse();
+        mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
+                .andExpect(status().isUnauthorized());
     }
 }
