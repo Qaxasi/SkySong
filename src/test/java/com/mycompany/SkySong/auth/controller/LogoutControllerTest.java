@@ -1,9 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
-import com.mycompany.SkySong.SessionExistenceChecker;
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
-import com.mycompany.SkySong.auth.security.TokenHasher;
 import com.mycompany.SkySong.testsupport.AuthenticationTestHelper;
 import com.mycompany.SkySong.testsupport.BaseIT;
 import jakarta.servlet.http.Cookie;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,10 +21,6 @@ public class LogoutControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private SessionExistenceChecker session;
-    @Autowired
-    private TokenHasher tokenHasher;
     @Autowired
     private AuthenticationTestHelper authHelper;
 
