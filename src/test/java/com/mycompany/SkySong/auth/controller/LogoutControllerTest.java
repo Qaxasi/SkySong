@@ -62,7 +62,7 @@ public class LogoutControllerTest extends BaseIT {
     }
 
     @Test
-    void whenLogoutSuccess_SecondRequestUnauthorized() throws Exception {
+    void whenLogoutSuccess_SecuredRequestUnauthorized() throws Exception {
         Cookie sessionCookie = authHelper.loginRegularUser();
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
