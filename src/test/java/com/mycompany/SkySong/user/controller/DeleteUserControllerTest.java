@@ -44,7 +44,7 @@ public class DeleteUserControllerTest extends BaseIT {
 
     @Test
     void whenUserIdNotExist_ReturnStatusNotFound() throws Exception {
-        long userId = 10L;
+        int userId = 1000;
 
         Cookie sessionId = authHelper.loginAdminUser();
 
