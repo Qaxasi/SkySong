@@ -33,16 +33,20 @@ public class AuthenticationTestHelper {
         return loginAndGetCookie(admin);
     }
 
-    private Cookie loginAndGetCookie(LoginRequest request) throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(status().isOk())
-                .andReturn();
+    private Cookie loginAndGetCookie(LoginRequest request) {
+        try {
+            MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(asJsonString(request)))
+                    .andExpect(status().isOk())
+                    .andReturn();
 
-        return Arrays.stream(mvcResult.getResponse().getCookies())
-                .filter(cookie -> "session_id".equals(cookie.getName()))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Session cookie not found"));
+            return Arrays.stream(mvcResult.getResponse().getCookies())
+                    .filter(cookie -> "session_id".equals(cookie.getName()))
+                    .findFirst()
+                    .orElseThrow(() -> new AssertionError("Session cookie not found"));
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to login for user " + request.usernameOrEmail());
+        }
     }
 }
