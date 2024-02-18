@@ -2,6 +2,7 @@ package com.mycompany.SkySong.user.controller;
 
 import com.mycompany.SkySong.SqlDatabaseCleaner;
 import com.mycompany.SkySong.SqlDatabaseInitializer;
+import com.mycompany.SkySong.UserExistenceChecker;
 import com.mycompany.SkySong.UserIdFetcher;
 import com.mycompany.SkySong.testsupport.AuthenticationTestHelper;
 import com.mycompany.SkySong.testsupport.BaseIT;
@@ -26,6 +27,8 @@ public class DeleteUserControllerTest extends BaseIT {
     private AuthenticationTestHelper authHelper;
     @Autowired
     private UserIdFetcher idFetcher;
+    @Autowired
+    private UserExistenceChecker userChecker;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -112,5 +115,17 @@ public class DeleteUserControllerTest extends BaseIT {
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.error")
                         .value("You do not have permission to perform this operation."));
+    }
+
+    @Test
+    void whenRegularUser_UserNotDeleted() throws Exception {
+        Integer userId = idFetcher.fetchByUsername("Mark");
+
+        Cookie sessionId = authHelper.loginRegularUser();
+
+        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
+                .andExpect(status().isForbidden());
+
+        userChecker.userExist("Mark");
     }
 }
