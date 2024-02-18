@@ -23,12 +23,12 @@ public class AuthenticationTestHelper {
     }
 
 
-    public Cookie loginRegularUser() throws Exception {
+    public Cookie loginRegularUser() {
         LoginRequest user = new LoginRequest("User", "Password#3");
         return loginAndGetCookie(user);
     }
 
-    public Cookie loginAdminUser() throws Exception {
+    public Cookie loginAdminUser() {
        LoginRequest admin = new LoginRequest("testAdmin", "Password#3");
         return loginAndGetCookie(admin);
     }
