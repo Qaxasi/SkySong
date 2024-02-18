@@ -94,4 +94,11 @@ public class DeleteUserControllerTest extends BaseIT {
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void whenUnauthenticatedUser_ReturnUnauthorized() throws Exception {
+        mockMvc.perform(delete("/api/v1/users/"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error").value("Unauthorized access. Please log in."));
+    }
 }
