@@ -101,4 +101,16 @@ public class DeleteUserControllerTest extends BaseIT {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.error").value("Unauthorized access. Please log in."));
     }
+
+    @Test
+    void whenRegularUser_ReturnForbidden() throws Exception {
+        Integer userId = idFetcher.fetchByUsername("Mark");
+
+        Cookie sessionId = authHelper.loginRegularUser();
+
+        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.error")
+                        .value("You do not have permission to perform this operation."));
+    }
 }
