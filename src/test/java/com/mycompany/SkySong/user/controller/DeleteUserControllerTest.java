@@ -71,4 +71,14 @@ public class DeleteUserControllerTest extends BaseIT {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("Invalid input data format."));
     }
+
+    @Test
+    void whenUserIsAdmin_DeleteUser() throws Exception {
+        Integer userId = idFetcher.fetchByUsername("Mark");
+
+        Cookie sessionId = authHelper.loginAdminUser();
+
+        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
+                .andExpect(status().isOk());
+    }
 }
