@@ -81,4 +81,17 @@ public class DeleteUserControllerTest extends BaseIT {
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void whenUserDeleted_SecondDeletionReturnNotFound() throws Exception {
+        Integer userId = idFetcher.fetchByUsername("Mark");
+
+        Cookie sessionId = authHelper.loginAdminUser();
+
+        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
+                .andExpect(status().isNotFound());
+    }
 }
