@@ -22,7 +22,6 @@ public class AuthenticationTestHelper {
         this.mockMvc = mockMvc;
     }
 
-
     public Cookie loginRegularUser() {
         LoginRequest user = new LoginRequest("User", "Password#3");
         return loginAndGetCookie(user);
