@@ -5,6 +5,8 @@ import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.auth.repository.UserDAO;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,9 +30,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class DeleteUserServiceIntegrationTest {
-    
+
     @Autowired
     private DeleteUserService deleteService;
+
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
 
 
     @BeforeEach
