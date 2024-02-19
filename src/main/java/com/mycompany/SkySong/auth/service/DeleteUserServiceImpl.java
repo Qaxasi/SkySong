@@ -1,11 +1,9 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.service.ApplicationMessageService;
 import com.mycompany.SkySong.auth.exception.DatabaseException;
 import com.mycompany.SkySong.auth.exception.UserNotFoundException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.auth.repository.UserDAO;
-import com.mycompany.SkySong.auth.service.DeleteUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
