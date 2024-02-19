@@ -21,7 +21,6 @@ public class LogoutControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
     private AuthenticationTestHelper auth;
 
     @Autowired
@@ -31,6 +30,7 @@ public class LogoutControllerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
+        auth = new AuthenticationTestHelper(mockMvc);
         initializer.setup("data_sql/test-setup.sql");
     }
 
