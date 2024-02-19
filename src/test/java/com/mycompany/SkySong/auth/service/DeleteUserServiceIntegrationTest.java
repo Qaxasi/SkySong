@@ -28,14 +28,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class DeleteUserServiceIntegrationTest {
+    
     @Autowired
     private DeleteUserService deleteService;
-    @Autowired
-    private DataSource dataSource;
-    @Autowired
-    private UserDAO userDAO;
-    @Autowired
-    private TransactionTemplate transactionTemplate;
+
+
     @BeforeEach
     void init() throws Exception {
         try(Connection connection = dataSource.getConnection()) {
@@ -43,6 +40,7 @@ public class DeleteUserServiceIntegrationTest {
             ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
         }
     }
+
     @AfterEach
     void cleanup() throws Exception {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
@@ -50,5 +48,5 @@ public class DeleteUserServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
     }
-    
+
 }
