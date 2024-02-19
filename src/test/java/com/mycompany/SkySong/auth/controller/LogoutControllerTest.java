@@ -50,14 +50,7 @@ public class LogoutControllerTest extends BaseIT {
         Cookie sessionCookie = authHelper.loginRegularUser();
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void whenLogoutWithValidCookie_ReturnMessage() throws Exception {
-        Cookie sessionCookie = authHelper.loginRegularUser();
-
-        mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Logged out successfully."));
     }
 
