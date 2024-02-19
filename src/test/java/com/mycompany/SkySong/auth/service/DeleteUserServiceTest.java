@@ -38,4 +38,11 @@ public class DeleteUserServiceTest extends BaseIT {
         cleaner.clean();
     }
 
+    @Test
+    void whenUserExist_DeleteUser() {
+        long userId = idFetcher.fetchByUsername("Mark");
+
+        deleter.deleteUser(userId);
+        assertThat(userChecker.userExist("Mark")).isFalse();
+    }
 }
