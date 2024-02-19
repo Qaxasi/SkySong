@@ -22,7 +22,7 @@ public class LogoutControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private AuthenticationTestHelper authHelper;
+    private AuthenticationTestHelper auth;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -47,7 +47,7 @@ public class LogoutControllerTest extends BaseIT {
 
     @Test
     void whenLogoutWithValidCookie_StatusOk() throws Exception {
-        Cookie sessionCookie = authHelper.loginRegularUser();
+        Cookie sessionCookie = auth.loginRegularUser();
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
                 .andExpect(status().isOk())
@@ -56,10 +56,8 @@ public class LogoutControllerTest extends BaseIT {
 
     @Test
     void whenLogoutSuccess_SecuredRequestUnauthorized() throws Exception {
-        Cookie sessionCookie = authHelper.loginRegularUser();
-
-        mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
-                .andExpect(status().isOk());
+        Cookie sessionCookie = auth.loginRegularUser();
+        auth.logoutUser(sessionCookie);
 
         mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
                 .andExpect(status().isUnauthorized());
