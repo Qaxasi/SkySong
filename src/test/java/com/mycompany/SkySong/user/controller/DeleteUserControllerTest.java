@@ -24,7 +24,7 @@ public class DeleteUserControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private AuthenticationTestHelper authHelper;
+    private AuthenticationTestHelper auth;
     @Autowired
     private UserIdFetcher idFetcher;
     @Autowired
@@ -49,7 +49,7 @@ public class DeleteUserControllerTest extends BaseIT {
     void whenUserIdNotExist_ReturnStatusNotFound() throws Exception {
         int userId = 1000;
 
-        Cookie sessionId = authHelper.loginAdminUser();
+        Cookie sessionId = auth.loginAdminUser();
 
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                         .andExpect(status().isNotFound());
@@ -57,7 +57,7 @@ public class DeleteUserControllerTest extends BaseIT {
 
     @Test
     void whenNoUserId_ReturnBadRequest() throws Exception {
-        Cookie sessionId = authHelper.loginAdminUser();
+        Cookie sessionId = auth.loginAdminUser();
 
         mockMvc.perform(delete("/api/v1/users/").cookie(sessionId))
                 .andExpect(status().isBadRequest())
@@ -66,7 +66,7 @@ public class DeleteUserControllerTest extends BaseIT {
 
     @Test
     void whenInvalidUserIdFormat_ReturnBadRequest() throws Exception {
-        Cookie sessionId = authHelper.loginAdminUser();
+        Cookie sessionId = auth.loginAdminUser();
 
         String userId = "invalid";
 
@@ -79,7 +79,7 @@ public class DeleteUserControllerTest extends BaseIT {
     void whenUserIsAdmin_DeleteUser() throws Exception {
         Integer userId = idFetcher.fetchByUsername("Mark");
 
-        Cookie sessionId = authHelper.loginAdminUser();
+        Cookie sessionId = auth.loginAdminUser();
 
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isOk());
@@ -89,7 +89,7 @@ public class DeleteUserControllerTest extends BaseIT {
     void whenUserDeleted_SecondDeletionReturnNotFound() throws Exception {
         Integer userId = idFetcher.fetchByUsername("Mark");
 
-        Cookie sessionId = authHelper.loginAdminUser();
+        Cookie sessionId = auth.loginAdminUser();
 
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isOk());
@@ -109,7 +109,7 @@ public class DeleteUserControllerTest extends BaseIT {
     void whenRegularUser_ReturnForbidden() throws Exception {
         Integer userId = idFetcher.fetchByUsername("Mark");
 
-        Cookie sessionId = authHelper.loginRegularUser();
+        Cookie sessionId = auth.loginRegularUser();
 
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isForbidden())
@@ -121,7 +121,7 @@ public class DeleteUserControllerTest extends BaseIT {
     void whenRegularUser_UserNotDeleted() throws Exception {
         Integer userId = idFetcher.fetchByUsername("Mark");
 
-        Cookie sessionId = authHelper.loginRegularUser();
+        Cookie sessionId = auth.loginRegularUser();
 
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isForbidden());
