@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DeleteUserServiceTest extends BaseIT {
 
     @Autowired
-    private DeleteUserService deleteService;
+    private DeleteUserService deleter;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
