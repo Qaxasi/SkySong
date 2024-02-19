@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.exception.UserNotFoundException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.common.UserIdFetcher;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DeleteUserServiceTest extends BaseIT {
 
@@ -51,5 +53,11 @@ public class DeleteUserServiceTest extends BaseIT {
         ApiResponse response = deleter.deleteUser(userId);
         String expectedMessage = String.format("User with ID %d deleted successfully.", userId);
         assertThat(response.message()).isEqualTo(expectedMessage);
+    }
+
+    @Test
+    void wheUserIdNotExist_ThrowException() {
+        long userId = 1000L;
+        assertThrows(UserNotFoundException.class, () -> deleter.deleteUser(userId));
     }
 }
