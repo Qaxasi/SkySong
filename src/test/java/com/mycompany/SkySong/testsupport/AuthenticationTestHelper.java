@@ -32,7 +32,16 @@ public class AuthenticationTestHelper {
         return loginAndGetCookie(admin);
     }
 
-    private Cookie loginAndGetCookie(LoginRequest request) {
+    public void logoutUser(Cookie sessionCookie) {
+        try {
+            mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            throw new RuntimeException("Logout failed " + e.getMessage());
+        }
+    }
+
+    public Cookie loginAndGetCookie(LoginRequest request) {
         try {
             MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
                             .contentType(MediaType.APPLICATION_JSON)
