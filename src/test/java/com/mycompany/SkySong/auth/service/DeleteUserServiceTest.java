@@ -57,7 +57,15 @@ public class DeleteUserServiceTest extends BaseIT {
 
     @Test
     void wheUserIdNotExist_ThrowException() {
-        long userId = 1000L;
+        long userId = 100L;
         assertThrows(UserNotFoundException.class, () -> deleter.deleteUser(userId));
+    }
+
+    @Test
+    void whenUserIdNotExist_ReturnMessage() {
+        long userId = 100L;
+        Exception exception = assertThrows(UserNotFoundException.class, () -> deleter.deleteUser(userId));
+        String expectedMessage = String.format("User with ID %d does not exist.", userId);
+        assertThat(exception.getMessage()).isEqualTo(expectedMessage);
     }
 }
