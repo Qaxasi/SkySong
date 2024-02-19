@@ -3,7 +3,6 @@ package com.mycompany.SkySong.testsupport.common;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -13,7 +12,6 @@ import static com.mycompany.SkySong.testsupport.common.JsonUtils.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Component
 public class AuthenticationTestHelper {
 
     private final MockMvc mockMvc;
