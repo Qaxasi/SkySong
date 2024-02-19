@@ -26,19 +26,13 @@ public class DeleteUserServiceTest extends BaseIT {
 
 
     @BeforeEach
-    void init() throws Exception {
-        try(Connection connection = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/user-data.sql"));
-            ScriptUtils.executeSqlScript(connection, new ClassPathResource("data_sql/role-data.sql"));
-        }
+    void setUp() throws Exception {
+        initializer.setup("data_sql/test-setup.sql");
     }
 
     @AfterEach
-    void cleanup() throws Exception {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        jdbcTemplate.update("DELETE FROM user_roles");
-        jdbcTemplate.update("DELETE FROM users");
-        jdbcTemplate.update("DELETE FROM roles");
+    void cleanUp() {
+        cleaner.clean();
     }
 
 }
