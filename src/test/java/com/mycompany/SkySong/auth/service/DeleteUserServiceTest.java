@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.common.UserIdFetcher;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
@@ -8,6 +9,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DeleteUserServiceTest extends BaseIT {
 
@@ -15,6 +19,8 @@ public class DeleteUserServiceTest extends BaseIT {
     private DeleteUserService deleter;
     @Autowired
     private UserIdFetcher idFetcher;
+    @Autowired
+    private UserExistenceChecker userChecker;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
