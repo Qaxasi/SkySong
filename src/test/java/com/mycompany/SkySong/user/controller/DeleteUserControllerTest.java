@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -126,6 +127,6 @@ public class DeleteUserControllerTest extends BaseIT {
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isForbidden());
 
-        userChecker.userExist("Mark");
+        assertThat(userChecker.userExist("Mark")).isTrue();
     }
 }
