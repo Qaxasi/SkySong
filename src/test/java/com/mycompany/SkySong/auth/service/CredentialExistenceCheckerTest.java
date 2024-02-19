@@ -1,10 +1,10 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.SqlDatabaseCleaner;
-import com.mycompany.SkySong.SqlDatabaseInitializer;
-import com.mycompany.SkySong.shared.exception.CredentialValidationException;
-import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.RegistrationRequests;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
+import com.mycompany.SkySong.auth.exception.CredentialValidationException;
+import com.mycompany.SkySong.testsupport.common.BaseIT;
+import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

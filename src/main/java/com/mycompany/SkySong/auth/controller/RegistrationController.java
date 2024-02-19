@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.auth.controller;
 
-import com.mycompany.SkySong.shared.exception.DatabaseException;
-import com.mycompany.SkySong.shared.dto.ApiResponse;
+import com.mycompany.SkySong.auth.exception.DatabaseException;
+import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.service.RegistrationService;
 import jakarta.validation.Valid;

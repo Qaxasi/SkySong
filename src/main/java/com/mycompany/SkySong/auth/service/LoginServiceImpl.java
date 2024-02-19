@@ -2,9 +2,8 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.security.SessionCreation;
-import com.mycompany.SkySong.shared.entity.User;
-import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.auth.model.entity.User;
+import com.mycompany.SkySong.auth.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;

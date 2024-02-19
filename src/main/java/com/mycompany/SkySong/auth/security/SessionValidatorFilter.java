@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.auth.service.ApplicationMessageService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

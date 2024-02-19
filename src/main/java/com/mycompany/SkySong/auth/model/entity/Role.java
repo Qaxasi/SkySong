@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.model.entity;
 
-import com.mycompany.SkySong.shared.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,9 +1,8 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.shared.exception.CredentialValidationException;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
-import com.mycompany.SkySong.shared.util.ValidationPatterns;
+import com.mycompany.SkySong.auth.exception.CredentialValidationException;
+import com.mycompany.SkySong.auth.utils.ValidationPatterns;
 import org.springframework.stereotype.Service;
 
 @Service

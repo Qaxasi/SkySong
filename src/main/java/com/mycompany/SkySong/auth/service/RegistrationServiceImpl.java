@@ -1,13 +1,12 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.shared.exception.DatabaseException;
-import com.mycompany.SkySong.shared.dto.ApiResponse;
+import com.mycompany.SkySong.auth.exception.DatabaseException;
+import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.shared.entity.User;
-import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.auth.model.entity.User;
+import com.mycompany.SkySong.auth.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;

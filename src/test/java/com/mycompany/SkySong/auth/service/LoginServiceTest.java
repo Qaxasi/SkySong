@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.SqlDatabaseCleaner;
-import com.mycompany.SkySong.SqlDatabaseInitializer;
-import com.mycompany.SkySong.testsupport.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.LoginRequests;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
+import com.mycompany.SkySong.testsupport.common.BaseIT;
+import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import static com.mycompany.SkySong.ExceptionAssertionUtils.assertException;
+import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginServiceTest extends BaseIT {

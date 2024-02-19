@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.shared.entity.User;
-import com.mycompany.SkySong.shared.repository.UserDAO;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
+import com.mycompany.SkySong.auth.model.entity.User;
+import com.mycompany.SkySong.auth.repository.UserDAO;
+import com.mycompany.SkySong.auth.service.ApplicationMessageService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

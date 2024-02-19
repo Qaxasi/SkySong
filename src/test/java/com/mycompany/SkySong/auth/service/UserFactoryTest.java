@@ -3,7 +3,7 @@ package com.mycompany.SkySong.auth.service;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.shared.entity.User;
+import com.mycompany.SkySong.auth.model.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

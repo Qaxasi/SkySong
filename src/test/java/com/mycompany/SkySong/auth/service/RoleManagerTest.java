@@ -1,17 +1,17 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.SqlDatabaseCleaner;
-import com.mycompany.SkySong.SqlDatabaseInitializer;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.shared.exception.InternalErrorException;
-import com.mycompany.SkySong.testsupport.BaseIT;
+import com.mycompany.SkySong.auth.exception.InternalErrorException;
+import com.mycompany.SkySong.testsupport.common.BaseIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.mycompany.SkySong.ExceptionAssertionUtils.assertException;
+import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RoleManagerTest extends BaseIT {

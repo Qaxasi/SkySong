@@ -2,7 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.model.entity.Role;
-import com.mycompany.SkySong.shared.entity.User;
+import com.mycompany.SkySong.auth.model.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

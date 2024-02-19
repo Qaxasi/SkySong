@@ -1,10 +1,9 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.shared.exception.InternalErrorException;
+import com.mycompany.SkySong.auth.exception.InternalErrorException;
 import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.auth.repository.RoleDAO;
-import com.mycompany.SkySong.shared.service.ApplicationMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

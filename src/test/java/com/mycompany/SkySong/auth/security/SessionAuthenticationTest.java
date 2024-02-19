@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.SqlDatabaseCleaner;
-import com.mycompany.SkySong.SqlDatabaseInitializer;
-import com.mycompany.SkySong.shared.exception.SessionNotFoundException;
-import com.mycompany.SkySong.testsupport.BaseIT;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
+import com.mycompany.SkySong.auth.exception.SessionNotFoundException;
+import com.mycompany.SkySong.testsupport.common.BaseIT;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
