@@ -24,7 +24,6 @@ public class DeleteUserControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
     private AuthenticationTestHelper auth;
     @Autowired
     private UserIdFetcher idFetcher;
@@ -38,6 +37,7 @@ public class DeleteUserControllerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
+        auth = new AuthenticationTestHelper(mockMvc);
         initializer.setup("data_sql/test-setup.sql");
     }
 
