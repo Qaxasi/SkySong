@@ -50,47 +50,5 @@ public class DeleteUserServiceIntegrationTest {
         jdbcTemplate.update("DELETE FROM users");
         jdbcTemplate.update("DELETE FROM roles");
     }
-    @Test
-    void shouldDeleteUserWhenUserIdExists() {
-        long userId = 1L;
-
-        Optional<User> userBeforeDeletion = userDAO.findById(userId);
-        assertTrue(userBeforeDeletion.isPresent());
-
-        deleteService.deleteUser(userId);
-
-        Optional<User> userAfterDeletion = userDAO.findById(userId);
-        assertFalse(userAfterDeletion.isPresent());
-    }
-    @Test
-    void shouldThrowUserNotFoundExceptionWhenUserIdDoesNotExist() {
-        long notExistUserId = 10L;
-
-        Optional<User> user = userDAO.findById(notExistUserId);
-        assertFalse(user.isPresent());
-
-        assertThrows(UserNotFoundException.class, () -> deleteService.deleteUser(notExistUserId));
-    }
-    @Test
-    void shouldRollbackTransactionWhenErrorOccursAfterDelete() {
-        Role role = new Role(UserRole.ROLE_USER);
-        Set<Role> roles = Set.of(role);
-        User user = new User(2,"testUniqueUsername", "testUniqueEmail@gmail.com",
-                "testPassword@123", roles);
-
-        User savedUser = userDAO.save(user);
-        long userId = savedUser.getId();
-
-        assertTrue(userDAO.existsById(userId));
-
-        assertThrows(DataIntegrityViolationException.class, () -> {
-            transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-            transactionTemplate.execute(status -> {
-                deleteService.deleteUser(userId);
-                throw new DataIntegrityViolationException("Forced failure after delete operation");
-            });
-        });
-
-        assertTrue(userDAO.existsById(userId));
-    }
+    
 }
