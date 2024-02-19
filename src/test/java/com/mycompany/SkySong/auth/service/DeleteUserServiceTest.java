@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.common.UserIdFetcher;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,8 +41,15 @@ public class DeleteUserServiceTest extends BaseIT {
     @Test
     void whenUserExist_DeleteUser() {
         long userId = idFetcher.fetchByUsername("Mark");
-
         deleter.deleteUser(userId);
         assertThat(userChecker.userExist("Mark")).isFalse();
+    }
+
+    @Test
+    void whenUserDeleted_ReturnMessage() {
+        long userId = idFetcher.fetchByUsername("Mark");
+        ApiResponse response = deleter.deleteUser(userId);
+        String expectedMessage = String.format("User with ID %d deleted successfully.", userId);
+        assertThat(response.message()).isEqualTo(expectedMessage);
     }
 }
