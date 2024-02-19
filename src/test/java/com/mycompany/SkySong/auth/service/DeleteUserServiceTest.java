@@ -1,35 +1,20 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.exception.UserNotFoundException;
-import com.mycompany.SkySong.auth.model.entity.Role;
-import com.mycompany.SkySong.auth.model.entity.User;
-import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.auth.repository.UserDAO;
+import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
-import java.util.Optional;
-import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-public class DeleteUserServiceIntegrationTest {
+public class DeleteUserServiceTest extends BaseIT {
 
     @Autowired
     private DeleteUserService deleteService;
