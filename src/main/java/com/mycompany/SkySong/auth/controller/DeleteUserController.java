@@ -23,7 +23,7 @@ public class DeleteUserController {
     }
     
     @DeleteMapping({"/","/{userId}"})
-    public ResponseEntity<ApiResponse> delete(@PathVariable(required = false) Long userId) throws DatabaseException {
+    public ResponseEntity<ApiResponse> delete(@PathVariable(required = false) Integer userId) throws DatabaseException {
         if (userId == null) {
             String errorMessage = messageService.getMessage("user.id.required");
             throw new NullOrEmptyInputException(errorMessage);
