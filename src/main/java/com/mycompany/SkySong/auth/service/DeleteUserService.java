@@ -4,5 +4,5 @@ import com.mycompany.SkySong.auth.exception.DatabaseException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 
 public interface DeleteUserService {
-    ApiResponse deleteUser(long userId) throws DatabaseException;
+    ApiResponse deleteUser(int userId) throws DatabaseException;
 }
