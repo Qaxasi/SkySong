@@ -21,7 +21,7 @@ class DeleteUserServiceImpl implements DeleteUserService {
     }
     @Transactional
     @Override
-    public ApiResponse deleteUser(long userId) throws DatabaseException {
+    public ApiResponse deleteUser(int userId) throws DatabaseException {
         try {
             return userDAO.findById(userId).map(user -> {
                 userDAO.delete(user);
