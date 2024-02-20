@@ -19,4 +19,7 @@ public interface SessionDAO {
     @SqlUpdate("SELECT * FROM sessions WHERE session_id = :sessionId")
     @RegisterBeanMapper(Session.class)
     Optional<Session> findById(@Bind("sessionId") String sessionId);
+
+    @SqlUpdate("DELETE FROM sessions WHERE session_id = :sessionId")
+    void deleteById(@Bind("sessionId")String sessionId);
 }
