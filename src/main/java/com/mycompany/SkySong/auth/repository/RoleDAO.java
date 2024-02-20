@@ -5,11 +5,9 @@ import com.mycompany.SkySong.auth.model.entity.UserRole;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public interface RoleDAO {
 
     @SqlQuery("SELECT * FROM roles WHERE name = :name")
