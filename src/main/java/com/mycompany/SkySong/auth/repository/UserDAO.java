@@ -32,4 +32,7 @@ public interface UserDAO {
 
     @SqlQuery("SELECT COUNT(*) FROM users WHERE email = :email")
     int existsByEmail(@Bind("email") String email);
+
+    @SqlUpdate("DELETE FROM users WHERE id = :id")
+    void deleteById(@Bind("id") int id);
 }
