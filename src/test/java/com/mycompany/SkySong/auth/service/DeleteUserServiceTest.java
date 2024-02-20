@@ -42,14 +42,14 @@ public class DeleteUserServiceTest extends BaseIT {
 
     @Test
     void whenUserIdExist_DeleteUser() {
-        long userId = idFetcher.fetchByUsername("Mark");
+        int userId = idFetcher.fetchByUsername("Mark");
         deleter.deleteUser(userId);
         assertThat(userChecker.userExist("Mark")).isFalse();
     }
 
     @Test
     void whenUserDeleted_ReturnMessage() {
-        long userId = idFetcher.fetchByUsername("Mark");
+        int userId = idFetcher.fetchByUsername("Mark");
         ApiResponse response = deleter.deleteUser(userId);
         String expectedMessage = String.format("User with ID %d deleted successfully.", userId);
         assertThat(response.message()).isEqualTo(expectedMessage);
@@ -57,13 +57,13 @@ public class DeleteUserServiceTest extends BaseIT {
 
     @Test
     void wheUserIdNotExist_ThrowException() {
-        long userId = 100L;
+        int userId = 100;
         assertThrows(UserNotFoundException.class, () -> deleter.deleteUser(userId));
     }
 
     @Test
     void whenUserIdNotExist_ReturnMessage() {
-        long userId = 100L;
+        int userId = 100;
         Exception exception = assertThrows(UserNotFoundException.class, () -> deleter.deleteUser(userId));
         String expectedMessage = String.format("User with ID %d does not exist.", userId);
         assertThat(exception.getMessage()).isEqualTo(expectedMessage);
