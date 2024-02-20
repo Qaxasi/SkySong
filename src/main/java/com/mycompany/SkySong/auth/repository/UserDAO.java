@@ -3,6 +3,7 @@ package com.mycompany.SkySong.auth.repository;
 import com.mycompany.SkySong.auth.model.entity.User;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public interface UserDAO {
 
     @SqlUpdate("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
-    void insert(@Bind("username") String username, @Bind("email") String email, @Bind("password") String password);
+    void save(@BindBean User user));
 
     @SqlQuery("SELECT * FROM users WHERE id = :id")
     @RegisterBeanMapper(User.class)
