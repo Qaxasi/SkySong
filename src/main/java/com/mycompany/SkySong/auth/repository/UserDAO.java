@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface UserDAO {
 
     @SqlUpdate("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
-    void save(@BindBean User user));
+    void save(@BindBean User user);
 
     @SqlQuery("SELECT * FROM users WHERE id = :id")
     @RegisterBeanMapper(User.class)
