@@ -37,7 +37,6 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
                 .map(tokenHasher::generateHashedToken)
                 .flatMap(sessionDAO::findById)
                 .map(Session::getUserId)
-                .map(Long::valueOf)
                 .flatMap(userDAO::findById)
                 .map(User::getUsername)
                 .orElseThrow(() -> new SessionNotFoundException(message.getMessage("session.not.found", sessionId)));
