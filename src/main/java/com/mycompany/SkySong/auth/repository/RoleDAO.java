@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface RoleDAO {
 
     @SqlQuery("SELECT * FROM roles WHERE name = :name")
-    @RegisterBeanMapper((Role.class))
+    @RegisterBeanMapper(Role.class)
     Optional<Role> findByName(@Bind("name") UserRole roleName);
 }
