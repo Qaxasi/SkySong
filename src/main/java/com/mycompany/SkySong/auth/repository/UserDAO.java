@@ -35,5 +35,5 @@ public interface UserDAO {
     int existsByEmail(@Bind("email") String email);
 
     @SqlUpdate("DELETE FROM users WHERE id = :id")
-    void deleteById(@Bind("id") int id);
+    void delete(@BindBean User user);
 }
