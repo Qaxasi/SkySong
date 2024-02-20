@@ -15,6 +15,10 @@ public interface UserDAO {
     @SqlUpdate("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
     void insert(@Bind("username") String username, @Bind("email") String email, @Bind("password") String password);
 
+    @SqlQuery("SELECT * FROM users WHERE id = :id")
+    @RegisterBeanMapper(User.class)
+    Optional<User> findById(@Bind("id") int id);
+
     @SqlQuery("SELECT * FROM users WHERE email = :email")
     @RegisterBeanMapper(User.class)
     Optional<User> findByEmail(@Bind("email") String email);
