@@ -4,12 +4,16 @@ import com.mycompany.SkySong.auth.model.entity.User;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
 public interface UserDAO {
+
+    @SqlUpdate("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
+    void insert(@Bind("username") String username, @Bind("email") String email, @Bind("password") String password);
 
     @SqlQuery("SELECT * FROM users WHERE email = :email")
     @RegisterBeanMapper(User.class)
