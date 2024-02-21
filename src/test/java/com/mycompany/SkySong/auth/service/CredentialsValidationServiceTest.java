@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class RegistrationValidationServiceTest {
+public class CredentialsValidationServiceTest {
 
     @Autowired
-    private RegistrationValidationService validator;
+    private CredentialsValidationService validator;
 
     @Test
     void whenValidRequest_NotThrowException() {

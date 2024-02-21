@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CredentialExistenceCheckerTest extends BaseIT {
+public class CredentialsExistenceCheckerTest extends BaseIT {
     @Autowired
-    private CredentialExistenceChecker existenceChecker;
+    private CredentialsExistenceChecker existenceChecker;
     @Autowired
     private SqlDatabaseInitializer initializer;
     @Autowired

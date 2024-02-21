@@ -6,12 +6,12 @@ import com.mycompany.SkySong.auth.repository.UserDAO;
 import org.springframework.stereotype.Service;
 
 @Service
-class CredentialExistenceCheckerImpl implements CredentialExistenceChecker {
+class CredentialsExistenceCheckerImpl implements CredentialsExistenceChecker {
 
     private final UserDAO userDAO;
     private final ApplicationMessageService messageService;
 
-    public CredentialExistenceCheckerImpl(UserDAO userDAO, ApplicationMessageService messageService) {
+    public CredentialsExistenceCheckerImpl(UserDAO userDAO, ApplicationMessageService messageService) {
         this.userDAO = userDAO;
         this.messageService = messageService;
     }

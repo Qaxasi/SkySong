@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-class RegistrationValidationServiceImpl implements RegistrationValidationService {
+class CredentialsValidationServiceImpl implements CredentialsValidationService {
 
     private final List<RegistrationValidationStrategy> strategies;
 
-    public RegistrationValidationServiceImpl(List<RegistrationValidationStrategy> strategies) {
+    public CredentialsValidationServiceImpl(List<RegistrationValidationStrategy> strategies) {
         this.strategies = strategies;
     }
 

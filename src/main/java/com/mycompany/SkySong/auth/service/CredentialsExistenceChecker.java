@@ -2,6 +2,6 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
-public interface CredentialExistenceChecker {
+public interface CredentialsExistenceChecker {
     void checkForExistingCredentials(RegisterRequest registerRequest);
 }
