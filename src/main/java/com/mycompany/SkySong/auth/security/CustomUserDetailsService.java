@@ -1,6 +1,8 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.User;
+import com.mycompany.SkySong.auth.repository.RoleDAO;
 import com.mycompany.SkySong.auth.repository.UserDAO;
 import com.mycompany.SkySong.auth.service.ApplicationMessageService;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,10 +18,12 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserDAO userDAO;
+    private final RoleDAO roleDAO;
     private final ApplicationMessageService messageService;
 
-    public CustomUserDetailsService(UserDAO userDAO, ApplicationMessageService messageService) {
+    public CustomUserDetailsService(UserDAO userDAO, RoleDAO roleDAO, ApplicationMessageService messageService) {
         this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
         this.messageService = messageService;
     }
 
