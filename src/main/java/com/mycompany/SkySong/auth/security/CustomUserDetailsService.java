@@ -44,8 +44,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                                 messageService.getMessage("user.not.found", usernameOrEmail))));
     }
     private  Set<GrantedAuthority> getAuthorities(User user) {
-        return user.getRoles()
-                .stream()
+        Set<Role> roles = roleDAO.findRolesByUserId(user.getId());
+
+        return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.toString()))
                 .collect(Collectors.toSet());
     }
