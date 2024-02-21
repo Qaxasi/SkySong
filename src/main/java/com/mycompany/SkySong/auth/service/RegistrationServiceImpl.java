@@ -15,29 +15,29 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
-    private final RegistrationValidationService registrationValidator;
+    private final RegistrationValidationService validation;
     private final ApplicationMessageService messageService;
     private final RoleManager roleManager;
     private final UserFactory userFactory;
-    private final CredentialExistenceChecker credentialExistenceChecker;
+    private final CredentialExistenceChecker checker;
 
-    public RegistrationServiceImpl(UserDAO userDAO, RegistrationValidationService registrationValidator,
+    public RegistrationServiceImpl(UserDAO userDAO, RegistrationValidationService validation,
                                    ApplicationMessageService messageService,
                                    RoleManager roleManager, UserFactory userFactory,
-                                   CredentialExistenceChecker credentialExistenceChecker) {
+                                   CredentialExistenceChecker checker) {
         this.userDAO = userDAO;
-        this.registrationValidator = registrationValidator;
+        this.validation = validation;
         this.messageService = messageService;
         this.roleManager = roleManager;
         this.userFactory = userFactory;
-        this.credentialExistenceChecker = credentialExistenceChecker;
+        this.checker = checker;
     }
 
     @Transactional
     @Override
     public ApiResponse register(RegisterRequest registerRequest) throws DatabaseException {
-        registrationValidator.validateCredentials(registerRequest);
-        credentialExistenceChecker.checkForExistingCredentials(registerRequest);
+        validation.validateCredentials(registerRequest);
+        checker.checkForExistingCredentials(registerRequest);
 
         Role role = roleManager.getRoleByName(UserRole.ROLE_USER);
         User user = userFactory.createUser(registerRequest, role);
