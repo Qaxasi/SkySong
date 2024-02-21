@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.controller;
 
-import com.mycompany.SkySong.auth.exception.DatabaseException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.service.RegistrationService;
@@ -20,8 +19,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> register(
-            @Valid @RequestBody RegisterRequest registerRequest) throws DatabaseException {
+    public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         ApiResponse registrationResponse = registration.register(registerRequest);
         return new ResponseEntity<>(registrationResponse, HttpStatus.CREATED);
     }

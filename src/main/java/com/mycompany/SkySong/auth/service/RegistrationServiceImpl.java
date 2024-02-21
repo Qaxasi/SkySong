@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.exception.DatabaseException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ class RegistrationServiceImpl implements RegistrationService {
 
     @Transactional
     @Override
-    public ApiResponse register(RegisterRequest registerRequest) throws DatabaseException {
+    public ApiResponse register(RegisterRequest registerRequest) {
         validation.validateRequest(registerRequest);
         creation.createUser(registerRequest);
         return new ApiResponse(messageService.getMessage("user.registration.success"));
