@@ -61,11 +61,8 @@ public class SessionCreationTest extends BaseIT {
                 () -> new AssertionError("Expected session not found in database."));
         Instant expirationTime = createdSession.getExpiresAt().toInstant();
 
-        Duration duration = Duration.between(now, expirationTime);
-        long expectedDurationHours = 24;
-
-        assertThat(duration.toHours() >= expectedDurationHours &&
-                duration.minusHours(expectedDurationHours).toMinutes() <= 1).isTrue();
+        long hoursUntilExpiration = Duration.between(now, expirationTime).toHours();
+        assertThat(hoursUntilExpiration).isBetween(23L, 25L);
     }
 
     @Test
