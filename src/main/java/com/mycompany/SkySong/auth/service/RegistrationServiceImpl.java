@@ -27,15 +27,8 @@ class RegistrationServiceImpl implements RegistrationService {
     @Transactional
     @Override
     public ApiResponse register(RegisterRequest registerRequest) throws DatabaseException {
-        validation.validateCredentials(registerRequest);
-        checker.checkForExistingCredentials(registerRequest);
-
-        Role role = roleManager.getRoleByName(UserRole.ROLE_USER);
-        User user = userFactory.createUser(registerRequest, role);
-
-        int userId = userDAO.save(user);
-        userDAO.assignRoleToUser(userId, role.getId());
-
+        validation.validateRequest(registerRequest);
+        creation.createUser(registerRequest);
         return new ApiResponse(messageService.getMessage("user.registration.success"));
     }
 }
