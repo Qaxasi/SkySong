@@ -34,4 +34,7 @@ public interface UserDAO {
 
     @SqlUpdate("DELETE FROM users WHERE id = :id")
     void delete(@BindBean User user);
+
+    @SqlUpdate("DELETE FROM user_roles WHERE user_id = :userId")
+    void deleteUserRoles(@Bind("userId") int userId);
 }
