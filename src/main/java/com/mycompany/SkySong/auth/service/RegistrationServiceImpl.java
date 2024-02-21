@@ -2,11 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.exception.DatabaseException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
-import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
-import com.mycompany.SkySong.auth.model.entity.User;
-import com.mycompany.SkySong.auth.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,23 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 class RegistrationServiceImpl implements RegistrationService {
-    private final UserDAO userDAO;
-    private final CredentialsValidationService validation;
-    private final ApplicationMessageService messageService;
-    private final RoleManager roleManager;
-    private final UserFactory userFactory;
-    private final CredentialsExistenceChecker checker;
 
-    public RegistrationServiceImpl(UserDAO userDAO, CredentialsValidationService validation,
+    private final RegistrationValidation validation;
+    private final ApplicationMessageService messageService;
+    private final UserCreation creation;
+
+    public RegistrationServiceImpl(RegistrationValidation validation,
                                    ApplicationMessageService messageService,
-                                   RoleManager roleManager, UserFactory userFactory,
-                                   CredentialsExistenceChecker checker) {
-        this.userDAO = userDAO;
+                                   UserCreation creation) {
+
         this.validation = validation;
         this.messageService = messageService;
-        this.roleManager = roleManager;
-        this.userFactory = userFactory;
-        this.checker = checker;
+        this.creation = creation;
     }
 
     @Transactional
