@@ -15,16 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 class RegistrationServiceImpl implements RegistrationService {
     private final UserDAO userDAO;
-    private final RegistrationValidationService validation;
+    private final CredentialsValidationService validation;
     private final ApplicationMessageService messageService;
     private final RoleManager roleManager;
     private final UserFactory userFactory;
-    private final CredentialExistenceChecker checker;
+    private final CredentialsExistenceChecker checker;
 
-    public RegistrationServiceImpl(UserDAO userDAO, RegistrationValidationService validation,
+    public RegistrationServiceImpl(UserDAO userDAO, CredentialsValidationService validation,
                                    ApplicationMessageService messageService,
                                    RoleManager roleManager, UserFactory userFactory,
-                                   CredentialExistenceChecker checker) {
+                                   CredentialsExistenceChecker checker) {
         this.userDAO = userDAO;
         this.validation = validation;
         this.messageService = messageService;
