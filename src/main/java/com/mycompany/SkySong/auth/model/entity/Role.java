@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Role {
 
-    private Long id;
+    private Integer id;
     private UserRole name;
 
     public Role(UserRole name) {
