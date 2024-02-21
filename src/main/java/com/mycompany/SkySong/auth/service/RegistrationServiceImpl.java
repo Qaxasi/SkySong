@@ -8,7 +8,6 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,11 +45,8 @@ class RegistrationServiceImpl implements RegistrationService {
 
         User user = userFactory.createUser(registerRequest, role);
 
-        try {
-            userDAO.save(user);
-        } catch (DataAccessException ex) {
-            throw new DatabaseException(messageService.getMessage("user.registration.error"));
-        }
+        userDAO.save(user);
+
         return new ApiResponse(messageService.getMessage("user.registration.success"));
     }
 }
