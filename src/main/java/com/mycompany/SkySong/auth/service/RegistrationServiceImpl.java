@@ -36,16 +36,14 @@ class RegistrationServiceImpl implements RegistrationService {
     @Transactional
     @Override
     public ApiResponse register(RegisterRequest registerRequest) throws DatabaseException {
-
         registrationValidator.validateCredentials(registerRequest);
-
         credentialExistenceChecker.checkForExistingCredentials(registerRequest);
 
         Role role = roleManager.getRoleByName(UserRole.ROLE_USER);
-
         User user = userFactory.createUser(registerRequest, role);
 
-        userDAO.save(user);
+        int userId = userDAO.save(user);
+        userDAO.assignRoleToUser(userId, role.getId());
 
         return new ApiResponse(messageService.getMessage("user.registration.success"));
     }
