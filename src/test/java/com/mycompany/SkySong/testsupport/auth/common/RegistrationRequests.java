@@ -53,4 +53,10 @@ public class RegistrationRequests {
     public static final RegisterRequest EMAIL_TO_LONG =
             new RegisterRequest("Sam", "qwertyuiopasdfghjklzxcvbn@mail.com", "Password#3");
 
+    public static final RegisterRequest UNIQUE_EMAIL =
+            new RegisterRequest("New", "unique@mail.com", "Password#3");
+
+    public static final RegisterRequest UNIQUE_USERNAME =
+            new RegisterRequest("Unique", "new@mail.com", "Password#3");
+
 }
