@@ -6,12 +6,12 @@ import com.mycompany.SkySong.auth.repository.UserDAO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmailExistStrategy implements RegistrationValidationStrategy {
+public class EmailExistenceValidationStrategy implements RegistrationValidationStrategy {
 
     private final ApplicationMessageService message;
     private final UserDAO userDAO;
 
-    public EmailExistStrategy(ApplicationMessageService message, UserDAO userDAO) {
+    public EmailExistenceValidationStrategy(ApplicationMessageService message, UserDAO userDAO) {
         this.message = message;
         this.userDAO = userDAO;
     }
