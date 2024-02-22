@@ -17,6 +17,7 @@ public class RegistrationValidationImpl implements RegistrationValidation {
 
     @Override
     public void validateRequest(RegisterRequest registerRequest) {
-
+        validation.validateCredentials(registerRequest);
+        checker.checkForExistingCredentials(registerRequest);
     }
 }
