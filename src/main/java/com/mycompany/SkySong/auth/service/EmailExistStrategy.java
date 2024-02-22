@@ -7,8 +7,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailExistStrategy implements RegistrationValidationStrategy {
+
+    private final ApplicationMessageService message;
+    private final UserDAO userDAO;
+
+    public EmailExistStrategy(ApplicationMessageService message, UserDAO userDAO) {
+        this.message = message;
+        this.userDAO = userDAO;
+    }
+
     @Override
     public void validate(RegisterRequest registerRequest) throws CredentialValidationException {
-        
+
     }
 }
