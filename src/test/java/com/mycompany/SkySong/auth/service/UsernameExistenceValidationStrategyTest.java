@@ -31,4 +31,10 @@ public class UsernameExistenceValidationStrategyTest extends BaseIT {
     void cleanUp() {
         cleaner.clean();
     }
+
+    @Test
+    void whenUsernameExist_ThrowException() {
+        assertThrows(CredentialValidationException.class,
+                () -> strategy.validate(RegistrationRequests.EXIST_USERNAME));
+    }
 }
