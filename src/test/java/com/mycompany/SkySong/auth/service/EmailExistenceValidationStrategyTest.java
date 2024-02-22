@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EmailExistenceValidationStrategyTest extends BaseIT {
@@ -36,5 +37,10 @@ public class EmailExistenceValidationStrategyTest extends BaseIT {
     void whenEmailExist_ThrowException() {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.EXIST_EMAIL));
+    }
+
+    @Test
+    void whenEmailNotExist_NotThrowException() {
+        assertDoesNotThrow(() -> strategy.validate(RegistrationRequests.UNIQUE_EMAIL));
     }
 }
