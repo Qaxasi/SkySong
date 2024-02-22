@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UsernameExistenceValidationStrategyTest extends BaseIT {
@@ -36,5 +37,10 @@ public class UsernameExistenceValidationStrategyTest extends BaseIT {
     void whenUsernameExist_ThrowException() {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(RegistrationRequests.EXIST_USERNAME));
+    }
+
+    @Test
+    void whenUsernameNotExist_NotThrowException() {
+        assertDoesNotThrow(() -> strategy.validate(RegistrationRequests.UNIQUE_USERNAME));
     }
 }
