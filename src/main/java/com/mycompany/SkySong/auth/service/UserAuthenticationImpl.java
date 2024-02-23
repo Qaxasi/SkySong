@@ -15,9 +15,14 @@ public class UserAuthenticationImpl implements UserAuthentication {
     public UserAuthenticationImpl(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
-    
+
     @Override
-    public Authentication authenticateUser(LoginRequest loginRequest) {
-        return null;
+    public Authentication authenticateUser(LoginRequest request) {
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.usernameOrEmail(), request.password()));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        return auth;
     }
 }
