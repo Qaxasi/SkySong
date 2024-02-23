@@ -46,7 +46,7 @@ public class UserAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenAuthenticationFailure_ThrowException() {
+    void whenAuthenticationFails_ThrowException() {
         assertThrows(BadCredentialsException.class,
                 () -> auth.authenticateUser(LoginRequests.INVALID_PASSWORD));
     }
@@ -58,7 +58,7 @@ public class UserAuthenticationTest extends BaseIT {
     }
 
     @Test
-    void whenAuthenticationFailure_SecurityContextNotSet() {
+    void whenAuthenticationFails_SecurityContextNotSet() {
         assertThrows(BadCredentialsException.class,
                 () -> auth.authenticateUser(LoginRequests.INVALID_PASSWORD));
         assertNull(SecurityContextHolder.getContext().getAuthentication());
