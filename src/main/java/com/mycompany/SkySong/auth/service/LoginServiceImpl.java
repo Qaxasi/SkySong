@@ -34,7 +34,6 @@ class LoginServiceImpl implements LoginService {
     public String login(LoginRequest loginRequest) {
         try {
             Authentication auth = authentication.authenticateUser(loginRequest);
-            SecurityContextHolder.getContext().setAuthentication(auth);
 
             User user = userDAO.findByUsername(auth.getName())
                     .orElseThrow(() -> new UsernameNotFoundException(
