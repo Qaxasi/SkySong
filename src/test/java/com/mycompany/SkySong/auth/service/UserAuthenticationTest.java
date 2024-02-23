@@ -34,25 +34,25 @@ public class UserAuthenticationTest extends BaseIT {
     }
     
     @Test
-    void whenValidCredentials_AuthenticationNotNull() {
+    void whenAuthenticationSuccess_AuthenticationNotNull() {
         Authentication result = auth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(result);
     }
 
     @Test
-    void whenValidCredentials_UserAuthenticated() {
+    void whenAuthenticationSuccess_UserAuthenticated() {
         Authentication result = auth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
         assertTrue(result.isAuthenticated());
     }
 
     @Test
-    void whenInvalidCredentials_AuthenticationFails() {
+    void whenAuthenticationFailure_ThrowException() {
         assertThrows(BadCredentialsException.class,
                 () -> auth.authenticateUser(LoginRequests.INVALID_PASSWORD));
     }
 
     @Test
-    void whenValidCredentials_SetSecurityContext() {
+    void whenAuthenticationSuccess_SetSecurityContext() {
        auth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
