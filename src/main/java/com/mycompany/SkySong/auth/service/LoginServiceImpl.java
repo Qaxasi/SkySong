@@ -18,11 +18,16 @@ class LoginServiceImpl implements LoginService {
     private final SessionCreation sessionCreation;
     private final ApplicationMessageService messageService;
     private final UserDAO userDAO;
+    private final UserAuthentication authentication;
 
-    public LoginServiceImpl(SessionCreation sessionCreation, ApplicationMessageService messageService, UserDAO userDAO) {
+    public LoginServiceImpl(SessionCreation sessionCreation,
+                            ApplicationMessageService messageService,
+                            UserDAO userDAO,
+                            UserAuthentication authentication) {
         this.sessionCreation = sessionCreation;
         this.messageService = messageService;
         this.userDAO = userDAO;
+        this.authentication = authentication;
     }
 
     @Override
