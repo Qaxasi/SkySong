@@ -15,22 +15,22 @@ class LoginServiceImpl implements LoginService {
     private final SessionCreation sessionCreation;
     private final ApplicationMessageService messageService;
     private final UserAuthentication userAuth;
-    private final UserRetrieval retrieval;
+    private final UserRetrieval userRetrieval;
 
     public LoginServiceImpl(SessionCreation sessionCreation,
                             ApplicationMessageService messageService,
-                            UserAuthentication userAuth, UserRetrieval retrieval) {
+                            UserAuthentication userAuth, UserRetrieval userRetrieval) {
         this.sessionCreation = sessionCreation;
         this.messageService = messageService;
         this.userAuth = userAuth;
-        this.retrieval = retrieval;
+        this.userRetrieval = userRetrieval;
     }
 
     @Override
     public String login(LoginRequest loginRequest) {
         try {
             Authentication auth = userAuth.authenticateUser(loginRequest);
-            User user = retrieval.findByAuthUsername(auth.getName());
+            User user = userRetrieval.findByAuthUsername(auth.getName());
             return sessionCreation.createSession(user.getId());
         } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
