@@ -77,7 +77,7 @@ public class DeleteUserControllerTest extends BaseIT {
     }
 
     @Test
-    void whenUserIsAdmin_DeleteUser() throws Exception {
+    void whenUserIsAdmin_SuccessDeletionReturnStatusOk() throws Exception {
         Integer userId = idFetcher.fetchByUsername("Mark");
 
         Cookie sessionId = auth.loginAdminUser();
