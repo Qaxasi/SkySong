@@ -3,11 +3,9 @@ package com.mycompany.SkySong.auth.service;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.security.SessionCreation;
 import com.mycompany.SkySong.auth.model.entity.User;
-import com.mycompany.SkySong.auth.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -17,13 +15,15 @@ class LoginServiceImpl implements LoginService {
     private final SessionCreation sessionCreation;
     private final ApplicationMessageService messageService;
     private final UserAuthentication authentication;
+    private final UserRetrieval retrieval;
 
     public LoginServiceImpl(SessionCreation sessionCreation,
                             ApplicationMessageService messageService,
-                            UserAuthentication authentication) {
+                            UserAuthentication authentication, UserRetrieval retrieval) {
         this.sessionCreation = sessionCreation;
         this.messageService = messageService;
         this.authentication = authentication;
+        this.retrieval = retrieval;
     }
 
     @Override
