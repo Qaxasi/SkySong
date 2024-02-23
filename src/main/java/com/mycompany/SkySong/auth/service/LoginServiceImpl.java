@@ -30,11 +30,7 @@ class LoginServiceImpl implements LoginService {
     public String login(LoginRequest loginRequest) {
         try {
             Authentication auth = authentication.authenticateUser(loginRequest);
-
-            User user = userDAO.findByUsername(auth.getName())
-                    .orElseThrow(() -> new UsernameNotFoundException(
-                            "User not found with username: " + auth.getName()));
-
+            User user = retrieval.findUserByAuthentication(auth);
             return sessionCreation.createSession(user.getId());
         } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
