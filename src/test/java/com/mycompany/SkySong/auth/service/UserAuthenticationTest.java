@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,5 +49,11 @@ public class UserAuthenticationTest extends BaseIT {
     void whenInvalidCredentials_AuthenticationFails() {
         assertThrows(BadCredentialsException.class,
                 () -> auth.authenticateUser(LoginRequests.INVALID_PASSWORD));
+    }
+
+    @Test
+    void whenValidCredentials_SetSecurityContext() {
+       auth.authenticateUser(LoginRequests.VALID_CREDENTIALS);
+       assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
