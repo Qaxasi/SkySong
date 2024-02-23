@@ -7,7 +7,6 @@ import com.mycompany.SkySong.auth.repository.UserDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +16,13 @@ class LoginServiceImpl implements LoginService {
 
     private final SessionCreation sessionCreation;
     private final ApplicationMessageService messageService;
-    private final UserDAO userDAO;
     private final UserAuthentication authentication;
 
     public LoginServiceImpl(SessionCreation sessionCreation,
                             ApplicationMessageService messageService,
-                            UserDAO userDAO,
                             UserAuthentication authentication) {
         this.sessionCreation = sessionCreation;
         this.messageService = messageService;
-        this.userDAO = userDAO;
         this.authentication = authentication;
     }
 
