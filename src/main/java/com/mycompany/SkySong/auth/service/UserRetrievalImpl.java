@@ -15,7 +15,7 @@ public class UserRetrievalImpl implements UserRetrieval {
     }
 
     @Override
-    public User findUserByAuthentication(String username) {
+    public User findByAuthUsername(String username) {
         return userDAO.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "User not found with username: " + username));

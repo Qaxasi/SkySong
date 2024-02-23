@@ -30,7 +30,7 @@ class LoginServiceImpl implements LoginService {
     public String login(LoginRequest loginRequest) {
         try {
             Authentication auth = userAuth.authenticateUser(loginRequest);
-            User user = retrieval.findUserByAuthentication(auth.getName());
+            User user = retrieval.findByAuthUsername(auth.getName());
             return sessionCreation.createSession(user.getId());
         } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
