@@ -9,6 +9,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserAuthenticationImpl implements UserAuthentication {
+
+    private final AuthenticationManager authenticationManager;
+
+    public UserAuthenticationImpl(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+    
     @Override
     public Authentication authenticateUser(LoginRequest loginRequest) {
         return null;
