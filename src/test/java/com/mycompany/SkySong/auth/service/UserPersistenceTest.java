@@ -17,4 +17,14 @@ public class UserPersistenceTest extends BaseIT {
     @Autowired
     private SqlDatabaseCleaner cleaner;
 
+    @BeforeEach
+    void setUp() throws Exception {
+        initializer.setup("data_sql/test-setup.sql");
+    }
+
+    @AfterEach
+    void cleanUp() {
+        cleaner.clean();
+    }
+
 }
