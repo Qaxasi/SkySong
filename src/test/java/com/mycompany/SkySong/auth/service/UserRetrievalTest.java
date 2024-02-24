@@ -8,8 +8,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 public class UserRetrievalTest extends BaseIT {
 
@@ -42,5 +44,10 @@ public class UserRetrievalTest extends BaseIT {
     void whenUserRetrieved_UsernameMatches() {
         User user = retrieval.findByAuthUsername("Mark");
         assertThat(user.getUsername()).isEqualTo("Mark");
+    }
+
+    @Test
+    void whenUserNotExist_ThrowException() {
+        assertThrows(UsernameNotFoundException.class, () -> retrieval.findByAuthUsername("Emil"));
     }
 }
