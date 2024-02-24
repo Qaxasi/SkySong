@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
@@ -11,6 +12,8 @@ public class UserPersistenceTest extends BaseIT {
 
     @Autowired
     private UserPersistence userPersistence;
+    @Autowired
+    private UserExistenceChecker userChecker;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
