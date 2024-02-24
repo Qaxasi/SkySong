@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserCreationImpl implements UserCreation {
+public class UserRegistrationManagerImpl implements UserRegistrationManager {
 
     private final UserDAO userDAO;
     private final RoleManager roleManager;
     private final UserFactory userFactory;
 
-    public UserCreationImpl(UserDAO userDAO, RoleManager roleManager, UserFactory userFactory) {
+    public UserRegistrationManagerImpl(UserDAO userDAO, RoleManager roleManager, UserFactory userFactory) {
         this.userDAO = userDAO;
         this.roleManager = roleManager;
         this.userFactory = userFactory;
