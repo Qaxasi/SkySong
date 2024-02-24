@@ -14,4 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserWithRoleSetupTest extends BaseIT {
+
+    @Autowired
+    private UserWithRoleSetup userSetup;
+
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
 }
