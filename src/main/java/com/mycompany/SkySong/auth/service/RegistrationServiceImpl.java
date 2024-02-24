@@ -12,22 +12,22 @@ class RegistrationServiceImpl implements RegistrationService {
 
     private final RegistrationValidation validation;
     private final ApplicationMessageService messageService;
-    private final UserCreation creation;
+    private final UserCreation userCreation;
 
     public RegistrationServiceImpl(RegistrationValidation validation,
                                    ApplicationMessageService messageService,
-                                   UserCreation creation) {
+                                   UserCreation userCreation) {
 
         this.validation = validation;
         this.messageService = messageService;
-        this.creation = creation;
+        this.userCreation = userCreation;
     }
 
     @Transactional
     @Override
     public ApiResponse register(RegisterRequest registerRequest) {
         validation.validateRequest(registerRequest);
-        creation.createUser(registerRequest);
+        userCreation.createUser(registerRequest);
         return new ApiResponse(messageService.getMessage("user.registration.success"));
     }
 }
