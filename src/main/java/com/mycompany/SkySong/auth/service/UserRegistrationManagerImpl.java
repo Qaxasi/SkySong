@@ -11,11 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserRegistrationManagerImpl implements UserRegistrationManager {
 
-    private final RoleAssignment roleAssignment;
     private final UserDAO userDAO;
 
-    public UserRegistrationManagerImpl(RoleAssignment roleAssignment, UserDAO userDAO) {
-        this.roleAssignment = roleAssignment;
+    public UserRegistrationManagerImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
 
     }
