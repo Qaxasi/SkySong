@@ -37,4 +37,10 @@ public class UserRetrievalTest extends BaseIT {
         User user = retrieval.findByAuthUsername("Mark");
         assertThat(user).isNotNull();
     }
+
+    @Test
+    void whenUserRetrieved_UsernameMatches() {
+        User user = retrieval.findByAuthUsername("Mark");
+        assertThat(user.getUsername()).isEqualTo("Mark");
+    }
 }
