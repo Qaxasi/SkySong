@@ -32,4 +32,10 @@ public class UserWithRoleSetupTest extends BaseIT {
     void cleanUp() {
         cleaner.clean();
     }
+
+    @Test
+    void whenSetupUser_UserHasExpectedRole() {
+        User user = userSetup.setupUserWithRole(RegistrationRequests.REGISTER("Kimi"));
+        assertThat(user.getRoles().iterator().next().getName()).isEqualTo(UserRole.ROLE_USER);
+    }
 }
