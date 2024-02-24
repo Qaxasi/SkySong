@@ -12,13 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserRegistrationManagerImpl implements UserRegistrationManager {
 
     private final UserDAO userDAO;
-    private final RoleManager roleManager;
-    private final UserFactory userFactory;
 
-    public UserRegistrationManagerImpl(UserDAO userDAO, RoleManager roleManager, UserFactory userFactory) {
+    public UserRegistrationManagerImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
-        this.roleManager = roleManager;
-        this.userFactory = userFactory;
+
     }
 
     @Transactional
