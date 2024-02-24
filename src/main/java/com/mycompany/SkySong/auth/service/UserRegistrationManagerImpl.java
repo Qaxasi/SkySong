@@ -9,6 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserRegistrationManagerImpl implements UserRegistrationManager {
 
+    private final UserPersistence userPersistence;
+    private final UserWithRoleSetup userSetup;
+
+    public UserRegistrationManagerImpl(UserPersistence userPersistence, UserWithRoleSetup userSetup) {
+        this.userPersistence = userPersistence;
+        this.userSetup = userSetup;
+    }
+
     @Transactional
     @Override
     public void setupNewUser(RegisterRequest registerRequest) {
