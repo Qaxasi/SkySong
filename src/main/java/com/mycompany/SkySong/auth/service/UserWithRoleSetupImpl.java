@@ -1,7 +1,9 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
+import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.User;
+import com.mycompany.SkySong.auth.model.entity.UserRole;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +19,7 @@ public class UserWithRoleSetupImpl implements UserWithRoleSetup {
 
     @Override
     public User setupUserWithRole(RegisterRequest request) {
-        return null;
+        Role role = roleManager.getRoleByName(UserRole.ROLE_USER);
+        return userFactory.createUser(request, role);
     }
 }
