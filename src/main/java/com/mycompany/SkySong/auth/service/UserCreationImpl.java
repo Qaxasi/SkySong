@@ -23,7 +23,7 @@ public class UserCreationImpl implements UserCreation {
 
     @Transactional
     @Override
-    public void createUser(RegisterRequest registerRequest) {
+    public void setupNewUser(RegisterRequest registerRequest) {
         Role role = roleManager.getRoleByName(UserRole.ROLE_USER);
         User user = userFactory.createUser(registerRequest, role);
 
