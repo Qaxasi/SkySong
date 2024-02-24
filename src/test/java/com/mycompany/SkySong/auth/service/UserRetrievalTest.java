@@ -22,7 +22,7 @@ public class UserRetrievalTest extends BaseIT {
     private SqlDatabaseCleaner cleaner;
 
     @Autowired
-    private UserRetrieval retrieval;
+    private UserRetrieval userRetrieval;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -36,18 +36,18 @@ public class UserRetrievalTest extends BaseIT {
 
     @Test
     void whenUserExist_ReturnUser() {
-        User user = retrieval.findByAuthUsername("Mark");
+        User user = userRetrieval.findByAuthUsername("Mark");
         assertThat(user).isNotNull();
     }
 
     @Test
     void whenUserRetrieved_UsernameMatches() {
-        User user = retrieval.findByAuthUsername("Mark");
+        User user = userRetrieval.findByAuthUsername("Mark");
         assertThat(user.getUsername()).isEqualTo("Mark");
     }
 
     @Test
     void whenUserNotExist_ThrowException() {
-        assertThrows(UsernameNotFoundException.class, () -> retrieval.findByAuthUsername("Emil"));
+        assertThrows(UsernameNotFoundException.class, () -> userRetrieval.findByAuthUsername("Emil"));
     }
 }
