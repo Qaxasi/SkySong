@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.entity.User;
-import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.service.UserCreator;
 import com.mycompany.SkySong.testsupport.auth.service.UserRoleChecker;
@@ -39,5 +38,12 @@ public class UserPersistenceTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenSaveUser_UserExist() {
+        User user = userCreator.createUser("Maks");
+        userPersistence.saveUser(user);
+        assertThat(userChecker.userExist("Maks")).isTrue();
     }
 }
