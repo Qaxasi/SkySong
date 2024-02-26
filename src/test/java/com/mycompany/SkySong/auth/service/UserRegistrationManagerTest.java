@@ -5,6 +5,7 @@ import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
+import com.mycompany.SkySong.testsupport.auth.service.UserRoleChecker;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
@@ -22,6 +23,8 @@ public class UserRegistrationManagerTest extends BaseIT {
     private UserRegistrationManager registrationManager;
     @Autowired
     private UserExistenceChecker userChecker;
+    @Autowired
+    private UserRoleChecker roleChecker;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
