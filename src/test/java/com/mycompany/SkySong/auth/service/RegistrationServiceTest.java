@@ -2,8 +2,6 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
-import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
-import com.mycompany.SkySong.testsupport.auth.service.UserRoleChecker;
 import com.mycompany.SkySong.auth.exception.CredentialValidationException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
@@ -23,10 +21,6 @@ public class RegistrationServiceTest extends BaseIT {
     private RegistrationService registration;
     @Autowired
     private LoginService login;
-    @Autowired
-    private UserRoleChecker roleChecker;
-    @Autowired
-    private UserExistenceChecker userChecker;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
