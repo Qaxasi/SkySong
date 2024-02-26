@@ -35,4 +35,10 @@ public class UserRegistrationManagerTest extends BaseIT {
     void cleanUp() {
         cleaner.clean();
     }
+
+    @Test
+    void whenUserRegistered_UserExist() {
+        registrationManager.setupNewUser(RegistrationRequests.REGISTER("Maks"));
+        assertThat(userChecker.userExist("Maks")).isTrue();
+    }
 }
