@@ -25,9 +25,9 @@ class RegistrationServiceImpl implements RegistrationService {
 
     @Transactional
     @Override
-    public ApiResponse register(RegisterRequest registerRequest) {
-        validation.validateRequest(registerRequest);
-        registrationManager.setupNewUser(registerRequest);
+    public ApiResponse register(RegisterRequest request) {
+        validation.validateRequest(request);
+        registrationManager.setupNewUser(request);
         return new ApiResponse(messageService.getMessage("user.registration.success"));
     }
 }

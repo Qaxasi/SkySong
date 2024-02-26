@@ -15,9 +15,9 @@ class RegistrationValidationImpl implements RegistrationValidation {
     }
 
     @Override
-    public void validateRequest(RegisterRequest registerRequest) {
+    public void validateRequest(RegisterRequest request) {
         for (RegistrationValidationStrategy strategy : strategies) {
-            strategy.validate(registerRequest);
+            strategy.validate(request);
         }
     }
 }

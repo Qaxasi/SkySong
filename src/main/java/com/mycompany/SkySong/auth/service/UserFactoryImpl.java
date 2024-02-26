@@ -17,11 +17,11 @@ class UserFactoryImpl implements UserFactory {
     }
 
     @Override
-    public User createUser(RegisterRequest registerRequest, Role role) {
+    public User createUser(RegisterRequest request, Role role) {
         User user = new User();
-        user.setUsername(registerRequest.username());
-        user.setEmail(registerRequest.email());
-        user.setPassword(passwordService.encodePassword(registerRequest.password()));
+        user.setUsername(request.username());
+        user.setEmail(request.email());
+        user.setPassword(passwordService.encodePassword(request.password()));
         user.setRoles(Collections.singleton(role));
         return user;
     }

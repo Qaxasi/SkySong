@@ -17,8 +17,8 @@ public class UsernameValidationStrategy implements RegistrationValidationStrateg
     }
 
     @Override
-    public void validate(RegisterRequest registerRequest) throws CredentialValidationException {
-        if (!registerRequest.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
+    public void validate(RegisterRequest request) throws CredentialValidationException {
+        if (!request.username().matches(ValidationPatterns.USERNAME_PATTERN)) {
             throw new CredentialValidationException(message.getMessage("validation.username.error"));
         }
     }

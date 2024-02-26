@@ -19,8 +19,8 @@ public class EmailExistenceValidationStrategy implements RegistrationValidationS
     }
 
     @Override
-    public void validate(RegisterRequest registerRequest) {
-        if (userDAO.existsByEmail(registerRequest.email()) > 0) {
+    public void validate(RegisterRequest request) {
+        if (userDAO.existsByEmail(request.email()) > 0) {
             throw new CredentialValidationException(message.getMessage("email.exist"));
         }
     }

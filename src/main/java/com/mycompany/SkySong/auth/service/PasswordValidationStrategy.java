@@ -17,8 +17,8 @@ public class PasswordValidationStrategy implements RegistrationValidationStrateg
     }
 
     @Override
-    public void validate(RegisterRequest registerRequest) throws CredentialValidationException {
-        if (!registerRequest.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
+    public void validate(RegisterRequest request) throws CredentialValidationException {
+        if (!request.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
             throw new CredentialValidationException(message.getMessage("validation.password.error"));
         }
     }

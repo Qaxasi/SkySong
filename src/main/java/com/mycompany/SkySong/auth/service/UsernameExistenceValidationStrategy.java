@@ -19,8 +19,8 @@ public class UsernameExistenceValidationStrategy implements RegistrationValidati
     }
 
     @Override
-    public void validate(RegisterRequest registerRequest) {
-        if (userDAO.existsByUsername(registerRequest.username()) > 0) {
+    public void validate(RegisterRequest request) {
+        if (userDAO.existsByUsername(request.username()) > 0) {
             throw new CredentialValidationException(message.getMessage("username.exist"));
         }
     }

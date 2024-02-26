@@ -27,13 +27,13 @@ class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
+    public String login(LoginRequest request) {
         try {
-            Authentication auth = userAuth.authenticateUser(loginRequest);
+            Authentication auth = userAuth.authenticateUser(request);
             User user = userRetrieval.findByAuthUsername(auth.getName());
             return sessionCreation.createSession(user.getId());
         } catch (BadCredentialsException e) {
-            log.error("Error during login for user: {}", loginRequest.usernameOrEmail(), e);
+            log.error("Error during login for user: {}", request.usernameOrEmail(), e);
             throw new BadCredentialsException(messageService.getMessage("login.failure"));
         }
     }
