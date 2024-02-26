@@ -14,11 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class UserFactoryTest {
+
     @Autowired
     private UserFactory userFactory;
 
     @Test
-    void shouldCreateUserWithGivenDetails() {
+    void whenUserCreated_AttributesMatch() {
         RegisterRequest registerRequest = new RegisterRequest("User", "mail@mail.com", "Pass#3");
         Role role = new Role(UserRole.ROLE_USER);
 
