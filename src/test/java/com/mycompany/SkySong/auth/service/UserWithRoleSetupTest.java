@@ -35,7 +35,7 @@ public class UserWithRoleSetupTest extends BaseIT {
 
     @Test
     void whenSetupUser_UserHasExpectedRole() {
-        User user = userSetup.setupUserWithRole(RegistrationRequests.REGISTER("Kimi"));
+        User user = userSetup.setupUserWithRole(RegistrationRequests.VALID_CREDENTIALS);
         assertThat(user.getRoles().iterator().next().getName()).isEqualTo(UserRole.ROLE_USER);
     }
 }
