@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.auth.security;
 
+import com.mycompany.SkySong.auth.model.entity.Session;
+
 public interface SessionCreation {
-    String createSession(Integer userID);
+    Session createSession(Integer userID);
 }
