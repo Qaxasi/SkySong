@@ -20,7 +20,4 @@ public interface SessionDAO {
 
     @SqlUpdate("DELETE FROM sessions WHERE session_id = :sessionId")
     void deleteById(@Bind("sessionId") String sessionId);
-
-    @SqlUpdate("INSERT INTO user_sessions (user_id, session_id) VALUES (:userId, :sessionId)")
-    void assignSessionToUser(@Bind("userId") int userId, @Bind("sessionId") String sessionId);
 }
