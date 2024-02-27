@@ -23,11 +23,16 @@ public class UserAuthenticationImpl implements UserAuthentication {
 
     @Override
     public Authentication authenticateUser(LoginRequest request) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.usernameOrEmail(), request.password()));
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.usernameOrEmail(), request.password()));
+            SecurityContextHolder.getContext().setAuthentication(auth);
 
-        return auth;
+            return auth;
+        } catch (BadCredentialsException e) {
+            log.error("Error during login for user: {}", request.usernameOrEmail(), e);
+            throw new BadCredentialsException(message.getMessage("login.failure"));
+        }
     }
 }
