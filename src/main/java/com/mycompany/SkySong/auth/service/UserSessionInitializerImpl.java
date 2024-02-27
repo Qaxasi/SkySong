@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 public class UserSessionInitializerImpl implements UserSessionInitializer {
 
     private final SessionCreation sessionCreation;
-    private final UserAuthProcessorImpl authManager;
+    private final UserAuthProcessor authManager;
 
-    public UserSessionInitializerImpl(SessionCreation sessionCreation, UserAuthProcessorImpl authManager) {
+    public UserSessionInitializerImpl(SessionCreation sessionCreation, UserAuthProcessor authManager) {
         this.sessionCreation = sessionCreation;
         this.authManager = authManager;
     }
