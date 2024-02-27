@@ -1,11 +1,11 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.testsupport.auth.service.UserLoginHelper;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.exception.CredentialValidationException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,8 @@ public class RegistrationServiceTest extends BaseIT {
 
     @Autowired
     private RegistrationService registration;
-    
+    @Autowired
+    private UserLoginHelper login;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
