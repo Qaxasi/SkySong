@@ -5,11 +5,11 @@ import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserLoginTestHelper {
+public class UserLoginHelper {
 
     private final LoginService login;
 
-    public UserLoginTestHelper(LoginService login) {
+    public UserLoginHelper(LoginService login) {
         this.login = login;
     }
 
