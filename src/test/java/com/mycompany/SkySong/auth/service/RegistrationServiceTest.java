@@ -38,15 +38,15 @@ public class RegistrationServiceTest extends BaseIT {
     }
 
     @Test
-    void whenRegistrationSuccess_AllowLoginForRegisterUser() {
-        registration.register(RegistrationRequests.VALID_CREDENTIALS);
-        assertNotNull(login.login(LoginRequests.LOGIN_REGISTERED_USER));
-    }
-
-    @Test
     void whenRegistrationSuccess_ReturnMessage () {
         ApiResponse response = registration.register(RegistrationRequests.VALID_CREDENTIALS);
         assertEquals("User registered successfully." , response.message());
+    }
+
+    @Test
+    void whenRegistrationSuccess_AllowLoginForRegisterUser() {
+        registration.register(RegistrationRequests.VALID_CREDENTIALS);
+        assertNotNull(login.login(LoginRequests.LOGIN_REGISTERED_USER));
     }
 
     @Test
