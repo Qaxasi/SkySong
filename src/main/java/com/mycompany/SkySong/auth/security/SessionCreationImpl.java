@@ -7,8 +7,8 @@ import java.util.Date;
 
 @Service
 public class SessionCreationImpl implements SessionCreation {
-    private final TokenGenerator tokenGenerator;
 
+    private final TokenGenerator tokenGenerator;
     private final TokenHasher tokenHasher;
 
     public SessionCreationImpl(TokenGenerator tokenGenerator, TokenHasher tokenHasher) {
