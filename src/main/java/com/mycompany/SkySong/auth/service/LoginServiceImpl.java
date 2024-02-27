@@ -17,6 +17,6 @@ class LoginServiceImpl implements LoginService {
 
     @Override
     public String login(LoginRequest request) {
-        return sessionManager.sessionManager(request);
+        return sessionManager.initializeAndSaveSession(request);
     }
 }
