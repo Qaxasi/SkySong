@@ -15,6 +15,6 @@ public class SessionPersistenceImpl implements SessionPersistence {
 
     @Override
     public void saveSession(Session session) {
-
+        sessionDAO.save(session);
     }
 }
