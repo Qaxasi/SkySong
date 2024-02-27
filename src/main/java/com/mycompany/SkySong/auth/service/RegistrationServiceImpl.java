@@ -4,7 +4,6 @@ import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -23,7 +22,6 @@ class RegistrationServiceImpl implements RegistrationService {
         this.registrationManager = userRegistrationManager;
     }
 
-    @Transactional
     @Override
     public ApiResponse register(RegisterRequest request) {
         validation.validateRequest(request);
