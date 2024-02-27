@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.entity.Session;
+import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.security.SessionCreation;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class UserSessionInitializerImpl implements UserSessionInitializer {
 
     @Override
     public Session initializeSession(LoginRequest request) {
-        return null;
+        User user = authManager.authenticateAndRetrieveUser(request);
+        return sessionCreation.createSession(user.getId());
     }
 }
