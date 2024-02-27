@@ -1,12 +1,13 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
+import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.auth.security.SessionPersistence;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LoginSessionManagerImpl implements LoginSessionManager {
-    
+
     private final SessionPersistence sessionPersistence;
     private final UserSessionInitializer sessionInit;
 
@@ -17,6 +18,8 @@ public class LoginSessionManagerImpl implements LoginSessionManager {
 
     @Override
     public String initializeAndSaveSession(LoginRequest request) {
-        return null;
+        Session session = sessionInit.initializeSession(request);
+        sessionPersistence.saveSession(session);
+        return session.getSessionId();
     }
 }
