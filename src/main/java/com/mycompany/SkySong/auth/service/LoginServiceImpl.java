@@ -9,13 +9,9 @@ import org.springframework.stereotype.Service;
 class LoginServiceImpl implements LoginService {
 
     private final LoginSessionManager sessionManager;
-    private final ApplicationMessageService messageService;
 
-
-    public LoginServiceImpl(ApplicationMessageService messageService,
-                            LoginSessionManager sessionManager) {
+    public LoginServiceImpl(LoginSessionManager sessionManager) {
         this.sessionManager = sessionManager;
-        this.messageService = messageService;
 
     }
 
