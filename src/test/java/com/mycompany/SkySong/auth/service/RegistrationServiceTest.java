@@ -44,9 +44,9 @@ public class RegistrationServiceTest extends BaseIT {
     }
 
     @Test
-    void whenRegistrationSuccess_AllowLoginForRegisterUser() {
+    void whenRegistrationSuccess_AllowLoginForRegisteredUser() {
         registration.register(RegistrationRequests.VALID_CREDENTIALS);
-        assertNotNull(login.login(LoginRequests.LOGIN_REGISTERED_USER));
+        assertNotNull(login.loginRegisteredUser());
     }
 
     @Test
