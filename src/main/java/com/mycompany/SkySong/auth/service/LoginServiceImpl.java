@@ -4,7 +4,7 @@ import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import org.springframework.stereotype.Service;
 
 @Service
-class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl implements LoginService {
 
     private final LoginSessionManager sessionManager;
 
