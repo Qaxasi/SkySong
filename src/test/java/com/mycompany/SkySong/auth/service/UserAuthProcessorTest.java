@@ -37,4 +37,10 @@ public class UserAuthProcessorTest extends BaseIT {
         User user = authProcessor.fetchUserByAuthentication(LoginRequests.LOGIN("User"));
         assertThat(user).isNotNull();
     }
+
+    @Test
+    void whenFetchUser_UsernameIsCorrect() {
+        User user = authProcessor.fetchUserByAuthentication(LoginRequests.LOGIN("User"));
+        assertThat(user.getUsername()).isEqualTo("User");
+    }
 }
