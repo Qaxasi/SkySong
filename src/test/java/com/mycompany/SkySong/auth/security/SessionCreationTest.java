@@ -34,4 +34,11 @@ public class SessionCreationTest {
         long hoursUntilExpiration = Duration.between(now, expirationTime).toHours();
         assertThat(hoursUntilExpiration).isBetween(23L, 25L);
     }
+
+    @Test
+    void whenCreatingSession_SetCorrectUserId() {
+        int userId = 10;
+        Session session = sessionCreation.createSession(userId);
+        assertThat(session.getUserId()).isEqualTo(10);
+    }
 }
