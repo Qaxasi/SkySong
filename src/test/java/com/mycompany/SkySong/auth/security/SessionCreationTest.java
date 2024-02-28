@@ -20,17 +20,6 @@ public class SessionCreationTest extends BaseIT {
 
     @Autowired
     private SessionCreation sessionCreation;
-    @Autowired
-    private SessionExistenceChecker checker;
-    @Autowired
-    private SessionFetcher sessionFetcher;
-    @Autowired
-    private TokenHasher tokenHasher;
-
-    @Autowired
-    private SqlDatabaseInitializer initializer;
-    @Autowired
-    private SqlDatabaseCleaner cleaner;
 
     @BeforeEach
     void setUp() throws Exception {
