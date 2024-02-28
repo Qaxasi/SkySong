@@ -24,6 +24,13 @@ public class SessionCreationTest {
     private TokenHasher tokenHasher;
     private SessionCreation sessionCreation;
 
+    @BeforeEach
+    void setUp() {
+        tokenGenerator = new TokenGeneratorImpl();
+        tokenHasher = new TokenHasherImpl();
+        sessionCreation = new SessionCreationImpl(tokenGenerator, tokenHasher);
+    }
+
     @Test
     void whenCreatingSession_SetsCorrectExpirationTime() {
         Instant now = Instant.now();
