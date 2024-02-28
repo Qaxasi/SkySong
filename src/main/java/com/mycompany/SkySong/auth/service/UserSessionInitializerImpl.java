@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 public class UserSessionInitializerImpl implements UserSessionInitializer {
 
     private final SessionCreation sessionCreation;
-    private final UserAuthProcessor authManager;
+    private final UserAuthProcessor authProcessor;
 
-    public UserSessionInitializerImpl(SessionCreation sessionCreation, UserAuthProcessor authManager) {
+    public UserSessionInitializerImpl(SessionCreation sessionCreation, UserAuthProcessor authProcessor) {
         this.sessionCreation = sessionCreation;
-        this.authManager = authManager;
+        this.authProcessor = authProcessor;
     }
 
     @Override
     public Session initializeSession(LoginRequest request) {
-        User user = authManager.fetchUserByAuthentication(request);
+        User user = authProcessor.fetchUserByAuthentication(request);
         return sessionCreation.createSession(user.getId());
     }
 }
