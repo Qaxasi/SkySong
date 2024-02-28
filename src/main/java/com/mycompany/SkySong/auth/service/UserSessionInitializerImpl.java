@@ -19,7 +19,7 @@ public class UserSessionInitializerImpl implements UserSessionInitializer {
 
     @Override
     public Session initializeSession(LoginRequest request) {
-        User user = authManager.authenticateAndRetrieveUser(request);
+        User user = authManager.fetchUserByAuthentication(request);
         return sessionCreation.createSession(user.getId());
     }
 }

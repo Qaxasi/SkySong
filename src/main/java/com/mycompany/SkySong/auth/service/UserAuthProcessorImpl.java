@@ -17,7 +17,7 @@ public class UserAuthProcessorImpl implements UserAuthProcessor {
     }
 
     @Override
-    public User authenticateAndRetrieveUser(LoginRequest request) {
+    public User fetchUserByAuthentication(LoginRequest request) {
         Authentication auth = userAuth.authenticateUser(request);
         return userRetrieval.findByAuthUsername(auth.getName());
     }
