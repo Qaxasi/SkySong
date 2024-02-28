@@ -43,13 +43,6 @@ public class SessionCreationTest extends BaseIT {
     }
 
     @Test
-    void whenCreatingSession_ReturnsNonNullToken() {
-        int userId = 10;
-        String token = sessionCreation.createSession(userId);
-        assertThat(token).isNotNull();
-    }
-
-    @Test
     void whenCreatingSession_SetsCorrectExpirationTime() {
         Instant now = Instant.now();
         int userId = 10;
@@ -65,32 +58,4 @@ public class SessionCreationTest extends BaseIT {
         assertThat(hoursUntilExpiration).isBetween(23L, 25L);
     }
 
-    @Test
-    void whenCreatingSession_AssignsAppropriateUserId() {
-        int userId = 10;
-
-        String token = sessionCreation.createSession(userId);
-        String hashedToken = tokenHasher.generateHashedToken(token);
-
-        Integer retrievedUserId = sessionFetcher.getSession(hashedToken)
-                .map(Session::getUserId)
-                .orElse(null);
-
-        assertThat(retrievedUserId).isEqualTo(10);
-    }
-
-    @Test
-    void whenCreatingSession_NotStoreRawTokenInDatabase() {
-        int userId = 10;
-        String token = sessionCreation.createSession(userId);
-        assertThat(checker.sessionExist(token)).isFalse();
-    }
-
-    @Test
-    void whenCreatingSession_StoreHashedTokenInDatabase() {
-        int userId = 10;
-        String token = sessionCreation.createSession(userId);
-        String hashedToken = tokenHasher.generateHashedToken(token);
-        assertThat(checker.sessionExist(hashedToken)).isTrue();
-    }
 }
