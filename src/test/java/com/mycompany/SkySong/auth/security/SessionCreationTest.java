@@ -16,7 +16,7 @@ import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SessionCreationTest extends BaseIT {
+public class SessionCreationTest {
 
     @Autowired
     private SessionCreation sessionCreation;
