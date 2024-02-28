@@ -21,16 +21,6 @@ public class SessionCreationTest extends BaseIT {
     @Autowired
     private SessionCreation sessionCreation;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        initializer.setup("data_sql/test-setup.sql");
-    }
-
-    @AfterEach
-    void cleanUp() {
-        cleaner.clean();
-    }
-
     @Test
     void whenCreatingSession_SetsCorrectExpirationTime() {
         Instant now = Instant.now();
