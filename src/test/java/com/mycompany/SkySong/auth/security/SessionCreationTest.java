@@ -20,6 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionCreationTest {
 
+    private TokenGenerator tokenGenerator;
+    private TokenHasher tokenHasher;
+    private SessionCreation sessionCreation;
+
     @Test
     void whenCreatingSession_SetsCorrectExpirationTime() {
         Instant now = Instant.now();
