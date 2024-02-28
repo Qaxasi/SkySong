@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class UserAuthenticationTest extends BaseIT {
+
     @Autowired
     private UserAuthentication auth;
+
     @Autowired
     private SqlDatabaseInitializer initializer;
     @Autowired
