@@ -20,4 +20,8 @@ public class LoginRequests {
 
     public static final String MALFORMED_JSON =
             "{\"usernameOrEmail\": \"mail@mail.com\",\"password\": \"Password#3\"";
+
+    public static LoginRequest LOGIN(String username) {
+        return new LoginRequest(username, "Password#3");
+    }
 }
