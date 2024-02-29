@@ -3,7 +3,7 @@ package com.mycompany.SkySong.testsupport.auth.service;
 import com.mycompany.SkySong.auth.model.entity.Session;
 import java.util.Date;
 
-public class SessionCreator {
+public class TestSessionCreator {
 
     public Session createSession() {
         Session session = new Session();
