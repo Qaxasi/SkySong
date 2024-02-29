@@ -8,4 +8,14 @@ import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class SessionPersistenceTest extends BaseIT {
+
+    @Autowired
+    private SessionPersistence sessionPersistence;
+    @Autowired
+    private SessionExistenceChecker sessionChecker;
+
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
 }
