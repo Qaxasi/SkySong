@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class SessionPersistenceTest extends BaseIT {
 
     @Autowired
@@ -34,5 +36,12 @@ public class SessionPersistenceTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenSaveSession_SessionExist() {
+        Session session = sessionCreation.createSession();
+        sessionPersistence.saveSession(session);
+        assertThat(sessionChecker.sessionExist("xAUpqIbS2L9_ULU39L7Z007RJufNgFizawVK68qTyrw=")).isTrue();
     }
 }
