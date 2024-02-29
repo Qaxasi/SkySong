@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 
 @Component
-public class UserCreator {
+public class TestUserCreator {
 
     private final RoleDAO roleDAO;
 
-    public UserCreator(RoleDAO roleDAO) {
+    public TestUserCreator(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
     }
 
