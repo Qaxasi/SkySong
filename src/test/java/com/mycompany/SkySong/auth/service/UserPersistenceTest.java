@@ -3,7 +3,7 @@ package com.mycompany.SkySong.auth.service;
 import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
-import com.mycompany.SkySong.testsupport.auth.service.UserCreator;
+import com.mycompany.SkySong.testsupport.auth.service.TestUserCreator;
 import com.mycompany.SkySong.testsupport.auth.service.UserRoleChecker;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
@@ -22,7 +22,7 @@ public class UserPersistenceTest extends BaseIT {
     @Autowired
     private UserExistenceChecker userChecker;
     @Autowired
-    private UserCreator userCreator;
+    private TestUserCreator userCreator;
     @Autowired
     private UserRoleChecker roleChecker;
 
