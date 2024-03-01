@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserPersistenceTest extends BaseIT {
+public class UserSaverTest extends BaseIT {
 
     @Autowired
-    private UserPersistence userPersistence;
+    private UserSaver userSaver;
     @Autowired
     private UserExistenceChecker userChecker;
     @Autowired
@@ -44,14 +44,14 @@ public class UserPersistenceTest extends BaseIT {
     @Test
     void whenSaveUser_UserExist() {
         User user = userCreator.createUser("Maks");
-        userPersistence.saveUser(user);
+        userSaver.saveUser(user);
         assertThat(userChecker.userExist("Maks")).isTrue();
     }
 
     @Test
     void whenSaveUser_UserHasRole() {
         User user = userCreator.createUser("Maks");
-        userPersistence.saveUser(user);
+        userSaver.saveUser(user);
         assertThat(roleChecker.hasUserRole("Maks", UserRole.ROLE_USER.name())).isTrue();
     }
 }

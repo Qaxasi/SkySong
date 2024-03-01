@@ -6,11 +6,11 @@ import com.mycompany.SkySong.auth.repository.UserDAO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserPersistenceImpl implements UserPersistence {
+public class UserSaverImpl implements UserSaver {
 
     private final UserDAO userDAO;
 
-    public UserPersistenceImpl(UserDAO userDAO) {
+    public UserSaverImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 

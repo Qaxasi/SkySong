@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserRegistrationManagerImpl implements UserRegistrationManager {
 
-    private final UserPersistence userPersistence;
+    private final UserSaver userSaver;
     private final UserWithRoleSetup userSetup;
 
-    public UserRegistrationManagerImpl(UserPersistence userPersistence, UserWithRoleSetup userSetup) {
-        this.userPersistence = userPersistence;
+    public UserRegistrationManagerImpl(UserSaver userSaver, UserWithRoleSetup userSetup) {
+        this.userSaver = userSaver;
         this.userSetup = userSetup;
     }
 
@@ -20,6 +20,6 @@ public class UserRegistrationManagerImpl implements UserRegistrationManager {
     @Transactional
     public void setupNewUser(RegisterRequest request) {
         User user = userSetup.setupUserWithRole(request);
-        userPersistence.saveUser(user);
+        userSaver.saveUser(user);
     }
 }
