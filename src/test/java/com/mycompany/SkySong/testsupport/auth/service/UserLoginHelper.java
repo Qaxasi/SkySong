@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 public class UserLoginHelper {
 
     private final LoginService login;
-    private final LoginRequests request;
+    private final LoginRequests loginHelper;
 
-    public UserLoginHelper(LoginService login, LoginRequests request) {
+    public UserLoginHelper(LoginService login, LoginRequests loginHelper) {
         this.login = login;
-        this.request = request;
+        this.loginHelper = loginHelper;
     }
 
     public String loginRegisteredUser() {
-        return login.login(request.loginRegisteredUser);
+        return login.login(loginHelper.loginRegisteredUser);
     }
 }
