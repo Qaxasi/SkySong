@@ -16,6 +16,7 @@ public class UserAuthProcessorTest extends BaseIT {
 
     @Autowired
     private UserAuthProcessor authProcessor;
+    private LoginRequests requestHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -24,6 +25,7 @@ public class UserAuthProcessorTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
+        requestHelper = new LoginRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 
