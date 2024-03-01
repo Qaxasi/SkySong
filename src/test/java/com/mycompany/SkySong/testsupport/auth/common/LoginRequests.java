@@ -4,24 +4,24 @@ import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 
 public class LoginRequests {
 
-    public static final LoginRequest LOGIN_REGISTERED_USER =
+    public static final LoginRequest loginRegisteredUser =
             new LoginRequest("New", "Password#3");
-    public static final LoginRequest VALID_CREDENTIALS =
+    public static final LoginRequest validCredentials =
             new LoginRequest("User", "Password#3");
-    public static final LoginRequest INVALID_PASSWORD =
+    public static final LoginRequest invalidPassword =
             new LoginRequest("User", "invalid");
-    public static final LoginRequest INVALID_USERNAME =
+    public static final LoginRequest invalidUsername =
             new LoginRequest("invalid", "Password#3");
-    public static final LoginRequest INVALID_EMAIL =
+    public static final LoginRequest invalidEmail =
             new LoginRequest("invalid@mail.com", "Password#3");
-    public static final LoginRequest EMPTY_CREDENTIALS =
+    public static final LoginRequest emptyCredentials =
             new LoginRequest("", "");
 
 
-    public static final String MALFORMED_JSON =
+    public static final String malformedJson =
             "{\"usernameOrEmail\": \"mail@mail.com\",\"password\": \"Password#3\"";
 
-    public static LoginRequest LOGIN(String username) {
+    public static LoginRequest login(String username) {
         return new LoginRequest(username, "Password#3");
     }
     public LoginRequest loginInvalidPassword(String username) {
