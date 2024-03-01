@@ -24,4 +24,7 @@ public class LoginRequests {
     public static LoginRequest LOGIN(String username) {
         return new LoginRequest(username, "Password#3");
     }
+    public LoginRequest loginInvalidPassword(String username) {
+        return new LoginRequest(username, "invalid");
+    }
 }
