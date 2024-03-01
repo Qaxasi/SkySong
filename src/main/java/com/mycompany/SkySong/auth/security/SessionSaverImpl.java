@@ -5,11 +5,11 @@ import com.mycompany.SkySong.auth.repository.SessionDAO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SessionPersistenceImpl implements SessionPersistence {
+public class SessionSaverImpl implements SessionSaver {
 
     private final SessionDAO sessionDAO;
 
-    public SessionPersistenceImpl(SessionDAO sessionDAO) {
+    public SessionSaverImpl(SessionDAO sessionDAO) {
         this.sessionDAO = sessionDAO;
     }
 
