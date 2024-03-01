@@ -36,13 +36,13 @@ public class UserAuthProcessorTest extends BaseIT {
 
     @Test
     void whenFetchUser_UserExist() {
-        User user = authProcessor.fetchUserByAuthentication(LoginRequests.LOGIN("User"));
+        User user = authProcessor.fetchUserByAuthentication(requestHelper.login("User"));
         assertThat(user).isNotNull();
     }
 
     @Test
     void whenFetchUser_UsernameIsCorrect() {
-        User user = authProcessor.fetchUserByAuthentication(LoginRequests.LOGIN("User"));
+        User user = authProcessor.fetchUserByAuthentication(requestHelper.login("User"));
         assertThat(user.getUsername()).isEqualTo("User");
     }
 }
