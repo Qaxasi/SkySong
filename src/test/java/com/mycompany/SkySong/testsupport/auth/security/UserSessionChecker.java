@@ -17,7 +17,7 @@ public class UserSessionChecker {
         this.dataSource = dataSource;
     }
 
-    public boolean userHasSession(int userId) {
+    public boolean userHasSession(String username) {
         try {
             String query = "SELECT COUNT(*) FROM sessions WHERE user_id = ?";
             try (Connection connection = dataSource.getConnection();
