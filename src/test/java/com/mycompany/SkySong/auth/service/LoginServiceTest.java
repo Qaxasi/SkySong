@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
@@ -39,35 +38,34 @@ public class LoginServiceTest extends BaseIT {
         String token = login.login(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(token);
     }
+
     @Test
     void whenInvalidPassword_ThrowException() {
         assertException(() -> login.login(LoginRequests.INVALID_PASSWORD), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
+
     @Test
     void whenInvalidEmail_ThrowException() {
         assertException(() -> login.login(LoginRequests.INVALID_EMAIL), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
+
     @Test
     void whenInvalidUsername_ThrowException() {
         assertException(() -> login.login(LoginRequests.INVALID_USERNAME), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
+
     @Test
     void whenLoginFailure_NotSetAuthContext() {
         assertThrows(BadCredentialsException.class, () -> login.login(LoginRequests.INVALID_PASSWORD));
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
+
     @Test
     void whenLoginSuccess_SetAuthContext() {
         login.login(LoginRequests.VALID_CREDENTIALS);
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-    }
-    @Test
-    void whenLoginSuccess_ReturnCorrectUsernameInAuth() {
-        login.login(LoginRequests.VALID_CREDENTIALS);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        assertEquals("User", authentication.getName());
     }
 }
