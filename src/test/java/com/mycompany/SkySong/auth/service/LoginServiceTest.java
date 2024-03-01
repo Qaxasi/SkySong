@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.testsupport.auth.security.UserSessionChecker;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
@@ -18,6 +19,9 @@ public class LoginServiceTest extends BaseIT {
 
     @Autowired
     private LoginService login;
+    @Autowired
+    private UserSessionChecker sessionChecker;
+    
     @Autowired
     private SqlDatabaseInitializer initializer;
     @Autowired
