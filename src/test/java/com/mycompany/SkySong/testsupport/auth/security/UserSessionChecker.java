@@ -19,11 +19,11 @@ public class UserSessionChecker {
 
     public boolean userHasSession(String username) {
         try {
-            String query = "SELECT COUNT(*) FROM sessions WHERE user_id = ?";
+            String query = "SELECT COUNT(*) FROM sessions JOIN users ON sessions.user_id = users.id WHERE users.username = ?";
             try (Connection connection = dataSource.getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
 
-                statement.setInt(1, userId);
+                statement.setString(1, username);
                 ResultSet resultSet = statement.executeQuery();
                 return resultSet.next() && resultSet.getInt(1) > 0;
             }
