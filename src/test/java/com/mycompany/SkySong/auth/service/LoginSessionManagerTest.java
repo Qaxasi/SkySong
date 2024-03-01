@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class LoginSessionManagerTest extends BaseIT {
 
     @Autowired
+    private LoginSessionManager sessionManager;
+
+    @Autowired
     private SqlDatabaseInitializer initializer;
     @Autowired
     private SqlDatabaseCleaner cleaner;
