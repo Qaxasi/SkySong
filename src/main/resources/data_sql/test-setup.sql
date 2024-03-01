@@ -36,9 +36,6 @@ WHERE u.username = 'testAdmin' AND r.name = 'ROLE_ADMIN';
 
 INSERT INTO sessions (session_id, user_id, create_at, expires_at)
 VALUES
-('xAUpqIbS2L9_ULU39L7ZP07RJufNgFizawVK68qTyrw=', (SELECT id FROM users WHERE username = 'User')
-,NOW(), DATE_ADD(NOW(), INTERVAL 24 HOUR)),
-
 ('yDCNcRp0UsS0TS68bdzXwti1QToDCPivrJ-Z-1scQ3w=', (SELECT id FROM users WHERE username = 'Mark'),
 NOW(), DATE_ADD(NOW(), INTERVAL 24 HOUR)),
 
