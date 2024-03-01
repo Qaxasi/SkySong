@@ -21,6 +21,7 @@ public class LoginServiceTest extends BaseIT {
     private LoginService login;
     @Autowired
     private UserSessionChecker sessionChecker;
+    private LoginRequests request;
     
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -29,6 +30,7 @@ public class LoginServiceTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
+        request = new LoginRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 
