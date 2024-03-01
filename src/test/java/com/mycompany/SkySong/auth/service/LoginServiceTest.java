@@ -41,37 +41,37 @@ public class LoginServiceTest extends BaseIT {
 
     @Test
     void whenLoginSuccess_ReturnSessionId() {
-        String sessionId = login.login(LoginRequests.VALID_CREDENTIALS);
+        String sessionId = login.login(request.validCredentials);
         assertNotNull(sessionId);
     }
 
     @Test
     void whenInvalidPassword_ThrowException() {
-        assertException(() -> login.login(LoginRequests.INVALID_PASSWORD), BadCredentialsException.class,
+        assertException(() -> login.login(request.invalidPassword), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenInvalidEmail_ThrowException() {
-        assertException(() -> login.login(LoginRequests.INVALID_EMAIL), BadCredentialsException.class,
+        assertException(() -> login.login(request.invalidEmail), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenInvalidUsername_ThrowException() {
-        assertException(() -> login.login(LoginRequests.INVALID_USERNAME), BadCredentialsException.class,
+        assertException(() -> login.login(request.invalidUsername), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenLoginFailure_NotSetAuthContext() {
-        assertThrows(BadCredentialsException.class, () -> login.login(LoginRequests.INVALID_PASSWORD));
+        assertThrows(BadCredentialsException.class, () -> login.login(request.invalidPassword));
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
     @Test
     void whenLoginSuccess_SetAuthContext() {
-        login.login(LoginRequests.VALID_CREDENTIALS);
+        login.login(request.validCredentials);
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
