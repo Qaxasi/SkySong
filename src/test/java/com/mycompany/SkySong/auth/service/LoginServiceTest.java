@@ -34,9 +34,9 @@ public class LoginServiceTest extends BaseIT {
     }
 
     @Test
-    void whenLoginSuccess_ReturnToken() {
-        String token = login.login(LoginRequests.VALID_CREDENTIALS);
-        assertNotNull(token);
+    void whenLoginSuccess_ReturnSessionId() {
+        String sessionId = login.login(LoginRequests.VALID_CREDENTIALS);
+        assertNotNull(sessionId);
     }
 
     @Test
