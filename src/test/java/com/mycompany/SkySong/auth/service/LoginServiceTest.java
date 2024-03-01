@@ -21,7 +21,7 @@ public class LoginServiceTest extends BaseIT {
     private LoginService login;
     @Autowired
     private UserSessionChecker sessionChecker;
-    private LoginRequests request;
+    private LoginRequests loginHelper;
     
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -30,7 +30,7 @@ public class LoginServiceTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
-        request = new LoginRequests();
+        loginHelper = new LoginRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 
@@ -41,37 +41,37 @@ public class LoginServiceTest extends BaseIT {
 
     @Test
     void whenLoginSuccess_ReturnSessionId() {
-        String sessionId = login.login(request.validCredentials);
+        String sessionId = login.login(loginHelper.validCredentials);
         assertNotNull(sessionId);
     }
 
     @Test
     void whenInvalidPassword_ThrowException() {
-        assertException(() -> login.login(request.invalidPassword), BadCredentialsException.class,
+        assertException(() -> login.login(loginHelper.invalidPassword), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenInvalidEmail_ThrowException() {
-        assertException(() -> login.login(request.invalidEmail), BadCredentialsException.class,
+        assertException(() -> login.login(loginHelper.invalidEmail), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenInvalidUsername_ThrowException() {
-        assertException(() -> login.login(request.invalidUsername), BadCredentialsException.class,
+        assertException(() -> login.login(loginHelper.invalidUsername), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenLoginFailure_NotSetAuthContext() {
-        assertThrows(BadCredentialsException.class, () -> login.login(request.invalidPassword));
+        assertThrows(BadCredentialsException.class, () -> login.login(loginHelper.invalidPassword));
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
     @Test
     void whenLoginSuccess_SetAuthContext() {
-        login.login(request.validCredentials);
+        login.login(loginHelper.validCredentials);
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
