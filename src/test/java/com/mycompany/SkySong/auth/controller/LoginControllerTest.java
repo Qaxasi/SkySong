@@ -47,7 +47,7 @@ public class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                        .content(asJsonString(loginHelper.validCredentials)))
                 .andExpect(status().is(200));
     }
 
@@ -55,7 +55,7 @@ public class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_ReturnMessage() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                        .content(asJsonString(loginHelper.validCredentials)))
                 .andExpect(jsonPath("$.message").value("Logged successfully."));
     }
 
@@ -63,7 +63,7 @@ public class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_SetSessionCookie() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                .content(asJsonString(loginHelper.validCredentials)))
                 .andExpect(cookie().exists("session_id"));
     }
 
@@ -71,7 +71,7 @@ public class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_SessionCookieNotEmpty() throws Exception {
         MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                        .content(asJsonString(loginHelper.validCredentials)))
                 .andReturn();
 
         Cookie cookie = mvcResult.getResponse().getCookie("session_id");
@@ -85,7 +85,7 @@ public class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_CookieIsSetHttpOnly() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                        .content(asJsonString(loginHelper.validCredentials)))
                 .andExpect(cookie().httpOnly("session_id", true));
     }
 
@@ -93,7 +93,7 @@ public class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_CookieHasCorrectPath() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(LoginRequests.VALID_CREDENTIALS)))
+                        .content(asJsonString(loginHelper.validCredentials)))
                 .andExpect(cookie().path("session_id", "/"));
     }
 
@@ -101,7 +101,7 @@ public class LoginControllerTest extends BaseIT {
     void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(LoginRequests.INVALID_PASSWORD)))
+                        .content(asJsonString(loginHelper.invalidPassword)))
                 .andExpect(status().is(401));
     }
 
@@ -109,7 +109,7 @@ public class LoginControllerTest extends BaseIT {
     void whenInvalidCredentials_CookieIsNotSet() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(LoginRequests.INVALID_PASSWORD)))
+                        .content(asJsonString(loginHelper.invalidPassword)))
                 .andExpect(cookie().doesNotExist("session_id"));
     }
 
@@ -117,7 +117,7 @@ public class LoginControllerTest extends BaseIT {
     void whenMalformedJson_ReturnBadRequest() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(LoginRequests.MALFORMED_JSON))
+                        .content(loginHelper.malformedJson))
                 .andExpect(status().is(400));
     }
 
@@ -125,7 +125,7 @@ public class LoginControllerTest extends BaseIT {
     void whenEmptyCredentials_ReturnBadRequest() throws Exception {
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(LoginRequests.EMPTY_CREDENTIALS)))
+                        .content(asJsonString(loginHelper.emptyCredentials)))
                 .andExpect(status().is(400));
     }
     
@@ -133,7 +133,7 @@ public class LoginControllerTest extends BaseIT {
     void whenEmptyCredentials_ReturnErrorMessage() throws Exception {
         ResultActions actions = mockMvc.perform(post("/api/v1/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(LoginRequests.EMPTY_CREDENTIALS)));
+                .content(asJsonString(loginHelper.emptyCredentials)));
 
         actions.andExpect(jsonPath("$.errors.usernameOrEmail")
                         .value("The usernameOrEmail field cannot be empty"))
