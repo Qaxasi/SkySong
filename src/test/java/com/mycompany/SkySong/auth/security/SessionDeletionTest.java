@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.testsupport.auth.security.SessionExistenceChecker;
+import com.mycompany.SkySong.testsupport.auth.security.SessionChecker;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
@@ -17,7 +17,7 @@ public class SessionDeletionTest extends BaseIT {
     @Autowired
     private SessionDeletion sessionDeletion;
     @Autowired
-    private SessionExistenceChecker checker;
+    private SessionChecker checker;
 
     @Autowired
     private SqlDatabaseInitializer initializer;

@@ -2,7 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.auth.security.SessionSaver;
-import com.mycompany.SkySong.testsupport.auth.security.SessionExistenceChecker;
+import com.mycompany.SkySong.testsupport.auth.security.SessionChecker;
 import com.mycompany.SkySong.testsupport.auth.service.TestSessionCreator;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
@@ -19,7 +19,7 @@ public class SessionSaverTest extends BaseIT {
     @Autowired
     private SessionSaver sessionSaver;
     @Autowired
-    private SessionExistenceChecker sessionChecker;
+    private SessionChecker sessionChecker;
     private TestSessionCreator sessionCreation;
 
     @Autowired

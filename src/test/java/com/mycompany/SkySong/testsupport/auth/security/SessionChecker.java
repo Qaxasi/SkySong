@@ -9,11 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class SessionExistenceChecker {
+public class SessionChecker {
 
     private final DataSource dataSource;
 
-    public SessionExistenceChecker(DataSource dataSource) {
+    public SessionChecker(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
