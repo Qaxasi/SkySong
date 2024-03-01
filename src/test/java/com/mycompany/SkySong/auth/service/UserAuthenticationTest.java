@@ -19,6 +19,7 @@ public class UserAuthenticationTest extends BaseIT {
 
     @Autowired
     private UserAuthentication auth;
+    private LoginRequests loginHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -27,6 +28,7 @@ public class UserAuthenticationTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
+        loginHelper = new LoginRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 
