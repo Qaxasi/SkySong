@@ -16,6 +16,6 @@ public class UserLoginHelper {
     }
 
     public String loginRegisteredUser() {
-        return login.login(LoginRequests.LOGIN_REGISTERED_USER);
+        return login.login(request.loginRegisteredUser);
     }
 }
