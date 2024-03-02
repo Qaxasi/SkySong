@@ -21,6 +21,8 @@ public class RegistrationServiceTest extends BaseIT {
     private RegistrationService registration;
     @Autowired
     private UserLoginHelper login;
+    @Autowired
+    private RegistrationRequests registrationHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
