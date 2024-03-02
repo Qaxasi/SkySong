@@ -40,6 +40,12 @@ public class LoginServiceTest extends BaseIT {
     }
 
     @Test
+    void whenLoginFailure_SessionNotCreated() {
+        assertThrows(BadCredentialsException.class, () -> login.login(loginHelper.loginInvalidPassword("User")));
+        assertFalse(sessionChecker.userHasSession("User"));
+    }
+
+    @Test
     void whenLoginSuccess_ReturnSessionId() {
         String sessionId = login.login(loginHelper.validCredentials);
         assertNotNull(sessionId);
