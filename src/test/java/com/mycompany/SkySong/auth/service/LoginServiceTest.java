@@ -46,12 +46,6 @@ public class LoginServiceTest extends BaseIT {
     }
 
     @Test
-    void whenLoginSuccess_ReturnSessionId() {
-        String sessionId = login.login(loginHelper.validCredentials);
-        assertNotNull(sessionId);
-    }
-
-    @Test
     void whenInvalidPassword_ThrowException() {
         assertException(() -> login.login(loginHelper.invalidPassword), BadCredentialsException.class,
                 "Incorrect username/email or password.");
@@ -73,6 +67,18 @@ public class LoginServiceTest extends BaseIT {
     void whenLoginFailure_NotSetAuthContext() {
         assertThrows(BadCredentialsException.class, () -> login.login(loginHelper.invalidPassword));
         assertNull(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    @Test
+    void whenLoginSuccess_CreateSession() {
+        login.login(loginHelper.login("User"));
+        assertTrue(sessionChecker.userHasSession("User"));
+    }
+
+    @Test
+    void whenLoginSuccess_ReturnSessionId() {
+        String sessionId = login.login(loginHelper.validCredentials);
+        assertNotNull(sessionId);
     }
 
     @Test
