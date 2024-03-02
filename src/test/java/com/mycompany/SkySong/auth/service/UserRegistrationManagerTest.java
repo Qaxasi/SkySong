@@ -23,6 +23,8 @@ public class UserRegistrationManagerTest extends BaseIT {
     private UserExistenceChecker userChecker;
     @Autowired
     private UserRoleChecker roleChecker;
+    @Autowired
+    private RegistrationRequests registrationHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
