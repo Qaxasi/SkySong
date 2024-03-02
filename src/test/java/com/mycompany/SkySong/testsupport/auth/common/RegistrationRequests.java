@@ -4,59 +4,58 @@ import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
 
 public class RegistrationRequests {
 
-    public static final RegisterRequest VALID_CREDENTIALS =
+    public RegisterRequest VALID_CREDENTIALS =
             new RegisterRequest("New", "new@mail.com", "Password#3");
-    public static final RegisterRequest EMPTY_CREDENTIALS =
+    public RegisterRequest EMPTY_CREDENTIALS =
             new RegisterRequest("", "", "");
 
-    public static final RegisterRequest EXIST_EMAIL =
+    public RegisterRequest EXIST_EMAIL =
             new RegisterRequest("Sam", "mark@mail.com", "Password#3");
-    public static final RegisterRequest EXIST_USERNAME =
+    public RegisterRequest EXIST_USERNAME =
             new RegisterRequest("Mark", "sam@mail.com", "Password#3");
 
-    public static RegisterRequest REGISTER(String username) {
+    public RegisterRequest REGISTER(String username) {
         return new RegisterRequest(username, "new@mail.com", "Password#3");
     }
-    public static final String MALFORMED_REQUEST =
+    public String MALFORMED_REQUEST =
             "{\"username\": \"New\", \"email\": \"new@mail.com\", \"password\": \"Password#3\"";
 
-    public static final RegisterRequest PASSWORD_TO_SHORT =
+    public RegisterRequest PASSWORD_TO_SHORT =
             new RegisterRequest("Sam", "sam@mail.com", "Pass#3");
 
-    public static final RegisterRequest PASSWORD_NO_UPPERCASE_LETTER =
+    public RegisterRequest PASSWORD_NO_UPPERCASE_LETTER =
             new RegisterRequest("Sam", "sam@mail.com", "password#3");
 
-    public static final RegisterRequest PASSWORD_NO_LOWERCASE_LETTER =
+    public RegisterRequest PASSWORD_NO_LOWERCASE_LETTER =
             new RegisterRequest("Sam", "sam@mail.com", "PASSWORD#3");
 
-    public static final RegisterRequest PASSWORD_NO_SPECIAL_CHARACTER =
+    public RegisterRequest PASSWORD_NO_SPECIAL_CHARACTER =
             new RegisterRequest("Sam", "sam@mail.com", "Password3");
 
-    public static final RegisterRequest PASSWORD_NO_NUMBER =
+    public RegisterRequest PASSWORD_NO_NUMBER =
             new RegisterRequest("Sam", "sam@mail.com", "Password#d");
 
-    public static final RegisterRequest USERNAME_TO_SHORT =
+    public RegisterRequest USERNAME_TO_SHORT =
             new RegisterRequest("Sa", "sam@mail.com", "Password#3");
 
-    public static final RegisterRequest USERNAME_TO_LONG =
+    public RegisterRequest USERNAME_TO_LONG =
             new RegisterRequest("testVeryLongUsernameFormat", "sam@mail.com", "Password#3");
 
-    public static final RegisterRequest USERNAME_WITH_SPECIAL_CHARACTER =
+    public RegisterRequest USERNAME_WITH_SPECIAL_CHARACTER =
             new RegisterRequest("Sam#", "sam@mail.com", "Password#3");
 
-    public static final RegisterRequest EMAIL_INVALID_FORMAT =
+    public RegisterRequest EMAIL_INVALID_FORMAT =
             new RegisterRequest("Sam", "sam-sam.com", "Password#3");
 
-    public static final RegisterRequest EMAIL_TO_SHORT =
+    public RegisterRequest EMAIL_TO_SHORT =
             new RegisterRequest("Sam", "s@m.c", "Password#3");
 
-    public static final RegisterRequest EMAIL_TO_LONG =
+    public RegisterRequest EMAIL_TO_LONG =
             new RegisterRequest("Sam", "qwertyuiopasdfghjklzxcvbn@mail.com", "Password#3");
 
-    public static final RegisterRequest UNIQUE_EMAIL =
+    public RegisterRequest UNIQUE_EMAIL =
             new RegisterRequest("New", "unique@mail.com", "Password#3");
 
-    public static final RegisterRequest UNIQUE_USERNAME =
+    public RegisterRequest UNIQUE_USERNAME =
             new RegisterRequest("Unique", "new@mail.com", "Password#3");
-
 }
