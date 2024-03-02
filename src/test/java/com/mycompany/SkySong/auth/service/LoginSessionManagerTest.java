@@ -35,7 +35,7 @@ public class LoginSessionManagerTest extends BaseIT {
 
     @Test
     void whenInitializeAndSaveSession_SessionIdNotNull() {
-        String sessionId = sessionManager.initializeAndSaveSession(LoginRequests.VALID_CREDENTIALS);
+        String sessionId = sessionManager.initializeAndSaveSession(loginHelper.validCredentials);
         assertThat(sessionId).isNotNull();
     }
 }
