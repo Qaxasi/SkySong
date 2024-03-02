@@ -17,6 +17,8 @@ public class UserWithRoleSetupTest extends BaseIT {
 
     @Autowired
     private UserWithRoleSetup userSetup;
+    @Autowired
+    private RegistrationRequests registrationHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
