@@ -36,19 +36,19 @@ public class UserSessionInitializerTest extends BaseIT {
 
     @Test
     void whenInitializeSession_SessionNotNull() {
-        Session session = sessionInitializer.initializeSession(LoginRequests.VALID_CREDENTIALS);
+        Session session = sessionInitializer.initializeSession(loginHelper.validCredentials);
         assertThat(session).isNotNull();
     }
     
     @Test
     void whenInitializeSession_UserIdIsCorrect() {
-        Session session = sessionInitializer.initializeSession(LoginRequests.VALID_CREDENTIALS);
+        Session session = sessionInitializer.initializeSession(loginHelper.validCredentials);
         assertThat(session.getUserId()).isEqualTo(1);
     }
 
     @Test
     void whenInitializeSession_SessionIdNotNull() {
-        Session session = sessionInitializer.initializeSession(LoginRequests.VALID_CREDENTIALS);
+        Session session = sessionInitializer.initializeSession(loginHelper.validCredentials);
         assertThat(session.getSessionId()).isNotNull();
     }
 }
