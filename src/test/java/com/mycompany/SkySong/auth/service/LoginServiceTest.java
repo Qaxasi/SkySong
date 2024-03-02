@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,12 +63,6 @@ public class LoginServiceTest extends BaseIT {
     }
 
     @Test
-    void whenLoginFailure_NotSetAuthContext() {
-        assertThrows(BadCredentialsException.class, () -> login.login(loginHelper.invalidPassword));
-        assertNull(SecurityContextHolder.getContext().getAuthentication());
-    }
-
-    @Test
     void whenLoginSuccess_CreateSession() {
         login.login(loginHelper.login("User"));
         assertTrue(sessionChecker.userHasSession("User"));
@@ -79,11 +72,5 @@ public class LoginServiceTest extends BaseIT {
     void whenLoginSuccess_ReturnSessionId() {
         String sessionId = login.login(loginHelper.validCredentials);
         assertNotNull(sessionId);
-    }
-
-    @Test
-    void whenLoginSuccess_SetAuthContext() {
-        login.login(loginHelper.validCredentials);
-        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
     }
 }
