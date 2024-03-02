@@ -15,6 +15,7 @@ public class LoginSessionManagerTest extends BaseIT {
 
     @Autowired
     private LoginSessionManager sessionManager;
+    @Autowired
     private LoginRequests loginHelper;
 
     @Autowired
@@ -24,7 +25,6 @@ public class LoginSessionManagerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
-        loginHelper = new LoginRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 

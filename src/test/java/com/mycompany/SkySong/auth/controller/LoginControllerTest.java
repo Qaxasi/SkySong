@@ -25,6 +25,7 @@ public class LoginControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
     private LoginRequests loginHelper;
 
     @Autowired
@@ -34,7 +35,6 @@ public class LoginControllerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
-        loginHelper = new LoginRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 

@@ -16,6 +16,7 @@ public class UserSessionInitializerTest extends BaseIT {
 
     @Autowired
     private UserSessionInitializer sessionInitializer;
+    @Autowired
     private LoginRequests loginHelper;
 
     @Autowired
@@ -25,7 +26,6 @@ public class UserSessionInitializerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
-        loginHelper = new LoginRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 

@@ -19,6 +19,7 @@ public class UserAuthenticationTest extends BaseIT {
 
     @Autowired
     private UserAuthentication auth;
+    @Autowired
     private LoginRequests loginHelper;
 
     @Autowired
@@ -28,7 +29,6 @@ public class UserAuthenticationTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
-        loginHelper = new LoginRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 
