@@ -41,7 +41,7 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @Test
     void whenSessionIsValid_AuthenticationIsSuccessful() {
-        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        String sessionId = "IUb2QMs9iSPMdcOJIvJwH5Q5FA6ayCz1";
         authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -51,7 +51,7 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @Test
     void whenAuthenticated_UsernameIsCorrect() {
-        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        String sessionId = "IUb2QMs9iSPMdcOJIvJwH5Q5FA6ayCz1";
         authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -61,7 +61,7 @@ public class SessionAuthenticationTest extends BaseIT {
 
     @Test
     void whenUserIsRegular_AssignsUserRole() {
-        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        String sessionId = "IUb2QMs9iSPMdcOJIvJwH5Q5FA6ayCz1";
         authentication.authenticateUser(sessionId);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
