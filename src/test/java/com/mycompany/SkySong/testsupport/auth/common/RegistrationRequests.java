@@ -1,7 +1,9 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.auth.model.dto.RegisterRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RegistrationRequests {
 
     public RegisterRequest validCredentials =
