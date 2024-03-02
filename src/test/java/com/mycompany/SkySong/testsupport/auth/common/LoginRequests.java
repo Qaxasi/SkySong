@@ -1,7 +1,9 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LoginRequests {
 
     public LoginRequest loginRegisteredUser =
