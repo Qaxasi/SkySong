@@ -35,9 +35,9 @@ public class SessionUserInfoProviderTest extends BaseIT {
 
     @Test
     void whenSessionIdExist_GetAndReturnUsername() {
-        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        String sessionId = "IUb2QMs9iSPMdcOJIvJwH5Q5FA6ayCz1";
         String username = userInfoProvider.getUsernameForSession(sessionId);
-        assertThat(username).isEqualTo("User");
+        assertThat(username).isEqualTo("Mark");
     }
 
     @Test
