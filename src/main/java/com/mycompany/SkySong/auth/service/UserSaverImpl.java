@@ -4,6 +4,7 @@ import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.repository.UserDAO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserSaverImpl implements UserSaver {
@@ -15,6 +16,7 @@ public class UserSaverImpl implements UserSaver {
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         int userId = userDAO.save(user);
 
