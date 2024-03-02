@@ -17,6 +17,8 @@ public class UsernameExistenceValidationStrategyTest extends BaseIT {
 
     @Autowired
     private UsernameExistenceValidationStrategy strategy;
+    @Autowired
+    private RegistrationRequests registrationHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
