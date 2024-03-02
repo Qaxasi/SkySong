@@ -35,7 +35,7 @@ public class SessionValidationTest extends BaseIT {
 
     @Test
     void whenValidSession_ReturnsTrue() {
-        String sessionId = "jrYa_WLToysV-r08qLhwUZncJLY8OPgT";
+        String sessionId = "IUb2QMs9iSPMdcOJIvJwH5Q5FA6ayCz1";
         assertThat(validation.validateSession(sessionId)).isTrue();
     }
 
