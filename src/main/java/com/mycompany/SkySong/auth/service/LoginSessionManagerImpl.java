@@ -4,6 +4,7 @@ import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.auth.security.SessionSaver;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LoginSessionManagerImpl implements LoginSessionManager {
@@ -17,6 +18,7 @@ public class LoginSessionManagerImpl implements LoginSessionManager {
     }
 
     @Override
+    @Transactional
     public String initializeAndSaveSession(LoginRequest request) {
         Session session = sessionInit.initializeSession(request);
         sessionSaver.saveSession(session);
