@@ -19,6 +19,7 @@ public class SqlDatabaseCleaner {
     public void clean() {
         tablesToClean.forEach(table -> {
             jdbcTemplate.update("DELETE FROM " + table);
+            jdbcTemplate.update("ALTER TABLE " + table + " AUTO_INCREMENT = 1");
         });
     }
 }
