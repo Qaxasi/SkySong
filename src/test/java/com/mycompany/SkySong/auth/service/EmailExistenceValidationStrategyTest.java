@@ -17,6 +17,8 @@ public class EmailExistenceValidationStrategyTest extends BaseIT {
 
     @Autowired
     private EmailExistenceValidationStrategy strategy;
+    @Autowired
+    private RegistrationRequests registrationHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
