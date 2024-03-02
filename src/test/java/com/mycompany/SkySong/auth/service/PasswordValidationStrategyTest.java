@@ -12,40 +12,42 @@ public class PasswordValidationStrategyTest {
     private ApplicationMessageService message;
 
     private PasswordValidationStrategy strategy;
+    private RegistrationRequests registrationHelper;
 
     @BeforeEach
     void setUp() {
         message = new ApplicationMessageServiceImpl();
         strategy = new PasswordValidationStrategy(message);
+        registrationHelper = new RegistrationRequests();
     }
 
     @Test
     void whenPasswordIsToShort_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.PASSWORD_TO_SHORT));
+                () -> strategy.validate(registrationHelper.passwordToShort));
     }
 
     @Test
     void whenPasswordWithoutUppercaseLetter_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.PASSWORD_NO_UPPERCASE_LETTER));
+                () -> strategy.validate(registrationHelper.passwordNoUppercaseLetter));
     }
 
     @Test
     void whenPasswordWithoutLowercaseLetter_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.PASSWORD_NO_LOWERCASE_LETTER));
+                () -> strategy.validate(registrationHelper.passwordNoLowercaseLetter));
     }
 
     @Test
     void whenPasswordWithoutNumber_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.PASSWORD_NO_NUMBER));
+                () -> strategy.validate(registrationHelper.passwordNoNumber));
     }
 
     @Test
     void whenPasswordWithoutSpecialCharacter_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.PASSWORD_NO_SPECIAL_CHARACTER));
+                () -> strategy.validate(registrationHelper.passwordNoSpecialCharacter));
     }
 }

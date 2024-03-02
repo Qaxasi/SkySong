@@ -10,29 +10,31 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class UsernameValidationStrategyTest {
     private ApplicationMessageService message;
     private UsernameValidationStrategy strategy;
+    private RegistrationRequests registrationHelper;
 
     @BeforeEach
     void setUp() {
         message = new ApplicationMessageServiceImpl();
         strategy = new UsernameValidationStrategy(message);
+        registrationHelper = new RegistrationRequests();
     }
 
     @Test
     void whenUsernameIsToShort_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.USERNAME_TO_SHORT));
+                () -> strategy.validate(registrationHelper.usernameToShort));
     }
 
     @Test
     void whenUsernameIsToLong_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.USERNAME_TO_LONG));
+                () -> strategy.validate(registrationHelper.usernameToLong));
     }
 
     @Test
     void whenUsernameContainsSpecialCharacter_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.USERNAME_WITH_SPECIAL_CHARACTER));
+                () -> strategy.validate(registrationHelper.usernameWithSpecialCharacter));
     }
 
 }

@@ -16,6 +16,6 @@ public class RegistrationValidationTest extends BaseIT {
 
     @Test
     void whenValidCredentials_NotThrowException() {
-        assertDoesNotThrow(() -> validation.validateRequest(RegistrationRequests.VALID_CREDENTIALS));
+        assertDoesNotThrow(() -> validation.validateRequest(registrationHelper.validCredentials));
     }
 }

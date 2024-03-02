@@ -12,28 +12,30 @@ public class EmailValidationStrategyTest {
     private ApplicationMessageService message;
 
     private EmailValidationStrategy strategy;
+    private RegistrationRequests registrationHelper;
 
     @BeforeEach
     void setUp() {
         message = new ApplicationMessageServiceImpl();
         strategy = new EmailValidationStrategy(message);
+        registrationHelper = new RegistrationRequests();
     }
 
     @Test
     void whenEmailInvalidFormat_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.EMAIL_INVALID_FORMAT));
+                () -> strategy.validate(registrationHelper.emailInvalidFormat));
     }
 
     @Test
     void whenEmailToShort_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.EMAIL_TO_SHORT));
+                () -> strategy.validate(registrationHelper.emailToShort));
     }
 
     @Test
     void whenEmailToLong_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.EMAIL_TO_LONG));
+                () -> strategy.validate(registrationHelper.emailToLong));
     }
 }

@@ -43,13 +43,13 @@ public class UserRegistrationManagerTest extends BaseIT {
 
     @Test
     void whenUserRegistered_UserExist() {
-        registrationManager.setupNewUser(RegistrationRequests.REGISTER("Maks"));
+        registrationManager.setupNewUser(registrationHelper.register("Maks"));
         assertThat(userChecker.userExist("Maks")).isTrue();
     }
 
     @Test
     void whenUserRegistered_UserHasRole() {
-        registrationManager.setupNewUser(RegistrationRequests.REGISTER("Maks"));
+        registrationManager.setupNewUser(registrationHelper.register("Maks"));
         assertTrue(roleChecker.hasUserRole("Maks", UserRole.ROLE_USER.name()));
     }
 }

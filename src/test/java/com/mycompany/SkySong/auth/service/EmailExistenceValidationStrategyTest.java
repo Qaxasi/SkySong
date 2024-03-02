@@ -38,11 +38,11 @@ public class EmailExistenceValidationStrategyTest extends BaseIT {
     @Test
     void whenEmailExist_ThrowException() {
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(RegistrationRequests.EXIST_EMAIL));
+                () -> strategy.validate(registrationHelper.existEmail));
     }
 
     @Test
     void whenEmailNotExist_NotThrowException() {
-        assertDoesNotThrow(() -> strategy.validate(RegistrationRequests.UNIQUE_EMAIL));
+        assertDoesNotThrow(() -> strategy.validate(registrationHelper.uniqueEmail));
     }
 }
