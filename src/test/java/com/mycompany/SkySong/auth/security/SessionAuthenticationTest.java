@@ -56,7 +56,7 @@ public class SessionAuthenticationTest extends BaseIT {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        assertThat(auth.getName()).isEqualTo("User");
+        assertThat(auth.getName()).isEqualTo("Mark");
     }
 
     @Test
