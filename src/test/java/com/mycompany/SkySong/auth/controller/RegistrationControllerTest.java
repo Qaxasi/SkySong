@@ -22,6 +22,8 @@ public class RegistrationControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private RegistrationRequests registrationHelper;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
