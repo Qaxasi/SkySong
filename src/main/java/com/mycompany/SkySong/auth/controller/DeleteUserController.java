@@ -13,22 +13,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class DeleteUserController {
 
-    private final DeleteUserService deleteUserService;
+    private final DeleteUserService delete;
 
-    private final ApplicationMessageService messageService;
+    private final ApplicationMessageService message;
 
-    public DeleteUserController(DeleteUserService deleteUserService, ApplicationMessageService messageService) {
-        this.deleteUserService = deleteUserService;
-        this.messageService = messageService;
+    public DeleteUserController(DeleteUserService delete,
+                                ApplicationMessageService message) {
+        this.delete = delete;
+        this.message = message;
     }
     
     @DeleteMapping({"/","/{userId}"})
     public ResponseEntity<ApiResponse> delete(@PathVariable(required = false) Integer userId) throws DatabaseException {
         if (userId == null) {
-            String errorMessage = messageService.getMessage("user.id.required");
+            String errorMessage = message.getMessage("user.id.required");
             throw new NullOrEmptyInputException(errorMessage);
         }
-        ApiResponse deleteResponse = deleteUserService.deleteUser(userId);
+        ApiResponse deleteResponse = delete.deleteUser(userId);
         return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
     }
 }
