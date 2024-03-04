@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
 public class DeleteUserTest extends BaseIT {
@@ -40,5 +41,12 @@ public class DeleteUserTest extends BaseIT {
     @Test
     void whenUserNotExist_ThrowException() {
         assertThrows(UserNotFoundException.class, () -> delete.deleteUserById(100));
+    }
+
+    @Test
+    void whenUserIdExist_DeleteUser() {
+        int userId = idFetcher.fetchByUsername("Mark");
+        delete.deleteUserById(userId);
+        assertThat(userChecker.userExist("Mark")).isFalse();
     }
 }
