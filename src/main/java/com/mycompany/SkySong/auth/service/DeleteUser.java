@@ -16,7 +16,7 @@ public class DeleteUser {
     }
 
     @Transactional
-    public void delete(int userId) {
+    public void deleteUserById(int userId) {
         userDAO.deleteUserRoles(userId);
         userDAO.deleteSessionsByUserId(userId);
 
