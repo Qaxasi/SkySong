@@ -7,19 +7,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-class DeleteUserServiceImpl implements DeleteUserService {
+public class DeleteUserService {
 
-    private final DeleteUser deleteUser;
+    private final DeleteUser delete;
     private final ApplicationMessageService message;
 
-    public DeleteUserServiceImpl(DeleteUser deletionManager, ApplicationMessageService message) {
-        this.deleteUser = deletionManager;
+    public DeleteUserService(DeleteUser deletionManager,
+                             ApplicationMessageService message) {
+        this.delete = deletionManager;
         this.message = message;
     }
 
-    @Override
     public ApiResponse deleteUser(int userId) throws DatabaseException {
-        deleteUser.delete(userId);
+        delete.deleteUserById(userId);
         log.info("User with ID {} deleted successfully", userId);
         return new ApiResponse(message.getMessage("user.delete.success", userId));
     }
