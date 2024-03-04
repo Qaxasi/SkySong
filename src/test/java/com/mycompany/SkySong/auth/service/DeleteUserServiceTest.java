@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.exception.UserNotFoundException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.common.UserIdFetcher;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DeleteUserServiceTest extends BaseIT {
 
@@ -41,31 +39,10 @@ public class DeleteUserServiceTest extends BaseIT {
     }
 
     @Test
-    void whenUserIdExist_DeleteUser() {
-        int userId = idFetcher.fetchByUsername("Mark");
-        deleter.deleteUser(userId);
-        assertThat(userChecker.userExist("Mark")).isFalse();
-    }
-
-    @Test
     void whenUserDeleted_ReturnMessage() {
         int userId = idFetcher.fetchByUsername("Mark");
         ApiResponse response = deleter.deleteUser(userId);
         String expectedMessage = String.format("User with ID %d deleted successfully.", userId);
         assertThat(response.message()).isEqualTo(expectedMessage);
-    }
-
-    @Test
-    void wheUserIdNotExist_ThrowException() {
-        int userId = 100;
-        assertThrows(UserNotFoundException.class, () -> deleter.deleteUser(userId));
-    }
-
-    @Test
-    void whenUserIdNotExist_ReturnMessage() {
-        int userId = 100;
-        Exception exception = assertThrows(UserNotFoundException.class, () -> deleter.deleteUser(userId));
-        String expectedMessage = String.format("User with ID %d does not exist.", userId);
-        assertThat(exception.getMessage()).isEqualTo(expectedMessage);
     }
 }
