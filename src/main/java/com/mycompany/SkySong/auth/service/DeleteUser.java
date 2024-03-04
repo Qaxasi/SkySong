@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteUser {
 
     private final UserDAO userDAO;
+
     public DeleteUser(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
