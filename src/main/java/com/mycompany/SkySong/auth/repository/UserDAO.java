@@ -42,4 +42,7 @@ public interface UserDAO {
 
     @SqlUpdate("INSERT INTO user_roles (user_id, role_id) VALUES (:userId, :roleId)")
     void assignRoleToUser(@Bind("userId") int userId, @Bind("roleId") int roleId);
+
+    @SqlUpdate("DELETE FROM sessions WHERE user_id = :userId")
+    void deleteSessionsByUserId(@Bind("userId") int userId);
 }
