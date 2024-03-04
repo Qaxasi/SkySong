@@ -13,4 +13,15 @@ public class DeleteUser {
     public DeleteUser(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
+
+    @Transactional
+    public void delete(int userId) {
+        userDAO.deleteUserRoles(userId);
+        userDAO.deleteSessionsByUserId(userId);
+
+        User user = userDAO.findById(userId).orElseThrow(() -> new UserNotFoundException(
+                "User not found with id: " + userId));
+
+        userDAO.delete(user);
+    }
 }
