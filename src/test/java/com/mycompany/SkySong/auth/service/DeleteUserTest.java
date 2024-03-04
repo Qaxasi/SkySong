@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class DeleteUserTest extends BaseIT {
 
     @Autowired
+    private DeleteUser deleteUser;
+
+    @Autowired
     private SqlDatabaseInitializer initializer;
     @Autowired
     private SqlDatabaseCleaner cleaner;
