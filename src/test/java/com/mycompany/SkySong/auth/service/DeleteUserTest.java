@@ -21,8 +21,6 @@ class DeleteUserTest extends BaseIT {
     @Autowired
     private DeleteUser delete;
     @Autowired
-    private UserIdFetcher idFetcher;
-    @Autowired
     private UserExistenceChecker userChecker;
 
     @Autowired
