@@ -2,7 +2,6 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.exception.UserNotFoundException;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
-import com.mycompany.SkySong.testsupport.auth.common.UserIdFetcher;
 import com.mycompany.SkySong.testsupport.auth.security.RoleChecker;
 import com.mycompany.SkySong.testsupport.auth.security.SessionChecker;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
@@ -59,6 +58,6 @@ class DeleteUserTest extends BaseIT {
     void whenUserExist_DeleteUserSessions() {
         int userId = 1;
         delete.deleteUserById(userId);
-        assertThat(sessionChecker.hasActiveSession(userId)).isFalse();
+        assertThat(sessionChecker.userHasActiveSessions(userId)).isFalse();
     }
 }
