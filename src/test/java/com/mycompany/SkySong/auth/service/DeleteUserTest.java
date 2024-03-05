@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
-public class DeleteUserTest extends BaseIT {
+class DeleteUserTest extends BaseIT {
 
     @Autowired
     private DeleteUser delete;
