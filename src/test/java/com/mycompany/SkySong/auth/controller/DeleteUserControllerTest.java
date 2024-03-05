@@ -3,7 +3,6 @@ package com.mycompany.SkySong.auth.controller;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
-import com.mycompany.SkySong.testsupport.auth.common.UserIdFetcher;
 import com.mycompany.SkySong.testsupport.common.AuthenticationTestHelper;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import jakarta.servlet.http.Cookie;
@@ -25,8 +24,6 @@ class DeleteUserControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     private AuthenticationTestHelper auth;
-    @Autowired
-    private UserIdFetcher idFetcher;
     @Autowired
     private UserExistenceChecker userChecker;
 
