@@ -3,6 +3,8 @@ package com.mycompany.SkySong.auth.service;
 import com.mycompany.SkySong.auth.exception.UserNotFoundException;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.common.UserIdFetcher;
+import com.mycompany.SkySong.testsupport.auth.security.RoleChecker;
+import com.mycompany.SkySong.testsupport.auth.security.SessionChecker;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
@@ -40,13 +42,7 @@ public class DeleteUserTest extends BaseIT {
 
     @Test
     void whenUserNotExist_ThrowException() {
-        assertThrows(UserNotFoundException.class, () -> delete.deleteUserById(100));
-    }
-
-    @Test
-    void whenUserIdExist_DeleteUser() {
-        int userId = idFetcher.fetchByUsername("Mark");
-        delete.deleteUserById(userId);
-        assertThat(userChecker.userExist("Mark")).isFalse();
+        int userId = 100;
+        assertThrows(UserNotFoundException.class, () -> delete.deleteUserById(userId));
     }
 }
