@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-public class DeleteUserControllerTest extends BaseIT {
+class DeleteUserControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
