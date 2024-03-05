@@ -21,7 +21,7 @@ public class DeleteUser {
                 "User not found with id: " + userId));
 
         userDAO.deleteUserRoles(userId);
-        userDAO.deleteSessionsByUserId(userId);
+        userDAO.deleteUserSessions(userId);
 
         userDAO.delete(user);
     }

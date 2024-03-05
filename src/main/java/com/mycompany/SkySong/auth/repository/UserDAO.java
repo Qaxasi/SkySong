@@ -44,5 +44,5 @@ public interface UserDAO {
     void assignRoleToUser(@Bind("userId") int userId, @Bind("roleId") int roleId);
 
     @SqlUpdate("DELETE FROM sessions WHERE user_id = :userId")
-    void deleteSessionsByUserId(@Bind("userId") int userId);
+    void deleteUserSessions(@Bind("userId") int userId);
 }
