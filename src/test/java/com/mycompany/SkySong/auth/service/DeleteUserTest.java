@@ -47,4 +47,11 @@ class DeleteUserTest extends BaseIT {
         int userId = 100;
         assertThrows(UserNotFoundException.class, () -> delete.deleteUserById(userId));
     }
+
+    @Test
+    void whenUserExist_DeleteUser() {
+        int userId = 1;
+        delete.deleteUserById(userId);
+        assertThat(userChecker.userExist(userId)).isFalse();
+    }
 }
