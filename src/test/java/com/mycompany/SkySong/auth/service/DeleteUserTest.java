@@ -22,6 +22,10 @@ class DeleteUserTest extends BaseIT {
     private DeleteUser delete;
     @Autowired
     private UserExistenceChecker userChecker;
+    @Autowired
+    private SessionChecker sessionChecker;
+    @Autowired
+    private RoleChecker roleChecker;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
