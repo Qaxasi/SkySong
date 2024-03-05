@@ -75,7 +75,7 @@ class DeleteUserControllerTest extends BaseIT {
 
     @Test
     void whenUserIsAdmin_SuccessDeletionReturnStatusOk() throws Exception {
-        Integer userId = idFetcher.fetchByUsername("Mark");
+        int userId = 2;
 
         Cookie sessionId = auth.loginAdminUser();
 
@@ -85,7 +85,7 @@ class DeleteUserControllerTest extends BaseIT {
 
     @Test
     void whenUserDeleted_SecondDeletionReturnNotFound() throws Exception {
-        Integer userId = idFetcher.fetchByUsername("Mark");
+        int userId = 2;
 
         Cookie sessionId = auth.loginAdminUser();
 
@@ -105,7 +105,7 @@ class DeleteUserControllerTest extends BaseIT {
 
     @Test
     void whenRegularUser_ReturnForbidden() throws Exception {
-        Integer userId = idFetcher.fetchByUsername("Mark");
+        int userId = 2;
 
         Cookie sessionId = auth.loginRegularUser();
 
@@ -117,13 +117,13 @@ class DeleteUserControllerTest extends BaseIT {
 
     @Test
     void whenRegularUser_UserNotDeleted() throws Exception {
-        Integer userId = idFetcher.fetchByUsername("Mark");
+        int userId = 2;
 
         Cookie sessionId = auth.loginRegularUser();
 
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isForbidden());
 
-        assertThat(userChecker.userExist("Mark")).isTrue();
+        assertThat(userChecker.userExist(userId)).isTrue();
     }
 }
