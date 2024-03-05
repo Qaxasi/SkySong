@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-class RegistrationValidationImpl implements RegistrationValidation {
+public class RegistrationValidationImpl implements RegistrationValidation {
 
     private final List<RegistrationValidationStrategy> strategies;
 
