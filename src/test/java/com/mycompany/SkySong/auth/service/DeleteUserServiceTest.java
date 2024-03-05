@@ -37,7 +37,7 @@ class DeleteUserServiceTest extends BaseIT {
 
     @Test
     void whenUserDeleted_ReturnMessage() {
-        int userId = idFetcher.fetchByUsername("Mark");
+        int userId = 1;
         ApiResponse response = deleter.deleteUser(userId);
         String expectedMessage = String.format("User with ID %d deleted successfully.", userId);
         assertThat(response.message()).isEqualTo(expectedMessage);
