@@ -54,4 +54,11 @@ class DeleteUserTest extends BaseIT {
         delete.deleteUserById(userId);
         assertThat(userChecker.userExist(userId)).isFalse();
     }
+
+    @Test
+    void whenUserExist_DeleteUserSessions() {
+        int userId = 1;
+        delete.deleteUserById(userId);
+        assertThat(sessionChecker.hasActiveSession(userId)).isFalse();
+    }
 }
