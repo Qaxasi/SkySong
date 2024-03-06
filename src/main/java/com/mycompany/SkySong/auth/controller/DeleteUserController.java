@@ -3,7 +3,7 @@ package com.mycompany.SkySong.auth.controller;
 import com.mycompany.SkySong.auth.exception.DatabaseException;
 import com.mycompany.SkySong.auth.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
-import com.mycompany.SkySong.auth.service.ApplicationMessageService;
+import com.mycompany.SkySong.auth.service.ApplicationMessageLoader;
 import com.mycompany.SkySong.auth.service.DeleteUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,10 @@ public class DeleteUserController {
 
     private final DeleteUserService delete;
 
-    private final ApplicationMessageService message;
+    private final ApplicationMessageLoader message;
 
     public DeleteUserController(DeleteUserService delete,
-                                ApplicationMessageService message) {
+                                ApplicationMessageLoader message) {
         this.delete = delete;
         this.message = message;
     }
