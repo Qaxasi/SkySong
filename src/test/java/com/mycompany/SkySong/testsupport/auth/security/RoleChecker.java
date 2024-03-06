@@ -10,4 +10,10 @@ import java.sql.SQLException;
 
 @Component
 public class RoleChecker {
+
+    private final DataSource dataSource;
+
+    public RoleChecker(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }
