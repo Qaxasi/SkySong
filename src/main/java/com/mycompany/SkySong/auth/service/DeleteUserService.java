@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 public class DeleteUserService {
 
     private final DeleteUser delete;
-    private final MessageService message;
+    private final ApplicationMessageLoader message;
 
     public DeleteUserService(DeleteUser deletionManager,
-                             MessageService message) {
+                             ApplicationMessageLoader message) {
         this.delete = deletionManager;
         this.message = message;
     }
