@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Order(2)
-public class EmailValidationStrategy implements RegistrationValidationStrategy {
+public class EmailFormatValidationStrategy implements RegistrationValidationStrategy {
 
     private final ApplicationMessageLoader message;
 
-    public EmailValidationStrategy(ApplicationMessageLoader message) {
+    public EmailFormatValidationStrategy(ApplicationMessageLoader message) {
         this.message = message;
     }
 

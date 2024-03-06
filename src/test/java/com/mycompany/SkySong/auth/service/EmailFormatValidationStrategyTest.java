@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EmailValidationStrategyTest {
 
-    private ApplicationMessageService message;
+    private ApplicationMessageLoader message;
 
     private EmailValidationStrategy strategy;
     private RegistrationRequests registrationHelper;
