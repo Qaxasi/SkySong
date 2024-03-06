@@ -8,15 +8,15 @@ import java.text.MessageFormat;
 import java.util.Properties;
 
 @Service
-public class ApplicationMessageServiceImpl implements ApplicationMessageService {
+public class MessageService {
 
     private final Properties messages = new Properties();
 
-    public ApplicationMessageServiceImpl() {
-        this(ApplicationMessageServiceImpl.class.getClassLoader().getResourceAsStream("messages.properties"));
+    public MessageService() {
+        this(MessageService.class.getClassLoader().getResourceAsStream("messages.properties"));
     }
 
-    ApplicationMessageServiceImpl(InputStream propertiesStream) {
+    MessageService(InputStream propertiesStream) {
         try {
             if (propertiesStream != null) {
                 messages.load(propertiesStream);
@@ -28,12 +28,10 @@ public class ApplicationMessageServiceImpl implements ApplicationMessageService 
         }
     }
 
-    @Override
     public String getMessage(String key) {
         return messages.getProperty(key, "Default message for " + key);
     }
 
-    @Override
     public String getMessage(String key, Object... params) {
         String message = messages.getProperty(key, "Default message for " + key);
         return MessageFormat.format(message, params);
