@@ -8,20 +8,19 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-class UserFactoryImpl implements UserFactory {
+class UserFactory {
 
-    private final PasswordService passwordService;
+    private final PasswordEncoderService passwordEncoder;
 
-    public UserFactoryImpl(PasswordService passwordService) {
-        this.passwordService = passwordService;
+    public UserFactory(PasswordEncoderService passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
     public User createUser(RegisterRequest request, Role role) {
         User user = new User();
         user.setUsername(request.username());
         user.setEmail(request.email());
-        user.setPassword(passwordService.encodePassword(request.password()));
+        user.setPassword(passwordEncoder.encodePassword(request.password()));
         user.setRoles(Collections.singleton(role));
         return user;
     }
