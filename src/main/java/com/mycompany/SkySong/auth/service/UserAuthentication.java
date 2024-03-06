@@ -11,17 +11,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class UserAuthenticationImpl implements UserAuthentication {
+public class UserAuthentication {
 
     private final AuthenticationManager authenticationManager;
-    private final ApplicationMessageService message;
+    private final ApplicationMessageLoader message;
 
-    public UserAuthenticationImpl(AuthenticationManager authenticationManager, ApplicationMessageService message) {
+    public UserAuthentication(AuthenticationManager authenticationManager, ApplicationMessageLoader message) {
         this.authenticationManager = authenticationManager;
         this.message = message;
     }
 
-    @Override
     public Authentication authenticateUser(LoginRequest request) {
         try {
             Authentication auth = authenticationManager.authenticate(
