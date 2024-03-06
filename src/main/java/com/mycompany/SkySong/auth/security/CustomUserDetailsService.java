@@ -4,7 +4,7 @@ import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.repository.RoleDAO;
 import com.mycompany.SkySong.auth.repository.UserDAO;
-import com.mycompany.SkySong.auth.service.ApplicationMessageService;
+import com.mycompany.SkySong.auth.service.ApplicationMessageLoader;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,12 +19,12 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
-    private final ApplicationMessageService messageService;
+    private final ApplicationMessageLoader message;
 
-    public CustomUserDetailsService(UserDAO userDAO, RoleDAO roleDAO, ApplicationMessageService messageService) {
+    public CustomUserDetailsService(UserDAO userDAO, RoleDAO roleDAO, ApplicationMessageLoader message) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
-        this.messageService = messageService;
+        this.message = message;
     }
 
     // This method loads a user by either username or email
@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return userDAO.findByUsername(usernameOrEmail)
                 .orElseGet(() -> userDAO.findByEmail(usernameOrEmail)
                         .orElseThrow(() -> new UsernameNotFoundException(
-                                messageService.getMessage("user.not.found", usernameOrEmail))));
+                                message.getMessage("user.not.found", usernameOrEmail))));
     }
     private  Set<GrantedAuthority> getAuthorities(User user) {
         Set<Role> roles = roleDAO.findRolesByUserId(user.getId());

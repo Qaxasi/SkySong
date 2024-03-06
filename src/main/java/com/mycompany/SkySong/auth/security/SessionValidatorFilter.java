@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.auth.security;
 
-import com.mycompany.SkySong.auth.service.ApplicationMessageService;
+import com.mycompany.SkySong.auth.service.ApplicationMessageLoader;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,13 +17,13 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
 
     private final SessionValidation session;
     private final CustomAuthenticationEntryPoint authEntryPoint;
-    private final ApplicationMessageService message;
+    private final ApplicationMessageLoader message;
     private final SessionExtractor sessionExtractor;
     private final SessionAuthentication authenticator;
 
     public SessionValidatorFilter(SessionValidation session,
                                   CustomAuthenticationEntryPoint authEntryPoint,
-                                  ApplicationMessageService message,
+                                  ApplicationMessageLoader message,
                                   SessionExtractor sessionExtractor,
                                   SessionAuthentication authenticator) {
         this.session = session;

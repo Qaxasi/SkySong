@@ -5,7 +5,7 @@ import com.mycompany.SkySong.auth.repository.SessionDAO;
 import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.exception.SessionNotFoundException;
 import com.mycompany.SkySong.auth.repository.UserDAO;
-import com.mycompany.SkySong.auth.service.ApplicationMessageService;
+import com.mycompany.SkySong.auth.service.ApplicationMessageLoader;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,12 +19,12 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
 
     private final TokenHasher tokenHasher;
 
-    private final ApplicationMessageService message;
+    private final ApplicationMessageLoader message;
 
     public SessionUserInfoProviderImpl(SessionDAO sessionDAO,
                                        UserDAO userDAO,
                                        TokenHasher tokenHasher,
-                                       ApplicationMessageService message) {
+                                       ApplicationMessageLoader message) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.tokenHasher = tokenHasher;
