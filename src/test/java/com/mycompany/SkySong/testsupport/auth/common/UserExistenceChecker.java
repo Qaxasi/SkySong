@@ -17,14 +17,14 @@ public class UserExistenceChecker {
         this.dataSource = dataSource;
     }
 
-    public boolean userExist(String username) {
+    public boolean userExist(int userId) {
         try {
-            String query = "SELECT COUNT(*) FROM users WHERE username = ?";
+            String query = "SELECT COUNT(*) FROM users WHERE id = ?";
 
             try (Connection connection = dataSource.getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
 
-                statement.setString(1, username);
+                statement.setInt(1, userId);
 
                 ResultSet resultSet = statement.executeQuery();
 
