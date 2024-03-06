@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 class RegistrationServiceImpl implements RegistrationService {
 
     private final RegistrationValidation validation;
-    private final ApplicationMessageService messageService;
+    private final ApplicationMessageLoader message;
     private final UserRegistrationManager registrationManager;
 
     public RegistrationServiceImpl(RegistrationValidation validation,
-                                   ApplicationMessageService messageService,
+                                   ApplicationMessageLoader message,
                                    UserRegistrationManager userRegistrationManager) {
 
         this.validation = validation;
-        this.messageService = messageService;
+        this.message = message;
         this.registrationManager = userRegistrationManager;
     }
 
@@ -26,6 +26,6 @@ class RegistrationServiceImpl implements RegistrationService {
     public ApiResponse register(RegisterRequest request) {
         validation.validateRequest(request);
         registrationManager.setupNewUser(request);
-        return new ApiResponse(messageService.getMessage("user.registration.success"));
+        return new ApiResponse(message.getMessage("user.registration.success"));
     }
 }
