@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Order(1)
 public class UsernameValidationStrategy implements RegistrationValidationStrategy {
 
-    private final ApplicationMessageService message;
+    private final ApplicationMessageLoader message;
 
-    public UsernameValidationStrategy(ApplicationMessageService message) {
+    public UsernameValidationStrategy(ApplicationMessageLoader message) {
         this.message = message;
     }
 

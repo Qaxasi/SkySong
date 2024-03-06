@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Order(2)
 public class EmailValidationStrategy implements RegistrationValidationStrategy {
 
-    private final ApplicationMessageService message;
+    private final ApplicationMessageLoader message;
 
-    public EmailValidationStrategy(ApplicationMessageService message) {
+    public EmailValidationStrategy(ApplicationMessageLoader message) {
         this.message = message;
     }
 

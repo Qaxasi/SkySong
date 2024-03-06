@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @Order(5)
 public class EmailExistenceValidationStrategy implements RegistrationValidationStrategy {
 
-    private final ApplicationMessageService message;
+    private final ApplicationMessageLoader message;
     private final UserDAO userDAO;
 
-    public EmailExistenceValidationStrategy(ApplicationMessageService message, UserDAO userDAO) {
+    public EmailExistenceValidationStrategy(ApplicationMessageLoader message, UserDAO userDAO) {
         this.message = message;
         this.userDAO = userDAO;
     }
