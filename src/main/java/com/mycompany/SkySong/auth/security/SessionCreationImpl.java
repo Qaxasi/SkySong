@@ -7,18 +7,14 @@ import java.util.Date;
 
 @Service
 public class SessionCreationImpl implements SessionCreation {
-
-    private final TokenGenerator tokenGenerator;
     private final TokenHasher tokenHasher;
 
-    public SessionCreationImpl(TokenGenerator tokenGenerator, TokenHasher tokenHasher) {
-        this.tokenGenerator = tokenGenerator;
+    public SessionCreationImpl(TokenHasher tokenHasher) {
         this.tokenHasher = tokenHasher;
     }
 
     @Override
-    public Session createSession(Integer userID) {
-        String token = tokenGenerator.generateToken();
+    public Session createSession(String token, Integer userID) {
         String hashedToken = tokenHasher.generateHashedToken(token);
 
         Session session = new Session();
