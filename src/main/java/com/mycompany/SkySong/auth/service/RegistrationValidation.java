@@ -6,15 +6,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RegistrationValidationImpl implements RegistrationValidation {
+public class RegistrationValidation {
 
     private final List<RegistrationValidationStrategy> strategies;
 
-    public RegistrationValidationImpl(List<RegistrationValidationStrategy> strategies) {
+    public RegistrationValidation(List<RegistrationValidationStrategy> strategies) {
         this.strategies = strategies;
     }
 
-    @Override
     public void validateRequest(RegisterRequest request) {
         for (RegistrationValidationStrategy strategy : strategies) {
             strategy.validate(request);
