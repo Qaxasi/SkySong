@@ -7,22 +7,21 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-class RegistrationServiceImpl implements RegistrationService {
+class RegistrationService {
 
     private final RegistrationValidation validation;
     private final ApplicationMessageLoader message;
     private final UserRegistrationManager registrationManager;
 
-    public RegistrationServiceImpl(RegistrationValidation validation,
-                                   ApplicationMessageLoader message,
-                                   UserRegistrationManager userRegistrationManager) {
+    public RegistrationService(RegistrationValidation validation,
+                               ApplicationMessageLoader message,
+                               UserRegistrationManager userRegistrationManager) {
 
         this.validation = validation;
         this.message = message;
         this.registrationManager = userRegistrationManager;
     }
 
-    @Override
     public ApiResponse register(RegisterRequest request) {
         validation.validateRequest(request);
         registrationManager.setupNewUser(request);

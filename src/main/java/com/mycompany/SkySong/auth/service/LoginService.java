@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
+import com.mycompany.SkySong.auth.model.entity.Session;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String login(LoginRequest request) {
+    public Session login(LoginRequest request) {
         return sessionManager.initializeAndSaveSession(request);
     }
 }
