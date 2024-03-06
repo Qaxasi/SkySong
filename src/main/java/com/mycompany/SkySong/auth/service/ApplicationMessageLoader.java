@@ -8,15 +8,15 @@ import java.text.MessageFormat;
 import java.util.Properties;
 
 @Service
-public class MessageService {
+public class ApplicationMessageLoader {
 
     private final Properties messages = new Properties();
 
-    public MessageService() {
-        this(MessageService.class.getClassLoader().getResourceAsStream("messages.properties"));
+    public ApplicationMessageLoader() {
+        this(ApplicationMessageLoader.class.getClassLoader().getResourceAsStream("messages.properties"));
     }
 
-    MessageService(InputStream propertiesStream) {
+    ApplicationMessageLoader(InputStream propertiesStream) {
         try {
             if (propertiesStream != null) {
                 messages.load(propertiesStream);

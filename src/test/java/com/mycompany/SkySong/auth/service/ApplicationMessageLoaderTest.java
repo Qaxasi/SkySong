@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class ApplicationMessageServiceTest {
+public class MessageServiceTest {
 
     @Autowired
-    private ApplicationMessageService messageService;
+    private MessageService messageService;
 
     @Test
     void whenApplicationStarts_MessageServiceIsInjected() {
