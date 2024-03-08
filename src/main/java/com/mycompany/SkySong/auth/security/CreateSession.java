@@ -6,20 +6,19 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
-public class SessionCreationImpl implements SessionCreation {
+public class CreateSession {
     private final TokenHasher tokenHasher;
 
-    public SessionCreationImpl(TokenHasher tokenHasher) {
+    public CreateSession(TokenHasher tokenHasher) {
         this.tokenHasher = tokenHasher;
     }
 
-    @Override
-    public Session createSession(String token, Integer userID) {
+    public Session createSession(String token, Integer userId) {
         String hashedToken = tokenHasher.generateHashedToken(token);
 
         Session session = new Session();
         session.setSessionId(hashedToken);
-        session.setUserId(userID);
+        session.setUserId(userId);
         session.setCreateAt(new Date());
         session.setExpiresAt(new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 
