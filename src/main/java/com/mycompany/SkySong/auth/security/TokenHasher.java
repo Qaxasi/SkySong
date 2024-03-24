@@ -8,11 +8,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 @Service
-public class TokenHasherImpl implements TokenHasher {
+public class TokenHasher {
 
     private final Base64.Encoder encoder = Base64.getUrlEncoder();
 
-    @Override
     public String generateHashedToken(String token) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
