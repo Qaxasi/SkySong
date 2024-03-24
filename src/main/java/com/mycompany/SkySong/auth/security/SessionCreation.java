@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
-public class CreateSession {
+public class SessionCreation {
     private final TokenHasher tokenHasher;
 
-    public CreateSession(TokenHasher tokenHasher) {
+    public SessionCreation(TokenHasher tokenHasher) {
         this.tokenHasher = tokenHasher;
     }
 
