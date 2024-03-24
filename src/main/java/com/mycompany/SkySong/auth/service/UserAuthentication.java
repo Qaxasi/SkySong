@@ -13,17 +13,18 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserAuthentication {
 
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authManager;
     private final ApplicationMessageLoader message;
 
-    public UserAuthentication(AuthenticationManager authenticationManager, ApplicationMessageLoader message) {
-        this.authenticationManager = authenticationManager;
+    public UserAuthentication(AuthenticationManager authManager,
+                              ApplicationMessageLoader message) {
+        this.authManager = authManager;
         this.message = message;
     }
 
     public Authentication authenticateUser(LoginRequest request) {
         try {
-            Authentication auth = authenticationManager.authenticate(
+            Authentication auth = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.usernameOrEmail(), request.password()));
             SecurityContextHolder.getContext().setAuthentication(auth);
