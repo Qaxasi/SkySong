@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-class UserFactory {
+public class UserFactory {
 
     private final PasswordEncoderService passwordEncoder;
 
