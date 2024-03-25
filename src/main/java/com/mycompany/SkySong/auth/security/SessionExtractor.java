@@ -8,9 +8,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-public class SessionExtractorImpl implements SessionExtractor {
+public class SessionExtractor {
 
-    @Override
     public String getSessionIdFromRequest(HttpServletRequest request) {
         return Optional.ofNullable(request.getCookies())
                 .stream()
