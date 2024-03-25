@@ -6,17 +6,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SessionAuthenticationImpl implements SessionAuthentication {
+public class SessionAuthentication {
 
     private final SessionUserInfoProvider userInfoProvider;
     private final CustomUserDetailsService userDetails;
 
-    public SessionAuthenticationImpl(SessionUserInfoProvider userInfoProvider, CustomUserDetailsService userDetails) {
+    public SessionAuthentication(SessionUserInfoProvider userInfoProvider, CustomUserDetailsService userDetails) {
         this.userInfoProvider = userInfoProvider;
         this.userDetails = userDetails;
     }
-
-    @Override
+    
     public void authenticateUser(String sessionId) {
         String username = userInfoProvider.getUsernameForSession(sessionId);
         UserDetails details = userDetails.loadUserByUsername(username);
