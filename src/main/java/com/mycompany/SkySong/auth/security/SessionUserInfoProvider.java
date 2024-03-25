@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
+public class SessionUserInfoProvider {
 
     private final SessionDAO sessionDAO;
 
@@ -21,17 +21,16 @@ public class SessionUserInfoProviderImpl implements SessionUserInfoProvider {
 
     private final ApplicationMessageLoader message;
 
-    public SessionUserInfoProviderImpl(SessionDAO sessionDAO,
-                                       UserDAO userDAO,
-                                       TokenHasher tokenHasher,
-                                       ApplicationMessageLoader message) {
+    public SessionUserInfoProvider(SessionDAO sessionDAO,
+                                   UserDAO userDAO,
+                                   TokenHasher tokenHasher,
+                                   ApplicationMessageLoader message) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
         this.tokenHasher = tokenHasher;
         this.message = message;
     }
 
-    @Override
     public String getUsernameForSession(String sessionId) {
         return Optional.of(sessionId)
                 .map(tokenHasher::generateHashedToken)
