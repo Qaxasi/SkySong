@@ -14,10 +14,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LoginServiceTest extends BaseIT {
+public class SessionCreationServiceTest extends BaseIT {
 
     @Autowired
-    private LoginService login;
+    private SessionCreationService login;
     @Autowired
     private UserSessionChecker sessionChecker;
     @Autowired
@@ -40,37 +40,37 @@ public class LoginServiceTest extends BaseIT {
 
     @Test
     void whenLoginFailure_SessionNotCreated() {
-        assertThrows(BadCredentialsException.class, () -> login.login(loginHelper.loginInvalidPassword("User")));
+        assertThrows(BadCredentialsException.class, () -> login.initializeSession(loginHelper.loginInvalidPassword("User")));
         assertFalse(sessionChecker.userHasSession("User"));
     }
 
     @Test
     void whenInvalidPassword_ThrowException() {
-        assertException(() -> login.login(loginHelper.invalidPassword), BadCredentialsException.class,
+        assertException(() -> login.initializeSession(loginHelper.invalidPassword), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenInvalidEmail_ThrowException() {
-        assertException(() -> login.login(loginHelper.invalidEmail), BadCredentialsException.class,
+        assertException(() -> login.initializeSession(loginHelper.invalidEmail), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenInvalidUsername_ThrowException() {
-        assertException(() -> login.login(loginHelper.invalidUsername), BadCredentialsException.class,
+        assertException(() -> login.initializeSession(loginHelper.invalidUsername), BadCredentialsException.class,
                 "Incorrect username/email or password.");
     }
 
     @Test
     void whenLoginSuccess_CreateSession() {
-        login.login(loginHelper.login("User"));
+        login.initializeSession(loginHelper.login("User"));
         assertTrue(sessionChecker.userHasSession("User"));
     }
 
     @Test
     void whenLoginSuccess_ReturnSessionId() {
-        String sessionId = login.login(loginHelper.validCredentials);
+        String sessionId = login.initializeSession(loginHelper.validCredentials);
         assertNotNull(sessionId);
     }
 }

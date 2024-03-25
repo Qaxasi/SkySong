@@ -18,7 +18,7 @@ public class TokenHasher {
             byte[] hashedBytes = digest.digest(token.getBytes(StandardCharsets.UTF_8));
             return encoder.encodeToString(hashedBytes);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("SHA-256 algorithm not found", e);
+            throw new RuntimeException(e);
         }
     }
 }
