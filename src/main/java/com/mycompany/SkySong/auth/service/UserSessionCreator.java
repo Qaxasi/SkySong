@@ -1,4 +1,5 @@
 package com.mycompany.SkySong.auth.service;
+
 import com.mycompany.SkySong.auth.exception.UserNotFoundException;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.entity.Session;
