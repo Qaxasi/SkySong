@@ -11,7 +11,7 @@ public class TokenHasherTest {
 
     @BeforeEach
     void setUp() {
-        tokenHasher = new TokenHasherImpl();
+        tokenHasher = new TokenHasher();
     }
 
     @Test

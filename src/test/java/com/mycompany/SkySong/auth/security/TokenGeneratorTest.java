@@ -11,7 +11,7 @@ public class TokenGeneratorTest {
 
     @BeforeEach
     void setUp() {
-        tokenGenerator = new TokenGeneratorImpl();
+        tokenGenerator = new TokenGenerator();
     }
 
     @Test
