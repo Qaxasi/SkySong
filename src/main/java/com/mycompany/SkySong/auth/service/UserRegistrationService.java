@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class RegistrationService {
+public class UserRegistrationService {
 
     private final RegistrationValidation validation;
     private final ApplicationMessageLoader message;
     private final UserRegistration registration;
 
-    public RegistrationService(RegistrationValidation validation,
-                               ApplicationMessageLoader message,
-                               UserRegistration registration) {
+    public UserRegistrationService(RegistrationValidation validation,
+                                   ApplicationMessageLoader message,
+                                   UserRegistration registration) {
 
         this.validation = validation;
         this.message = message;
