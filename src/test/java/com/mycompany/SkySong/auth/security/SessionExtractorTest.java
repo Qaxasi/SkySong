@@ -21,7 +21,7 @@ public class SessionExtractorTest {
 
     @BeforeEach
     void setUp() {
-        sessionExtractor = new SessionExtractorImpl();
+        sessionExtractor = new SessionExtractor();
     }
 
     @Test
