@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RegistrationServiceTest extends BaseIT {
+public class UserRegistrationServiceTest extends BaseIT {
 
     @Autowired
     private RegistrationService registration;
