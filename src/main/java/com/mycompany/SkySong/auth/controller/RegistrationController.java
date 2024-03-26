@@ -19,8 +19,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        ApiResponse registrationResponse = registration.register(registerRequest);
+    public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequest request) {
+        ApiResponse registrationResponse = registration.register(request);
         return new ResponseEntity<>(registrationResponse, HttpStatus.CREATED);
     }
 }
