@@ -10,15 +10,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class PasswordServiceTest {
+public class PasswordEncoderServiceTest {
+
     @Autowired
-    private PasswordService passwordService;
+    private PasswordEncoderService passwordEncoderService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Test
     void whenEncodePassword_MatchesOriginal() {
         String password = "testPassword";
-        String encodedPassword = passwordService.encodePassword(password);
+        String encodedPassword = passwordEncoderService.encodePassword(password);
         assertTrue(passwordEncoder.matches(password, encodedPassword));
     }
 }
