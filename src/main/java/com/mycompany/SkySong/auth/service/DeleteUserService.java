@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.auth.exception.DatabaseException;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ public class DeleteUserService {
         this.message = message;
     }
 
-    public ApiResponse deleteUser(int userId) throws DatabaseException {
+    public ApiResponse deleteUser(int userId) {
         delete.deleteUserById(userId);
         log.info("User with ID {} deleted successfully", userId);
         return new ApiResponse(message.getMessage("user.delete.success", userId));
