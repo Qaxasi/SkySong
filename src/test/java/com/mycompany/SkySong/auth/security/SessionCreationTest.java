@@ -24,11 +24,10 @@ public class SessionCreationTest {
 
     @Test
     void whenCreatingSession_SetsCorrectExpirationTime() {
-        Instant now = Instant.now();
-
         String token = tokenGenerator.generateToken();
         int userId = 10;
 
+        Instant now = Instant.now();
         Session session = sessionCreation.createSession(token, userId);
 
         Instant expirationTime = session.getExpiresAt().toInstant();
