@@ -90,7 +90,7 @@ public class SessionAuthenticationTest extends BaseIT {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
 
-        assertThat(userRoles.containsAll(expectedRoles)).isTrue();
+        assertThat(userRoles).containsAll(expectedRoles);
     }
 
     @Test
