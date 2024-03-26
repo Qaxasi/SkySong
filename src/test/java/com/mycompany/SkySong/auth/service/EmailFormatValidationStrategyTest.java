@@ -7,17 +7,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class EmailValidationStrategyTest {
+public class EmailFormatValidationStrategyTest {
 
     private ApplicationMessageLoader message;
 
-    private EmailValidationStrategy strategy;
+    private EmailFormatValidationStrategy strategy;
     private RegistrationRequests registrationHelper;
 
     @BeforeEach
     void setUp() {
-        message = new ApplicationMessageServiceImpl();
-        strategy = new EmailValidationStrategy(message);
+        message = new ApplicationMessageLoader();
+        strategy = new EmailFormatValidationStrategy(message);
         registrationHelper = new RegistrationRequests();
     }
 
