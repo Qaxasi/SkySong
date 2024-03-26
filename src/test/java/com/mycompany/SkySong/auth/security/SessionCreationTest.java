@@ -40,14 +40,18 @@ public class SessionCreationTest {
     @Test
     void whenCreatingSession_SetCorrectUserId() {
         int userId = 10;
-        Session session = sessionCreation.createSession(userId);
+        String token = tokenGenerator.generateToken();
+
+        Session session = sessionCreation.createSession(token, userId);
         assertThat(session.getUserId()).isEqualTo(10);
     }
 
     @Test
     void whenCreatingSession_SetSessionId() {
         int userId = 10;
-        Session session = sessionCreation.createSession(userId);
+        String token = tokenGenerator.generateToken();
+
+        Session session = sessionCreation.createSession(token, userId);
         assertThat(session.getSessionId()).isNotNull();
     }
 }
