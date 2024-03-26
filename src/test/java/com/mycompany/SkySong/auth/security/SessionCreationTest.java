@@ -17,9 +17,9 @@ public class SessionCreationTest {
 
     @BeforeEach
     void setUp() {
-        tokenGenerator = new TokenGeneratorImpl();
-        tokenHasher = new TokenHasherImpl();
-        sessionCreation = new SessionCreationImpl(tokenGenerator, tokenHasher);
+        tokenGenerator = new TokenGenerator();
+        tokenHasher = new TokenHasher();
+        sessionCreation = new SessionCreation(tokenGenerator, tokenHasher);
     }
 
     @Test
