@@ -19,15 +19,17 @@ public class SessionCreationTest {
     void setUp() {
         tokenGenerator = new TokenGenerator();
         tokenHasher = new TokenHasher();
-        sessionCreation = new SessionCreation(tokenGenerator, tokenHasher);
+        sessionCreation = new SessionCreation(tokenHasher);
     }
 
     @Test
     void whenCreatingSession_SetsCorrectExpirationTime() {
         Instant now = Instant.now();
+
+        String token = tokenGenerator.generateToken();
         int userId = 10;
 
-        Session session = sessionCreation.createSession(userId);
+        Session session = sessionCreation.createSession(token, userId);
 
         Instant expirationTime = session.getExpiresAt().toInstant();
 
