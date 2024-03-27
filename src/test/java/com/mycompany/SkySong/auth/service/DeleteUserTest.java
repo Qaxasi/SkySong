@@ -51,7 +51,7 @@ public class DeleteUserTest extends BaseIT {
     void whenUserExist_DeleteUser() {
         int userId = 1;
         delete.deleteUserById(userId);
-        assertThat(userChecker.userExist(userId)).isFalse();
+        assertThat(userChecker.userExists(userId)).isFalse();
     }
 
     @Test
