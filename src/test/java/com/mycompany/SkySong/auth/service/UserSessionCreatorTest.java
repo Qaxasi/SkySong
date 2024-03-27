@@ -42,4 +42,10 @@ public class UserSessionCreatorTest extends BaseIT {
         userSessionCreator.createUserSession(loginHelper.loginInvalidPassword("User"));
         assertThat(sessionChecker.userHasSession("User")).isFalse();
     }
+
+    @Test
+    void whenSessionCreated_SessionIsStored() {
+        userSessionCreator.createUserSession(loginHelper.login("User"));
+        assertThat(sessionChecker.userHasSession("User")).isTrue();
+    }
 }
