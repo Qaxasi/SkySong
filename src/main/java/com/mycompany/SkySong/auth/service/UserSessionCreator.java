@@ -10,6 +10,7 @@ import com.mycompany.SkySong.auth.security.SessionCreation;
 import com.mycompany.SkySong.auth.security.TokenGenerator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserSessionCreator {
@@ -32,6 +33,7 @@ public class UserSessionCreator {
         this.userDAO = userDAO;
     }
 
+    @Transactional
     public Session createUserSession(LoginRequest request) {
         String token = tokenGenerator.generateToken();
         Authentication auth = userAuth.authenticateUser(request);
