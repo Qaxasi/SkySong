@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UsernameValidationStrategyTest {
-    private ApplicationMessageService message;
+    private ApplicationMessageLoader message;
     private UsernameValidationStrategy strategy;
     private RegistrationRequests registrationHelper;
 
     @BeforeEach
     void setUp() {
-        message = new ApplicationMessageServiceImpl();
+        message = new ApplicationMessageLoader();
         strategy = new UsernameValidationStrategy(message);
         registrationHelper = new RegistrationRequests();
     }
@@ -36,5 +36,4 @@ public class UsernameValidationStrategyTest {
         assertThrows(CredentialValidationException.class,
                 () -> strategy.validate(registrationHelper.usernameWithSpecialCharacter));
     }
-
 }
