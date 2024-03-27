@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserSessionCreatorTest extends BaseIT {
-    
+
     @Autowired
     private UserSessionCreator userSessionCreator;
     @Autowired
@@ -35,5 +35,11 @@ public class UserSessionCreatorTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenAuthenticationFails_SessionNotCreated() {
+        userSessionCreator.createUserSession(loginHelper.loginInvalidPassword("User"));
+        assertThat(sessionChecker.userHasSession("User")).isFalse();
     }
 }
