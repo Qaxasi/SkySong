@@ -47,4 +47,10 @@ public class UserRegistrationTest extends BaseIT {
         registration.registerUser(requests.register("Maks"));
         assertThat(userChecker.userExists("Maks")).isTrue();
     }
+
+    @Test
+    void whenUserRegistered_UserHasRole() {
+        registration.registerUser(requests.register("Maks"));
+        assertTrue(roleChecker.hasUserRole("Maks", UserRole.ROLE_USER.name()));
+    }
 }
