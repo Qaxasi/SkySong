@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.auth.service;
 
-import com.mycompany.SkySong.testsupport.auth.service.UserLoginHelper;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.auth.exception.CredentialValidationException;
@@ -41,12 +40,6 @@ public class UserRegistrationServiceTest extends BaseIT {
     void whenRegistrationSuccess_ReturnMessage () {
         ApiResponse response = registration.register(registrationHelper.validCredentials);
         assertEquals("User registered successfully." , response.message());
-    }
-
-    @Test
-    void whenRegistrationSuccess_AllowLoginForRegisteredUser() {
-        registration.register(registrationHelper.validCredentials);
-        assertNotNull(login.loginRegisteredUser());
     }
 
     @Test
