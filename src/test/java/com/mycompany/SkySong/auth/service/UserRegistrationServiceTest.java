@@ -20,8 +20,6 @@ public class UserRegistrationServiceTest extends BaseIT {
     @Autowired
     private UserRegistrationService registration;
     @Autowired
-    private UserLoginHelper login;
-    @Autowired
     private RegistrationRequests registrationHelper;
 
     @Autowired
