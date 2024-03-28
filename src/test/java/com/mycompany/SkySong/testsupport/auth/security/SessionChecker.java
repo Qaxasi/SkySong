@@ -25,4 +25,13 @@ public class SessionChecker {
             return checkExistence(statement);
         }
     }
+
+    public boolean userHasActiveSession(int userId) throws SQLException {
+        String query = "SELECT COUNT(*) FROM sessions WHERE user_id = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            return checkExistence(statement);
+        }
+    }
 }
