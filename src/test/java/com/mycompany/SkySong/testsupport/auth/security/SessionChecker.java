@@ -17,7 +17,7 @@ public class SessionChecker {
         this.dataSource = dataSource;
     }
 
-    public boolean sessionExist(String sessionId) {
+    public boolean sessionExist(String sessionId) throws SQLException {
         String query = "SELECT COUNT(*) FROM sessions WHERE session_id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -32,6 +32,12 @@ public class SessionChecker {
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
             return checkExistence(statement);
+        }
+    }
+
+    private boolean checkExistence(PreparedStatement statement) throws SQLException {
+        try(ResultSet resultSet = statement.executeQuery()) {
+            return resultSet.next() && resultSet.getInt(1) > 0;
         }
     }
 }
