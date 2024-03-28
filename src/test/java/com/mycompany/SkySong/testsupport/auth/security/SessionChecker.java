@@ -17,21 +17,25 @@ public class SessionChecker {
         this.dataSource = dataSource;
     }
 
-    public boolean sessionExist(String sessionId) throws SQLException {
+    public boolean sessionExist(String sessionId) {
         String query = "SELECT COUNT(*) FROM sessions WHERE session_id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, sessionId);
             return checkExistence(statement);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error during session exist check: " + e.getMessage(), e);
         }
     }
 
-    public boolean userHasActiveSession(int userId) throws SQLException {
+    public boolean userHasActiveSession(int userId) {
         String query = "SELECT COUNT(*) FROM sessions WHERE user_id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
             return checkExistence(statement);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error during check user active session: " + e.getMessage(), e);
         }
     }
 
