@@ -18,20 +18,11 @@ public class SessionChecker {
     }
 
     public boolean sessionExist(String sessionId) {
-        try {
-            String query = "SELECT COUNT(*) FROM sessions WHERE session_id = ?";
-
-            try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(query)) {
-
-                statement.setString(1, sessionId);
-
-                ResultSet resultSet = statement.executeQuery();
-
-                return resultSet.next() && resultSet.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error during checking if session exists " + e.getMessage(), e);
+        String query = "SELECT COUNT(*) FROM sessions WHERE session_id = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, sessionId);
+            return checkExistence(statement);
         }
     }
 }
