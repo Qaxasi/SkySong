@@ -17,7 +17,6 @@ public class UserSessionCreator {
 
     private final SessionCreation sessionCreation;
     private final UserAuthentication userAuth;
-    private final TokenGenerator tokenGenerator;
     private final SessionDAO sessionDAO;
     private final UserDAO userDAO;
 
@@ -28,7 +27,6 @@ public class UserSessionCreator {
                               UserDAO userDAO) {
         this.sessionCreation = sessionCreation;
         this.userAuth = userAuth;
-        this.tokenGenerator = tokenGenerator;
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
     }
