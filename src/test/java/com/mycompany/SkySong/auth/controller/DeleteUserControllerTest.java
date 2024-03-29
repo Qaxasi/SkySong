@@ -124,6 +124,6 @@ class DeleteUserControllerTest extends BaseIT {
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isForbidden());
 
-        assertThat(userChecker.userExists(userId)).isTrue();
+        assertThat(userChecker.userExist(userId)).isTrue();
     }
 }
