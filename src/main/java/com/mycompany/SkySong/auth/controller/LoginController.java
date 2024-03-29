@@ -3,7 +3,7 @@ package com.mycompany.SkySong.auth.controller;
 import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
 import com.mycompany.SkySong.auth.service.ApplicationMessageLoader;
-import com.mycompany.SkySong.auth.service.UserSessionCreator;
+import com.mycompany.SkySong.auth.service.UserSessionService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class LoginController {
 
+    private final UserSessionService userSession;
     private final ApplicationMessageLoader message;
 
-    public LoginController(ApplicationMessageLoader message) {
+    public LoginController(UserSessionService userSession, ApplicationMessageLoader message) {
+        this.userSession = userSession;
         this.message = message;
     }
 
