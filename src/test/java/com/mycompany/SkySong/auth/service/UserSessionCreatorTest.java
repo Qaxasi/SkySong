@@ -39,13 +39,15 @@ public class UserSessionCreatorTest extends BaseIT {
 
     @Test
     void whenAuthenticationFails_SessionNotCreated() {
-        userSessionCreator.createUserSession(loginHelper.loginInvalidPassword("User"));
+        String sessionToken = "2eds2etfghthheyyyjh536t3fasd235teg";
+        userSessionCreator.createUserSession(loginHelper.loginInvalidPassword("User"), sessionToken);
         assertThat(sessionChecker.userHasSession("User")).isFalse();
     }
 
     @Test
     void whenSessionCreated_SessionIsStored() {
-        userSessionCreator.createUserSession(loginHelper.login("User"));
+        String sessionToken = "2eds2etfghthheyyyjh536t3fasd235teg";
+        userSessionCreator.createUserSession(loginHelper.login("User"), sessionToken);
         assertThat(sessionChecker.userHasSession("User")).isTrue();
     }
 
