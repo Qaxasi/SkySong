@@ -38,4 +38,10 @@ public class UserExistenceChecker {
             throw new RuntimeException("Error during check user exist: " + e.getMessage(), e);
         }
     }
+
+    private boolean checkExistence(PreparedStatement statement) throws SQLException {
+        try(ResultSet resultSet = statement.executeQuery()) {
+            return resultSet.next() && resultSet.getInt(1) > 0;
+        }
+    }
 }
