@@ -17,12 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class LoginController {
 
-    private final UserSessionCreator session;
     private final ApplicationMessageLoader message;
 
-    public LoginController(UserSessionCreator session,
-                           ApplicationMessageLoader message) {
-        this.session = session;
+    public LoginController(ApplicationMessageLoader message) {
         this.message = message;
     }
 
