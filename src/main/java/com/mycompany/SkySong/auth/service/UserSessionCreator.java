@@ -7,7 +7,6 @@ import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.repository.SessionDAO;
 import com.mycompany.SkySong.auth.repository.UserDAO;
 import com.mycompany.SkySong.auth.security.SessionCreation;
-import com.mycompany.SkySong.auth.security.TokenGenerator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +21,6 @@ public class UserSessionCreator {
 
     public UserSessionCreator(SessionCreation sessionCreation,
                               UserAuthentication userAuth,
-                              TokenGenerator tokenGenerator,
                               SessionDAO sessionDAO,
                               UserDAO userDAO) {
         this.sessionCreation = sessionCreation;
