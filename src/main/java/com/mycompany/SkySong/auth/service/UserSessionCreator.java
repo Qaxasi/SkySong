@@ -34,15 +34,12 @@ public class UserSessionCreator {
     }
 
     @Transactional
-    public Session createUserSession(LoginRequest request) {
-        String token = tokenGenerator.generateToken();
+    public void createUserSession(LoginRequest request, String sessionToken) {
         Authentication auth = userAuth.authenticateUser(request);
         User user = userDAO.findByUsername(auth.getName()).orElseThrow(
                 () -> new UserNotFoundException("User not found with username :" + auth.getName()));
 
-        Session session = sessionCreation.createSession(token, user.getId());
+        Session session = sessionCreation.createSession(sessionToken, user.getId());
         sessionDAO.save(session);
-
-        return session;
     }
 }
