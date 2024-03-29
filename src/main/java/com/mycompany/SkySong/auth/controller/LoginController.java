@@ -28,7 +28,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request,
                                              HttpServletResponse response) {
-        String sessionToken = session.createUserSession(request).getSessionId();
+        String sessionToken = userSession.createSession(request);
 
         Cookie sessionCookie = new Cookie("session_id", sessionToken);
         sessionCookie.setHttpOnly(true);
