@@ -12,4 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserSessionServiceTest extends BaseIT {
+
+    @Autowired
+    private UserSessionService session;
+    @Autowired
+    private LoginRequests loginHelper;
+
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
+
 }
