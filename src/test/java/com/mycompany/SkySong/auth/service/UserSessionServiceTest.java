@@ -32,4 +32,10 @@ public class UserSessionServiceTest extends BaseIT {
     void cleanUp() {
         cleaner.clean();
     }
+
+    @Test
+    void whenSessionCreated_ReturnSessionToken() {
+        String token = session.createSession(loginHelper.validCredentials);
+        assertThat(token).isNotNull();
+    }
 }
