@@ -18,18 +18,11 @@ public class UserExistenceChecker {
     }
 
     public boolean userExist(int userId) {
-        try {
-            String query = "SELECT COUNT(*) FROM users WHERE id = ?";
-
-            try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(query)) {
-
-                statement.setInt(1, userId);
-
-                ResultSet resultSet = statement.executeQuery();
-
-                return resultSet.next() && resultSet.getInt(1) > 0;
-            }
+        String query = "SELECT COUNT(*) FROM users WHERE id = ?";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+             statement.setInt(1, userId);
+             return checkExistence(statement);
         } catch (SQLException e) {
             throw new RuntimeException("Error during checking if user exists " + e.getMessage(), e);
         }
