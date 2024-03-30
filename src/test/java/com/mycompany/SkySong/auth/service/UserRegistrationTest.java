@@ -45,7 +45,7 @@ public class UserRegistrationTest extends BaseIT {
     @Test
     void whenUserRegistered_UserExist() {
         registration.registerUser(requests.register("Maks"));
-        assertThat(userChecker.userExists("Maks")).isTrue();
+        assertThat(userChecker.userExist("Maks")).isTrue();
     }
 
     @Test
