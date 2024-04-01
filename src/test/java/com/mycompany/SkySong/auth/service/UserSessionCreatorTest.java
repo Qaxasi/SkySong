@@ -56,7 +56,9 @@ public class UserSessionCreatorTest extends BaseIT {
 
     @Test
     void whenSessionCreated_UserIdIsCorrect() {
-        Session session = userSessionCreator.createUserSession(loginHelper.login("User"));
+        String sessionToken = "2eds2etfghthheyyyjh536t3fasd235teg";
+        userSessionCreator.createUserSession(loginHelper.login("User"), sessionToken);
+        Session session = sessionFetcher.fetchSessionForToken("2eds2etfghthheyyyjh536t3fasd235teg");
         assertThat(session.getUserId()).isEqualTo(1);
     }
 }
