@@ -23,7 +23,7 @@ public class SessionFetcher {
         this.tokenHasher = tokenHasher;
     }
 
-    public Optional<Session> getSession(String sessionId) {
+    private Optional<Session> getSession(String sessionId) {
         try {
             String query = "SELECT * FROM sessions WHERE session_id = ?";
             try (Connection connection = dataSource.getConnection();
