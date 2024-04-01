@@ -48,8 +48,8 @@ public class SessionFetcher {
     }
 
     public Session fetchSessionForToken(String sessionToken) {
-        String hashedToken = tokenHasher.generateHashedToken(sessionToken);
-        Optional<Session> session = getSession(hashedToken);
+        String hashedSessionId = tokenHasher.generateHashedToken(sessionToken);
+        Optional<Session> session = getSession(hashedSessionId);
         return session.orElseThrow(() -> new NoSuchElementException("Session not found for token: " + sessionToken));
     }
 }
