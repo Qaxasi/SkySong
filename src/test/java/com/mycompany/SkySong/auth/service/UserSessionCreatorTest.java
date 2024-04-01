@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
+import com.mycompany.SkySong.testsupport.auth.security.SessionFetcher;
 import com.mycompany.SkySong.testsupport.auth.security.UserSessionChecker;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
@@ -21,6 +22,8 @@ public class UserSessionCreatorTest extends BaseIT {
     private LoginRequests loginHelper;
     @Autowired
     private UserSessionChecker sessionChecker;
+    @Autowired
+    private SessionFetcher sessionFetcher;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
