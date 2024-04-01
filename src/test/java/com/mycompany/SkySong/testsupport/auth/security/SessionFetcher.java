@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.testsupport.auth.security;
 
 import com.mycompany.SkySong.auth.model.entity.Session;
+import com.mycompany.SkySong.auth.security.TokenHasher;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -8,15 +9,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Component
 public class SessionFetcher {
 
     private final DataSource dataSource;
+    private final TokenHasher tokenHasher;
 
-    public SessionFetcher(DataSource dataSource) {
+    public SessionFetcher(DataSource dataSource, TokenHasher tokenHasher) {
         this.dataSource = dataSource;
+        this.tokenHasher = tokenHasher;
     }
 
     public Optional<Session> getSession(String sessionId) {
