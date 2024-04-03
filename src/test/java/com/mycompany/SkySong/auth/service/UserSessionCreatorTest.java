@@ -69,4 +69,9 @@ public class UserSessionCreatorTest extends BaseIT {
     private void createUserSession(LoginRequest request) {
         userSessionCreator.createUserSession(request, "2eds2etfghthheyyyjh536t3fasd235teg");
     }
+
+    private int sessionUserId() {
+        Session session = sessionFetcher.fetchSessionForToken("2eds2etfghthheyyyjh536t3fasd235teg");
+        return session.getUserId();
+    }
 }
