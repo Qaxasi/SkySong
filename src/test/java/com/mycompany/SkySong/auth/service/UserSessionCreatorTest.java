@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.model.dto.LoginRequest;
 import com.mycompany.SkySong.auth.model.entity.Session;
 import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
 import com.mycompany.SkySong.testsupport.auth.common.TestUserFactory;
@@ -63,5 +64,9 @@ public class UserSessionCreatorTest extends BaseIT {
         userSessionCreator.createUserSession(loginHelper.login("User"), sessionToken);
         Session session = sessionFetcher.fetchSessionForToken("2eds2etfghthheyyyjh536t3fasd235teg");
         assertThat(session.getUserId()).isEqualTo(1);
+    }
+
+    private void createUserSession(LoginRequest request) {
+        userSessionCreator.createUserSession(request, "2eds2etfghthheyyyjh536t3fasd235teg");
     }
 }
