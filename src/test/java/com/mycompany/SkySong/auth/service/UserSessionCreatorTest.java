@@ -66,6 +66,11 @@ public class UserSessionCreatorTest extends BaseIT {
         assertThat(sessionUserId()).isEqualTo(1);
     }
 
+    private void createSession(LoginRequest request) {
+        assertThrows(BadCredentialsException.class,
+                () -> userSessionCreator.createUserSession(request, "2eds2etfghthheyyyjh536t3fasd235teg"));
+    }
+
     private void createUserSession(LoginRequest request) {
         userSessionCreator.createUserSession(request, "2eds2etfghthheyyyjh536t3fasd235teg");
     }
