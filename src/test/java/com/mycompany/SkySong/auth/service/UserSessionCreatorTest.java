@@ -13,8 +13,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserSessionCreatorTest extends BaseIT {
 
@@ -46,24 +48,22 @@ public class UserSessionCreatorTest extends BaseIT {
 
     @Test
     void whenAuthenticationFails_SessionNotCreated() {
-        String sessionToken = "2eds2etfghthheyyyjh536t3fasd235teg";
-        userSessionCreator.createUserSession(loginHelper.loginInvalidPassword("User"), sessionToken);
-        assertThat(sessionChecker.userHasSession("User")).isFalse();
+        createSession(loginHelper.loginInvalidPassword("Tom"));
+        assertThat(sessionChecker.userHasSession("Tom")).isFalse();
     }
 
     @Test
     void whenSessionCreated_SessionIsStored() {
-        String sessionToken = "2eds2etfghthheyyyjh536t3fasd235teg";
-        userSessionCreator.createUserSession(loginHelper.login("User"), sessionToken);
+        userFactory.buildUser(1, "User");
+        createUserSession(loginHelper.login("User"));
         assertThat(sessionChecker.userHasSession("User")).isTrue();
     }
 
     @Test
     void whenSessionCreated_UserIdIsCorrect() {
-        String sessionToken = "2eds2etfghthheyyyjh536t3fasd235teg";
-        userSessionCreator.createUserSession(loginHelper.login("User"), sessionToken);
-        Session session = sessionFetcher.fetchSessionForToken("2eds2etfghthheyyyjh536t3fasd235teg");
-        assertThat(session.getUserId()).isEqualTo(1);
+        userFactory.buildUser(1, "User");
+        createUserSession(loginHelper.login("User"));
+        assertThat(sessionUserId()).isEqualTo(1);
     }
 
     private void createUserSession(LoginRequest request) {
