@@ -21,5 +21,15 @@ public class TestUserFactory {
     private RoleDAO roleDAO;
     @Autowired
     private PasswordEncoder encoder;
-    
+
+    public void buildUser(int userId, String username) {
+        Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
+                () -> new RoleNotFoundException("Role not found"));
+        Set<Role> roles = Set.of(role);
+
+        User user = new User(userId, username, username + "@mail.mail", encoder.encode("Password#3"), roles);
+
+        int id = userDAO.save(user);
+        userDAO.assignRoleToUser(id, role.getId());
+    }
 }
