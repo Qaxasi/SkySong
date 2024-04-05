@@ -22,12 +22,12 @@ public class TestUserFactory {
     @Autowired
     private PasswordEncoder encoder;
 
-    public void buildUser(int userId, String username) {
+    public void buildUser(int userId, String username, String email) {
         Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Role not found"));
         Set<Role> roles = Set.of(role);
 
-        User user = new User(userId, username, username + "@mail.mail", encoder.encode("Password#3"), roles);
+        User user = new User(userId, username, email, encoder.encode("Password#3"), roles);
 
         int id = userDAO.save(user);
         userDAO.assignRoleToUser(id, role.getId());
