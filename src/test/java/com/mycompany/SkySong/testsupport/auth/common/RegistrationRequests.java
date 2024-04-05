@@ -16,7 +16,7 @@ public class RegistrationRequests {
     public RegisterRequest existUsername =
             new RegisterRequest("Mark", "sam@mail.com", "Password#3");
 
-    public RegisterRequest register(String username) {
+    public RegisterRequest registerByUsername(String username) {
         return new RegisterRequest(username, "new@mail.com", "Password#3");
     }
     public String malformedRequest =
