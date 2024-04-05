@@ -19,6 +19,9 @@ public class RegistrationRequests {
     public RegisterRequest registerByUsername(String username) {
         return new RegisterRequest(username, "new@mail.com", "Password#3");
     }
+    public RegisterRequest registerByEmail(String email) {
+        return new RegisterRequest("User", email, "Password#3");
+    }
     public String malformedRequest =
             "{\"username\": \"New\", \"email\": \"new@mail.com\", \"password\": \"Password#3\"";
 
