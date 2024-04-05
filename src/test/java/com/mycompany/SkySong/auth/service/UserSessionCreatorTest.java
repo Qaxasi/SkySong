@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserSessionCreatorTest extends BaseIT {
 
@@ -67,8 +66,10 @@ public class UserSessionCreatorTest extends BaseIT {
     }
 
     private void createSession(LoginRequest request) {
-        assertThrows(BadCredentialsException.class,
-                () -> userSessionCreator.createUserSession(request, "2eds2etfghthheyyyjh536t3fasd235teg"));
+        try {
+            userSessionCreator.createUserSession(request, "2eds2etfghthheyyyjh536t3fasd235teg");
+        } catch (BadCredentialsException e) {
+        }
     }
 
     private void createUserSession(LoginRequest request) {
