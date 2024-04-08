@@ -2,6 +2,7 @@ package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.exception.CredentialValidationException;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
+import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
@@ -19,6 +20,8 @@ public class EmailExistenceValidationStrategyTest extends BaseIT {
     private EmailExistenceValidationStrategy strategy;
     @Autowired
     private RegistrationRequests registrationHelper;
+    @Autowired
+    private UserBuilder userBuilder;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
