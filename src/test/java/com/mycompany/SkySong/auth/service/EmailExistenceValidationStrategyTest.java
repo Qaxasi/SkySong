@@ -47,6 +47,6 @@ public class EmailExistenceValidationStrategyTest extends BaseIT {
 
     @Test
     void whenEmailNotExist_NotThrowException() {
-        assertDoesNotThrow(() -> strategy.validate(registrationHelper.uniqueEmail));
+        assertDoesNotThrow(() -> strategy.validate(registrationHelper.registerByEmail("user@mail.mail")));
     }
 }
