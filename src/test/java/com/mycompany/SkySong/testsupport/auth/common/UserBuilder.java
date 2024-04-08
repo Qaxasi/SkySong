@@ -21,6 +21,15 @@ public class TestUserFactory {
     private RoleDAO roleDAO;
     @Autowired
     private PasswordEncoder encoder;
+    private Integer id;
+
+    private String username;
+    private String email;
+
+    public static UserBu builder() {
+
+    }
+
 
     public void buildUser(int userId, String username, String email) {
         Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
@@ -28,6 +37,17 @@ public class TestUserFactory {
         Set<Role> roles = Set.of(role);
 
         User user = new User(userId, username, email, encoder.encode("Password#3"), roles);
+
+        int id = userDAO.save(user);
+        userDAO.assignRoleToUser(id, role.getId());
+    }
+
+    public void buildUser(String email) {
+        Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
+                () -> new RoleNotFoundException("Role not found"));
+        Set<Role> roles = Set.of(role);
+
+        User user = new User(1, "User", email, encoder.encode("Password#3"), roles);
 
         int id = userDAO.save(user);
         userDAO.assignRoleToUser(id, role.getId());
