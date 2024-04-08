@@ -40,8 +40,9 @@ public class EmailExistenceValidationStrategyTest extends BaseIT {
 
     @Test
     void whenEmailExist_ThrowException() {
+        userBuilder.buildByEmail("user@mail.mail").build();
         assertThrows(CredentialValidationException.class,
-                () -> strategy.validate(registrationHelper.existEmail));
+                () -> strategy.validate(registrationHelper.registerByEmail("user@mail.mail")));
     }
 
     @Test
