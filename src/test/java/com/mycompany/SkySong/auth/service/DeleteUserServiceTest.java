@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.auth.service;
 
 import com.mycompany.SkySong.auth.model.dto.ApiResponse;
+import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
@@ -15,6 +16,8 @@ public class DeleteUserServiceTest extends BaseIT {
 
     @Autowired
     private DeleteUserService deleter;
+    @Autowired
+    private UserBuilder userBuilder;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
