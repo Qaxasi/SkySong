@@ -23,10 +23,9 @@ public class UserBuilder {
     private String username;
     private String email;
 
-    public static UserBu builder() {
-
+    public UserBuilder buildByUsername(String username) {
+        return withUsername(username).withId(1).withEmail("user@mail.mail");
     }
-
 
     public void buildUser(int userId, String username, String email) {
         Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
