@@ -1,7 +1,9 @@
 package com.mycompany.SkySong.auth.service;
 
+import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
+import com.mycompany.SkySong.testsupport.auth.common.UserSaver;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
@@ -20,6 +22,8 @@ public class UserSessionServiceTest extends BaseIT {
     private LoginRequests loginHelper;
     @Autowired
     private UserBuilder builder;
+    @Autowired
+    private UserSaver userSaver;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
