@@ -31,6 +31,9 @@ public class UserBuilder {
         return withEmail(email).withId(1).withUsername("User");
     }
 
+    public UserBuilder buildById(Integer id) {
+        return withId(id).withUsername("User").withEmail("user@mail.mail");
+    }
 
     public void buildUser(int userId, String username, String email) {
         Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
