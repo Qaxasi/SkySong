@@ -42,8 +42,11 @@ public class UserSessionServiceTest extends BaseIT {
 
     @Test
     void whenSessionCreated_ReturnSessionToken() {
-        userFactory.buildUser(1, "User");
+        User user = builder.buildByUsername("User").build();
+        userSaver.save(user);
+
         String token = session.createSession(loginHelper.login("User"));
+
         assertThat(token).isNotNull();
     }
 }
