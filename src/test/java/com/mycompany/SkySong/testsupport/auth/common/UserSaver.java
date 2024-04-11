@@ -11,4 +11,10 @@ public class UserSaver {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Transactional
+    public void save(User user) {
+        int userId = userDAO.save(user);
+        user.getRoles().forEach(role -> userDAO.assignRoleToUser(userId, role.getId()));
+    }
 }
