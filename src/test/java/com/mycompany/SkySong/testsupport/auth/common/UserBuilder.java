@@ -27,6 +27,11 @@ public class UserBuilder {
         return withUsername(username).withId(1).withEmail("user@mail.mail");
     }
 
+    public UserBuilder buildByEmail(String email) {
+        return withEmail(email).withId(1).withUsername("User");
+    }
+
+
     public void buildUser(int userId, String username, String email) {
         Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Role not found"));
