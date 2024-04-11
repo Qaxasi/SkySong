@@ -40,7 +40,10 @@ public class UserBuilder {
         return this;
     }
 
-        User user = new User(userId, username, email, encoder.encode("Password#3"), roles);
+    public UserBuilder withEmail(String email) {
+        this.email = email;
+        return this;
+    }
 
         int id = userDAO.save(user);
         userDAO.assignRoleToUser(id, role.getId());
