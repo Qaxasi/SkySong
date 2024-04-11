@@ -19,7 +19,7 @@ public class UserSessionServiceTest extends BaseIT {
     @Autowired
     private UserSessionService session;
     @Autowired
-    private LoginRequests loginHelper;
+    private LoginRequests loginRequests;
     @Autowired
     private UserBuilder builder;
     @Autowired
@@ -45,7 +45,7 @@ public class UserSessionServiceTest extends BaseIT {
         User user = builder.buildByUsername("User").build();
         userSaver.save(user);
 
-        String token = session.createSession(loginHelper.login("User"));
+        String token = session.createSession(loginRequests.login("User"));
 
         assertThat(token).isNotNull();
     }
