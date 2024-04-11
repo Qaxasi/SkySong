@@ -45,8 +45,9 @@ public class UserBuilder {
         return this;
     }
 
-        int id = userDAO.save(user);
-        userDAO.assignRoleToUser(id, role.getId());
+    public UserBuilder withId(Integer id) {
+        this.id = id;
+        return this;
     }
 
     public void buildUser(String email) {
