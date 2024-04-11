@@ -5,7 +5,6 @@ import com.mycompany.SkySong.auth.model.entity.Role;
 import com.mycompany.SkySong.auth.model.entity.User;
 import com.mycompany.SkySong.auth.model.entity.UserRole;
 import com.mycompany.SkySong.auth.repository.RoleDAO;
-import com.mycompany.SkySong.auth.repository.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 
 @Component
-public class TestUserFactory {
+public class UserBuilder {
 
     @Autowired
     private UserDAO userDAO;
@@ -21,8 +20,8 @@ public class TestUserFactory {
     private RoleDAO roleDAO;
     @Autowired
     private PasswordEncoder encoder;
-    private Integer id;
 
+    private Integer id;
     private String username;
     private String email;
 
