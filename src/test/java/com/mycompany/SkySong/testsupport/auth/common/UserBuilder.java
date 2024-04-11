@@ -35,10 +35,10 @@ public class UserBuilder {
         return withId(id).withUsername("User").withEmail("user@mail.mail");
     }
 
-    public void buildUser(int userId, String username, String email) {
-        Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
-                () -> new RoleNotFoundException("Role not found"));
-        Set<Role> roles = Set.of(role);
+    public UserBuilder withUsername(String username) {
+        this.username = username;
+        return this;
+    }
 
         User user = new User(userId, username, email, encoder.encode("Password#3"), roles);
 
