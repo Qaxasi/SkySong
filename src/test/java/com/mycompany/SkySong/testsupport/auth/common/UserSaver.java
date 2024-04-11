@@ -8,4 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class UserSaver {
+
+    @Autowired
+    private UserDAO userDAO;
 }
