@@ -50,14 +50,18 @@ public class UserBuilder {
         return this;
     }
 
-    public void buildUser(String email) {
+    public User build() {
         Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Role not found"));
         Set<Role> roles = Set.of(role);
 
-        User user = new User(1, "User", email, encoder.encode("Password#3"), roles);
+        User user = new User();
+        user.setId(id);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(encoder.encode("Password#3"));
+        user.setRoles(roles);
 
-        int id = userDAO.save(user);
-        userDAO.assignRoleToUser(id, role.getId());
+        return user;
     }
 }
