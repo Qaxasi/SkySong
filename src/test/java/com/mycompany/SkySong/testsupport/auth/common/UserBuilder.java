@@ -15,8 +15,6 @@ import java.util.Set;
 public class UserBuilder {
 
     @Autowired
-    private UserDAO userDAO;
-    @Autowired
     private RoleDAO roleDAO;
     @Autowired
     private PasswordEncoder encoder;
