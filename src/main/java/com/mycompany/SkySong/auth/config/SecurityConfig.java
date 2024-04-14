@@ -59,7 +59,8 @@ public class SecurityConfig {
                                 "/api/v1/users/login",
                                 "/api/v1/users/register")
                         .permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/v1/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,
                                 "/api/v1/users/logout").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
