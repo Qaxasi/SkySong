@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.testsupport.auth.security;
 
-import com.mycompany.SkySong.auth.model.entity.Session;
-import com.mycompany.SkySong.auth.security.TokenHasher;
+import com.mycompany.SkySong.user.Session;
+import com.mycompany.SkySong.common.utils.TokenHasher;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;

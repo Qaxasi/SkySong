@@ -1,0 +1,26 @@
+package com.mycompany.SkySong.registration;
+
+import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;
+import com.mycompany.SkySong.user.UserDAO;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Service;
+
+@Service
+@Order(4)
+public class UsernameExistenceValidationStrategy implements RegistrationValidationStrategy {
+
+    private final ApplicationMessageLoader message;
+    private final UserDAO userDAO;
+
+    public UsernameExistenceValidationStrategy(ApplicationMessageLoader message, UserDAO userDAO) {
+        this.message = message;
+        this.userDAO = userDAO;
+    }
+
+    @Override
+    public void validate(RegisterRequest request) {
+        if (userDAO.existsByUsername(request.username()) > 0) {
+            throw new CredentialValidationException(message.getMessage("username.exist"));
+        }
+    }
+}

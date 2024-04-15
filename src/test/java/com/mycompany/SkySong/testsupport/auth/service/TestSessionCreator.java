@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.testsupport.auth.service;
 
-import com.mycompany.SkySong.auth.model.entity.Session;
+import com.mycompany.SkySong.user.Session;
 import java.util.Date;
 
 public class TestSessionCreator {

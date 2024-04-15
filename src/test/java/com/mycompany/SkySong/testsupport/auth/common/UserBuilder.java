@@ -1,10 +1,10 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
-import com.mycompany.SkySong.auth.exception.RoleNotFoundException;
-import com.mycompany.SkySong.auth.model.entity.Role;
-import com.mycompany.SkySong.auth.model.entity.User;
-import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.auth.repository.RoleDAO;
+import com.mycompany.SkySong.registration.RoleNotFoundException;
+import com.mycompany.SkySong.user.Role;
+import com.mycompany.SkySong.user.User;
+import com.mycompany.SkySong.user.UserRole;
+import com.mycompany.SkySong.user.RoleDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

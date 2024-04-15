@@ -1,0 +1,28 @@
+package com.mycompany.SkySong.common.security;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+@Service
+public class SessionAuthentication {
+
+    private final SessionUserInfoProvider userInfoProvider;
+    private final CustomUserDetailsService userDetails;
+
+    public SessionAuthentication(SessionUserInfoProvider userInfoProvider, CustomUserDetailsService userDetails) {
+        this.userInfoProvider = userInfoProvider;
+        this.userDetails = userDetails;
+    }
+    
+    public void authenticateUser(String sessionId) {
+        String username = userInfoProvider.getUsernameForSession(sessionId);
+        UserDetails details = userDetails.loadUserByUsername(username);
+
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+}

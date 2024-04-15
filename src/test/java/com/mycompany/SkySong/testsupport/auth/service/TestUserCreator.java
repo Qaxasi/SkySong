@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.testsupport.auth.service;
 
-import com.mycompany.SkySong.auth.model.entity.Role;
-import com.mycompany.SkySong.auth.model.entity.User;
-import com.mycompany.SkySong.auth.model.entity.UserRole;
-import com.mycompany.SkySong.auth.repository.RoleDAO;
+import com.mycompany.SkySong.user.Role;
+import com.mycompany.SkySong.user.User;
+import com.mycompany.SkySong.user.UserRole;
+import com.mycompany.SkySong.user.RoleDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
