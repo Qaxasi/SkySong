@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.user;
 
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
-import com.mycompany.SkySong.user.DeleteUser;
+import com.mycompany.SkySong.testsupport.auth.common.TestUserCreator;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.security.RoleChecker;
 import com.mycompany.SkySong.testsupport.auth.security.SessionChecker;
@@ -26,6 +26,8 @@ public class DeleteUserTest extends BaseIT {
     private SessionChecker sessionChecker;
     @Autowired
     private RoleChecker roleChecker;
+    @Autowired
+    private TestUserCreator userCreator;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
