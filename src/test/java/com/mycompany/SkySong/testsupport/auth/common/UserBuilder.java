@@ -1,10 +1,7 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.registration.RoleNotFoundException;
-import com.mycompany.SkySong.user.Role;
-import com.mycompany.SkySong.user.User;
-import com.mycompany.SkySong.user.UserRole;
-import com.mycompany.SkySong.user.RoleDAO;
+import com.mycompany.SkySong.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -22,6 +19,7 @@ public class UserBuilder {
     private Integer id;
     private String username;
     private String email;
+    private Session session;
 
     public UserBuilder buildByUsername(String username) {
         return withUsername(username).withId(1).withEmail("user@mail.mail");
@@ -47,6 +45,11 @@ public class UserBuilder {
 
     public UserBuilder withId(Integer id) {
         this.id = id;
+        return this;
+    }
+
+    public UserBuilder with(SessionBuilder sessionBuilder) {
+        this.session = sessionBuilder.build();
         return this;
     }
 
