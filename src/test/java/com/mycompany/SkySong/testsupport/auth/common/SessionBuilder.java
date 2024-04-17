@@ -30,4 +30,8 @@ public class SessionBuilder {
     public SessionBuilder buildBySessionId(String sessionId) {
         return withSessionId(sessionId).withUserId(1);
     }
+
+    public SessionBuilder buildByUserId(Integer userId) {
+        return withUserId(userId).withSessionId("12345abcdefgh");
+    }
 }
