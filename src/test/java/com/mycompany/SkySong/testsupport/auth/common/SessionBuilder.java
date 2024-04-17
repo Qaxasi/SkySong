@@ -26,4 +26,8 @@ public class SessionBuilder {
         this.userId = userId;
         return this;
     }
+
+    public SessionBuilder buildBySessionId(String sessionId) {
+        return withSessionId(sessionId).withUserId(1);
+    }
 }
