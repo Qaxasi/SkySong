@@ -7,4 +7,7 @@ import java.util.Date;
 
 @Component
 public class SessionBuilder {
+
+    private String sessionId;
+    private Integer userId;
 }
