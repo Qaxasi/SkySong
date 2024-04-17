@@ -10,4 +10,11 @@ public class SessionBuilder {
 
     private String sessionId;
     private Integer userId;
+
+    private SessionBuilder() {}
+
+    public static SessionBuilder aSession() {
+        return new SessionBuilder();
+    }
+    
 }
