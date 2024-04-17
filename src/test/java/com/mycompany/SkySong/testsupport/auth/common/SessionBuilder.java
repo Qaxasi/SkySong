@@ -21,4 +21,9 @@ public class SessionBuilder {
         this.sessionId = sessionId;
         return this;
     }
+
+    public SessionBuilder withUserId(Integer userId) {
+        this.userId = userId;
+        return this;
+    }
 }
