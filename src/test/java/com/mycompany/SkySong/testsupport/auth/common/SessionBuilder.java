@@ -16,5 +16,9 @@ public class SessionBuilder {
     public static SessionBuilder aSession() {
         return new SessionBuilder();
     }
-    
+
+    public SessionBuilder withSessionId(String sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
 }
