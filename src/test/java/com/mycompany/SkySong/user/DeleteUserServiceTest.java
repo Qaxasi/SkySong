@@ -1,12 +1,8 @@
 package com.mycompany.SkySong.user;
 
-import com.mycompany.SkySong.auth.model.dto.ApiResponse;
-import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
-import com.mycompany.SkySong.testsupport.auth.common.UserSaver;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
-import com.mycompany.SkySong.user.DeleteUserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,10 +14,6 @@ public class DeleteUserServiceTest extends BaseIT {
 
     @Autowired
     private DeleteUserService deleter;
-    @Autowired
-    private UserBuilder userBuilder;
-    @Autowired
-    private UserSaver userSaver;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
