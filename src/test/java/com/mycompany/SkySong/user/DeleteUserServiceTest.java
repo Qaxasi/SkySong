@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.user;
 
+import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.auth.common.TestUserCreator;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
@@ -36,9 +37,9 @@ public class DeleteUserServiceTest extends BaseIT {
 
     @Test
     void whenUserDeleted_ReturnMessage() {
-        int userId = 1;
-        ApiResponse response = deleter.deleteUser(userId);
-        String expectedMessage = String.format("User with ID %d deleted successfully.", userId);
+        userCreator.createUserWithId(1);
+        ApiResponse response = deleter.deleteUser(1);
+        String expectedMessage = String.format("User with ID %d deleted successfully.", 1);
         assertThat(response.message()).isEqualTo(expectedMessage);
     }
 }
