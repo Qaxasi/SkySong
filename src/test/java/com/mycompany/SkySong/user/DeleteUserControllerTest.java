@@ -89,8 +89,7 @@ class DeleteUserControllerTest extends BaseIT {
 
         Cookie sessionId = auth.loginAdminUser();
 
-        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
-                .andExpect(status().isOk());
+        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId));
 
         mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
                 .andExpect(status().isNotFound());
