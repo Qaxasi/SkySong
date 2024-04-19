@@ -48,11 +48,6 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder with(SessionBuilder sessionBuilder) {
-        this.session = sessionBuilder.build();
-        return this;
-    }
-
     public User build() {
         Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Role not found"));
