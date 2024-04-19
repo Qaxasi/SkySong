@@ -19,4 +19,7 @@ public interface SessionDAO {
 
     @SqlUpdate("DELETE FROM sessions WHERE session_id = :sessionId")
     void deleteById(@Bind("sessionId") String sessionId);
+
+    @SqlUpdate("DELETE FROM sessions WHERE user_id = :userId")
+    void deleteUserSessions(@Bind("userId") int userId);
 }
