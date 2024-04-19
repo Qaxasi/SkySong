@@ -8,9 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteUser {
 
     private final UserDAO userDAO;
+    private final SessionDAO sessionDAO;
 
-    public DeleteUser(UserDAO userDAO) {
+    public DeleteUser(UserDAO userDAO, SessionDAO sessionDAO) {
         this.userDAO = userDAO;
+        this.sessionDAO = sessionDAO;
     }
 
     @Transactional
