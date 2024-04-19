@@ -11,12 +11,6 @@ public class SessionBuilder {
     private String sessionId;
     private Integer userId;
 
-    private SessionBuilder() {}
-
-    public static SessionBuilder aSession() {
-        return new SessionBuilder();
-    }
-
     public SessionBuilder withSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
