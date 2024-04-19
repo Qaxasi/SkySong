@@ -19,7 +19,6 @@ public class UserBuilder {
     private Integer id;
     private String username;
     private String email;
-    private Session session;
 
     public UserBuilder buildByUsername(String username) {
         return withUsername(username).withId(1).withEmail("user@mail.mail");
