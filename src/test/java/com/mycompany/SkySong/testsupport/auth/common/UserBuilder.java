@@ -20,18 +20,6 @@ public class UserBuilder {
     private String username;
     private String email;
 
-    public UserBuilder buildByUsername(String username) {
-        return withUsername(username).withId(1).withEmail("user@mail.mail");
-    }
-
-    public UserBuilder buildByEmail(String email) {
-        return withEmail(email).withId(1).withUsername("User");
-    }
-
-    public UserBuilder buildById(Integer id) {
-        return withId(id).withUsername("User").withEmail("user@mail.mail");
-    }
-
     public UserBuilder withUsername(String username) {
         this.username = username;
         return this;
