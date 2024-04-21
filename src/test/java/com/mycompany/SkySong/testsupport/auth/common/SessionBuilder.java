@@ -21,14 +21,6 @@ public class SessionBuilder {
         return this;
     }
 
-    public SessionBuilder buildBySessionId(String sessionId) {
-        return withSessionId(sessionId).withUserId(1);
-    }
-
-    public SessionBuilder buildByUserId(Integer userId) {
-        return withUserId(userId).withSessionId("12345abcdefgh");
-    }
-
     public Session build() {
         Session session = new Session();
         session.setUserId(userId);
