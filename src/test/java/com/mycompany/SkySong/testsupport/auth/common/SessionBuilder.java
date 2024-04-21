@@ -8,8 +8,8 @@ import java.util.Date;
 @Component
 public class SessionBuilder {
 
-    private String sessionId;
-    private Integer userId;
+    private String sessionId = "12345abcdefg";
+    private Integer userId = 1;
 
     public SessionBuilder withSessionId(String sessionId) {
         this.sessionId = sessionId;
