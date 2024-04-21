@@ -2,7 +2,6 @@ package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.registration.RoleNotFoundException;
 import com.mycompany.SkySong.user.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -12,17 +11,17 @@ import java.util.Set;
 @Component
 public class UserBuilder {
 
-    @Autowired
-    private RoleDAO roleDAO;
-    @Autowired
-    private PasswordEncoder encoder;
+    private final RoleDAO roleDAO;
+    private final PasswordEncoder encoder;
 
     private Integer id = 20;
     private String username = "Username";
     private String email = "email@mail.mail";
     private Set<Role> roles = new HashSet<>();
 
-    public UserBuilder() {
+    public UserBuilder(RoleDAO roleDAO, PasswordEncoder encoder) {
+        this.roleDAO = roleDAO;
+        this.encoder = encoder;
         roles.add(new Role(UserRole.ROLE_USER));
     }
 
