@@ -17,9 +17,9 @@ public class UserBuilder {
     @Autowired
     private PasswordEncoder encoder;
 
-    private Integer id;
-    private String username;
-    private String email;
+    private Integer id = 1;
+    private String username = "Username";
+    private String email = "email@mail.mail";
     private Set<Role> roles = new HashSet<>();
 
     public UserBuilder() {
