@@ -22,6 +22,10 @@ public class UserBuilder {
     private String email;
     private Set<Role> roles = new HashSet<>();
 
+    public UserBuilder() {
+        roles.add(new Role(UserRole.ROLE_USER));
+    }
+
     public UserBuilder withUsername(String username) {
         this.username = username;
         return this;
