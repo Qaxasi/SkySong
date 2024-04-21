@@ -22,7 +22,7 @@ public class UserBuilder {
     public UserBuilder(RoleDAO roleDAO, PasswordEncoder encoder) {
         this.roleDAO = roleDAO;
         this.encoder = encoder;
-        roles.add(new Role(UserRole.ROLE_USER));
+        this.roles.add(new Role(UserRole.ROLE_USER));
     }
 
     public UserBuilder withUsername(String username) {
