@@ -42,10 +42,6 @@ public class UserBuilder {
     }
 
     public User build() {
-        Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
-                () -> new RoleNotFoundException("Role not found"));
-        Set<Role> roles = Set.of(role);
-
         User user = new User();
         user.setId(id);
         user.setUsername(username);
