@@ -41,6 +41,13 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder withRole(UserRole roleName) {
+        Role role = roleDAO.findByName(roleName).orElseThrow(
+                () -> new RoleNotFoundException("Role not found " + roleName));
+        this.roles.add(role);
+        return this;
+    }
+
     public User build() {
         User user = new User();
         user.setId(id);
