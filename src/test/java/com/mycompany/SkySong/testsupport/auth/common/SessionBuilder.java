@@ -1,11 +1,13 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.user.Session;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
+@Scope("prototype")
 public class SessionBuilder {
 
     private String sessionId = "12345abcdefg";

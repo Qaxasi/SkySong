@@ -2,6 +2,7 @@ package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.registration.RoleNotFoundException;
 import com.mycompany.SkySong.user.*;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
+@Scope("prototype")
 public class UserBuilder {
 
     private final RoleDAO roleDAO;
