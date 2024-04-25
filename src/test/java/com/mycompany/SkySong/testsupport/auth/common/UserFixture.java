@@ -39,6 +39,11 @@ public class UserFixture {
         saveSession(session);
     }
 
+
+    private void saveSession(Session session) {
+        sessionDAO.save(session);
+    }
+
     private void saveUserAndAssignRoles(User user) {
         int userId = userDAO.save(user);
         user.getRoles().forEach(role -> userDAO.assignRoleToUser(userId, role.getId()));
