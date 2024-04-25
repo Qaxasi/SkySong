@@ -31,4 +31,11 @@ public class UserFixture {
         User user = userBuilder.build();
         saveUserAndAssignRoles(user);
     }
+
+
+    private void createSession(Consumer<SessionBuilder> config) {
+        config.accept(sessionBuilder);
+        Session session = sessionBuilder.build();
+        saveSession(session);
+    }
 }
