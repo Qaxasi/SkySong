@@ -25,6 +25,36 @@ public class UserFixture {
         this.sessionDAO = sessionDAO;
     }
 
+    @Transactional
+    public void createUserWithId(Integer id) {
+        createUser(builder -> builder.withId(id));
+    }
+
+    @Transactional
+    public void createUserWithUsername(String username) {
+        createUser(builder -> builder.withUsername(username));
+    }
+
+    @Transactional
+    public void createUserWithEmail(String email) {
+        createUser(builder -> builder.withEmail(email));
+    }
+
+    @Transactional
+    public void createUserAndSessionWithUserId(Integer id) {
+        createUser(builder -> builder.withId(id));
+        createSession(builder -> builder.withUserId(id));
+    }
+
+    @Transactional
+    public void createRegularUser() {
+        createUser(builder -> builder.withRole(UserRole.ROLE_USER));
+    }
+
+    @Transactional
+    public void createAdminUser() {
+        createUser(builder -> builder.withRole(UserRole.ROLE_ADMIN));
+    }
 
     private void createUser(Consumer<UserBuilder> config) {
         config.accept(userBuilder);
@@ -32,13 +62,11 @@ public class UserFixture {
         saveUserAndAssignRoles(user);
     }
 
-
     private void createSession(Consumer<SessionBuilder> config) {
         config.accept(sessionBuilder);
         Session session = sessionBuilder.build();
         saveSession(session);
     }
-
 
     private void saveSession(Session session) {
         sessionDAO.save(session);
