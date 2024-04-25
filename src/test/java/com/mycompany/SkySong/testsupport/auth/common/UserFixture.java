@@ -24,4 +24,11 @@ public class UserFixture {
         this.userDAO = userDAO;
         this.sessionDAO = sessionDAO;
     }
+
+
+    private void createUser(Consumer<UserBuilder> config) {
+        config.accept(userBuilder);
+        User user = userBuilder.build();
+        saveUserAndAssignRoles(user);
+    }
 }
