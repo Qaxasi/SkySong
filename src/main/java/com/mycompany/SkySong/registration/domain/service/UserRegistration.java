@@ -11,7 +11,6 @@ import com.mycompany.SkySong.user.UserDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 public class UserRegistration {
 
     private final UserFactory userFactory;
