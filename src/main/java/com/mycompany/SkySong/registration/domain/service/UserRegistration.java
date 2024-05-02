@@ -8,10 +8,8 @@ import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.registration.domain.model.UserRole;
 import com.mycompany.SkySong.user.UserDAO;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-public class UserRegistration {
+class UserRegistration {
 
     private final UserFactory userFactory;
     private final RoleRepository roleRepository;
