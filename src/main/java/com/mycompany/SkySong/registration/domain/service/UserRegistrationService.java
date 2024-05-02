@@ -2,6 +2,7 @@ package com.mycompany.SkySong.registration;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;
+import com.mycompany.SkySong.registration.domain.service.UserRegistration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

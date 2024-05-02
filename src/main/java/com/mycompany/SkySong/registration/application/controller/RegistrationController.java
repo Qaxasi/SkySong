@@ -1,6 +1,8 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.adapter.api;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
+import com.mycompany.SkySong.registration.domain.model.RegisterRequest;
+import com.mycompany.SkySong.registration.domain.service.UserRegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

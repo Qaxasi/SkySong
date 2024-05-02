@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.infrastructure.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

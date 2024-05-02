@@ -1,5 +1,6 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.validation;
 
+import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

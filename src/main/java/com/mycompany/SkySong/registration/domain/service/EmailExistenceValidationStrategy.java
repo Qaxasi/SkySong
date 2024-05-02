@@ -1,13 +1,15 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.validation;
 
 import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;
+import com.mycompany.SkySong.registration.infrastructure.exception.CredentialValidationException;
+import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import com.mycompany.SkySong.user.UserDAO;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 @Service
 @Order(5)
-public class EmailExistenceValidationStrategy implements RegistrationValidationStrategy {
+class EmailExistenceValidationStrategy implements RegistrationValidationStrategy {
 
     private final ApplicationMessageLoader message;
     private final UserDAO userDAO;

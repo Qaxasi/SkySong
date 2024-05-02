@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.registration;
 
 public enum UserRole {
     ROLE_USER,

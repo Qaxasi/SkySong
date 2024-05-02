@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;

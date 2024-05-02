@@ -1,0 +1,12 @@
+package com.mycompany.SkySong.registration.domain.ports;
+
+import com.mycompany.SkySong.registration.domain.model.Role;
+import com.mycompany.SkySong.registration.domain.model.UserRole;
+
+import java.util.Optional;
+import java.util.Set;
+
+public interface RoleRepositoryPort {
+    Optional<Role> findByName(UserRole roleName);
+    Set<Role> findRolesByUserId(Integer userId);
+}

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.infrastructure.exception;
 
 import com.mycompany.SkySong.common.exception.ApplicationRuntimeException;
 
