@@ -30,10 +30,10 @@ class UserRegistration {
 
         User user = userFactory.createUser(request, role);
 
-        int userId = userDAO.save(user);
+        int userId = userRepository.save(user);
 
         for (Role roles : user.getRoles()) {
-            userDAO.assignRoleToUser(userId, roles.getId());
+            userRepository.assignRoleToUser(userId, roles.getId());
         }
         return new ApiResponse("User registered successfully.");
     }
@@ -51,10 +51,10 @@ class UserRegistration {
             throw new CredentialValidationException("Invalid password format. The password must contain an least " +
                     "8 characters, including uppercase letters, lowercase letters, numbers, and special characters.");
         }
-        if (userDAO.existsByUsername(request.username())) {
+        if (userRepository.existsByUsername(request.username())) {
             throw new CredentialValidationException("Username is already exist!.");
         }
-        if (userDAO.existsByEmail(request.email())) {
+        if (userRepository.existsByEmail(request.email())) {
             throw new CredentialValidationException("mail is already exist!.");
         }
     }
