@@ -14,8 +14,6 @@ public class UserRegistrationService {
     }
 
     public ApiResponse register(RegisterRequest request) {
-        validation.validateRequest(request);
-        registration.registerUser(request);
-        return new ApiResponse(message.getMessage("user.registration.success"));
+        return registration.registerUser(request);
     }
 }
