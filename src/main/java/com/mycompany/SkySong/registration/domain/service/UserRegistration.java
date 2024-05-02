@@ -7,19 +7,21 @@ import com.mycompany.SkySong.registration.domain.exception.RoleNotFoundException
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.registration.domain.model.UserRole;
-import com.mycompany.SkySong.user.UserDAO;
+import com.mycompany.SkySong.registration.domain.ports.RoleRepositoryPort;
+import com.mycompany.SkySong.registration.domain.ports.UserRepositoryPort;
 
 class UserRegistration {
 
     private final UserFactory userFactory;
-    private final RoleRepository roleRepository;
-    private final UserDAO userDAO;
+    private final RoleRepositoryPort roleRepository;
+    private final UserRepositoryPort userRepository;
 
     public UserRegistration(UserFactory userFactory,
-                            RoleRepository roleRepository, UserDAO userDAO) {
+                            RoleRepositoryPort roleRepository,
+                            UserRepositoryPort userRepository) {
         this.userFactory = userFactory;
         this.roleRepository = roleRepository;
-        this.userDAO = userDAO;
+        this.userRepository = userRepository;
     }
 
     public ApiResponse registerUser(RegisterRequest request) {
