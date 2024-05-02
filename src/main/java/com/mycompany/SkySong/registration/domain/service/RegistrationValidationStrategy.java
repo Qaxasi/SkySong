@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.registration.domain.validation;
+package com.mycompany.SkySong.registration.domain.service;
 
-import com.mycompany.SkySong.registration.infrastructure.exception.CredentialValidationException;
+import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 
 public interface RegistrationValidationStrategy {

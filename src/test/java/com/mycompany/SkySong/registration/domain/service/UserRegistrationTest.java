@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.service;
 
-import com.mycompany.SkySong.registration.UserRegistration;
-import com.mycompany.SkySong.user.UserRole;
+import com.mycompany.SkySong.registration.domain.model.UserRole;
+import com.mycompany.SkySong.registration.domain.service.UserRegistration;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.service.UserRoleChecker;

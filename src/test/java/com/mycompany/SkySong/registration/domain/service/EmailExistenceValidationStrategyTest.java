@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.adapter.validation;
 
 import com.mycompany.SkySong.registration.CredentialValidationException;
 import com.mycompany.SkySong.registration.EmailExistenceValidationStrategy;

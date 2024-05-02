@@ -1,9 +1,10 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.service;
 
+import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
+import com.mycompany.SkySong.registration.domain.exception.RoleNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
-import com.mycompany.SkySong.registration.domain.ports.RoleRepository;
-import com.mycompany.SkySong.user.UserRole;
+import com.mycompany.SkySong.registration.domain.model.UserRole;
 import com.mycompany.SkySong.user.UserDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

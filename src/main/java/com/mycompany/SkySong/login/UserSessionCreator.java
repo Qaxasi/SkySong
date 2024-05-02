@@ -2,7 +2,7 @@ package com.mycompany.SkySong.login;
 
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.user.Session;
-import com.mycompany.SkySong.user.User;
+import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.user.SessionDAO;
 import com.mycompany.SkySong.user.UserDAO;
 import org.springframework.security.core.Authentication;

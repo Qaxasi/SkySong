@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.registration.domain.validation;
+package com.mycompany.SkySong.registration.domain.service;
 
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import org.springframework.stereotype.Service;

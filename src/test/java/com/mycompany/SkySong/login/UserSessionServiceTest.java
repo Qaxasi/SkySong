@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.login;
 
-import com.mycompany.SkySong.login.UserSessionService;
-import com.mycompany.SkySong.user.User;
+import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserSaver;

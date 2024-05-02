@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.registration.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

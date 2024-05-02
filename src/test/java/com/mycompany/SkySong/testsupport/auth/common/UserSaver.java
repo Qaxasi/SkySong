@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
-import com.mycompany.SkySong.user.User;
+import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.user.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

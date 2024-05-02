@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.user;
 
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
+import com.mycompany.SkySong.registration.domain.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

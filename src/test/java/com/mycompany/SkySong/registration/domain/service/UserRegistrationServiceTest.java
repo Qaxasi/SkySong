@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.service;
 
-import com.mycompany.SkySong.registration.UserRegistrationService;
+import com.mycompany.SkySong.registration.domain.service.UserRegistrationService;
+import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
-import com.mycompany.SkySong.registration.CredentialValidationException;
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;

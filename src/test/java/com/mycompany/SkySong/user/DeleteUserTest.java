@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.user;
 
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
-import com.mycompany.SkySong.testsupport.auth.common.TestUserCreator;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
+import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.auth.security.RoleChecker;
 import com.mycompany.SkySong.testsupport.auth.security.SessionChecker;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
@@ -27,7 +27,7 @@ class DeleteUserTest extends BaseIT {
     @Autowired
     private RoleChecker roleChecker;
     @Autowired
-    private UserFixture userCreator;
+    private UserFixture userFixture;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -51,21 +51,21 @@ class DeleteUserTest extends BaseIT {
 
     @Test
     void whenUserExist_DeleteUser() {
-        userCreator.createUserWithId(1);
+        userFixture.createUserWithId(1);
         delete.deleteUserById(1);
         assertThat(userChecker.userExist(1)).isFalse();
     }
 
     @Test
     void whenUserExist_DeleteUserSessions() {
-        userCreator.createUserWithId(1);
+        userFixture.createUserAndSessionWithUserId(1);
         delete.deleteUserById(1);
         assertThat(sessionChecker.userHasActiveSession(1)).isFalse();
     }
 
     @Test
     void whenUserExist_DeleteUserRoles() {
-        userCreator.createUserWithId(1);
+        userFixture.createUserWithId(1);
         delete.deleteUserById(1);
         assertThat(roleChecker.userHasRoles(1)).isFalse();
     }

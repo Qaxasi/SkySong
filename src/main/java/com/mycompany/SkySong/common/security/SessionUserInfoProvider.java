@@ -3,7 +3,7 @@ package com.mycompany.SkySong.common.security;
 import com.mycompany.SkySong.common.utils.TokenHasher;
 import com.mycompany.SkySong.user.Session;
 import com.mycompany.SkySong.user.SessionDAO;
-import com.mycompany.SkySong.user.User;
+import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.user.UserDAO;
 import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;
 import org.springframework.stereotype.Service;

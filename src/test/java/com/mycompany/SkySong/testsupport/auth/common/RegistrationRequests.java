@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
-import com.mycompany.SkySong.registration.RegisterRequest;
+import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import org.springframework.stereotype.Component;
 
 @Component

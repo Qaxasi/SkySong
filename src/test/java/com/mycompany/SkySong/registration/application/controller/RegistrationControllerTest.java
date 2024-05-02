@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.application.controller;
 
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;

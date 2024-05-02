@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.service;
 
-import com.mycompany.SkySong.registration.PasswordEncoderService;
+import com.mycompany.SkySong.registration.domain.service.PasswordEncoderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

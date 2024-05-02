@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.model;
 
 public enum UserRole {
     ROLE_USER,

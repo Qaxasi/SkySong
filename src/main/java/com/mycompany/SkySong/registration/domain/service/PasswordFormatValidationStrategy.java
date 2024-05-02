@@ -1,9 +1,8 @@
-package com.mycompany.SkySong.registration.domain.validation;
+package com.mycompany.SkySong.registration.domain.service;
 
 import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;
-import com.mycompany.SkySong.registration.infrastructure.exception.CredentialValidationException;
+import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
-import com.mycompany.SkySong.registration.infrastructure.util.ValidationPatterns;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ public class PasswordFormatValidationStrategy implements RegistrationValidationS
 
     @Override
     public void validate(RegisterRequest request) throws CredentialValidationException {
-        if (!request.password().matches(ValidationPatterns.PASSWORD_PATTERN)) {
+        if (!request.password().matches(ValidationRegex.PASSWORD_PATTERN)) {
             throw new CredentialValidationException(message.getMessage("validation.password.error"));
         }
     }

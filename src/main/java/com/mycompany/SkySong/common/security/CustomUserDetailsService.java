@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.common.security;
 
-import com.mycompany.SkySong.user.Role;
-import com.mycompany.SkySong.user.User;
+import com.mycompany.SkySong.registration.domain.model.Role;
+import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.user.RoleDAO;
 import com.mycompany.SkySong.user.UserDAO;
 import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;

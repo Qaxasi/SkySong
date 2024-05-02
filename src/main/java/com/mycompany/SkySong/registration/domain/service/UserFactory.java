@@ -1,9 +1,8 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.service;
 
-import com.mycompany.SkySong.registration.domain.model.RegisterRequest;
+import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
-import com.mycompany.SkySong.registration.infrastructure.security.PasswordEncoderService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

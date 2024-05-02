@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.registration;
+package com.mycompany.SkySong.registration.domain.service;
 
 import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;
-import com.mycompany.SkySong.registration.CredentialValidationException;
-import com.mycompany.SkySong.registration.EmailFormatValidationStrategy;
+import com.mycompany.SkySong.registration.domain.service.EmailFormatValidationStrategy;
+import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
