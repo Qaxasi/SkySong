@@ -1,6 +1,8 @@
 package com.mycompany.SkySong.registration.domain.service;
 
+import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
+import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
 import com.mycompany.SkySong.registration.domain.exception.RoleNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
@@ -24,7 +26,7 @@ public class UserRegistration {
     }
 
     @Transactional
-    public void registerUser(RegisterRequest request) {
+    public ApiResponse registerUser(RegisterRequest request) {
         Role role = roleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Role not found"));
 
@@ -35,5 +37,5 @@ public class UserRegistration {
         for (Role roles : user.getRoles()) {
             userDAO.assignRoleToUser(userId, roles.getId());
         }
+        return new ApiResponse("User registered successfully.");
     }
-}
