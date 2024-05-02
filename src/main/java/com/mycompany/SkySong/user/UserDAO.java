@@ -30,11 +30,11 @@ public interface UserDAO {
     @RegisterBeanMapper(User.class)
     Optional<User> findByUsername(@Bind("username") String username);
 
-    @SqlQuery("SELECT COUNT(*) FROM users WHERE username = :username")
-    int existsByUsername(@Bind("username") String username);
+    @SqlQuery("SELECT EXISTS (SELECT 1 FROM users WHERE username = :username)")
+    boolean existsByUsername(@Bind("username") String username);
 
-    @SqlQuery("SELECT COUNT(*) FROM users WHERE email = :email")
-    int existsByEmail(@Bind("email") String email);
+    @SqlQuery("SELECT EXISTS (SELECT 1 FROM users WHERE email = :email")
+    boolean existsByEmail(@Bind("email") String email);
 
     @SqlUpdate("DELETE FROM users WHERE id = :id")
     void delete(@BindBean User user);
