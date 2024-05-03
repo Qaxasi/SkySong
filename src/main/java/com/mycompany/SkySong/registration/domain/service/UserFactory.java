@@ -7,15 +7,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 
-public class UserFactory {
+class UserFactory {
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserFactory(PasswordEncoder passwordEncoder) {
+    UserFactory(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User createUser(RegisterRequest request, Role role) {
+    User createUser(RegisterRequest request, Role role) {
         User user = new User();
         user.setUsername(request.username());
         user.setEmail(request.email());
