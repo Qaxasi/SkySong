@@ -23,7 +23,7 @@ class UserRegistration {
         this.userRepository = userRepository;
     }
 
-    public ApiResponse registerUser(RegisterRequest request) {
+    ApiResponse registerUser(RegisterRequest request) {
         Role role = roleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Role not found"));
 
