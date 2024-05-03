@@ -3,14 +3,15 @@ package com.mycompany.SkySong.registration.domain.service;
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 
 public class UserFactory {
 
-    private final PasswordEncoderService passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserFactory(PasswordEncoderService passwordEncoder) {
+    public UserFactory(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -18,7 +19,7 @@ public class UserFactory {
         User user = new User();
         user.setUsername(request.username());
         user.setEmail(request.email());
-        user.setPassword(passwordEncoder.encodePassword(request.password()));
+        user.setPassword(passwordEncoder.encode(request.password()));
         user.setRoles(Collections.singleton(role));
         return user;
     }
