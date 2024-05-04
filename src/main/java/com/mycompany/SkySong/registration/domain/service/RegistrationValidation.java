@@ -29,7 +29,7 @@ class RegistrationValidation {
             throw new CredentialValidationException("Username is already exist!.");
         }
         if (userRepository.existsByEmail(request.email())) {
-            throw new CredentialValidationException("mail is already exist!.");
+            throw new CredentialValidationException("Email is already exist!.");
         }
     }
 }
