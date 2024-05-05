@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRegistrationFacade {
 
-    private final UserRegistration registration;
+    private final UserRegistrationService registration;
 
-    public UserRegistrationFacade(UserRegistration registration) {
+    public UserRegistrationFacade(UserRegistrationService registration) {
         this.registration = registration;
     }
 
     public ApiResponse register(RegisterRequest request) {
-        return registration.registerUser(request);
+        return registration.validateAndRegisterUser(request);
     }
 }
