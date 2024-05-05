@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.user;
 
-import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,18 +9,15 @@ import org.springframework.stereotype.Service;
 public class DeleteUserService {
 
     private final DeleteUser delete;
-    private final ApplicationMessageLoader message;
 
-    public DeleteUserService(DeleteUser deletionManager,
-                             ApplicationMessageLoader message) {
+    public DeleteUserService(DeleteUser deletionManager) {
         this.delete = deletionManager;
-        this.message = message;
     }
 
     public ApiResponse deleteUser(int userId) {
         delete.deleteUserById(userId);
         log.info("User with ID {} deleted successfully", userId);
-        return new ApiResponse(message.getMessage("user.delete.success", userId));
+        return new ApiResponse(String.format("User with ID %d deleted successfully.", userId));
     }
 }
 

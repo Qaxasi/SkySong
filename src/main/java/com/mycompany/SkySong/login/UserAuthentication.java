@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.login;
 
-import com.mycompany.SkySong.common.utils.ApplicationMessageLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,12 +13,9 @@ import org.springframework.stereotype.Service;
 public class UserAuthentication {
 
     private final AuthenticationManager authManager;
-    private final ApplicationMessageLoader message;
 
-    public UserAuthentication(AuthenticationManager authManager,
-                              ApplicationMessageLoader message) {
+    public UserAuthentication(AuthenticationManager authManager) {
         this.authManager = authManager;
-        this.message = message;
     }
 
     public Authentication authenticateUser(LoginRequest request) {
@@ -32,7 +28,7 @@ public class UserAuthentication {
             return auth;
         } catch (BadCredentialsException e) {
             log.error("Error during login for user: {}", request.usernameOrEmail(), e);
-            throw new BadCredentialsException(message.getMessage("login.failure"));
+            throw new BadCredentialsException("Logout failed due to an internal error.");
         }
     }
 }
