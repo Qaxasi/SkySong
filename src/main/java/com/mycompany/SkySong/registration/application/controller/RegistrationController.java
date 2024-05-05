@@ -2,7 +2,7 @@ package com.mycompany.SkySong.registration.application.controller;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
-import com.mycompany.SkySong.registration.domain.service.UserRegistrationService;
+import com.mycompany.SkySong.registration.domain.service.RegistrationFacade;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class RegistrationController {
 
-    private final UserRegistrationService registration;
+    private final RegistrationFacade registration;
 
-    public RegistrationController(UserRegistrationService registration) {
+    public RegistrationController(RegistrationFacade registration) {
         this.registration = registration;
     }
 

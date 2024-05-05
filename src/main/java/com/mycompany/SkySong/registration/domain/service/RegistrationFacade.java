@@ -5,11 +5,11 @@ import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserRegistrationService {
+public class RegistrationFacade {
 
     private final UserRegistration registration;
 
-    public UserRegistrationService(UserRegistration registration) {
+    public RegistrationFacade(UserRegistration registration) {
         this.registration = registration;
     }
 
