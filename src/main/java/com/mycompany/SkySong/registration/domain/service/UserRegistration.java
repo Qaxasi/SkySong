@@ -29,16 +29,18 @@ class UserRegistration {
     }
 
     ApiResponse registerUser(RegisterRequest request) {
-        Role role = roleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
-                () -> new RoleNotFoundException("Role not found"));
+        return transactionTemplate.execute(status -> {
+            Role role = roleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
+                    () -> new RoleNotFoundException("Role not found"));
 
-        User user = userFactory.createUser(request, role);
+            User user = userFactory.createUser(request, role);
 
-        int userId = userRepository.save(user);
+            int userId = userRepository.save(user);
 
-        for (Role roles : user.getRoles()) {
-            userRepository.assignRoleToUser(userId, roles.getId());
-        }
-        return new ApiResponse("User registered successfully.");
+            for (Role roles : user.getRoles()) {
+                userRepository.assignRoleToUser(userId, roles.getId());
+            }
+            return new ApiResponse("User registered successfully.");
+        });
     }
 }
