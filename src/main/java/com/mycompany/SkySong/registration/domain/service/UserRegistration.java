@@ -15,7 +15,6 @@ class UserRegistration {
     private final UserFactory userFactory;
     private final RoleRepositoryPort roleRepository;
     private final UserRepositoryPort userRepository;
-
     private TransactionTemplate transactionTemplate;
 
     public UserRegistration(UserFactory userFactory,
