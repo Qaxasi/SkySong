@@ -3,15 +3,15 @@ package com.mycompany.SkySong.registration.domain.service;
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.mycompany.SkySong.registration.domain.ports.PasswordEncoderPort;
 
 import java.util.Collections;
 
 class UserFactory {
 
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoderPort passwordEncoder;
 
-    UserFactory(PasswordEncoder passwordEncoder) {
+    UserFactory(PasswordEncoderPort passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
