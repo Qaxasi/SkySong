@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.login;
 
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
+import com.mycompany.SkySong.login.application.dto.LoginRequest;
 import com.mycompany.SkySong.user.Session;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.user.SessionDAO;

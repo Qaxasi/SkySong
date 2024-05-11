@@ -1,5 +1,8 @@
-package com.mycompany.SkySong.login;
+package com.mycompany.SkySong.login.domain.service;
 
+import com.mycompany.SkySong.login.application.dto.LoginRequest;
+import com.mycompany.SkySong.login.domain.service.TokenGenerator;
+import com.mycompany.SkySong.login.domain.service.UserSessionCreator;
 import org.springframework.stereotype.Service;
 
 @Service
