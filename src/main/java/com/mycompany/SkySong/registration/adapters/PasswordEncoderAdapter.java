@@ -16,6 +16,6 @@ class PasswordEncoderAdapter implements PasswordEncoderPort {
 
     @Override
     public String encode(CharSequence password) {
-        return null;
+        return encoder.encode(password);
     }
 }
