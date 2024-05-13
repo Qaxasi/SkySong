@@ -2,13 +2,12 @@ package com.mycompany.SkySong.login.domain.service;
 
 import com.mycompany.SkySong.login.application.dto.LoginRequest;
 
-@Service
-public class LoginService {
+class LoginService {
 
     private final TokenGenerator tokenGenerator;
     private final UserSessionCreator userSessionCreator;
 
-    public LoginService(TokenGenerator tokenGenerator, UserSessionCreator userSessionCreator) {
+   LoginService(TokenGenerator tokenGenerator, UserSessionCreator userSessionCreator) {
         this.tokenGenerator = tokenGenerator;
         this.userSessionCreator = userSessionCreator;
     }
