@@ -22,11 +22,10 @@ public class LoginController {
         this.login = login;
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request,
                                              HttpServletResponse response) {
-        String sessionToken = login.login(request);
+        String sessionToken = login.userLogin(request);
 
         Cookie sessionCookie = new Cookie("session_id", sessionToken);
         sessionCookie.setHttpOnly(true);
