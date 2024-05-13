@@ -1,17 +1,14 @@
 package com.mycompany.SkySong.login.domain.service;
 
 import com.mycompany.SkySong.login.application.dto.LoginRequest;
-import com.mycompany.SkySong.login.domain.service.TokenGenerator;
-import com.mycompany.SkySong.login.domain.service.UserSessionCreator;
-import org.springframework.stereotype.Service;
 
 @Service
-public class UserSessionService {
+public class LoginService {
 
     private final TokenGenerator tokenGenerator;
     private final UserSessionCreator userSessionCreator;
 
-    public UserSessionService(TokenGenerator tokenGenerator, UserSessionCreator userSessionCreator) {
+    public LoginService(TokenGenerator tokenGenerator, UserSessionCreator userSessionCreator) {
         this.tokenGenerator = tokenGenerator;
         this.userSessionCreator = userSessionCreator;
     }
