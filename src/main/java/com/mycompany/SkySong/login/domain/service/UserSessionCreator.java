@@ -13,17 +13,15 @@ public class UserSessionCreator {
 
     private final SessionCreation sessionCreation;
     private final UserRepositoryPort userRepository;
-    private final UserAuthentication userAuth;
     private final SessionDAO sessionDAO;
     private final UserDAO userDAO;
 
     public UserSessionCreator(SessionCreation sessionCreation,
-                              UserRepositoryPort userRepository, UserAuthentication userAuth,
+                              UserRepositoryPort userRepository,
                               SessionDAO sessionDAO,
                               UserDAO userDAO) {
         this.sessionCreation = sessionCreation;
         this.userRepository = userRepository;
-        this.userAuth = userAuth;
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
     }
