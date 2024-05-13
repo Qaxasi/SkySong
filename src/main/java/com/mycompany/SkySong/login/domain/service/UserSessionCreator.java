@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.login;
+package com.mycompany.SkySong.login.domain.service;
 
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.login.application.dto.LoginRequest;
@@ -8,9 +8,7 @@ import com.mycompany.SkySong.user.SessionDAO;
 import com.mycompany.SkySong.user.UserDAO;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
 public class UserSessionCreator {
 
     private final SessionCreation sessionCreation;
@@ -28,7 +26,6 @@ public class UserSessionCreator {
         this.userDAO = userDAO;
     }
 
-    @Transactional
     public void createUserSession(LoginRequest request, String sessionToken) {
         Authentication auth = userAuth.authenticateUser(request);
         User user = userDAO.findByUsername(auth.getName()).orElseThrow(
