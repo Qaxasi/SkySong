@@ -1,11 +1,9 @@
-package com.mycompany.SkySong.login;
+package com.mycompany.SkySong.login.domain.service;
 
-import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-@Service
-public class TokenGenerator {
+class TokenGenerator {
 
     private final SecureRandom secureRandom = new SecureRandom();
 
