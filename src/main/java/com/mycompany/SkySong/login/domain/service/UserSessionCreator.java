@@ -5,14 +5,13 @@ import com.mycompany.SkySong.login.domain.ports.SessionRepositoryPort;
 import com.mycompany.SkySong.user.Session;
 import java.util.Date;
 
-public class UserSessionCreator {
+class UserSessionCreator {
 
     private final TokenHasher tokenHasher;
     private final SessionRepositoryPort sessionRepository;
 
-    public UserSessionCreator(TokenHasher tokenHasher, SessionRepositoryPort sessionRepository) {
+    UserSessionCreator(TokenHasher tokenHasher, SessionRepositoryPort sessionRepository) {
         this.tokenHasher = tokenHasher;
-
         this.sessionRepository = sessionRepository;
     }
 
