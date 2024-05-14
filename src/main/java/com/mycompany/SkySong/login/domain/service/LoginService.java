@@ -24,7 +24,7 @@ class LoginService {
         this.userAuth = userAuth;
    }
 
-    public String createSession(LoginRequest request) {
+    public String login(LoginRequest request) {
         String sessionToken = tokenGenerator.generateToken();
         userSessionCreator.createUserSession(request, sessionToken);
         return sessionToken;
