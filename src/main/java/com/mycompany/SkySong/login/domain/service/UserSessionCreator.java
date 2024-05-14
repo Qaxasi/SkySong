@@ -18,7 +18,7 @@ public class UserSessionCreator {
 
     public void createUserSession(String sessionToken, int userId) {
         Session session = createSession(sessionToken, userId);
-        sessionDAO.save(session);
+        sessionRepository.save(session);
     }
 
     private Session createSession(String token, Integer userId) {
