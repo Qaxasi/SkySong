@@ -4,5 +4,5 @@ import com.mycompany.SkySong.login.application.dto.LoginRequest;
 import org.springframework.security.core.Authentication;
 
 public interface UserAuthenticationPort {
-    Authentication authenticateUser(LoginRequest request);
+    String authenticateUser(LoginRequest request);
 }
