@@ -10,6 +10,8 @@ import com.mycompany.SkySong.user.SessionDAO;
 import com.mycompany.SkySong.user.UserDAO;
 import org.springframework.security.core.Authentication;
 
+import java.util.Date;
+
 public class UserSessionCreator {
     private final TokenHasher tokenHasher;
     private final SessionCreation sessionCreation;
@@ -35,5 +37,17 @@ public class UserSessionCreator {
 
         Session session = sessionCreation.createSession(sessionToken, user.getId());
         sessionDAO.save(session);
+    }
+
+    private Session createSession(String token, Integer userId) {
+        String hashedToken = tokenHasher.generateHashedToken(token);
+
+        Session session = new Session();
+        session.setSessionId(hashedToken);
+        session.setUserId(userId);
+        session.setCreateAt(new Date());
+        session.setExpiresAt(new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+
+        return session;
     }
 }
