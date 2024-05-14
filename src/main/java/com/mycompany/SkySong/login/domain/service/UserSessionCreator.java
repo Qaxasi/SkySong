@@ -1,16 +1,19 @@
 package com.mycompany.SkySong.login.domain.service;
 
 import com.mycompany.SkySong.common.utils.TokenHasher;
+import com.mycompany.SkySong.login.domain.ports.SessionRepositoryPort;
 import com.mycompany.SkySong.user.Session;
 import java.util.Date;
 
 public class UserSessionCreator {
 
     private final TokenHasher tokenHasher;
+    private final SessionRepositoryPort sessionRepository;
 
-    public UserSessionCreator(TokenHasher tokenHasher) {
+    public UserSessionCreator(TokenHasher tokenHasher, SessionRepositoryPort sessionRepository) {
         this.tokenHasher = tokenHasher;
 
+        this.sessionRepository = sessionRepository;
     }
 
     public void createUserSession(String sessionToken, int userId) {
