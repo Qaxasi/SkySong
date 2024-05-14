@@ -5,7 +5,6 @@ import com.mycompany.SkySong.login.application.dto.LoginRequest;
 import com.mycompany.SkySong.login.domain.ports.UserAuthenticationPort;
 import com.mycompany.SkySong.login.domain.ports.UserRepositoryPort;
 import com.mycompany.SkySong.registration.domain.model.User;
-import org.springframework.security.core.Authentication;
 
 class LoginService {
 
@@ -25,8 +24,12 @@ class LoginService {
    }
 
     public String login(LoginRequest request) {
+       String username = userAuth.authenticateUser(request);
+       User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundException("User not found with username :" + username));
+
         String sessionToken = tokenGenerator.generateToken();
-        userSessionCreator.createUserSession(request, sessionToken);
+        userSessionCreator.createUserSession(sessionToken, user.getId());
         return sessionToken;
     }
 }
