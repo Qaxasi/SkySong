@@ -19,13 +19,13 @@ class UserAuthenticationAdapter implements UserAuthenticationPort {
     }
 
     @Override
-    public Authentication authenticateUser(LoginRequest request) {
+    public String authenticateUser(LoginRequest request) {
         try {
             Authentication auth = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.usernameOrEmail(), request.password()));
             SecurityContextHolder.getContext().setAuthentication(auth);
-            return auth;
+            return auth.getName();
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Logout failed due to an internal error.");
         }
