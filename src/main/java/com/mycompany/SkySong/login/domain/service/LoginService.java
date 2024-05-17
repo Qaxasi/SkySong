@@ -32,7 +32,8 @@ class LoginService {
                 () -> new UserNotFoundException("User not found with username :" + username));
 
         String sessionToken = tokenGenerator.generateToken();
-        userSessionCreator.createUserSession(sessionToken, user.getId());
+        String hashedToken = tokenHasher.hashToken(sessionToken);
+        userSessionCreator.createUserSession(hashedToken, user.getId());
         return sessionToken;
     }
 }
