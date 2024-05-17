@@ -10,7 +10,8 @@ class UserSessionCreator {
     private final TokenHasher tokenHasher;
     private final SessionRepositoryPort sessionRepository;
 
-    UserSessionCreator(TokenHasher tokenHasher, SessionRepositoryPort sessionRepository) {
+    UserSessionCreator(TokenHasher tokenHasher,
+                       SessionRepositoryPort sessionRepository) {
         this.tokenHasher = tokenHasher;
         this.sessionRepository = sessionRepository;
     }
