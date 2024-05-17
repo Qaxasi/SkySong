@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.login.domain.service;
 
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
+import com.mycompany.SkySong.common.utils.TokenHasher;
 import com.mycompany.SkySong.login.application.dto.LoginRequest;
 import com.mycompany.SkySong.login.domain.ports.UserAuthenticationPort;
 import com.mycompany.SkySong.login.domain.ports.UserRepositoryPort;
@@ -12,15 +13,17 @@ class LoginService {
     private final UserSessionCreator userSessionCreator;
     private final UserRepositoryPort userRepository;
     private final UserAuthenticationPort userAuth;
+    private final TokenHasher tokenHasher;
 
    LoginService(TokenGenerator tokenGenerator,
                 UserSessionCreator userSessionCreator,
                 UserRepositoryPort userRepository,
-                UserAuthenticationPort userAuth) {
+                UserAuthenticationPort userAuth, TokenHasher tokenHasher) {
         this.tokenGenerator = tokenGenerator;
         this.userSessionCreator = userSessionCreator;
         this.userRepository = userRepository;
         this.userAuth = userAuth;
+       this.tokenHasher = tokenHasher;
    }
 
     public String login(LoginRequest request) {
