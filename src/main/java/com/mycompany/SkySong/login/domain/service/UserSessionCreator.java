@@ -11,8 +11,8 @@ class UserSessionCreator {
         this.sessionRepository = sessionRepository;
     }
 
-    public void createUserSession(String sessionToken, int userId) {
-        Session session = createSession(sessionToken, userId);
+    public void createUserSession(String hashedToken, int userId) {
+        Session session = createSession(hashedToken, userId);
         sessionRepository.save(session);
     }
 
