@@ -7,8 +7,7 @@ import java.util.Date;
 class UserSessionCreator {
     private final SessionRepositoryPort sessionRepository;
 
-    UserSessionCreator(
-                       SessionRepositoryPort sessionRepository) {
+    UserSessionCreator(SessionRepositoryPort sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 
@@ -17,9 +16,7 @@ class UserSessionCreator {
         sessionRepository.save(session);
     }
 
-    private Session createSession(String token, Integer userId) {
-        String hashedToken = tokenHasher.generateHashedToken(token);
-
+    private Session createSession(String hashedToken, Integer userId) {
         Session session = new Session();
         session.setSessionId(hashedToken);
         session.setUserId(userId);
