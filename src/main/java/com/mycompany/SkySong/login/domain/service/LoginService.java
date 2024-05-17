@@ -18,12 +18,13 @@ class LoginService {
    LoginService(TokenGenerator tokenGenerator,
                 UserSessionCreator userSessionCreator,
                 UserRepositoryPort userRepository,
-                UserAuthenticationPort userAuth, TokenHasher tokenHasher) {
+                UserAuthenticationPort userAuth,
+                TokenHasher tokenHasher) {
         this.tokenGenerator = tokenGenerator;
         this.userSessionCreator = userSessionCreator;
         this.userRepository = userRepository;
         this.userAuth = userAuth;
-       this.tokenHasher = tokenHasher;
+        this.tokenHasher = tokenHasher;
    }
 
     public String login(LoginRequest request) {
