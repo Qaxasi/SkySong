@@ -12,7 +12,7 @@ public class TokenHasher {
 
     private final Base64.Encoder encoder = Base64.getUrlEncoder();
 
-    public String generateHashedToken(String token) {
+    public String hashToken(String token) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashedBytes = digest.digest(token.getBytes(StandardCharsets.UTF_8));
