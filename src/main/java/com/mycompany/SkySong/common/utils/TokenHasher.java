@@ -1,13 +1,10 @@
 package com.mycompany.SkySong.common.utils;
 
-import org.springframework.stereotype.Service;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-@Service
 public class TokenHasher {
 
     private final Base64.Encoder encoder = Base64.getUrlEncoder();
