@@ -7,5 +7,5 @@ public record RegisterRequest(@NotEmpty(message = "The username field cannot be 
                               @NotEmpty(message = "The email field cannot be empty")
                               @JsonProperty String email,
                               @NotEmpty(message = "The password field cannot be empty")
-                              @JsonProperty String password) {
+                              @JsonProperty char[] password) {
 }
