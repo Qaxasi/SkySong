@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRegistrationFacade {
 
-    private final UserRegistrationService registration;
+    private final UserRegistrationHandler registration;
 
-    public UserRegistrationFacade(UserRegistrationService registration) {
+    public UserRegistrationFacade(UserRegistrationHandler registration) {
         this.registration = registration;
     }
 

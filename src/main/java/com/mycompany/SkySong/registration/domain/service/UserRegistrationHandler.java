@@ -3,12 +3,12 @@ package com.mycompany.SkySong.registration.domain.service;
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 
-class UserRegistrationService {
+class UserRegistrationHandler {
 
     private final UserRegistration registration;
     private final RequestValidation validation;
 
-    UserRegistrationService(UserRegistration registration, RequestValidation validation) {
+    UserRegistrationHandler(UserRegistration registration, RequestValidation validation) {
         this.registration = registration;
         this.validation = validation;
     }
