@@ -3,22 +3,11 @@ package com.mycompany.SkySong.registration.application.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 
-import java.util.Arrays;
-
 public record RegisterRequest(@NotEmpty(message = "The username field cannot be empty")
                               @JsonProperty String username,
                               @NotEmpty(message = "The email field cannot be empty")
                               @JsonProperty String email,
                               @NotEmpty(message = "The password field cannot be empty")
                               @JsonProperty char[] password) {
-
-
-    @Override
-    public String toString() {
-        return "RegisterRequest{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password=" + Arrays.toString(password) +
-                '}';
-    }
+    
 }
