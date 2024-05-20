@@ -1,7 +1,9 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.user.delete;
 
+import com.mycompany.SkySong.common.dao.SessionDAO;
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.User;
+import com.mycompany.SkySong.common.dao.UserDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
