@@ -1,6 +1,8 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.user.delete.application.controller;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
+import com.mycompany.SkySong.user.delete.domain.service.DeleteUserFacade;
+import com.mycompany.SkySong.user.delete.domain.exception.NullOrEmptyInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,18 +11,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class DeleteUserController {
 
-    private final DeleteUserService delete;
+    private final DeleteUserFacade userDeleter;
 
-    public DeleteUserController(DeleteUserService delete) {
-        this.delete = delete;
+    public DeleteUserController(DeleteUserFacade userDeleter) {
+        this.userDeleter = userDeleter;
     }
-    
+
     @DeleteMapping({"/","/{userId}"})
     public ResponseEntity<ApiResponse> delete(@PathVariable(required = false) Integer userId) {
         if (userId == null) {
             throw new NullOrEmptyInputException("User ID is required and cannot be empty.");
         }
-        ApiResponse deleteResponse = delete.deleteUser(userId);
+        ApiResponse deleteResponse = userDeleter.deleteUser(userId);
         return new ResponseEntity<>(deleteResponse, HttpStatus.OK);
     }
 }
