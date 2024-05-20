@@ -7,24 +7,20 @@ import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.registration.domain.model.UserRole;
 import com.mycompany.SkySong.registration.domain.ports.RoleRepositoryPort;
-import com.mycompany.SkySong.registration.domain.ports.UserRepositoryPort;
-import org.springframework.transaction.support.TransactionTemplate;
 
 class UserRegistration {
 
     private final UserFactory userFactory;
     private final RoleRepositoryPort roleRepository;
     private final UserRepositoryPort userRepository;
-    private final TransactionTemplate transactionTemplate;
+
 
     UserRegistration(UserFactory userFactory,
                             RoleRepositoryPort roleRepository,
-                            UserRepositoryPort userRepository,
-                            TransactionTemplate transactionTemplate) {
+                            UserRepositoryPort userRepository) {
         this.userFactory = userFactory;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-        this.transactionTemplate = transactionTemplate;
     }
 
     ApiResponse registerUser(RegisterRequest request) {
