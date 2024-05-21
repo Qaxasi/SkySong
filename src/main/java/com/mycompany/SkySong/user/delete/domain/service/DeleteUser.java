@@ -8,7 +8,13 @@ import com.mycompany.SkySong.user.delete.domain.ports.UserRepositoryPort;
 
 class DeleteUser {
 
-    DeleteUser() {
+    private final UserRepositoryPort userRepository;
+    private final SessionRepositoryPort sessionRepository;
+
+    DeleteUser(UserRepositoryPort userRepository,
+               SessionRepositoryPort sessionRepository) {
+        this.userRepository = userRepository;
+        this.sessionRepository = sessionRepository;
     }
 
     ApiResponse deleteUserById(int userId) {
