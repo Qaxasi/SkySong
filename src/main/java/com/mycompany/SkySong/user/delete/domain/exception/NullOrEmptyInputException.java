@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.user.delete.domain.exception;
 
 import com.mycompany.SkySong.common.exception.ApplicationRuntimeException;
 
