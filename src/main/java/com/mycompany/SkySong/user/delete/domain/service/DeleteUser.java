@@ -5,11 +5,9 @@ import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.common.dao.UserDAO;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class DeleteUser {
+class DeleteUser {
 
     private final UserDAO userDAO;
     private final SessionDAO sessionDAO;
