@@ -15,6 +15,6 @@ class TransactionalExecutorAdapter implements TransactionalExecutorPort {
 
     @Override
     public <T> T execute(Supplier<T> action) {
-        return null;
+        return transactionTemplate.execute(status -> action.get());
     }
 }
