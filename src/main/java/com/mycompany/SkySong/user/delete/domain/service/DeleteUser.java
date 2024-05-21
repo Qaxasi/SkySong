@@ -22,14 +22,16 @@ class DeleteUser {
     }
 
     ApiResponse deleteUserById(int userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                "User not found with id: " + userId));
+        return transactionalExecutor.execute(() -> {
+            User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
+                    "User not found with id: " + userId));
 
-        userRepository.deleteUserRoles(userId);
-        sessionRepository.deleteUserSessions(userId);
+            userRepository.deleteUserRoles(userId);
+            sessionRepository.deleteUserSessions(userId);
 
-        userRepository.delete(user);
+            userRepository.delete(user);
 
-        return new ApiResponse(String.format("User with ID %d deleted successfully.", userId));
+            return new ApiResponse(String.format("User with ID %d deleted successfully.", userId));
+        });
     }
 }
