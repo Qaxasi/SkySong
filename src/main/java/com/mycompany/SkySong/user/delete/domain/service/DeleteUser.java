@@ -1,19 +1,14 @@
 package com.mycompany.SkySong.user.delete.domain.service;
 
-import com.mycompany.SkySong.common.dao.SessionDAO;
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.User;
-import com.mycompany.SkySong.common.dao.UserDAO;
+import com.mycompany.SkySong.user.delete.domain.ports.SessionRepositoryPort;
+import com.mycompany.SkySong.user.delete.domain.ports.UserRepositoryPort;
 
 class DeleteUser {
 
-    private final UserDAO userDAO;
-    private final SessionDAO sessionDAO;
-
-    DeleteUser(UserDAO userDAO, SessionDAO sessionDAO) {
-        this.userDAO = userDAO;
-        this.sessionDAO = sessionDAO;
+    DeleteUser() {
     }
 
     ApiResponse deleteUserById(int userId) {
