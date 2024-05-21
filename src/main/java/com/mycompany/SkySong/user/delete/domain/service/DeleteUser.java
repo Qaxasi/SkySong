@@ -18,13 +18,13 @@ class DeleteUser {
     }
 
     ApiResponse deleteUserById(int userId) {
-        User user = userDAO.findById(userId).orElseThrow(() -> new UserNotFoundException(
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
                 "User not found with id: " + userId));
 
-        userDAO.deleteUserRoles(userId);
-        sessionDAO.deleteUserSessions(userId);
+        userRepository.deleteUserRoles(userId);
+        sessionRepository.deleteUserSessions(userId);
 
-        userDAO.delete(user);
+        userRepository.delete(user);
 
         return new ApiResponse(String.format("User with ID %d deleted successfully.", userId));
     }
