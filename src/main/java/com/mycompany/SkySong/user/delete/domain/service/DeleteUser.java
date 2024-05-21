@@ -5,20 +5,18 @@ import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.common.dao.UserDAO;
-import org.springframework.transaction.annotation.Transactional;
 
 class DeleteUser {
 
     private final UserDAO userDAO;
     private final SessionDAO sessionDAO;
 
-    public DeleteUser(UserDAO userDAO, SessionDAO sessionDAO) {
+    DeleteUser(UserDAO userDAO, SessionDAO sessionDAO) {
         this.userDAO = userDAO;
         this.sessionDAO = sessionDAO;
     }
 
-    @Transactional
-    public ApiResponse deleteUserById(int userId) {
+    ApiResponse deleteUserById(int userId) {
         User user = userDAO.findById(userId).orElseThrow(() -> new UserNotFoundException(
                 "User not found with id: " + userId));
 
