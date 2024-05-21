@@ -1,6 +1,7 @@
-package com.mycompany.SkySong.user.delete;
+package com.mycompany.SkySong.user.delete.domain.service;
 
 import com.mycompany.SkySong.common.dao.SessionDAO;
+import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.common.dao.UserDAO;
@@ -19,7 +20,7 @@ public class DeleteUser {
     }
 
     @Transactional
-    public void deleteUserById(int userId) {
+    public ApiResponse deleteUserById(int userId) {
         User user = userDAO.findById(userId).orElseThrow(() -> new UserNotFoundException(
                 "User not found with id: " + userId));
 
@@ -27,5 +28,7 @@ public class DeleteUser {
         sessionDAO.deleteUserSessions(userId);
 
         userDAO.delete(user);
+
+        return new ApiResponse(String.format("User with ID %d deleted successfully.", userId));
     }
 }
