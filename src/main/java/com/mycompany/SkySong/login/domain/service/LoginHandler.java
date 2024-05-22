@@ -7,7 +7,7 @@ import com.mycompany.SkySong.login.domain.ports.AuthenticationPort;
 import com.mycompany.SkySong.login.domain.ports.UserRepositoryPort;
 import com.mycompany.SkySong.registration.domain.model.User;
 
-class LoginService {
+class LoginHandler {
 
     private final UserSessionCreator userSessionCreator;
     private final UserRepositoryPort userRepository;
