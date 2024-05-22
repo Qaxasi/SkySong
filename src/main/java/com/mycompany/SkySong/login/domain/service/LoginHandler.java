@@ -28,7 +28,7 @@ class LoginService {
    }
 
     public String login(LoginRequest request) {
-       String username = userAuth.authenticateUser(request);
+       String username = userAuth.authenticateUser(request.usernameOrEmail(), request.password());
        User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new UserNotFoundException("User not found with username :" + username));
 

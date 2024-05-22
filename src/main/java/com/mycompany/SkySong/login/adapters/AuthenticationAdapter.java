@@ -19,11 +19,9 @@ class UserAuthenticationAdapter implements UserAuthenticationPort {
     }
 
     @Override
-    public String authenticateUser(LoginRequest request) {
+    public String authenticateUser(String usernameOrEmail, String password) {
         try {
-            Authentication auth = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.usernameOrEmail(), request.password()));
+            Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
             SecurityContextHolder.getContext().setAuthentication(auth);
             return auth.getName();
         } catch (BadCredentialsException e) {
