@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.login.application.controller;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
-import com.mycompany.SkySong.login.domain.service.LoginFacade;
+import com.mycompany.SkySong.login.domain.service.LoginHandlerService;
 import com.mycompany.SkySong.login.application.dto.LoginRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class LoginController {
 
-    private final LoginFacade login;
+    private final LoginHandlerService login;
 
-    public LoginController(LoginFacade login) {
+    public LoginController(LoginHandlerService login) {
         this.login = login;
     }
 
