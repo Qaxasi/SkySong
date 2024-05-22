@@ -11,4 +11,8 @@ public class LoginHandlerService {
     public LoginHandlerService(LoginHandler login) {
         this.login = login;
     }
+
+    public String userLogin(LoginRequest request) {
+        return login.login(request);
+    }
 }
