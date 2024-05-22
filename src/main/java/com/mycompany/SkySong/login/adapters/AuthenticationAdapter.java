@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.login.adapters;
 
-import com.mycompany.SkySong.login.application.dto.LoginRequest;
-import com.mycompany.SkySong.login.domain.ports.UserAuthenticationPort;
+import com.mycompany.SkySong.login.domain.ports.AuthenticationPort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,11 +9,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-class UserAuthenticationAdapter implements UserAuthenticationPort {
+class AuthenticationAdapter implements AuthenticationPort {
 
     private final AuthenticationManager authManager;
 
-    UserAuthenticationAdapter(AuthenticationManager authManager) {
+    AuthenticationAdapter(AuthenticationManager authManager) {
         this.authManager = authManager;
     }
 
