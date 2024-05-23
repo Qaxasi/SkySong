@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.common.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

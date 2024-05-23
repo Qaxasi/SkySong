@@ -1,5 +1,6 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.common.dao;
 
+import com.mycompany.SkySong.common.entity.Session;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;

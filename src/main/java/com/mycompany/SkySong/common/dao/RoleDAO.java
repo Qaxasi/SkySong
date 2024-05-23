@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.common.dao;
 
 import com.mycompany.SkySong.registration.domain.model.UserRole;
 import com.mycompany.SkySong.registration.domain.model.Role;

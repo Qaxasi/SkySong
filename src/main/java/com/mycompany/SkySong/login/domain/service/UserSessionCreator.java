@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.login.domain.service;
 
 import com.mycompany.SkySong.login.domain.ports.SessionRepositoryPort;
-import com.mycompany.SkySong.user.Session;
+import com.mycompany.SkySong.common.entity.Session;
 import java.util.Date;
 
 class UserSessionCreator {

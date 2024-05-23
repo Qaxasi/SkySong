@@ -2,7 +2,7 @@ package com.mycompany.SkySong.common.exception;
 
 import com.mycompany.SkySong.common.security.SessionNotFoundException;
 import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
-import com.mycompany.SkySong.user.NullOrEmptyInputException;
+import com.mycompany.SkySong.user.delete.domain.exception.NullOrEmptyInputException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
