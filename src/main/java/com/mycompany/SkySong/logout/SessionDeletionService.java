@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.logout;
 
 import com.mycompany.SkySong.common.utils.TokenHasher;
-import com.mycompany.SkySong.user.SessionDAO;
+import com.mycompany.SkySong.common.dao.SessionDAO;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +17,7 @@ public class SessionDeletion {
     }
     
     public void deleteSession(String sessionId) {
-        String hashedSessionId = tokenHasher.generateHashedToken(sessionId);
+        String hashedSessionId = tokenHasher.hashToken(sessionId);
         sessionDAO.deleteById(hashedSessionId);
     }
 }

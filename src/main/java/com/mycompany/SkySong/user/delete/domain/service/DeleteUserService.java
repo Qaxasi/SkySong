@@ -4,11 +4,11 @@ import com.mycompany.SkySong.common.dto.ApiResponse;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DeleteUserFacade {
+public class DeleteUserService {
 
     private final DeleteUser deleteUser;
 
-    public DeleteUserFacade(DeleteUser deleteUser) {
+    public DeleteUserService(DeleteUser deleteUser) {
         this.deleteUser = deleteUser;
     }
 
