@@ -4,9 +4,10 @@ import com.mycompany.SkySong.common.dao.SessionDAO;
 import com.mycompany.SkySong.common.dao.UserDAO;
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.User;
+import com.mycompany.SkySong.user.delete.domain.ports.DeleteUser;
 import org.springframework.transaction.support.TransactionTemplate;
 
-class TransactionDeleteUser implements DeleteUserPort {
+class TransactionDeleteUser implements DeleteUser {
 
     private final UserDAO userRepository;
     private final SessionDAO sessionRepository;
