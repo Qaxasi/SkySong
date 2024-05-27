@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeleteUserService {
 
-    private final DeleteUser deleteUser;
+    private final DeleteUserHandler deleteUser;
 
-    public DeleteUserService(DeleteUser deleteUser) {
+    public DeleteUserService(DeleteUserHandler deleteUser) {
         this.deleteUser = deleteUser;
     }
 
     public ApiResponse deleteUser(int userId) {
-        return deleteUser.deleteUserById(userId);
+        return deleteUser.delete(userId);
     }
 }
