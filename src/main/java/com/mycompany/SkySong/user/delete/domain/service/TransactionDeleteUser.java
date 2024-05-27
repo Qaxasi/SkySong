@@ -6,13 +6,13 @@ import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.registration.domain.model.User;
 import org.springframework.transaction.support.TransactionTemplate;
 
-class DeleteUserPortAdapter implements DeleteUserPort {
+class TransactionDeleteUser implements DeleteUserPort {
 
     private final UserDAO userRepository;
     private final SessionDAO sessionRepository;
     private final TransactionTemplate transactionTemplate;
 
-    public DeleteUserPortAdapter(UserDAO userDAO,
+    public TransactionDeleteUser(UserDAO userDAO,
                                  SessionDAO sessionDAO,
                                  TransactionTemplate transactionTemplate) {
         this.userRepository = userDAO;
