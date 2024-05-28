@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.user.delete.domain.service;
+package com.mycompany.SkySong.user.delete.adapters;
 
 import com.mycompany.SkySong.common.dao.SessionDAO;
 import com.mycompany.SkySong.common.dao.UserDAO;
