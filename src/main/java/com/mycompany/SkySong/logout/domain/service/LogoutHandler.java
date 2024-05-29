@@ -12,4 +12,9 @@ class LogoutHandler {
         this.sessionRepositoryPort = sessionRepositoryPort;
         this.tokenHasher = tokenHasher;
     }
+
+    public void deleteSession(String sessionId) {
+        String hashedSessionId = tokenHasher.hashToken(sessionId);
+        sessionRepositoryPort.deleteById(hashedSessionId);
+    }
 }
