@@ -7,6 +7,7 @@ class LogoutHandler {
 
     private final SessionRepositoryPort sessionRepositoryPort;
     private final TokenHasher tokenHasher;
+    
     LogoutHandler(SessionRepositoryPort sessionRepositoryPort,
                   TokenHasher tokenHasher) {
         this.sessionRepositoryPort = sessionRepositoryPort;
