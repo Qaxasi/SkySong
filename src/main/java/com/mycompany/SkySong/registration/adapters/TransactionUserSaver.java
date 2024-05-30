@@ -4,9 +4,11 @@ import com.mycompany.SkySong.common.dao.UserDAO;
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
-public class TransactionUserSaver implements UserSaver {
+@Service
+class TransactionUserSaver implements UserSaver {
 
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
