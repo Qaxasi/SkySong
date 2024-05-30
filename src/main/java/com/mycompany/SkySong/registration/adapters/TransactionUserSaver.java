@@ -5,13 +5,13 @@ import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
 import org.springframework.transaction.support.TransactionTemplate;
 
-public class TransactionUserRegistration {
+public class TransactionUserSaver {
 
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
     private final TransactionTemplate transactionTemplate;
 
-    public TransactionUserRegistration(UserDAO userDAO, RoleDAO roleDAO, TransactionTemplate transactionTemplate) {
+    public TransactionUserSaver(UserDAO userDAO, RoleDAO roleDAO, TransactionTemplate transactionTemplate) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.transactionTemplate = transactionTemplate;
