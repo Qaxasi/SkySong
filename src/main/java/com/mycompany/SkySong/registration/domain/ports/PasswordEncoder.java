@@ -1,5 +1,5 @@
 package com.mycompany.SkySong.registration.domain.ports;
 
-public interface PasswordEncoderPort {
+public interface PasswordEncoder {
     String encode(CharSequence  password);
 }

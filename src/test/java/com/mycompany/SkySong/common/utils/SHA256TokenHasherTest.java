@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.common.utils;
 
-import com.mycompany.SkySong.common.utils.TokenHasher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +17,8 @@ public class TokenHasherTest {
     @Test
     void WhenTokenIsConsistent_ReturnsConsistentHash() {
         String token = "test-token";
-        String firstHash = tokenHasher.generateHashedToken(token);
-        String secondHash = tokenHasher.generateHashedToken(token);
+        String firstHash = tokenHasher.hashToken(token);
+        String secondHash = tokenHasher.hashToken(token);
 
         assertThat(firstHash).isEqualTo(secondHash);
     }
@@ -29,8 +28,8 @@ public class TokenHasherTest {
         String firstToken = "first-token";
         String secondToken = "second-token";
 
-        String firstHash = tokenHasher.generateHashedToken(firstToken);
-        String secondHash = tokenHasher.generateHashedToken(secondToken);
+        String firstHash = tokenHasher.hashToken(firstToken);
+        String secondHash = tokenHasher.hashToken(secondToken);
 
         assertThat(firstHash).isNotEqualTo(secondHash);
     }
