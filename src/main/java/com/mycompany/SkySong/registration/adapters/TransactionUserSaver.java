@@ -8,7 +8,6 @@ import com.mycompany.SkySong.registration.domain.exception.RoleNotFoundException
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
 import com.mycompany.SkySong.registration.domain.model.UserRole;
-import com.mycompany.SkySong.registration.domain.ports.UserRegistration;
 import org.springframework.transaction.support.TransactionTemplate;
 
 public class TransactionUserRegistration {
@@ -25,9 +24,6 @@ public class TransactionUserRegistration {
 
     public ApiResponse registerUser(RegisterRequest request) {
         return transactionTemplate.execute(() -> {
-            Role role = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
-                    () -> new RoleNotFoundException("Role not found"));
-
             User user = userFactory.createUser(request, role);
 
             int userId = userDAO.save(user);
