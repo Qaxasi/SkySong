@@ -3,9 +3,10 @@ package com.mycompany.SkySong.registration.adapters;
 import com.mycompany.SkySong.common.dao.UserDAO;
 import com.mycompany.SkySong.registration.domain.model.Role;
 import com.mycompany.SkySong.registration.domain.model.User;
+import com.mycompany.SkySong.registration.domain.ports.UserSaver;
 import org.springframework.transaction.support.TransactionTemplate;
 
-public class TransactionUserSaver {
+public class TransactionUserSaver implements UserSaver {
 
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
