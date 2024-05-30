@@ -11,12 +11,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 class TransactionUserSaver implements UserSaver {
 
     private final UserDAO userDAO;
-    private final RoleDAO roleDAO;
     private final TransactionTemplate transactionTemplate;
 
-    public TransactionUserSaver(UserDAO userDAO, RoleDAO roleDAO, TransactionTemplate transactionTemplate) {
+    public TransactionUserSaver(UserDAO userDAO,
+                                TransactionTemplate transactionTemplate) {
         this.userDAO = userDAO;
-        this.roleDAO = roleDAO;
         this.transactionTemplate = transactionTemplate;
     }
 
