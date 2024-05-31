@@ -29,4 +29,9 @@ class UserCreator {
         user.setRoles(Collections.singleton(fetchDefaultUserRole()));
         return user;
     }
+
+    private Role fetchDefaultUserRole() {
+        return roleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
+                () -> new RoleNotFoundException("Role not found"));
+    }
 }
