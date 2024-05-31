@@ -2,13 +2,13 @@ package com.mycompany.SkySong.registration.domain.service;
 
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
-import com.mycompany.SkySong.registration.domain.ports.UserRepositoryPort;
+import com.mycompany.SkySong.registration.domain.ports.UserRepository;
 
 class RequestValidation {
 
-    private final UserRepositoryPort userRepository;
+    private final UserRepository userRepository;
 
-    RequestValidation(UserRepositoryPort userRepository) {
+    RequestValidation(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
