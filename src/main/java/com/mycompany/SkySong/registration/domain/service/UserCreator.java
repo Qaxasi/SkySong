@@ -11,5 +11,13 @@ import com.mycompany.SkySong.registration.domain.ports.RoleRepository;
 import java.util.Collections;
 
 class UserCreator {
-    
+
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+
+    UserCreator(PasswordEncoder passwordEncoder,
+                RoleRepository roleRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+    }
 }
