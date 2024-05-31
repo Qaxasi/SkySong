@@ -20,4 +20,13 @@ class UserCreator {
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
     }
+
+    User createUser(RegisterRequest request) {
+        User user = new User();
+        user.setUsername(request.username());
+        user.setEmail(request.email());
+        user.setPassword(passwordEncoder.encode(request.password()));
+        user.setRoles(Collections.singleton(fetchDefaultUserRole()));
+        return user;
+    }
 }
