@@ -5,9 +5,7 @@ import com.mycompany.SkySong.registration.domain.model.UserRole;
 import com.mycompany.SkySong.common.dao.RoleDAO;
 
 import java.util.Optional;
-import java.util.Set;
 
 public interface RoleRepository extends RoleDAO {
     Optional<Role> findByName(UserRole roleName);
-    Set<Role> findRolesByUserId(Integer userId);
 }
