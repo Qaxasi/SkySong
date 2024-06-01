@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserRegistrationService {
 
-    private final UserRegistrationHandler registration;
+    private final UserRegistration registration;
 
-    public UserRegistrationService(UserRegistrationHandler registration) {
+    public UserRegistrationService(UserRegistration registration) {
         this.registration = registration;
     }
 
     public ApiResponse register(RegisterRequest request) {
-        return registration.validateAndRegisterUser(request);
+        return registration.registerUser(request);
     }
 }
