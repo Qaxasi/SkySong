@@ -7,7 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 @Service
-public class TokenHasher {
+public class SHA256TokenHasher {
 
     private final Base64.Encoder encoder = Base64.getUrlEncoder();
 
