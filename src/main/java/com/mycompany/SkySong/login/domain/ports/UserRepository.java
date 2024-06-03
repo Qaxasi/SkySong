@@ -5,6 +5,6 @@ import com.mycompany.SkySong.common.dao.UserDAO;
 
 import java.util.Optional;
 
-public interface UserRepositoryPort extends UserDAO {
+public interface UserRepository extends UserDAO {
     Optional<User> findByUsername(String username);
 }
