@@ -2,11 +2,11 @@ package com.mycompany.SkySong.logout.domain.service;
 
 import com.mycompany.SkySong.logout.domain.ports.SessionRepository;
 
-class LogoutHandler {
+class SessionDeleter {
 
     private final SessionRepository sessionRepository;
 
-    LogoutHandler(SessionRepository sessionRepository) {
+    SessionDeleter(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 
