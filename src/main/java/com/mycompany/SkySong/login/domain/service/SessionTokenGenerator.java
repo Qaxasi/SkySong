@@ -3,7 +3,7 @@ package com.mycompany.SkySong.login.domain.service;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-class TokenGenerator {
+class SessionTokenGenerator {
 
     private final SecureRandom secureRandom = new SecureRandom();
 
