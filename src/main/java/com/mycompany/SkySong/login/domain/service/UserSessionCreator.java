@@ -1,13 +1,13 @@
 package com.mycompany.SkySong.login.domain.service;
 
-import com.mycompany.SkySong.login.domain.ports.SessionRepositoryPort;
+import com.mycompany.SkySong.login.domain.ports.SessionRepository;
 import com.mycompany.SkySong.common.entity.Session;
 import java.util.Date;
 
 class UserSessionCreator {
-    private final SessionRepositoryPort sessionRepository;
+    private final SessionRepository sessionRepository;
 
-    UserSessionCreator(SessionRepositoryPort sessionRepository) {
+    UserSessionCreator(SessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 
