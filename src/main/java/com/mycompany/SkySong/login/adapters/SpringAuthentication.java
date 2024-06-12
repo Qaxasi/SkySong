@@ -24,7 +24,7 @@ class SpringAuthentication implements UserAuthentication {
             SecurityContextHolder.getContext().setAuthentication(auth);
             return auth.getName();
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Logout failed due to an internal error.");
+            throw new BadCredentialsException("    Login failed due to invalid credentials.");
         }
     }
 }
