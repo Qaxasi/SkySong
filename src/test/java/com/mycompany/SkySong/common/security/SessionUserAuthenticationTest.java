@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SessionAuthenticationTest extends BaseIT {
+public class SessionUserAuthenticationTest extends BaseIT {
 
     @Autowired
     private SessionAuthentication authentication;
