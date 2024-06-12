@@ -1,8 +1,7 @@
 package com.mycompany.SkySong.login.domain.ports;
 
 import com.mycompany.SkySong.common.entity.Session;
-import com.mycompany.SkySong.common.dao.SessionDAO;
 
-public interface SessionRepository extends SessionDAO {
+public interface SessionRepository {
     void save(Session session);
 }
