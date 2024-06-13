@@ -1,10 +1,7 @@
 package com.mycompany.SkySong.login.domain.service;
 
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
-import com.mycompany.SkySong.common.utils.TokenHasher;
 import com.mycompany.SkySong.login.application.dto.LoginRequest;
-import com.mycompany.SkySong.login.domain.ports.AuthenticationPort;
-import com.mycompany.SkySong.login.domain.ports.UserRepositoryPort;
 import com.mycompany.SkySong.registration.domain.model.User;
 
 class LoginHandler {
