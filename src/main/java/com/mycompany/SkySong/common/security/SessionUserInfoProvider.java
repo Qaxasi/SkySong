@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.common.security;
 
-import com.mycompany.SkySong.common.utils.TokenHasher;
 import com.mycompany.SkySong.user.Session;
 import com.mycompany.SkySong.user.SessionDAO;
 import com.mycompany.SkySong.registration.domain.model.User;
@@ -16,19 +15,14 @@ public class SessionUserInfoProvider {
 
     private final UserDAO userDAO;
 
-    private final TokenHasher tokenHasher;
-
     public SessionUserInfoProvider(SessionDAO sessionDAO,
-                                   UserDAO userDAO,
-                                   TokenHasher tokenHasher) {
+                                   UserDAO userDAO) {
         this.sessionDAO = sessionDAO;
         this.userDAO = userDAO;
-        this.tokenHasher = tokenHasher;
     }
 
     public String getUsernameForSession(String sessionId) {
         return Optional.of(sessionId)
-                .map(tokenHasher::generateHashedToken)
                 .flatMap(sessionDAO::findById)
                 .map(Session::getUserId)
                 .flatMap(userDAO::findById)
