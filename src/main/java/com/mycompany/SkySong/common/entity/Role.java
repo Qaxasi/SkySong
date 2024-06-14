@@ -1,5 +1,6 @@
-package com.mycompany.SkySong.registration.domain.model;
+package com.mycompany.SkySong.common.entity;
 
+import com.mycompany.SkySong.registration.domain.model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
