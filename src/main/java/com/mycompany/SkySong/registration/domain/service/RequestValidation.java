@@ -2,14 +2,14 @@ package com.mycompany.SkySong.registration.domain.service;
 
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
 import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
-import com.mycompany.SkySong.registration.domain.ports.UserRepository;
+import com.mycompany.SkySong.registration.domain.ports.RegistrationUserRepository;
 
 class RequestValidation {
 
-    private final UserRepository userRepository;
+    private final RegistrationUserRepository registrationUserRepository;
 
-    RequestValidation(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    RequestValidation(RegistrationUserRepository registrationUserRepository) {
+        this.registrationUserRepository = registrationUserRepository;
     }
 
     void validate(RegisterRequest request) {
@@ -25,10 +25,10 @@ class RequestValidation {
             throw new CredentialValidationException("Invalid password format. The password must contain an least " +
                     "8 characters, including uppercase letters, lowercase letters, numbers, and special characters.");
         }
-        if (userRepository.existsByUsername(request.username())) {
+        if (registrationUserRepository.existsByUsername(request.username())) {
             throw new CredentialValidationException("Username is already exist!.");
         }
-        if (userRepository.existsByEmail(request.email())) {
+        if (registrationUserRepository.existsByEmail(request.email())) {
             throw new CredentialValidationException("Email is already exist!.");
         }
     }

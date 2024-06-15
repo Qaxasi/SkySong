@@ -6,19 +6,19 @@ import com.mycompany.SkySong.common.entity.Role;
 import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.registration.domain.model.UserRole;
 import com.mycompany.SkySong.registration.domain.ports.PasswordEncoder;
-import com.mycompany.SkySong.registration.domain.ports.RoleRepository;
+import com.mycompany.SkySong.registration.domain.ports.RegistrationRoleRepository;
 
 import java.util.Collections;
 
 class UserCreator {
 
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
+    private final RegistrationRoleRepository registrationRoleRepository;
 
     UserCreator(PasswordEncoder passwordEncoder,
-                RoleRepository roleRepository) {
+                RegistrationRoleRepository registrationRoleRepository) {
         this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
+        this.registrationRoleRepository = registrationRoleRepository;
     }
 
     User createUser(RegisterRequest request) {
@@ -31,7 +31,7 @@ class UserCreator {
     }
 
     private Role fetchDefaultUserRole() {
-        return roleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
+        return registrationRoleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Role not found"));
     }
 }
