@@ -6,9 +6,12 @@ import java.util.Date;
 
 class UserSessionCreator {
     private final SessionRepository sessionRepository;
+    private final SessionTokenGenerator tokenGenerator;
 
-    UserSessionCreator(SessionRepository sessionRepository) {
+    UserSessionCreator(SessionRepository sessionRepository,
+                       SessionTokenGenerator tokenGenerator) {
         this.sessionRepository = sessionRepository;
+        this.tokenGenerator = tokenGenerator;
     }
 
     public void createUserSession(String hashedToken, int userId) {
