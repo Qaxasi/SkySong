@@ -20,9 +20,9 @@ class UserSessionCreator {
         sessionRepository.save(session);
     }
 
-    private Session createSession(String hashedToken, Integer userId) {
+    private Session createSession(String token, Integer userId) {
         Session session = new Session();
-        session.setSessionId(hashedToken);
+        session.setSessionId(token);
         session.setUserId(userId);
         session.setCreateAt(new Date());
         session.setExpiresAt(new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
