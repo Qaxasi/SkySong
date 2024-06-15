@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.common.dao;
 
 import com.mycompany.SkySong.registration.domain.model.UserRole;
-import com.mycompany.SkySong.registration.domain.model.Role;
+import com.mycompany.SkySong.common.entity.Role;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
