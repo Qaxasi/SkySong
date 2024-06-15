@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.common.security;
 
-import com.mycompany.SkySong.registration.domain.model.Role;
-import com.mycompany.SkySong.registration.domain.model.User;
+import com.mycompany.SkySong.common.entity.Role;
+import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.common.dao.RoleDAO;
 import com.mycompany.SkySong.common.dao.UserDAO;
 import org.springframework.security.core.GrantedAuthority;
