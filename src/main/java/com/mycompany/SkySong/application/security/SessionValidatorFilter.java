@@ -1,9 +1,5 @@
-package com.mycompany.SkySong.common.security;
+package com.mycompany.SkySong.security;
 
-import com.mycompany.SkySong.common.security.CustomAuthenticationEntryPoint;
-import com.mycompany.SkySong.common.security.SessionAuthentication;
-import com.mycompany.SkySong.common.security.SessionExtractor;
-import com.mycompany.SkySong.common.security.SessionValidation;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

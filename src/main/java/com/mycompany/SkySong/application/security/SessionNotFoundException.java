@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.common.security;
+package com.mycompany.SkySong.security;
 
 import com.mycompany.SkySong.common.exception.ApplicationRuntimeException;
 

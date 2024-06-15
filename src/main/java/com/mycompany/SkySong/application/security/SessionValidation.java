@@ -1,6 +1,5 @@
-package com.mycompany.SkySong.common.security;
+package com.mycompany.SkySong.security;
 
-import com.mycompany.SkySong.common.infrastructure.SHA256TokenHasher;
 import com.mycompany.SkySong.common.dao.SessionDAO;
 import org.springframework.stereotype.Service;
 

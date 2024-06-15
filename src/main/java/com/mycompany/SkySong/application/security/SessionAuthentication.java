@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.common.security;
+package com.mycompany.SkySong.security;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

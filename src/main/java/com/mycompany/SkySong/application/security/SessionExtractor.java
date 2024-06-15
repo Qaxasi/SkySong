@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.common.security;
+package com.mycompany.SkySong.security;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.common.security;
+package com.mycompany.SkySong.security;
 
 import com.mycompany.SkySong.user.Session;
 import com.mycompany.SkySong.user.SessionDAO;

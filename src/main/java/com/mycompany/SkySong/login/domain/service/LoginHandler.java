@@ -5,11 +5,10 @@ import com.mycompany.SkySong.login.application.dto.LoginRequest;
 import com.mycompany.SkySong.common.entity.User;
 
 class LoginHandler {
-    private final UserSessionCreator userSessionCreator;
+    private final UserSessionCreator sessionCreator;
 
-    LoginHandler(
-                UserSessionCreator userSessionCreator) {
-        this.userSessionCreator = userSessionCreator;
+    LoginHandler(UserSessionCreator sessionCreator) {
+        this.sessionCreator = sessionCreator;
    }
 
     public String login(LoginRequest request) {
@@ -19,7 +18,7 @@ class LoginHandler {
 
         String sessionToken = tokenGenerator.generateToken();
         String hashedToken = tokenHasher.hashToken(sessionToken);
-        userSessionCreator.createUserSession(hashedToken, user.getId());
+        sessionCreator.createUserSession(hashedToken, user.getId());
         return sessionToken;
     }
 }
