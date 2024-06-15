@@ -8,10 +8,14 @@ import com.mycompany.SkySong.login.domain.ports.UserAuthentication;
 class LoginHandler {
     private final UserSessionCreator sessionCreator;
     private final UserAuthentication authentication;
+    private final SessionTokenGenerator tokenGenerator;
 
-    LoginHandler(UserSessionCreator sessionCreator, UserAuthentication authentication) {
+    LoginHandler(UserSessionCreator sessionCreator,
+                 UserAuthentication authentication,
+                 SessionTokenGenerator tokenGenerator) {
         this.sessionCreator = sessionCreator;
         this.authentication = authentication;
+        this.tokenGenerator = tokenGenerator;
     }
 
     public String login(LoginRequest request) {
