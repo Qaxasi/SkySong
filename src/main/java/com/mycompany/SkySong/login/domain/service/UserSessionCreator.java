@@ -14,8 +14,9 @@ class UserSessionCreator {
         this.tokenGenerator = tokenGenerator;
     }
 
-    public void createUserSession(String hashedToken, int userId) {
-        Session session = createSession(hashedToken, userId);
+    public void createUserSession(int userId) {
+        String token = tokenGenerator.generateToken();
+        Session session = createSession(token, userId);
         sessionRepository.save(session);
     }
 
