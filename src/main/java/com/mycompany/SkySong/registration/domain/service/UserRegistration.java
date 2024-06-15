@@ -2,7 +2,7 @@ package com.mycompany.SkySong.registration.domain.service;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
-import com.mycompany.SkySong.registration.domain.model.User;
+import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;
 
 class UserRegistration {
