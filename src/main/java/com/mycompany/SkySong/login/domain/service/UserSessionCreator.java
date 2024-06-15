@@ -14,10 +14,11 @@ class UserSessionCreator {
         this.tokenGenerator = tokenGenerator;
     }
 
-    public void createUserSession(int userId) {
+    public String createUserSession(int userId) {
         String token = tokenGenerator.generateToken();
         Session session = createSession(token, userId);
         sessionRepository.save(session);
+        return token;
     }
 
     private Session createSession(String token, Integer userId) {
