@@ -20,8 +20,7 @@ class LoginHandler {
        User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new UserNotFoundException("User not found with username :" + username));
 
-        String sessionToken = tokenGenerator.generateToken();
-        sessionCreator.createUserSession(user.getId());
-        return sessionToken;
+       String sessionToken = sessionCreator.createUserSession(user.getId());
+       return sessionToken;
     }
 }
