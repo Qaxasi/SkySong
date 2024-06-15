@@ -8,14 +8,11 @@ import com.mycompany.SkySong.login.domain.ports.UserAuthentication;
 class LoginHandler {
     private final UserSessionCreator sessionCreator;
     private final UserAuthentication authentication;
-    private final SessionTokenGenerator tokenGenerator;
 
     LoginHandler(UserSessionCreator sessionCreator,
-                 UserAuthentication authentication,
-                 SessionTokenGenerator tokenGenerator) {
+                 UserAuthentication authentication) {
         this.sessionCreator = sessionCreator;
         this.authentication = authentication;
-        this.tokenGenerator = tokenGenerator;
     }
 
     public String login(LoginRequest request) {
@@ -24,8 +21,7 @@ class LoginHandler {
                 () -> new UserNotFoundException("User not found with username :" + username));
 
         String sessionToken = tokenGenerator.generateToken();
-        String hashedToken = tokenHasher.hashToken(sessionToken);
-        sessionCreator.createUserSession(hashedToken, user.getId());
+        sessionCreator.createUserSession(user.getId());
         return sessionToken;
     }
 }
