@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.common.dao;
+package com.mycompany.SkySong.infrastructure.persistence.dao;
 
 import com.mycompany.SkySong.common.entity.Session;
 import com.mycompany.SkySong.login.domain.ports.LoginSessionRepository;

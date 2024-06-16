@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.registration.adapters;
 
-import com.mycompany.SkySong.common.dao.UserDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.common.entity.Role;
 import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;
