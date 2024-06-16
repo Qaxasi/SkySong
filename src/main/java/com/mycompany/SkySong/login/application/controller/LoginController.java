@@ -2,7 +2,7 @@ package com.mycompany.SkySong.login.application.controller;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.login.domain.service.LoginHandlerService;
-import com.mycompany.SkySong.login.application.dto.LoginRequest;
+import com.mycompany.SkySong.login.dto.LoginRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

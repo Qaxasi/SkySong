@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.login.domain.service;
 
-import com.mycompany.SkySong.login.application.dto.LoginRequest;
+import com.mycompany.SkySong.login.dto.LoginRequest;
 import org.springframework.stereotype.Service;
 
 @Service
