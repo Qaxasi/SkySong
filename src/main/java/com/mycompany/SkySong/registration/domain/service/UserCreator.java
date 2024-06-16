@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.registration.domain.service;
 
-import com.mycompany.SkySong.registration.application.dto.RegisterRequest;
+import com.mycompany.SkySong.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.registration.domain.exception.RoleNotFoundException;
 import com.mycompany.SkySong.common.entity.Role;
 import com.mycompany.SkySong.common.entity.User;

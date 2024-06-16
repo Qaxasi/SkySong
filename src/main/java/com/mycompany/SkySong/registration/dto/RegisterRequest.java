@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.registration.application.dto;
+package com.mycompany.SkySong.registration.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
