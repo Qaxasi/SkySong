@@ -15,11 +15,9 @@ import java.util.Optional;
 @Service
 public class SessionAuthentication {
 
-    private final SessionUserInfoProvider userInfoProvider;
     private final CustomUserDetailsService userDetails;
 
-    public SessionAuthentication(SessionUserInfoProvider userInfoProvider, CustomUserDetailsService userDetails) {
-        this.userInfoProvider = userInfoProvider;
+    public SessionAuthentication(CustomUserDetailsService userDetails) {
         this.userDetails = userDetails;
     }
     
