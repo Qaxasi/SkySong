@@ -4,7 +4,7 @@ import com.mycompany.SkySong.common.exception.response.ErrorResponseBuilder;
 import com.mycompany.SkySong.login.domain.exception.UserNotFoundException;
 import com.mycompany.SkySong.security.exception.SessionNotFoundException;
 import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
-import com.mycompany.SkySong.user.delete.domain.exception.NullOrEmptyInputException;
+import com.mycompany.SkySong.user.delete.application.exception.NullOrEmptyInputException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
