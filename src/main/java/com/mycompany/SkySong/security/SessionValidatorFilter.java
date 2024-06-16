@@ -55,19 +55,18 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
     }
 
     private boolean isValidSession(String sessionId) {
-        return sessionId != null && session.validateSession(sessionId);
+       if (sessionId == null) {
+           return false;
+       }
+        return sessionDAO.findById(sessionId)
+                .map(session -> session.getExpiresAt().after(new Date()))
+                .orElse(false);
     }
 
     private void handleAuthenticationFailure(HttpServletRequest request,
                                              HttpServletResponse response) throws IOException {
         authEntryPoint.commence(request, response, new InsufficientAuthenticationException(
                 "Access denied due to invalid or missing token."));
-    }
-
-    private boolean validateSession(String sessionId) {
-        return sessionDAO.findById(sessionId)
-                .map(session -> session.getExpiresAt().after(new Date()))
-                .orElse(false);
     }
 
     @Override
