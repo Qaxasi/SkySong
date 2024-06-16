@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogoutController {
 
     private final LogoutSessionRepository sessionRepository;
+    
     public LogoutController(LogoutSessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
