@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.common.config;
+package com.mycompany.SkySong.infrastructure.config;
 
 import com.mycompany.SkySong.common.dao.RoleDAO;
 import com.mycompany.SkySong.common.dao.SessionDAO;
