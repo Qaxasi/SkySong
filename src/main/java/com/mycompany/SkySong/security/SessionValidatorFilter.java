@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.security;
+package com.mycompany.SkySong.application.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

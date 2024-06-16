@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.common.exception;
 
-import com.mycompany.SkySong.application.security.SessionNotFoundException;
+import com.mycompany.SkySong.security.exception.SessionNotFoundException;
 import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
 import com.mycompany.SkySong.user.delete.domain.exception.NullOrEmptyInputException;
 import lombok.extern.slf4j.Slf4j;
