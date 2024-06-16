@@ -1,5 +1,9 @@
-package com.mycompany.SkySong.application.security;
+package com.mycompany.SkySong.security;
 
+import com.mycompany.SkySong.security.CustomAuthenticationEntryPoint;
+import com.mycompany.SkySong.security.SessionAuthentication;
+import com.mycompany.SkySong.security.SessionExtractor;
+import com.mycompany.SkySong.security.SessionValidation;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Component
 public class SessionValidatorFilter extends OncePerRequestFilter {
@@ -59,6 +64,12 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
                                              HttpServletResponse response) throws IOException {
         authEntryPoint.commence(request, response, new InsufficientAuthenticationException(
                 "Access denied due to invalid or missing token."));
+    }
+
+    private boolean validateSession(String sessionId) {
+        return sessionDAO.findById(sessionId)
+                .map(session -> session.getExpiresAt().after(new Date()))
+                .orElse(false);
     }
 
     @Override
