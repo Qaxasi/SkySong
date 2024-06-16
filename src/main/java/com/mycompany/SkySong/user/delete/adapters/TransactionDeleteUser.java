@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.user.delete.adapters;
 
-import com.mycompany.SkySong.common.dao.SessionDAO;
-import com.mycompany.SkySong.common.dao.UserDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.user.delete.domain.ports.DeleteUser;
 import org.springframework.transaction.support.TransactionTemplate;
