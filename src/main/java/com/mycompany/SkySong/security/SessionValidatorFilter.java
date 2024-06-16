@@ -1,8 +1,6 @@
 package com.mycompany.SkySong.security;
 
-import com.mycompany.SkySong.security.CustomAuthenticationEntryPoint;
-import com.mycompany.SkySong.security.SessionAuthentication;
-import com.mycompany.SkySong.security.SessionExtractor;
+import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import com.mycompany.SkySong.security.SessionValidation;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,13 +20,16 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
     private final CustomAuthenticationEntryPoint authEntryPoint;
     private final SessionExtractor sessionExtractor;
     private final SessionAuthentication authenticator;
+    private final SessionDAO sessionDAO;
 
     public SessionValidatorFilter(CustomAuthenticationEntryPoint authEntryPoint,
                                   SessionExtractor sessionExtractor,
-                                  SessionAuthentication authenticator) {
+                                  SessionAuthentication authenticator,
+                                  SessionDAO sessionDAO) {
         this.authEntryPoint = authEntryPoint;
         this.sessionExtractor = sessionExtractor;
         this.authenticator = authenticator;
+        this.sessionDAO = sessionDAO;
     }
 
     @Override
