@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.common.dao;
 
 import com.mycompany.SkySong.common.entity.User;
+import com.mycompany.SkySong.login.domain.ports.LoginUserRepository;
 import com.mycompany.SkySong.registration.domain.ports.RegistrationUserRepository;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserDAO extends RegistrationUserRepository {
+public interface UserDAO extends LoginUserRepository, RegistrationUserRepository {
 
     @SqlUpdate("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
     @GetGeneratedKeys
