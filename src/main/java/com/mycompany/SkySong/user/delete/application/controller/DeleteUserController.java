@@ -2,7 +2,7 @@ package com.mycompany.SkySong.user.delete.application.controller;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
 import com.mycompany.SkySong.user.delete.domain.service.DeleteUserService;
-import com.mycompany.SkySong.user.delete.domain.exception.NullOrEmptyInputException;
+import com.mycompany.SkySong.user.delete.application.exception.NullOrEmptyInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
