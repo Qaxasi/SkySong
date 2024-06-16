@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.common.config;
 
-import com.mycompany.SkySong.user.RoleDAO;
-import com.mycompany.SkySong.user.SessionDAO;
-import com.mycompany.SkySong.user.UserDAO;
+import com.mycompany.SkySong.common.dao.RoleDAO;
+import com.mycompany.SkySong.common.dao.SessionDAO;
+import com.mycompany.SkySong.common.dao.UserDAO;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.springframework.context.annotation.Bean;
