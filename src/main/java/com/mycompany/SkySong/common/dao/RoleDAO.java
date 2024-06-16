@@ -2,6 +2,7 @@ package com.mycompany.SkySong.common.dao;
 
 import com.mycompany.SkySong.common.entity.Role;
 import com.mycompany.SkySong.common.enums.UserRole;
+import com.mycompany.SkySong.registration.domain.ports.RegistrationRoleRepository;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface RoleDAO {
+public interface RoleDAO extends RegistrationRoleRepository {
 
     @SqlQuery("SELECT * FROM roles WHERE name = :name")
     @RegisterBeanMapper(Role.class)
