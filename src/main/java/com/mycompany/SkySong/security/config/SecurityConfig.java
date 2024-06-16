@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.security.config;
+package com.mycompany.SkySong.security.config;
 
 
 import com.mycompany.SkySong.application.security.CustomAccessDeniedHandler;
