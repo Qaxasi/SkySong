@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.logout.application.controller;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
-import com.mycompany.SkySong.logout.domain.service.LogoutService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,11 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/users")
 public class LogoutController {
+    public LogoutController() {
 
-    private final LogoutService logoutService;
-
-    public LogoutController(LogoutService logoutService) {
-        this.logoutService = logoutService;
     }
     
     @PostMapping("/logout")
