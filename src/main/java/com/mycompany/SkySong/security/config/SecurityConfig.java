@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.security.config;
 
 
-import com.mycompany.SkySong.application.security.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.application.security.CustomAuthenticationEntryPoint;
-import com.mycompany.SkySong.application.security.SessionValidatorFilter;
+import com.mycompany.SkySong.security.CustomAccessDeniedHandler;
+import com.mycompany.SkySong.security.CustomAuthenticationEntryPoint;
+import com.mycompany.SkySong.security.SessionValidatorFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
