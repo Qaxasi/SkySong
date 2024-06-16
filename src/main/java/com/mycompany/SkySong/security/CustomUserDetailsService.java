@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.application.security;
+package com.mycompany.SkySong.security;
 
 import com.mycompany.SkySong.common.entity.Role;
 import com.mycompany.SkySong.common.entity.User;
-import com.mycompany.SkySong.common.dao.RoleDAO;
-import com.mycompany.SkySong.common.dao.RegistrationUserDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private final RegistrationUserDAO userDAO;
+    private final UserDAO userDAO;
     private final RoleDAO roleDAO;
 
-    public CustomUserDetailsService(RegistrationUserDAO userDAO, RoleDAO roleDAO) {
+    public CustomUserDetailsService(UserDAO userDAO, RoleDAO roleDAO) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
     }
