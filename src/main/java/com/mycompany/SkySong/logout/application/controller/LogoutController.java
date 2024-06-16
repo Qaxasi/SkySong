@@ -19,7 +19,7 @@ public class LogoutController {
     
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse> logout(@CookieValue("session_id") String token) {
-        logoutService.deleteUserSession(token);
+        sessionRepository.deleteById(token);
         return ResponseEntity.ok(new ApiResponse("Logged out successfully."));
     }
 }
