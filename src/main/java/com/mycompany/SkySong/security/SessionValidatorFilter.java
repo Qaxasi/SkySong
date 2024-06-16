@@ -20,16 +20,13 @@ import java.util.Optional;
 public class SessionValidatorFilter extends OncePerRequestFilter {
 
     private final CustomAuthenticationEntryPoint authEntryPoint;
-    private final SessionExtractor sessionExtractor;
     private final SessionAuthentication authenticator;
     private final SessionDAO sessionDAO;
 
     public SessionValidatorFilter(CustomAuthenticationEntryPoint authEntryPoint,
-                                  SessionExtractor sessionExtractor,
                                   SessionAuthentication authenticator,
                                   SessionDAO sessionDAO) {
         this.authEntryPoint = authEntryPoint;
-        this.sessionExtractor = sessionExtractor;
         this.authenticator = authenticator;
         this.sessionDAO = sessionDAO;
     }
