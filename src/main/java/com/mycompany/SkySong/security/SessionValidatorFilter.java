@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.security;
 
 import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
-import com.mycompany.SkySong.security.SessionValidation;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class SessionValidatorFilter extends OncePerRequestFilter {
@@ -52,6 +54,16 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
             return;
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String getSessionIdFromRequest(HttpServletRequest request) {
+        return Optional.ofNullable(request.getCookies())
+                .stream()
+                .flatMap(Arrays::stream)
+                .filter(cookie -> "session_id".equals(cookie.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
     }
 
     private boolean isValidSession(String sessionId) {
