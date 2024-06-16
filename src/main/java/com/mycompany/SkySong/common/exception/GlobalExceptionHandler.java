@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.common.exception;
 
+import com.mycompany.SkySong.common.exception.response.ErrorResponseBuilder;
 import com.mycompany.SkySong.security.exception.SessionNotFoundException;
 import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
 import com.mycompany.SkySong.user.delete.domain.exception.NullOrEmptyInputException;
