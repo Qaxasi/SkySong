@@ -42,7 +42,7 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
             return;
         }
 
-        String sessionId = sessionExtractor.getSessionIdFromRequest(request);
+        String sessionId = getSessionIdFromRequest(request);
 
         if (isValidSession(sessionId)) {
             authenticator.authenticateUser(sessionId);
