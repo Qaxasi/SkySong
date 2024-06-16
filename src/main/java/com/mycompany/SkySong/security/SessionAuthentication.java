@@ -22,7 +22,7 @@ public class SessionAuthentication {
     }
     
     public void authenticateUser(String sessionId) {
-        String username = userInfoProvider.getUsernameForSession(sessionId);
+        String username = getUsernameForSession(sessionId);
         UserDetails details = userDetails.loadUserByUsername(username);
 
         UsernamePasswordAuthenticationToken authentication =
