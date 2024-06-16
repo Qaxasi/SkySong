@@ -16,9 +16,15 @@ import java.util.Optional;
 public class SessionAuthentication {
 
     private final CustomUserDetailsService userDetails;
+    private final SessionDAO sessionDAO;
+    private final UserDAO userDAO;
 
-    public SessionAuthentication(CustomUserDetailsService userDetails) {
+    public SessionAuthentication(CustomUserDetailsService userDetails,
+                                 SessionDAO sessionDAO,
+                                 UserDAO userDAO) {
         this.userDetails = userDetails;
+        this.sessionDAO = sessionDAO;
+        this.userDAO = userDAO;
     }
     
     public void authenticateUser(String sessionId) {
