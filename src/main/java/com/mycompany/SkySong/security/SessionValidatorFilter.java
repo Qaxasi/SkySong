@@ -19,16 +19,13 @@ import java.util.Date;
 @Component
 public class SessionValidatorFilter extends OncePerRequestFilter {
 
-    private final SessionValidation session;
     private final CustomAuthenticationEntryPoint authEntryPoint;
     private final SessionExtractor sessionExtractor;
     private final SessionAuthentication authenticator;
 
-    public SessionValidatorFilter(SessionValidation session,
-                                  CustomAuthenticationEntryPoint authEntryPoint,
+    public SessionValidatorFilter(CustomAuthenticationEntryPoint authEntryPoint,
                                   SessionExtractor sessionExtractor,
                                   SessionAuthentication authenticator) {
-        this.session = session;
         this.authEntryPoint = authEntryPoint;
         this.sessionExtractor = sessionExtractor;
         this.authenticator = authenticator;
