@@ -3,16 +3,20 @@ package com.mycompany.SkySong.login.domain.service;
 import com.mycompany.SkySong.common.exception.UserNotFoundException;
 import com.mycompany.SkySong.login.application.dto.LoginRequest;
 import com.mycompany.SkySong.common.entity.User;
+import com.mycompany.SkySong.login.domain.ports.LoginUserRepository;
 import com.mycompany.SkySong.login.domain.ports.UserAuthentication;
 
 class LoginHandler {
     private final UserSessionCreator sessionCreator;
     private final UserAuthentication auth;
+    private final LoginUserRepository userRepository;
 
     LoginHandler(UserSessionCreator sessionCreator,
-                 UserAuthentication auth) {
+                 UserAuthentication auth,
+                 LoginUserRepository userRepository) {
         this.sessionCreator = sessionCreator;
         this.auth = auth;
+        this.userRepository = userRepository;
     }
 
     public String login(LoginRequest request) {
