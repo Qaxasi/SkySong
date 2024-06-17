@@ -4,10 +4,12 @@ import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.user.delete.domain.ports.DeleteUser;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.NoSuchElementException;
 
+@Service
 class TransactionDeleteUser implements DeleteUser {
 
     private final UserDAO userRepository;
