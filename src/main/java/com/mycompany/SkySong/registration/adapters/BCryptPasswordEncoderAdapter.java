@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 @Service
 class BCryptPasswordEncoder implements PasswordEncoder {
 
-    private final PasswordEncoder encoder;
+    private final BCryptPasswordEncoder encoder;
 
-    BCryptPasswordEncoder(PasswordEncoder encoder) {
-        this.encoder = encoder;
+    BCryptPasswordEncoder() {
+        this.encoder = new BCryptPasswordEncoder();
     }
 
     @Override
