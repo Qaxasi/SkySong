@@ -35,7 +35,7 @@ public interface UserDAO extends LoginUserRepository, RegistrationUserRepository
     @SqlQuery("SELECT EXISTS (SELECT 1 FROM users WHERE username = :username)")
     boolean existsByUsername(@Bind("username") String username);
 
-    @SqlQuery("SELECT EXISTS (SELECT 1 FROM users WHERE email = :email")
+    @SqlQuery("SELECT EXISTS (SELECT 1 FROM users WHERE email = :email)")
     boolean existsByEmail(@Bind("email") String email);
 
     @SqlUpdate("DELETE FROM users WHERE id = :id")
