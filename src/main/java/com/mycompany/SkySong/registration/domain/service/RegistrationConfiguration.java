@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 class RegistrationConfiguration {
 
     @Bean
-    UserRegistration registration(PasswordEncoder encoder,
+    UserRegistration registration(RegistrationUserRepository userRepository,
                                   RegistrationRoleRepository roleRepository,
-                                  RegistrationUserRepository userRepository,
+                                  PasswordEncoder encoder,
                                   UserSaver userSaver) {
         RequestValidation validation = new RequestValidation(userRepository);
         UserCreator userCreator = new UserCreator(encoder, roleRepository);
