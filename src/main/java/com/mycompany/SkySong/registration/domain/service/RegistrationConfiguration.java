@@ -11,12 +11,13 @@ import org.springframework.context.annotation.Configuration;
 class RegistrationConfiguration {
 
     @Bean
-    UserRegistration registration(RegistrationUserRepository userRepository,
-                                  RegistrationRoleRepository roleRepository,
-                                  PasswordEncoder encoder,
-                                  UserSaver userSaver) {
+    UserRegistrationFacade registrationFacade(RegistrationUserRepository userRepository,
+                                              RegistrationRoleRepository roleRepository,
+                                              PasswordEncoder encoder,
+                                              UserSaver userSaver)  {
         RequestValidation validation = new RequestValidation(userRepository);
         UserCreator userCreator = new UserCreator(encoder, roleRepository);
-        return new UserRegistration(validation, userCreator, userSaver);
+        UserRegistration userRegistration = new UserRegistration(validation, userCreator, userSaver);
+        return new UserRegistrationFacade(userRegistration);
     }
 }
