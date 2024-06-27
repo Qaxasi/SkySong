@@ -6,7 +6,7 @@ import com.mycompany.SkySong.registration.domain.ports.RegistrationUserRepositor
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;
 
 
-public class UserRegistrationSetup {
+public class UserRegistrationFactory {
 
     public UserRegistration createUserRegistration(RegistrationUserRepository userRepository,
                                                           RegistrationRoleRepository roleRepository,
