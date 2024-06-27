@@ -5,7 +5,7 @@ import com.mycompany.SkySong.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;
 
-class UserRegistration {
+public class UserRegistration {
 
     private final RequestValidation validation;
     private final UserCreator userCreator;
@@ -17,7 +17,7 @@ class UserRegistration {
         this.userSaver = userSaver;
     }
 
-    ApiResponse registerUser(RegisterRequest request) {
+    public ApiResponse registerUser(RegisterRequest request) {
         validation.validate(request);
         User user = userCreator.createUser(request);
         userSaver.saveUser(user);
