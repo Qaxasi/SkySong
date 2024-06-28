@@ -16,7 +16,7 @@ class RegistrationConfiguration {
                                   RegistrationRoleRepository roleRepository,
                                   PasswordEncoder encoder,
                                   UserSaver userSaver) {
-        UserRegistrationFactory configuration = new UserRegistrationFactory();
-        return configuration.createUserRegistration(userRepository, roleRepository, encoder, userSaver);
+        UserRegistrationFactory registrationFactory = new UserRegistrationFactory();
+        return registrationFactory.createUserRegistration(userRepository, roleRepository, encoder, userSaver);
     }
 }
