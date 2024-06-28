@@ -6,7 +6,7 @@ import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.login.domain.ports.LoginUserRepository;
 import com.mycompany.SkySong.login.domain.ports.UserAuthentication;
 
-class LoginHandler {
+public class LoginHandler {
     private final UserSessionCreator sessionCreator;
     private final UserAuthentication auth;
     private final LoginUserRepository userRepository;
