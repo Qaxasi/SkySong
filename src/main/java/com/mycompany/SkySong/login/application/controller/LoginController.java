@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.login.application.controller;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
-import com.mycompany.SkySong.login.domain.service.LoginHandlerService;
+import com.mycompany.SkySong.login.domain.service.LoginHandler;
 import com.mycompany.SkySong.login.dto.LoginRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,16 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class LoginController {
 
-    private final LoginHandlerService login;
+    private final LoginHandler login;
 
-    public LoginController(LoginHandlerService login) {
+    public LoginController(LoginHandler login) {
         this.login = login;
     }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request,
                                              HttpServletResponse response) {
-        String sessionToken = login.userLogin(request);
+        String sessionToken = login.login(request);
 
         Cookie sessionCookie = new Cookie("session_id", sessionToken);
         sessionCookie.setHttpOnly(true);
