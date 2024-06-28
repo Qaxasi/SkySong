@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class SpringRegistrationConfiguration {
+class RegistrationConfiguration {
     @Bean
-    UserRegistration registrationService(RegistrationUserRepository userRepository,
-                                         RegistrationRoleRepository roleRepository,
-                                         PasswordEncoder encoder,
-                                         UserSaver userSaver) {
+    UserRegistration registration(RegistrationUserRepository userRepository,
+                                  RegistrationRoleRepository roleRepository,
+                                  PasswordEncoder encoder,
+                                  UserSaver userSaver) {
         UserRegistrationFactory configuration = new UserRegistrationFactory();
         return configuration.createUserRegistration(userRepository, roleRepository, encoder, userSaver);
     }
