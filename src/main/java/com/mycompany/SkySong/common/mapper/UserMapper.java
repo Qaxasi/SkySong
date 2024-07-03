@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.common.mapper;
 
 import com.mycompany.SkySong.common.entity.User;
-import com.mycompany.SkySong.common.mapper.RoleMapper;
 import com.mycompany.SkySong.registration.dto.UserDTO;
 
 import java.util.stream.Collectors;
