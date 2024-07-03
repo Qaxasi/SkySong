@@ -5,7 +5,7 @@ import com.mycompany.SkySong.registration.domain.ports.PasswordEncoder;
 import com.mycompany.SkySong.registration.domain.ports.RegistrationRoleRepository;
 import com.mycompany.SkySong.registration.domain.ports.RegistrationUserRepository;
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;
-import com.mycompany.SkySong.registration.xyz.UserRegistrationMapper;
+import com.mycompany.SkySong.registration.mapper.UserRegistrationMapper;
 
 
 public class UserRegistrationFactory {

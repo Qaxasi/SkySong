@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.registration.domain.service;
 
 import com.mycompany.SkySong.common.dto.ApiResponse;
-import com.mycompany.SkySong.registration.xyz.UserRegistrationMapper;
+import com.mycompany.SkySong.registration.mapper.UserRegistrationMapper;
 import com.mycompany.SkySong.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;

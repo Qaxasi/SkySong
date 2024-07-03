@@ -5,7 +5,7 @@ import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.common.entity.Role;
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;
 import com.mycompany.SkySong.registration.dto.UserRegistrationDTO;
-import com.mycompany.SkySong.registration.xyz.UserRegistrationMapper;
+import com.mycompany.SkySong.registration.mapper.UserRegistrationMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
