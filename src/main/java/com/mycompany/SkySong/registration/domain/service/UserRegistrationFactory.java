@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.registration.domain.service;
 
+import com.mycompany.SkySong.common.mapper.RoleMapper;
 import com.mycompany.SkySong.registration.domain.ports.PasswordEncoder;
 import com.mycompany.SkySong.registration.domain.ports.RegistrationRoleRepository;
 import com.mycompany.SkySong.registration.domain.ports.RegistrationUserRepository;
 import com.mycompany.SkySong.registration.domain.ports.UserSaver;
+import com.mycompany.SkySong.registration.xyz.UserRegistrationMapper;
 
 
 public class UserRegistrationFactory {
@@ -14,6 +16,8 @@ public class UserRegistrationFactory {
                                                    UserSaver userSaver)  {
         RequestValidation validation = new RequestValidation(userRepository);
         UserCreator userCreator = new UserCreator(encoder, roleRepository);
-        return new UserRegistration(validation, userCreator, userSaver);
+        RoleMapper roleMapper = new RoleMapper();
+        UserRegistrationMapper userMapper = new UserRegistrationMapper(roleMapper);
+        return new UserRegistration(validation, userCreator, userMapper, userSaver);
     }
 }
