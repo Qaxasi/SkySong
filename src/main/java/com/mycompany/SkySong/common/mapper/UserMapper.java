@@ -6,11 +6,6 @@ import com.mycompany.SkySong.registration.dto.UserDTO;
 import java.util.stream.Collectors;
 
 public class UserMapper {
-    private final RoleMapper roleMapper;
-    UserMapper(RoleMapper roleMapper) {
-        this.roleMapper = roleMapper;
-    }
-
     public User toEntity(UserDTO userDTO) {
         User user = new User();
         user.setId(user.getId());
