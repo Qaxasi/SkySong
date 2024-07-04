@@ -2,9 +2,6 @@ package com.mycompany.SkySong.common.mapper;
 
 import com.mycompany.SkySong.common.entity.User;
 import com.mycompany.SkySong.registration.dto.UserDTO;
-import com.mycompany.SkySong.registration.mapper.RoleMapper;
-
-import java.util.stream.Collectors;
 
 public class UserMapper {
     public User toEntity(UserDTO userDTO) {
@@ -18,9 +15,6 @@ public class UserMapper {
         return new UserDTO(
                 user.getId(),
                 user.getUsername(),
-                user.getEmail(),
-                user.getRoles().stream()
-                        .map(roleMapper::toDto)
-                        .collect(Collectors.toSet()));
+                user.getEmail());
     }
 }
