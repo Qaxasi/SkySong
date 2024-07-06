@@ -13,6 +13,16 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 class RegistrationConfiguration {
+
+    @Bean
+    public RoleMapper roleMapper() {
+        return new RoleMapper();
+    }
+
+    @Bean
+    public UserRegistrationMapper userRegistrationMapper(RoleMapper roleMapper) {
+        return new UserRegistrationMapper(roleMapper);
+    }
     @Bean
     UserRegistration registration(RegistrationUserRepository userRepository,
                                   RegistrationRoleRepository roleRepository,
