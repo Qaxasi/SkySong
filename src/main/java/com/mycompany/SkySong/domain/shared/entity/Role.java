@@ -1,23 +1,39 @@
-package com.mycompany.SkySong.infrastructure.entity;
+package com.mycompany.SkySong.domain.shared.entity;
 
-import com.mycompany.SkySong.domain.enums.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.mycompany.SkySong.domain.shared.enums.UserRole;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Role {
 
     private Integer id;
     private UserRole name;
 
+    public Role() {}
+
+    public Role(Integer id, UserRole name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Role(UserRole name) {
         this.name = name;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public UserRole getName() {
+        return name;
+    }
+
+    public void setName(UserRole name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return name.name();
