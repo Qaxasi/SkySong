@@ -1,10 +1,9 @@
 package com.mycompany.SkySong.application.user.delete.usecase;
 
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import com.mycompany.SkySong.application.user.delete.port.in.UserDeletion;
 import com.mycompany.SkySong.domain.user.delete.ports.DeleteUser;
 
-public class UserDeletionHandler implements UserDeletion {
+public class UserDeletionHandler {
 
     private final DeleteUser deleteUser;
 
