@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.domain.dto;
+package com.mycompany.SkySong.application.dto;
 
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 

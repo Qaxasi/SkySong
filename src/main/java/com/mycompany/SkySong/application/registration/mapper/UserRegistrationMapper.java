@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.application.mappers;
+package com.mycompany.SkySong.application.mapper;
 
-import com.mycompany.SkySong.application.mappers.RoleMapper;
-import com.mycompany.SkySong.infrastructure.entity.User;
-import com.mycompany.SkySong.domain.registration.dto.UserRegistrationDTO;
+import com.mycompany.SkySong.application.shared.RoleMapper;
+import com.mycompany.SkySong.domain.shared.entity.User;
+import com.mycompany.SkySong.application.registration.dto.UserRegistrationDTO;
 
 import java.util.stream.Collectors;
 

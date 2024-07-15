@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.security;
+package com.mycompany.SkySong.adapter.security;
 
 import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import jakarta.servlet.FilterChain;

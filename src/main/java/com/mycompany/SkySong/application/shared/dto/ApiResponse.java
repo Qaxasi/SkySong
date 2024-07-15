@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.domain.dto;
+package com.mycompany.SkySong.application.dto;
 
 public record ApiResponse(String message) {
 }

@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.common.mapper;
+package com.mycompany.SkySong.application.mappers;
 
-import com.mycompany.SkySong.infrastructure.entity.User;
-import com.mycompany.SkySong.common.dto.UserDTO;
+import com.mycompany.SkySong.domain.shared.entity.User;
+import com.mycompany.SkySong.application.shared.dto.UserDTO;
 
 public class UserMapper {
     public User toEntity(UserDTO userDTO) {
