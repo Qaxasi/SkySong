@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.application.mapper;
+package com.mycompany.SkySong.application.shared;
 
 import com.mycompany.SkySong.domain.shared.entity.Role;
-import com.mycompany.SkySong.application.dto.RoleDTO;
+import com.mycompany.SkySong.application.registration.dto.RoleDTO;
 
 public class RoleMapper {
 

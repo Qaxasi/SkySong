@@ -1,8 +1,9 @@
-package com.mycompany.SkySong.login.domain.service;
+package com.mycompany.SkySong.application.login.port.usecase;
 
-import com.mycompany.SkySong.login.domain.exception.UserNotFoundException;
-import com.mycompany.SkySong.login.dto.LoginRequest;
-import com.mycompany.SkySong.common.entity.User;
+import com.mycompany.SkySong.domain.login.exception.UserNotFoundException;
+import com.mycompany.SkySong.application.login.dto.LoginRequest;
+import com.mycompany.SkySong.domain.login.service.UserSessionCreator;
+import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.login.ports.LoginUserRepository;
 import com.mycompany.SkySong.domain.login.ports.UserAuthentication;
 

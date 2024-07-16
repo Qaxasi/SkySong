@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.login.domain.exception;
+package com.mycompany.SkySong.domain.login.exception;
 
-import com.mycompany.SkySong.common.exception.ApplicationRuntimeException;
+import com.mycompany.SkySong.adapter.exception.ApplicationRuntimeException;
 
 public class UserNotFoundException extends ApplicationRuntimeException {
     public UserNotFoundException(String message) {
