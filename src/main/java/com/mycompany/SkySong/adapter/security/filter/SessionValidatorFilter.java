@@ -1,5 +1,10 @@
-package com.mycompany.SkySong.adapter.security;
+package com.mycompany.SkySong.adapter.security.filter;
 
+import com.mycompany.SkySong.adapter.security.CustomAuthenticationEntryPoint;
+import com.mycompany.SkySong.adapter.security.SessionAuthentication;
+import com.mycompany.SkySong.adapter.security.exception.SessionNotFoundException;
+import com.mycompany.SkySong.domain.shared.entity.Session;
+import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,6 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -61,6 +69,15 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElse(null);
+    }
+
+    private String getUsernameForSession(String sessionId) {
+        return Optional.of(sessionId)
+                .flatMap(sessionDAO::findById)
+                .map(Session::getUserId)
+                .flatMap(userDAO::findById)
+                .map(User::getUsername)
+                .orElseThrow(() -> new SessionNotFoundException("No user associated with session ID:" + sessionId));
     }
 
     private boolean isValidSession(String sessionId) {
