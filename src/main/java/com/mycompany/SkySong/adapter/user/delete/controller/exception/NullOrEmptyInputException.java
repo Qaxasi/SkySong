@@ -1,8 +1,6 @@
-package com.mycompany.SkySong.user.delete.application.exception;
+package com.mycompany.SkySong.adapter.user.delete.controller.exception;
 
-import com.mycompany.SkySong.common.exception.ApplicationRuntimeException;
-
-public class NullOrEmptyInputException extends ApplicationRuntimeException {
+public class NullOrEmptyInputException extends RuntimeException {
     public NullOrEmptyInputException(String message) {
         super(message);
     }

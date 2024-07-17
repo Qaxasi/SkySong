@@ -1,8 +1,6 @@
-package com.mycompany.SkySong.registration.domain.exception;
+package com.mycompany.SkySong.domain.registration.exception;
 
-import com.mycompany.SkySong.common.exception.ApplicationRuntimeException;
-
-public class CredentialValidationException extends ApplicationRuntimeException {
+public class CredentialValidationException extends RuntimeException {
     public CredentialValidationException(String message) {
         super(message);
     }

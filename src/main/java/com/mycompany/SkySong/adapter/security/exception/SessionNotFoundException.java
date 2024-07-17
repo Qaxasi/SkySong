@@ -1,8 +1,6 @@
-package com.mycompany.SkySong.security.exception;
+package com.mycompany.SkySong.adapter.security.exception;
 
-import com.mycompany.SkySong.common.exception.ApplicationRuntimeException;
-
-public class SessionNotFoundException extends ApplicationRuntimeException {
+public class SessionNotFoundException extends RuntimeException {
     public SessionNotFoundException(String message) {
         super(message);
     }

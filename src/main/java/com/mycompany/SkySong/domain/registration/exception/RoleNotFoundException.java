@@ -1,8 +1,6 @@
-package com.mycompany.SkySong.registration.domain.exception;
+package com.mycompany.SkySong.domain.registration.exception;
 
-import com.mycompany.SkySong.common.exception.ApplicationRuntimeException;
-
-public class RoleNotFoundException extends ApplicationRuntimeException {
+public class RoleNotFoundException extends RuntimeException {
     public RoleNotFoundException(String message) {
         super(message);
     }
