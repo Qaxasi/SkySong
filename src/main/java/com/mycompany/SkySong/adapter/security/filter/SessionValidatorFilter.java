@@ -57,7 +57,7 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
         String sessionId = getSessionIdFromRequest(request);
 
         if (isValidSession(sessionId)) {
-            authenticator.authenticateUser(sessionId);
+            authenticateUser(sessionId);
         } else {
             handleAuthenticationFailure(request, response);
             return;
