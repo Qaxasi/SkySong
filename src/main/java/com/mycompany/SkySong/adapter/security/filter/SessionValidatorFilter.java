@@ -71,6 +71,16 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
                 .orElse(null);
     }
 
+    private void authenticateUser(String sessionId) {
+        String username = getUsernameForSession(sessionId);
+        UserDetails details = userDetails.loadUserByUsername(username);
+
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
     private String getUsernameForSession(String sessionId) {
         return Optional.of(sessionId)
                 .flatMap(sessionDAO::findById)
