@@ -1,10 +1,12 @@
 package com.mycompany.SkySong.adapter.security.filter;
 
 import com.mycompany.SkySong.adapter.security.CustomAuthenticationEntryPoint;
+import com.mycompany.SkySong.adapter.security.CustomUserDetailsService;
 import com.mycompany.SkySong.adapter.security.exception.SessionNotFoundException;
 import com.mycompany.SkySong.domain.shared.entity.Session;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -28,11 +30,17 @@ public class SessionValidatorFilter extends OncePerRequestFilter {
 
     private final CustomAuthenticationEntryPoint authEntryPoint;
     private final SessionDAO sessionDAO;
+    private final UserDAO userDAO;
+    private final CustomUserDetailsService userDetails;
 
     public SessionValidatorFilter(CustomAuthenticationEntryPoint authEntryPoint,
-                                  SessionDAO sessionDAO) {
+                                  SessionDAO sessionDAO,
+                                  UserDAO userDAO,
+                                  CustomUserDetailsService userDetails) {
         this.authEntryPoint = authEntryPoint;
         this.sessionDAO = sessionDAO;
+        this.userDAO = userDAO;
+        this.userDetails = userDetails;
     }
 
     @Override
