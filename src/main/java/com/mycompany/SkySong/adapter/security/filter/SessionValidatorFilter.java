@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.adapter.security.filter;
 
 import com.mycompany.SkySong.adapter.security.CustomAuthenticationEntryPoint;
-import com.mycompany.SkySong.adapter.security.SessionAuthentication;
 import com.mycompany.SkySong.adapter.security.exception.SessionNotFoundException;
 import com.mycompany.SkySong.domain.shared.entity.Session;
 import com.mycompany.SkySong.domain.shared.entity.User;
@@ -28,14 +27,11 @@ import java.util.Optional;
 public class SessionValidatorFilter extends OncePerRequestFilter {
 
     private final CustomAuthenticationEntryPoint authEntryPoint;
-    private final SessionAuthentication authenticator;
     private final SessionDAO sessionDAO;
 
     public SessionValidatorFilter(CustomAuthenticationEntryPoint authEntryPoint,
-                                  SessionAuthentication authenticator,
                                   SessionDAO sessionDAO) {
         this.authEntryPoint = authEntryPoint;
-        this.authenticator = authenticator;
         this.sessionDAO = sessionDAO;
     }
 
