@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.common.exception;
+package com.mycompany.SkySong.adapter.exception;
 
-import com.mycompany.SkySong.common.exception.response.ErrorResponseBuilder;
-import com.mycompany.SkySong.domain.login.exception.UserNotFoundException;
+import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;
+import com.mycompany.SkySong.application.login.exception.UserNotFoundException;
 import com.mycompany.SkySong.adapter.security.exception.SessionNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
