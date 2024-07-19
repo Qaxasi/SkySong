@@ -1,20 +1,20 @@
-package com.mycompany.SkySong.login.domain.service;
+package com.mycompany.SkySong.domain.login.service;
 
 import com.mycompany.SkySong.domain.login.ports.LoginSessionRepository;
-import com.mycompany.SkySong.common.entity.Session;
+import com.mycompany.SkySong.domain.shared.entity.Session;
 import java.util.Date;
 
-class UserSessionCreator {
+public class UserSessionCreator {
     private final LoginSessionRepository sessionRepository;
     private final SessionTokenGenerator tokenGenerator;
 
-    UserSessionCreator(LoginSessionRepository sessionRepository,
-                       SessionTokenGenerator tokenGenerator) {
+    public UserSessionCreator(LoginSessionRepository sessionRepository,
+                              SessionTokenGenerator tokenGenerator) {
         this.sessionRepository = sessionRepository;
         this.tokenGenerator = tokenGenerator;
     }
 
-    String createUserSession(int userId) {
+    public String createUserSession(int userId) {
         String token = tokenGenerator.generateToken();
         Session session = createSession(token, userId);
         sessionRepository.save(session);
