@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.login.adapters;
+package com.mycompany.SkySong.adapter.login.adapter;
 
 import com.mycompany.SkySong.domain.login.ports.UserAuthentication;
 import org.springframework.security.authentication.AuthenticationManager;

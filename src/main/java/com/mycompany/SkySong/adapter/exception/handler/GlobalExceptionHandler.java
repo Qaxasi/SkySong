@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.exception;
+package com.mycompany.SkySong.adapter.exception.handler;
 
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;
 import com.mycompany.SkySong.application.login.exception.UserNotFoundException;
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return ErrorResponseBuilder.createValidationErrorResponse(errors, HttpStatus.BAD_REQUEST);
+        return ErrorResponseBuilder.createErrorResponse(errors, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

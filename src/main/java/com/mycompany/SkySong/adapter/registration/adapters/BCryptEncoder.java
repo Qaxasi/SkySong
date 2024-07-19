@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.registration.adapters;
+package com.mycompany.SkySong.adapter.registration.adapters;
 
 
-import com.mycompany.SkySong.registration.domain.ports.PasswordEncoder;
+import com.mycompany.SkySong.domain.registration.ports.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

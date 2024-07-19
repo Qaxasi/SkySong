@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.logout.application.controller;
+package com.mycompany.SkySong.adapter.logout.controller;
 
-import com.mycompany.SkySong.common.dto.ApiResponse;
-import com.mycompany.SkySong.logout.domain.ports.LogoutSessionRepository;
+import com.mycompany.SkySong.application.shared.dto.ApiResponse;
+import com.mycompany.SkySong.domain.logout.ports.LogoutSessionRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;

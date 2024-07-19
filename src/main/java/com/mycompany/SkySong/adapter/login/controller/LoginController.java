@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.login.application.controller;
+package com.mycompany.SkySong.adapter.login.controller;
 
-import com.mycompany.SkySong.common.dto.ApiResponse;
-import com.mycompany.SkySong.domain.login.service.LoginHandler;
-import com.mycompany.SkySong.login.dto.LoginRequest;
+import com.mycompany.SkySong.application.shared.dto.ApiResponse;
+import com.mycompany.SkySong.application.login.usecase.LoginHandler;
+import com.mycompany.SkySong.application.login.dto.LoginRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
