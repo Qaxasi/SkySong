@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.application.login.port.usecase;
+package com.mycompany.SkySong.application.login.usecase;
 
-import com.mycompany.SkySong.domain.login.exception.UserNotFoundException;
+import com.mycompany.SkySong.application.login.exception.UserNotFoundException;
 import com.mycompany.SkySong.application.login.dto.LoginRequest;
 import com.mycompany.SkySong.domain.login.service.UserSessionCreator;
 import com.mycompany.SkySong.domain.shared.entity.User;
@@ -12,9 +12,9 @@ public class LoginHandler {
     private final UserAuthentication auth;
     private final LoginUserRepository userRepository;
 
-    LoginHandler(UserSessionCreator sessionCreator,
-                 UserAuthentication auth,
-                 LoginUserRepository userRepository) {
+    public LoginHandler(UserSessionCreator sessionCreator,
+                        UserAuthentication auth,
+                        LoginUserRepository userRepository) {
         this.sessionCreator = sessionCreator;
         this.auth = auth;
         this.userRepository = userRepository;
