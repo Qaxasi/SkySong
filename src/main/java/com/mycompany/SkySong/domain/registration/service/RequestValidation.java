@@ -1,18 +1,18 @@
-package com.mycompany.SkySong.registration.domain.service;
+package com.mycompany.SkySong.domain.registration.service;
 
-import com.mycompany.SkySong.registration.dto.RegisterRequest;
-import com.mycompany.SkySong.registration.domain.exception.CredentialValidationException;
-import com.mycompany.SkySong.registration.domain.ports.RegistrationUserRepository;
+import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
+import com.mycompany.SkySong.domain.registration.ports.RegistrationUserRepository;
 
-class RequestValidation {
+public class RequestValidation {
 
     private final RegistrationUserRepository registrationUserRepository;
 
-    RequestValidation(RegistrationUserRepository registrationUserRepository) {
+    public RequestValidation(RegistrationUserRepository registrationUserRepository) {
         this.registrationUserRepository = registrationUserRepository;
     }
 
-    void validate(RegisterRequest request) {
+    public void validate(RegisterRequest request) {
         if (!request.username().matches("^[a-zA-Z0-9]{3,20}$")) {
             throw new CredentialValidationException("Invalid username format. The username can contain only letters " +
                     "and numbers, and should be between 3 and 20 characters long.");

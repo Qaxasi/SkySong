@@ -1,27 +1,27 @@
-package com.mycompany.SkySong.registration.domain.service;
+package com.mycompany.SkySong.domain.registration.service;
 
-import com.mycompany.SkySong.registration.dto.RegisterRequest;
-import com.mycompany.SkySong.registration.domain.exception.RoleNotFoundException;
-import com.mycompany.SkySong.common.entity.Role;
-import com.mycompany.SkySong.common.entity.User;
-import com.mycompany.SkySong.common.enums.UserRole;
-import com.mycompany.SkySong.registration.domain.ports.PasswordEncoder;
-import com.mycompany.SkySong.registration.domain.ports.RegistrationRoleRepository;
+import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
+import com.mycompany.SkySong.domain.shared.entity.Role;
+import com.mycompany.SkySong.domain.shared.entity.User;
+import com.mycompany.SkySong.domain.shared.enums.UserRole;
+import com.mycompany.SkySong.domain.registration.ports.PasswordEncoder;
+import com.mycompany.SkySong.domain.registration.ports.RegistrationRoleRepository;
 
 import java.util.Collections;
 
-class UserCreator {
+public class UserCreator {
 
     private final PasswordEncoder passwordEncoder;
     private final RegistrationRoleRepository registrationRoleRepository;
 
-    UserCreator(PasswordEncoder passwordEncoder,
-                RegistrationRoleRepository registrationRoleRepository) {
+    public UserCreator(PasswordEncoder passwordEncoder,
+                       RegistrationRoleRepository registrationRoleRepository) {
         this.passwordEncoder = passwordEncoder;
         this.registrationRoleRepository = registrationRoleRepository;
     }
 
-    User createUser(RegisterRequest request) {
+    public User createUser(RegisterRequest request) {
         User user = new User();
         user.setUsername(request.username());
         user.setEmail(request.email());
