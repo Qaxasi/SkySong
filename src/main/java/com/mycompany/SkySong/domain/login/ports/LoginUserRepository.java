@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.login.domain.ports;
+package com.mycompany.SkySong.domain.login.ports;
 
-import com.mycompany.SkySong.common.entity.User;
+import com.mycompany.SkySong.domain.shared.entity.User;
 
 import java.util.Optional;
 

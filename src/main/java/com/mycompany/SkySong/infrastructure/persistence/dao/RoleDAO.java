@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.infrastructure.persistence.dao;
 
-import com.mycompany.SkySong.common.entity.Role;
-import com.mycompany.SkySong.common.enums.UserRole;
-import com.mycompany.SkySong.registration.domain.ports.RegistrationRoleRepository;
+import com.mycompany.SkySong.domain.shared.entity.Role;
+import com.mycompany.SkySong.domain.shared.enums.UserRole;
+import com.mycompany.SkySong.domain.registration.ports.RegistrationRoleRepository;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;

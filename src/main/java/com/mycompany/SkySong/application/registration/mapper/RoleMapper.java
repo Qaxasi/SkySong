@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.shared;
+package com.mycompany.SkySong.application.registration.mapper;
 
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.application.registration.dto.RoleDTO;

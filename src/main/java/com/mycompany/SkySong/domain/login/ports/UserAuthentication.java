@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.login.domain.ports;
+package com.mycompany.SkySong.domain.login.ports;
 
 public interface UserAuthentication {
     String authenticateUser(String usernameOrEmail, String password);

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.infrastructure.jdbi.config;
+package com.mycompany.SkySong.infrastructure.config.jdbi;
 
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;

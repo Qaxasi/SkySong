@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.user.delete.application.controller;
+package com.mycompany.SkySong.adapter.user.delete.controller;
 
-import com.mycompany.SkySong.common.dto.ApiResponse;
-import com.mycompany.SkySong.user.delete.domain.service.DeleteUserHandler;
-import com.mycompany.SkySong.user.delete.application.exception.NullOrEmptyInputException;
+import com.mycompany.SkySong.application.shared.dto.ApiResponse;
+import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
+import com.mycompany.SkySong.application.user.delete.usecase.UserDeletionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/users")
 public class DeleteUserController {
 
-    private final DeleteUserHandler userDeleter;
+    private final UserDeletionHandler userDeleter;
 
-    public DeleteUserController(DeleteUserHandler userDeleter) {
+    public DeleteUserController(UserDeletionHandler userDeleter) {
         this.userDeleter = userDeleter;
     }
 

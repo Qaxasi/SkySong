@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.dto;
+package com.mycompany.SkySong.application.shared.dto;
 
 public record ApiResponse(String message) {
 }

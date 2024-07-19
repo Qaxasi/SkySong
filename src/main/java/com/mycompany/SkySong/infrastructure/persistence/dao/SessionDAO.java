@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.infrastructure.persistence.dao;
 
-import com.mycompany.SkySong.common.entity.Session;
-import com.mycompany.SkySong.login.domain.ports.LoginSessionRepository;
-import com.mycompany.SkySong.logout.domain.ports.LogoutSessionRepository;
+import com.mycompany.SkySong.domain.shared.entity.Session;
+import com.mycompany.SkySong.domain.login.ports.LoginSessionRepository;
+import com.mycompany.SkySong.domain.logout.ports.LogoutSessionRepository;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;

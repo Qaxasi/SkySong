@@ -1,6 +1,4 @@
-package com.mycompany.SkySong.domain.registration.dto;
-
-import com.mycompany.SkySong.domain.shared.dto.RoleDTO;
+package com.mycompany.SkySong.application.registration.dto;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.login.domain.service;
+package com.mycompany.SkySong.domain.login.service;
 
 import java.security.SecureRandom;
 import java.util.Base64;

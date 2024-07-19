@@ -1,10 +1,9 @@
-package com.mycompany.SkySong.infrastructure.security.config;
+package com.mycompany.SkySong.infrastructure.config.security;
 
 
 import com.mycompany.SkySong.adapter.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.adapter.security.CustomAuthenticationEntryPoint;
-import com.mycompany.SkySong.adapter.security.SessionValidatorFilter;
-import lombok.extern.slf4j.Slf4j;
+import com.mycompany.SkySong.adapter.security.filter.SessionValidatorFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -38,20 +36,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
-    
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        log.info("SecurityConfig is loaded");
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
         .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
@@ -75,4 +60,14 @@ public class SecurityConfig {
 
         return http.build();
     }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
 }
