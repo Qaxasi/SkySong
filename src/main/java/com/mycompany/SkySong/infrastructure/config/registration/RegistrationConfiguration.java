@@ -40,13 +40,4 @@ public class RegistrationConfiguration {
     public UserCreator userCreator(PasswordEncoder encoder, RegistrationRoleRepository roleRepository) {
         return new UserCreator(encoder, roleRepository);
     }
-    @Bean
-    UserRegistration registration(RegistrationUserRepository userRepository,
-                                  RegistrationRoleRepository roleRepository,
-                                  PasswordEncoder encoder,
-                                  UserRegistrationMapper userMapper,
-                                  UserSaver userSaver) {
-        UserRegistrationFactory registrationFactory = new UserRegistrationFactory();
-        return registrationFactory.createUserRegistration(userRepository, roleRepository, encoder, userMapper, userSaver);
-    }
 }
