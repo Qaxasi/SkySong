@@ -15,10 +15,10 @@ public class UserRegistrationHandler {
     private final UserSaver userSaver;
     private final UserRegistrationMapper mapper;
 
-    UserRegistrationHandler(RequestValidation validation,
-                            UserCreator userCreator,
-                            UserSaver userSaver,
-                            UserRegistrationMapper mapper) {
+    public UserRegistrationHandler(RequestValidation validation,
+                                   UserCreator userCreator,
+                                   UserSaver userSaver,
+                                   UserRegistrationMapper mapper) {
         this.validation = validation;
         this.userCreator = userCreator;
         this.userSaver = userSaver;
