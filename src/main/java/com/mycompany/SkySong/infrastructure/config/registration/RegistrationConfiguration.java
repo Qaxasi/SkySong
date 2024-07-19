@@ -25,6 +25,22 @@ public class RegistrationConfiguration {
         return new UserRegistrationMapper(roleMapper);
     }
     @Bean
+    public UserRegistrationHandler registrationHandler(RequestValidation validation,
+                                                       UserCreator userCreator,
+                                                       UserSaver userSaver,
+                                                       UserRegistrationMapper userMapper) {
+        return new UserRegistrationHandler(validation, userCreator, userSaver, userMapper);
+    }
+
+    @Bean
+    public RequestValidation requestValidation(RegistrationUserRepository userRepository) {
+        return new RequestValidation(userRepository);
+    }
+    @Bean
+    public UserCreator userCreator(PasswordEncoder encoder, RegistrationRoleRepository roleRepository) {
+        return new UserCreator(encoder, roleRepository);
+    }
+    @Bean
     UserRegistration registration(RegistrationUserRepository userRepository,
                                   RegistrationRoleRepository roleRepository,
                                   PasswordEncoder encoder,
