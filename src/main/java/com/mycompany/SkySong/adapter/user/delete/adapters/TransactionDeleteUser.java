@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.user.delete.adapters;
+package com.mycompany.SkySong.adapter.user.delete.adapters;
 
 import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
-import com.mycompany.SkySong.common.entity.User;
-import com.mycompany.SkySong.user.delete.domain.ports.DeleteUser;
+import com.mycompany.SkySong.domain.shared.entity.User;
+import com.mycompany.SkySong.domain.user.delete.ports.DeleteUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -16,9 +16,9 @@ class TransactionDeleteUser implements DeleteUser {
     private final SessionDAO sessionRepository;
     private final TransactionTemplate transactionTemplate;
 
-    public TransactionDeleteUser(UserDAO userDAO,
-                                 SessionDAO sessionDAO,
-                                 TransactionTemplate transactionTemplate) {
+    TransactionDeleteUser(UserDAO userDAO,
+                          SessionDAO sessionDAO,
+                          TransactionTemplate transactionTemplate) {
         this.userRepository = userDAO;
         this.sessionRepository = sessionDAO;
         this.transactionTemplate = transactionTemplate;
