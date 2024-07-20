@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.common.security;
 
-import com.mycompany.SkySong.common.security.CustomUserDetailsService;
+import com.mycompany.SkySong.adapter.security.CustomUserDetailsService;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
