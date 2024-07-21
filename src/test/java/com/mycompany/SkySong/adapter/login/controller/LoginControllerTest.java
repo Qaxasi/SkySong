@@ -69,16 +69,9 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenLoginSuccess_SessionCookieNotEmpty() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.validCredentials)))
-                .andReturn();
-
-        Cookie cookie = mvcResult.getResponse().getCookie("session_id");
-        assertNotNull(cookie);
-
-        String cookieValue = cookie.getValue();
-        assertNotNull(cookieValue);
+        createUserWithUsername("Alex");
+        assertCookieNotEmpty("/api/v1/users/login",
+                requests.login("Alex"), "session_id");
     }
 
     @Test
@@ -165,7 +158,7 @@ public class LoginControllerTest extends BaseIT {
                 .andExpect(cookie().exists(cookieName));
     }
 
-    private void assertEndpointSetsNonEmptyCookie(String endpoint, LoginRequest request, String cookieName) throws Exception {
+    private void assertCookieNotEmpty(String endpoint, LoginRequest request, String cookieName) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
