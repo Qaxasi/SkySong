@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.adapter.login.controller;
 
+import com.mycompany.SkySong.application.login.dto.LoginRequest;
+import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
@@ -27,6 +29,8 @@ public class LoginControllerTest extends BaseIT {
     private MockMvc mockMvc;
     @Autowired
     private LoginRequests requests;
+    @Autowired
+    private UserFixture userFixture
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -139,5 +143,12 @@ public class LoginControllerTest extends BaseIT {
                         .value("The usernameOrEmail field cannot be empty"))
                 .andExpect(jsonPath("$.errors.password")
                         .value("The password field cannot be empty"));
+    }
+
+    private void assertEndpointReturns(String endpoint, LoginRequest request, int statusCode) throws Exception {
+        mockMvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(status().is(statusCode));
     }
 }
