@@ -2,9 +2,9 @@ package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.registration.domain.model.UserRole;
 import com.mycompany.SkySong.registration.domain.model.User;
-import com.mycompany.SkySong.user.*;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.function.Consumer;
 
@@ -13,16 +13,19 @@ public class UserFixture {
 
     private final UserBuilder userBuilder;
     private final SessionBuilder sessionBuilder;
+    private final TransactionTemplate transactionTemplate;
 
     private final UserDAO userDAO;
     private final SessionDAO sessionDAO;
 
     public UserFixture(UserBuilder userBuilder,
                        SessionBuilder sessionBuilder,
+                       TransactionTemplate transactionTemplate,
                        UserDAO userDAO,
                        SessionDAO sessionDAO) {
         this.userBuilder = userBuilder;
         this.sessionBuilder = sessionBuilder;
+        this.transactionTemplate = transactionTemplate;
         this.userDAO = userDAO;
         this.sessionDAO = sessionDAO;
     }
