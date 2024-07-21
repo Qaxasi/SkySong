@@ -88,10 +88,7 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.invalidPassword)))
-                .andExpect(status().is(401));
+        assertStatusCode("/api/v1/users/login", requests.login("Max"), 401);
     }
 
     @Test
@@ -104,10 +101,7 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenMalformedJson_ReturnBadRequest() throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requests.malformedJson))
-                .andExpect(status().is(400));
+        assertStatusCode("/api/v1/users/login", requests.malformedJson, 400);
     }
 
     @Test
