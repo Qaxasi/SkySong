@@ -130,6 +130,12 @@ public class LoginControllerTest extends BaseIT {
                         .content(asJsonString(request)))
                 .andExpect(status().is(statusCode));
     }
+    private void assertStatusCode(String endpoint, String request, int statusCode) throws Exception {
+        mockMvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(status().is(statusCode));
+    }
     private void createUserWithUsername(String username) {
         userFixture.createUserWithUsername(username);
     }
