@@ -169,10 +169,10 @@ public class LoginControllerTest extends BaseIT {
     }
 
     private void assertCookiePath(String endpoint, LoginRequest request, String cookieName, String path) throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
+        mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.validCredentials)))
-                .andExpect(cookie().path("session_id", "/"));
+                        .content(asJsonString(request)))
+                .andExpect(cookie().path(cookieName, path));
     }
 
     private void assertCookieNotSet(String endpoint, LoginRequest request, String cookieName) throws Exception {
