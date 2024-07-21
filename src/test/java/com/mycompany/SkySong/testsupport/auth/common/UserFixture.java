@@ -1,9 +1,6 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
-import com.mycompany.SkySong.registration.domain.model.UserRole;
-import com.mycompany.SkySong.registration.domain.model.User;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.function.Consumer;
