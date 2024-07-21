@@ -151,4 +151,7 @@ public class LoginControllerTest extends BaseIT {
                         .content(asJsonString(request)))
                 .andExpect(status().is(statusCode));
     }
+    private void createUserWithUsername(String username) {
+        userFixture.createUserWithUsername(username);
+    }
 }
