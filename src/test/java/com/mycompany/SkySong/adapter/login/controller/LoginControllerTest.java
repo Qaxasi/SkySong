@@ -170,4 +170,11 @@ public class LoginControllerTest extends BaseIT {
         String cookieValue = cookie.getValue();
         assertNotNull(cookieValue);
     }
+
+    private void assertCookieHttpOnly(String endpoint, LoginRequest request, String cookieName) throws Exception {
+        mockMvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(cookie().httpOnly(cookieName, true));
+    }
 }
