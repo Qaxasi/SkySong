@@ -156,4 +156,11 @@ public class LoginControllerTest extends BaseIT {
                 .content(asJsonString(request)))
                 .andExpect(jsonPath(jsonPath).value(expectedMessage));
     }
+
+    private void assertEndpointSetsCookie(String endpoint, LoginRequest request, String cookieName) throws Exception {
+        mockMvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(cookie().exists(cookieName));
+    }
 }
