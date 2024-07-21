@@ -174,4 +174,11 @@ public class LoginControllerTest extends BaseIT {
                         .content(asJsonString(requests.validCredentials)))
                 .andExpect(cookie().path("session_id", "/"));
     }
+
+    private void assertCookieNotSet(String endpoint, LoginRequest request, String cookieName) throws Exception {
+        mockMvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(cookie().doesNotExist(cookieName));
+    }
 }
