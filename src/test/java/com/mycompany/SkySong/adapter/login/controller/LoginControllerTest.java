@@ -82,10 +82,8 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenLoginSuccess_CookieHasCorrectPath() throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.validCredentials)))
-                .andExpect(cookie().path("session_id", "/"));
+        createUserWithUsername("Alex");
+        assertCookiePath("/api/v1/users/login", requests.login("Alex"), "session_id", "/");
     }
 
     @Test
@@ -174,5 +172,12 @@ public class LoginControllerTest extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
                 .andExpect(cookie().httpOnly(cookieName, true));
+    }
+
+    private void assertCookiePath(String endpoint, LoginRequest request, String cookieName, String path) throws Exception {
+        mockMvc.perform(post("/api/v1/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(requests.validCredentials)))
+                .andExpect(cookie().path("session_id", "/"));
     }
 }
