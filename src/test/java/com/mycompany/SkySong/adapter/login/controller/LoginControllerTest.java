@@ -30,7 +30,7 @@ public class LoginControllerTest extends BaseIT {
     @Autowired
     private LoginRequests requests;
     @Autowired
-    private UserFixture userFixture
+    private UserFixture userFixture;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -62,10 +62,8 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenLoginSuccess_SetSessionCookie() throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(requests.validCredentials)))
-                .andExpect(cookie().exists("session_id"));
+        createUserWithUsername("Alex");
+        assertEndpointSetsCookie("/api/v1/users/login", requests.login("Alex"), "session_id");
     }
 
     @Test
