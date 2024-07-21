@@ -63,7 +63,8 @@ public class LoginControllerTest extends BaseIT {
     @Test
     void whenLoginSuccess_SetSessionCookie() throws Exception {
         createUserWithUsername("Alex");
-        assertEndpointSetsCookie("/api/v1/users/login", requests.login("Alex"), "session_id");
+        assertEndpointSetsCookie("/api/v1/users/login",
+                requests.login("Alex"), "session_id");
     }
 
     @Test
@@ -162,5 +163,18 @@ public class LoginControllerTest extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
                 .andExpect(cookie().exists(cookieName));
+    }
+
+    private void assertEndpointSetsNonEmptyCookie(String endpoint, LoginRequest request, String cookieName) throws Exception {
+        MvcResult mvcResult = mockMvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andReturn();
+
+        Cookie cookie = mvcResult.getResponse().getCookie(cookieName);
+        assertNotNull(cookie);
+
+        String cookieValue = cookie.getValue();
+        assertNotNull(cookieValue);
     }
 }
