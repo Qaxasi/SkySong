@@ -106,10 +106,7 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenEmptyCredentials_ReturnBadRequest() throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.emptyCredentials)))
-                .andExpect(status().is(400));
+        assertStatusCode("/api/v1/users/login", requests.emptyCredentials, 400);
     }
     
     @Test
