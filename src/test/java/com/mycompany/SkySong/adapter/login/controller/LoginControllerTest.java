@@ -152,4 +152,11 @@ public class LoginControllerTest extends BaseIT {
     private void createUserWithUsername(String username) {
         userFixture.createUserWithUsername(username);
     }
+    private void assertEndpointReturnsMessage(String endpoint, LoginRequest request,
+                                              String jsonPath, String expectedMessage) throws Exception {
+        mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(request)))
+                .andExpect(jsonPath(jsonPath).value(expectedMessage));
+    }
 }
