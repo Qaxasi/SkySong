@@ -49,10 +49,8 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.validCredentials)))
-                .andExpect(status().is(200));
+        createUserWithUsername("Alex");
+        assertEndpointReturns("/api/v1/users/login", requests.login("Alex"), 200);
     }
 
     @Test
