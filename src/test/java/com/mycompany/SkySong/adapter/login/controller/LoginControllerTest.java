@@ -55,10 +55,9 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenLoginSuccess_ReturnMessage() throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.validCredentials)))
-                .andExpect(jsonPath("$.message").value("Logged successfully."));
+        createUserWithUsername("Alex");
+        assertEndpointReturnsMessage("/api/v1/users/login", requests.login("Alex"),
+                "$.message", "Logged successfully.");
     }
 
     @Test
