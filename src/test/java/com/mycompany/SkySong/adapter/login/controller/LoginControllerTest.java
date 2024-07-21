@@ -108,14 +108,22 @@ public class LoginControllerTest extends BaseIT {
     
     @Test
     void whenEmptyCredentials_ReturnErrorMessage() throws Exception {
-        ResultActions actions = mockMvc.perform(post("/api/v1/users/login")
+        assertJsonErrorMessages("/api/v1/users/login", requests.emptyCredentials,
+                "$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
+                "$.errors.password", "The password field cannot be empty");
+    }
+    
+    private void assertJsonErrorMessages(String endpoint, LoginRequest request,
+                                         String firstJsonPath, String firstMessage,
+                                         String secondJsonPath, String secondMessage) throws Exception {
+        ResultActions actions = mockMvc.perform(post(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(requests.emptyCredentials)));
+                .content(asJsonString(request)));
 
-        actions.andExpect(jsonPath("$.errors.usernameOrEmail")
-                        .value("The usernameOrEmail field cannot be empty"))
-                .andExpect(jsonPath("$.errors.password")
-                        .value("The password field cannot be empty"));
+        actions.andExpect(jsonPath(firstJsonPath)
+                        .value(firstMessage))
+                .andExpect(jsonPath(secondJsonPath)
+                        .value(secondMessage));
     }
 
     private void assertStatusCode(String endpoint, LoginRequest request, int statusCode) throws Exception {
