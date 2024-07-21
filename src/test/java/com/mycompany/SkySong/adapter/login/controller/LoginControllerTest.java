@@ -93,10 +93,7 @@ public class LoginControllerTest extends BaseIT {
 
     @Test
     void whenInvalidCredentials_CookieIsNotSet() throws Exception {
-        mockMvc.perform(post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.invalidPassword)))
-                .andExpect(cookie().doesNotExist("session_id"));
+        assertCookieNotSet("/api/v1/users/login", requests.nonExistingUser, "session_id");
     }
 
     @Test
