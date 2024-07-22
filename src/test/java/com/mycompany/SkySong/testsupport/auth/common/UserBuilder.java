@@ -72,7 +72,7 @@ public class UserBuilder {
         user.setId(this.id);
         user.setUsername(this.username);
         user.setEmail(this.email);
-        user.setPassword(this.encoder.encode("Password#3"));
+        user.setPassword(this.encoder.encode(this.password));
         user.setRoles(this.roles);
 
         return user;
