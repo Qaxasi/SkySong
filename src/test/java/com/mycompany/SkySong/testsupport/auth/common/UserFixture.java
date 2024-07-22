@@ -2,7 +2,6 @@ package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
-import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -13,22 +12,15 @@ import java.util.function.Consumer;
 public class UserFixture {
 
     private final UserBuilder userBuilder;
-    private final SessionBuilder sessionBuilder;
     private final TransactionTemplate transactionTemplate;
-
     private final UserDAO userDAO;
-    private final SessionDAO sessionDAO;
 
     public UserFixture(UserBuilder userBuilder,
-                       SessionBuilder sessionBuilder,
                        TransactionTemplate transactionTemplate,
-                       UserDAO userDAO,
-                       SessionDAO sessionDAO) {
+                       UserDAO userDAO) {
         this.userBuilder = userBuilder;
-        this.sessionBuilder = sessionBuilder;
         this.transactionTemplate = transactionTemplate;
         this.userDAO = userDAO;
-        this.sessionDAO = sessionDAO;
     }
 
     public void createUserWithId(Integer id) {
