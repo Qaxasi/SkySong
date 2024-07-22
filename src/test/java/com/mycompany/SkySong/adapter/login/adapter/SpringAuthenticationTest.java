@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SpringAuthenticationTest extends BaseIT {
     @Autowired
@@ -31,6 +32,13 @@ class SpringAuthenticationTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenAuthenticationSuccess_ReturnUsername() {
+        createUser("Alex", "Password#3");
+        String name = authenticate("Alex", "Password#3");
+        assertEquals("Alex", name);
     }
 
     @Test
