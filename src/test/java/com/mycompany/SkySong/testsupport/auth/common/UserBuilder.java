@@ -33,6 +33,7 @@ public class UserBuilder {
         copy.id = this.id;
         copy.username = this.username;
         copy.email = this.email;
+        copy.password = this.password;
         copy.roles = new HashSet<>(this.roles);
         return copy;
     }
