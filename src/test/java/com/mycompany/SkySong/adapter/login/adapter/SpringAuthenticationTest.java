@@ -29,8 +29,12 @@ class SpringAuthenticationTest extends BaseIT {
     void cleanUp() {
         cleaner.clean();
     }
-    
+
     private String authenticate(String username, String password) {
         return authentication.authenticateUser(username, password);
+    }
+
+    private void createUser(String username, String password) {
+        userFixture.createUserWithUsernameAndPassword(username, password);
     }
 }
