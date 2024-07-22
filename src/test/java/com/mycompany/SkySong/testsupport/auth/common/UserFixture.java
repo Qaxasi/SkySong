@@ -43,8 +43,9 @@ public class UserFixture {
     }
 
     private void createUser(Consumer<UserBuilder> config) {
-        config.accept(userBuilder);
-        User user = userBuilder.build();
+        UserBuilder builderCopy = userBuilder.copy();
+        config.accept(builderCopy);
+        User user = builderCopy.build();
         saveUserAndAssignRoles(user);
     }
     private void saveUserAndAssignRoles(User user) {
