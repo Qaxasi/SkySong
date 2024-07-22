@@ -20,6 +20,7 @@ public class UserBuilder {
     private Integer id = 20;
     private String username = "Username";
     private String email = "email@mail.mail";
+    private String password = "Password#3";
     private Set<Role> roles = new HashSet<>();
 
     public UserBuilder(RoleDAO roleDAO, PasswordEncoder encoder) {
