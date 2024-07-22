@@ -38,6 +38,11 @@ public class UserBuilder {
         return copy;
     }
 
+    public UserBuilder withId(Integer id) {
+        this.id = id;
+        return this;
+    }
+
     public UserBuilder withUsername(String username) {
         this.username = username;
         return this;
@@ -48,8 +53,8 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withId(Integer id) {
-        this.id = id;
+    public UserBuilder withPassword(String password) {
+        this.password = password;
         return this;
     }
 
