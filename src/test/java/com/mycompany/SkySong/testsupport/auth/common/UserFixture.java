@@ -41,6 +41,9 @@ public class UserFixture {
     public void createAdminUser() {
         createUser(builder -> builder.withRole(UserRole.ROLE_ADMIN));
     }
+    public void createUserWithUsernameAndPassword(String username, String password) {
+        createUser(builder -> builder.withUsername(username).withPassword(password));
+    }
 
     private void createUser(Consumer<UserBuilder> config) {
         UserBuilder builderCopy = userBuilder.copy();
