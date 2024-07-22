@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 class SpringAuthenticationTest extends BaseIT {
-
-
     @Autowired
     private SpringAuthentication authentication;
     @Autowired
@@ -21,5 +19,14 @@ class SpringAuthenticationTest extends BaseIT {
     private SqlDatabaseInitializer initializer;
     @Autowired
     private SqlDatabaseCleaner cleaner;
-    
+
+    @BeforeEach
+    void setUp() throws Exception {
+        initializer.setup("data_sql/test-setup.sql");
+    }
+
+    @AfterEach
+    void cleanUp() {
+        cleaner.clean();
+    }
 }
