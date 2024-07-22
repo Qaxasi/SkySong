@@ -6,8 +6,11 @@ import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 
+import static org.junit.Assert.assertThrows;
 
 class SpringAuthenticationTest extends BaseIT {
     @Autowired
@@ -28,6 +31,13 @@ class SpringAuthenticationTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenInvalidCredentials_ThrowException() {
+        createUser("Alex", "Password#3");
+        assertThrows(BadCredentialsException.class,
+                () -> authenticate("Invalid", "Invalid"));
     }
 
     private String authenticate(String username, String password) {
