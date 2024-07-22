@@ -27,6 +27,15 @@ public class UserBuilder {
         this.encoder = encoder;
     }
 
+    public UserBuilder copy() {
+        UserBuilder copy = new UserBuilder(this.roleDAO, this.encoder);
+        copy.id = this.id;
+        copy.username = this.username;
+        copy.email = this.email;
+        copy.roles = new HashSet<>(this.roles);
+        return copy;
+    }
+
     public UserBuilder withUsername(String username) {
         this.username = username;
         return this;
