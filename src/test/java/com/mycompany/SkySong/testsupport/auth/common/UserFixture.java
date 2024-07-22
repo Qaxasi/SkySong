@@ -49,7 +49,9 @@ public class UserFixture {
         saveUserAndAssignRoles(user);
     }
     private void saveUserAndAssignRoles(User user) {
-        int userId = userDAO.save(user);
-        user.getRoles().forEach(role -> userDAO.assignRoleToUser(userId, role.getId()));
+        transactionTemplate.executeWithoutResult(status -> {
+            int userId = userDAO.save(user);
+            user.getRoles().forEach(role -> userDAO.assignRoleToUser(userId, role.getId()));
+        });
     }
 }
