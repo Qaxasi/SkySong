@@ -67,11 +67,11 @@ public class UserBuilder {
         }
 
         User user = new User();
-        user.setId(id);
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(encoder.encode("Password#3"));
-        user.setRoles(roles);
+        user.setId(this.id);
+        user.setUsername(this.username);
+        user.setEmail(this.email);
+        user.setPassword(this.encoder.encode("Password#3"));
+        user.setRoles(this.roles);
 
         return user;
     }
