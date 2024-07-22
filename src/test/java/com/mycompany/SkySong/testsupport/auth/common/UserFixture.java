@@ -1,5 +1,9 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
+import com.mycompany.SkySong.domain.shared.entity.User;
+import com.mycompany.SkySong.domain.shared.enums.UserRole;
+import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -38,13 +42,6 @@ public class UserFixture {
     public void createUserWithEmail(String email) {
         createUser(builder -> builder.withEmail(email));
     }
-
-
-    public void createUserAndSessionWithUserId(Integer id) {
-        createUser(builder -> builder.withId(id));
-        createSession(builder -> builder.withUserId(id));
-    }
-
     public void createRegularUser() {
         createUser(builder -> builder.withRole(UserRole.ROLE_USER));
     }
@@ -58,17 +55,6 @@ public class UserFixture {
         User user = userBuilder.build();
         saveUserAndAssignRoles(user);
     }
-
-    private void createSession(Consumer<SessionBuilder> config) {
-        config.accept(sessionBuilder);
-        Session session = sessionBuilder.build();
-        saveSession(session);
-    }
-
-    private void saveSession(Session session) {
-        sessionDAO.save(session);
-    }
-
     private void saveUserAndAssignRoles(User user) {
         int userId = userDAO.save(user);
         user.getRoles().forEach(role -> userDAO.assignRoleToUser(userId, role.getId()));
