@@ -34,4 +34,8 @@ class SessionTokenGeneratorTest {
 
         assertThat(token.length()).isSameAs(32);
     }
+
+    private String generateToken() {
+        return tokenGenerator.generateToken();
+    }
 }
