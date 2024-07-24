@@ -19,4 +19,12 @@ class SessionTokenGeneratorTest {
         String token = tokenGenerator.generateToken();
         assertThat(token).isNotNull();
     }
+
+    @Test
+    void whenGeneratingMultipleTokens_ReturnsUniqueTokens() {
+        String firstToken = tokenGenerator.generateToken();
+        String secondToken = tokenGenerator.generateToken();
+
+        assertThat(firstToken).isNotEqualTo(secondToken);
+    }
 }
