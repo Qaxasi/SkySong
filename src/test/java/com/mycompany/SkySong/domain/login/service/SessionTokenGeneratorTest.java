@@ -13,4 +13,10 @@ class SessionTokenGeneratorTest {
     void setUp() {
         tokenGenerator = new SessionTokenGenerator();
     }
+
+    @Test
+    void whenGeneratingToken_ReturnsNonEmptyString() {
+        String token = tokenGenerator.generateToken();
+        assertThat(token).isNotNull();
+    }
 }
