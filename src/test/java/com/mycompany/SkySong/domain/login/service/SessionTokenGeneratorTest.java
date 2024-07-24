@@ -27,4 +27,11 @@ class SessionTokenGeneratorTest {
 
         assertThat(firstToken).isNotEqualTo(secondToken);
     }
+
+    @Test
+    void whenGeneratingToken_TokenHaveExpectedLength() {
+        String token = tokenGenerator.generateToken();
+
+        assertThat(token.length()).isSameAs(32);
+    }
 }
