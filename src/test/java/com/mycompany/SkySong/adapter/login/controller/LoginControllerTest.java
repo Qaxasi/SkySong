@@ -112,6 +112,10 @@ class LoginControllerTest extends BaseIT {
                 "$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
                 "$.errors.password", "The password field cannot be empty");
     }
+
+    private void createUserWithUsername(String username) {
+        userFixture.createUserWithUsername(username);
+    }
     
     private void assertJsonErrorMessages(String endpoint, LoginRequest request,
                                          String firstJsonPath, String firstMessage,
@@ -138,9 +142,6 @@ class LoginControllerTest extends BaseIT {
                         .content(asJsonString(request)))
                 .andExpect(status().is(statusCode));
     }
-    private void createUserWithUsername(String username) {
-        userFixture.createUserWithUsername(username);
-    }
     private void assertJsonMessage(String endpoint, LoginRequest request,
                                    String jsonPath, String expectedMessage) throws Exception {
         mockMvc.perform(post(endpoint)
@@ -148,14 +149,12 @@ class LoginControllerTest extends BaseIT {
                 .content(asJsonString(request)))
                 .andExpect(jsonPath(jsonPath).value(expectedMessage));
     }
-
     private void assertCookieExists(String endpoint, LoginRequest request, String cookieName) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
                 .andExpect(cookie().exists(cookieName));
     }
-
     private void assertCookieNotEmpty(String endpoint, LoginRequest request, String cookieName) throws Exception {
         MvcResult mvcResult = mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -168,21 +167,18 @@ class LoginControllerTest extends BaseIT {
         String cookieValue = cookie.getValue();
         assertNotNull(cookieValue);
     }
-
     private void assertCookieHttpOnly(String endpoint, LoginRequest request, String cookieName) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
                 .andExpect(cookie().httpOnly(cookieName, true));
     }
-
     private void assertCookiePath(String endpoint, LoginRequest request, String cookieName, String path) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
                 .andExpect(cookie().path(cookieName, path));
     }
-
     private void assertCookieNotSet(String endpoint, LoginRequest request, String cookieName) throws Exception {
         mockMvc.perform(post(endpoint)
                         .contentType(MediaType.APPLICATION_JSON)
