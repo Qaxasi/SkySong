@@ -4,10 +4,8 @@ import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryRoleDAO implements RoleDAO {
 
@@ -23,7 +21,9 @@ public class InMemoryRoleDAO implements RoleDAO {
 
     @Override
     public Set<Role> findRolesByUserId(Integer userId) {
-        return null;
+        return userRoles.getOrDefault(userId, Collections.emptySet()).stream()
+                .map(roles::get)
+                .collect(Collectors.toSet());
     }
 
     public void save(Role role) {
