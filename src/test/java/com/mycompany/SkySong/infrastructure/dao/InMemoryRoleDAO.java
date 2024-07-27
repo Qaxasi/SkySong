@@ -37,4 +37,9 @@ public class InMemoryRoleDAO implements RoleDAO {
     public void deleteUserRoles(Integer userId) {
         userRoles.remove(userId);
     }
+
+    public void clear() {
+        roles.clear();
+        userRoles.clear();
+    }
 }
