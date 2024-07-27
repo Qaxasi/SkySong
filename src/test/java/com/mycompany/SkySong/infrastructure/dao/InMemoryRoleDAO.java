@@ -29,4 +29,8 @@ public class InMemoryRoleDAO implements RoleDAO {
     public void save(Role role) {
         roles.put(role.getId(), role);
     }
+
+    public void assignRoleToUser(Integer userId, Integer roleId) {
+        userRoles.computeIfAbsent(userId, k -> new HashSet<>()).add(roleId);
+    }
 }
