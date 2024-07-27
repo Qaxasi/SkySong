@@ -14,7 +14,10 @@ public class InMemoryUserDAO implements UserDAO {
 
     @Override
     public int save(User user) {
-        return 0;
+        id++;
+        user.setId(id);
+        users.put(id, user);
+        return id;
     }
 
     @Override
