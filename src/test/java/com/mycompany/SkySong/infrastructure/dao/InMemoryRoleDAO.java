@@ -25,4 +25,8 @@ public class InMemoryRoleDAO implements RoleDAO {
     public Set<Role> findRolesByUserId(Integer userId) {
         return null;
     }
+
+    public void save(Role role) {
+        roles.put(role.getId(), role);
+    }
 }
