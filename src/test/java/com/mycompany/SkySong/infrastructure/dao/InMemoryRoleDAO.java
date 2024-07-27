@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class InMemoryRoleDAO implements RoleDAO {
 
-    private final Map<Long, Role> roles = new HashMap<>();
+    private final Map<Integer, Role> roles = new HashMap<>();
     private final Map<Integer, Set<Integer>> userRoles = new HashMap<>();
 
     @Override
