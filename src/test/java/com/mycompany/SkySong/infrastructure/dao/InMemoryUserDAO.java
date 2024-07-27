@@ -9,8 +9,14 @@ import java.util.Optional;
 
 public class InMemoryUserDAO implements UserDAO {
 
+    private final InMemoryRoleDAO roleDAO;
+
     private final Map<Integer, User> users = new HashMap<>();
     private int id = 1;
+
+    public InMemoryUserDAO(InMemoryRoleDAO roleDAO) {
+        this.roleDAO = roleDAO;
+    }
 
     @Override
     public int save(User user) {
@@ -22,41 +28,47 @@ public class InMemoryUserDAO implements UserDAO {
 
     @Override
     public Optional<User> findById(int id) {
-        return Optional.empty();
+        return Optional.ofNullable(users.get(id));
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        return users.values().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst();
     }
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return Optional.empty();
+        return users.values().stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst();
     }
 
     @Override
     public boolean existsByUsername(String username) {
-        return false;
+        return users.values().stream()
+                .anyMatch(user -> user.getUsername().equals(username));
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        return users.values().stream()
+                .anyMatch(user -> user.getEmail().equals(email));
     }
 
     @Override
     public void delete(User user) {
-
+        users.remove(user.getId());
     }
 
     @Override
     public void deleteUserRoles(int userId) {
-
+        roleDAO.deleteUserRoles(userId);
     }
 
     @Override
     public void assignRoleToUser(int userId, int roleId) {
-
+        roleDAO.assignRoleToUser(userId, roleId);
     }
 }
