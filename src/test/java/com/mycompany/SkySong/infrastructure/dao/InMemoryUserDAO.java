@@ -71,4 +71,9 @@ public class InMemoryUserDAO implements UserDAO {
     public void assignRoleToUser(int userId, int roleId) {
         roleDAO.assignRoleToUser(userId, roleId);
     }
+
+    public void clear() {
+        users.clear();
+        id = 1;
+    }
 }
