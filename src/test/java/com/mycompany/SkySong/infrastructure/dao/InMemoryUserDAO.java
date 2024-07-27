@@ -3,9 +3,13 @@ package com.mycompany.SkySong.infrastructure.dao;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class InMemoryUserDAO implements UserDAO {
+
+    private final Map<Integer, User> users = new HashMap<>();
 
     @Override
     public int save(User user) {
