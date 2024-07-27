@@ -15,7 +15,9 @@ public class InMemoryRoleDAO implements RoleDAO {
 
     @Override
     public Optional<Role> findByName(UserRole roleName) {
-        return null;
+        return roles.values().stream()
+                .filter(role -> role.getName().equals(roleName))
+                .findFirst();
     }
 
     @Override
