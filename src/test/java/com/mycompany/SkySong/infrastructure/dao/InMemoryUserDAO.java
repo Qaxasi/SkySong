@@ -10,6 +10,7 @@ import java.util.Optional;
 public class InMemoryUserDAO implements UserDAO {
 
     private final Map<Integer, User> users = new HashMap<>();
+    private int id = 1;
 
     @Override
     public int save(User user) {
