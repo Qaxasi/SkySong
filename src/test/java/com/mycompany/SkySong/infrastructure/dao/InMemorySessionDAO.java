@@ -30,4 +30,8 @@ public class InMemorySessionDAO implements SessionDAO {
     public void deleteUserSessions(int userId) {
         sessions.entrySet().removeIf(entry -> entry.getValue().getUserId() == userId);
     }
+
+    public void clear() {
+        sessions.clear();
+    }
 }
