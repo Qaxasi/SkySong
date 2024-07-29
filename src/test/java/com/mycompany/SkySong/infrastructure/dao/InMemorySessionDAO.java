@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class InMemorySessionDAO implements SessionDAO {
+
+    private final Map<String, Session> sessions = new HashMap<>();
+
     @Override
     public void save(Session session) {
     }
