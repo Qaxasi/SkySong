@@ -11,6 +11,7 @@ public class InMemoryRoleDAO implements RoleDAO {
 
     private final Map<Integer, Role> roles = new HashMap<>();
     private final Map<Integer, Set<Integer>> userRoles = new HashMap<>();
+    int id = 10;
 
     @Override
     public Optional<Role> findByName(UserRole roleName) {
@@ -27,6 +28,8 @@ public class InMemoryRoleDAO implements RoleDAO {
     }
 
     public void save(Role role) {
+        id++;
+        role.setId(id);
         roles.put(role.getId(), role);
     }
 
