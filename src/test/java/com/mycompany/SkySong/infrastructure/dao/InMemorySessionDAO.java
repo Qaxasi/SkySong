@@ -13,17 +13,21 @@ public class InMemorySessionDAO implements SessionDAO {
 
     @Override
     public void save(Session session) {
+        sessions.put(session.getSessionId(), session);
     }
 
     @Override
     public Optional<Session> findById(String sessionId) {
+        return Optional.ofNullable(sessions.get(sessionId));
     }
 
     @Override
     public void deleteById(String sessionId) {
+        sessions.remove(sessionId);
     }
 
     @Override
     public void deleteUserSessions(int userId) {
+        sessions.entrySet().removeIf(entry -> entry.getValue().getUserId() == userId);
     }
 }
