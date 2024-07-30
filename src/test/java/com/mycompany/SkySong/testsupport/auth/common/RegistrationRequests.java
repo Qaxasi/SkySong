@@ -14,10 +14,10 @@ public class RegistrationRequests {
     public RegisterRequest existUsername =
             new RegisterRequest("Mark", "sam@mail.com", "Password#3");
 
-    public RegisterRequest registerByUsername(String username) {
+    public RegisterRequest requestWithUsername(String username) {
         return new RegisterRequest(username, "new@mail.com", "Password#3");
     }
-    public RegisterRequest registerByEmail(String email) {
+    public RegisterRequest requestWithEmail(String email) {
         return new RegisterRequest("User", email, "Password#3");
     }
     public String malformedRequest =
