@@ -83,6 +83,11 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoSpecialCharacter));
     }
 
+    @Test
+    void whenPasswordNoHaveNumber_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoNumber));
+    }
+
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
