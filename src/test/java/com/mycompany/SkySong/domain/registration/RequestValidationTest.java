@@ -104,10 +104,15 @@ class RequestValidationTest {
     }
 
     @Test
+    void whenEmailHaveInvalidFormat_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.emailInvalidFormat));
+    }
+
+    @Test
     void whenEmailIsToShort_ThrowException() {
         assertThrows(CredentialValidationException.class, () -> validate(requests.emailToShort));
     }
-    
+
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
