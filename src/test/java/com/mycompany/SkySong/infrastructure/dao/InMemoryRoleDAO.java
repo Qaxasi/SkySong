@@ -41,6 +41,11 @@ public class InMemoryRoleDAO implements RoleDAO {
         userRoles.remove(userId);
     }
 
+    public void addDefaultRoles() {
+        save(new Role(UserRole.ROLE_USER));
+        save(new Role(UserRole.ROLE_ADMIN));
+    }
+
     public void clear() {
         roles.clear();
         userRoles.clear();
