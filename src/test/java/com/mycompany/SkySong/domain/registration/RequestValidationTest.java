@@ -2,6 +2,7 @@ package com.mycompany.SkySong.domain.registration;
 
 import com.mycompany.SkySong.adapter.login.controller.MockTransactionTemplate;
 import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.domain.registration.service.RequestValidation;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
@@ -10,9 +11,12 @@ import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import static org.junit.Assert.assertThrows;
 
 class RequestValidationTest {
 
@@ -44,6 +48,13 @@ class RequestValidationTest {
     void cleanUp() {
         roleDAO.clear();
         userDAO.clear();
+    }
+
+    @Test
+    void whenUserWithUsernameExists_ThrowException() {
+        createUserWithUsername("Alex");
+        assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithUsername("Alex")));
+
     }
 
     private void validate(RegisterRequest requests) {
