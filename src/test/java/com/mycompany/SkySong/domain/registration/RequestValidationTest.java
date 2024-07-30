@@ -102,6 +102,11 @@ class RequestValidationTest {
     void whenUsernameHaveSpecialCharacter_ThrowException() {
         assertThrows(CredentialValidationException.class, () -> validate(requests.usernameWithSpecialCharacter));
     }
+
+    @Test
+    void whenEmailIsToShort_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.emailToShort));
+    }
     
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
