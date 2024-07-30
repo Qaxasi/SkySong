@@ -56,6 +56,12 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithUsername("Alex")));
 
     }
+    
+    @Test
+    void whenUserWithEmailExists_ThrowException() {
+        createUserWithEmail("alex@mail.com");
+        assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithEmail("alex@mail.com")));
+    }
 
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
