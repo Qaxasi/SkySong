@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.domain.registration;
 
 import com.mycompany.SkySong.adapter.login.controller.MockTransactionTemplate;
+import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.domain.registration.service.RequestValidation;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
@@ -43,5 +44,17 @@ class RequestValidationTest {
     void cleanUp() {
         roleDAO.clear();
         userDAO.clear();
+    }
+
+    private void validate(RegisterRequest requests) {
+        validation.validate(requests);
+    }
+
+    private void createUserWithUsername(String username) {
+        userFixture.createUserWithUsername(username);
+    }
+
+    private void createUserWithEmail(String email) {
+        userFixture.createUserWithEmail(email);
     }
 }
