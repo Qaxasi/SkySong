@@ -68,6 +68,11 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.passwordToShort));
     }
 
+    @Test
+    void whenPasswordNoHaveUppercaseLetter_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoUppercaseLetter));
+    }
+
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
