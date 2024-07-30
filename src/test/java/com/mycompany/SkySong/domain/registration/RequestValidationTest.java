@@ -78,6 +78,11 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoLowercaseLetter));
     }
 
+    @Test
+    void whenPasswordNoHaveSpecialCharacter_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoSpecialCharacter));
+    }
+
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
