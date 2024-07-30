@@ -88,6 +88,11 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoNumber));
     }
 
+    @Test
+    void whenUsernameIsToShort_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.usernameToShort));
+    }
+
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
