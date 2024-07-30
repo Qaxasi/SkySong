@@ -93,6 +93,11 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.usernameToShort));
     }
 
+    @Test
+    void whenUsernameIsToLong_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.usernameToLong));
+    }
+
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
