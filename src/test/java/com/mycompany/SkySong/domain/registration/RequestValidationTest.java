@@ -63,6 +63,11 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithEmail("alex@mail.com")));
     }
 
+    @Test
+    void whenPasswordToShort_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordToShort));
+    }
+
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
