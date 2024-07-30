@@ -113,6 +113,11 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.emailToShort));
     }
 
+    @Test
+    void whenEmailIsToLong_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.emailToLong));
+    }
+
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
