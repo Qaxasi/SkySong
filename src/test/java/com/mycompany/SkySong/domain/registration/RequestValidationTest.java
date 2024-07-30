@@ -98,6 +98,11 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.usernameToLong));
     }
 
+    @Test
+    void whenUsernameHaveSpecialCharacter_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> validate(requests.usernameWithSpecialCharacter));
+    }
+    
     private void validate(RegisterRequest requests) {
         validation.validate(requests);
     }
