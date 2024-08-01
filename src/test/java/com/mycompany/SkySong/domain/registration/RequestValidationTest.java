@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.domain.registration;
 
-import com.mycompany.SkySong.adapter.login.controller.MockTransactionTemplate;
 import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.domain.registration.service.RequestValidation;
@@ -8,13 +7,11 @@ import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
-import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import static org.junit.Assert.assertThrows;
 
@@ -23,7 +20,7 @@ class RequestValidationTest {
     private RegistrationRequests requests;
     private InMemoryUserDAO userDAO;
     private InMemoryRoleDAO roleDAO;
-    private UserFixture userFixture;
+    private UserBuilder userBuilder;
     private RequestValidation validation;
 
     @BeforeEach
@@ -36,10 +33,7 @@ class RequestValidationTest {
         validation = new RequestValidation(userDAO);
 
         PasswordEncoder encoder = new BCryptPasswordEncoder();
-        UserBuilder userBuilder = new UserBuilder(roleDAO, encoder);
-
-        TransactionTemplate transactionTemplate = new MockTransactionTemplate();
-        userFixture = new UserFixture(userBuilder, transactionTemplate, userDAO);
+        userBuilder = new UserBuilder(roleDAO, encoder, userDAO);
 
         requests = new RegistrationRequests();
     }
@@ -56,7 +50,6 @@ class RequestValidationTest {
         assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithUsername("Alex")));
 
     }
-    
     @Test
     void whenUserWithEmailExists_ThrowException() {
         createUserWithEmail("alex@mail.com");
@@ -123,10 +116,10 @@ class RequestValidationTest {
     }
 
     private void createUserWithUsername(String username) {
-        userFixture.createUserWithUsername(username);
+        userBuilder.copy().withUsername(username).save();
     }
 
     private void createUserWithEmail(String email) {
-        userFixture.createUserWithEmail(email);
+        userBuilder.copy().withEmail(email).save();
     }
 }
