@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.Assert.assertThrows;
 
-class RequestValidationTest {
+class RequestValidationInMemoryTest {
 
     private RegistrationRequests requests;
     private InMemoryUserDAO userDAO;
