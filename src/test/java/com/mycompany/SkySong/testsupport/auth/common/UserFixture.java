@@ -10,15 +10,9 @@ import java.util.function.Consumer;
 public class UserFixture {
 
     private final UserBuilder userBuilder;
-    private final TransactionTemplate transactionTemplate;
-    private final UserDAO userDAO;
 
-    public UserFixture(UserBuilder userBuilder,
-                       TransactionTemplate transactionTemplate,
-                       UserDAO userDAO) {
+    public UserFixture(UserBuilder userBuilder) {
         this.userBuilder = userBuilder;
-        this.transactionTemplate = transactionTemplate;
-        this.userDAO = userDAO;
     }
 
     public void createUserWithId(Integer id) {
