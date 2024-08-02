@@ -65,7 +65,7 @@ public class User {
         }
 
         public Builder withPassword(String password) {
-           this.password = password;
+           this.password = passwordEncoder.encode(password);
            return this;
         }
 
