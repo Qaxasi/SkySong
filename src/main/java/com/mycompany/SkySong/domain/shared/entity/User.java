@@ -16,11 +16,12 @@ public class User {
     private String password;
     private Set<Role> roles = new HashSet<>();
 
-    public User(String username, String email, String password, Set<Role> roles) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
+    private User(Builder builder) {
+        this.id = builder.id;
+        this.username = builder.username;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.roles = builder.roles;
     }
 
     public User() {}
