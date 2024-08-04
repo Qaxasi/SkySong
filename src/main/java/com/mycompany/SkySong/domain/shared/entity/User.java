@@ -36,18 +36,11 @@ public class User {
 
     public static class Builder {
 
-       private final RoleDAO roleDAO;
-
-       private Integer id;
+        private Integer id;
         private String username;
         private String email;
         private String password;
         private Set<Role> roles = new HashSet<>();
-
-       public Builder(RoleDAO roleDAO) {
-            this.roleDAO = roleDAO;
-
-        }
 
         public Builder withId(Integer id) {
            this.id = id;
@@ -69,11 +62,9 @@ public class User {
            return this;
         }
 
-        public Builder withRole(UserRole roleName) {
-           Role role = roleDAO.findByName(roleName).orElseThrow(
-                   () -> new RoleNotFoundException("Role not found " + roleName));
-           this.roles.add(role);
-           return this;
+        public Builder withRole(Role role) {
+            this.roles.add(role);
+            return this;
        }
 
        public User build() {
