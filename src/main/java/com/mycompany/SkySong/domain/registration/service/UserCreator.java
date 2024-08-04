@@ -11,12 +11,12 @@ import com.mycompany.SkySong.domain.registration.ports.RegistrationRoleRepositor
 public class UserCreator {
 
     private final PasswordEncoder passwordEncoder;
-    private final RegistrationRoleRepository registrationRoleRepository;
+    private final RegistrationRoleRepository roleRepository;
 
     public UserCreator(PasswordEncoder passwordEncoder,
-                       RegistrationRoleRepository registrationRoleRepository) {
+                       RegistrationRoleRepository roleRepository) {
         this.passwordEncoder = passwordEncoder;
-        this.registrationRoleRepository = registrationRoleRepository;
+        this.roleRepository = roleRepository;
     }
 
     public User createUser(RegisterRequest request) {
@@ -29,7 +29,7 @@ public class UserCreator {
     }
 
     private Role fetchDefaultUserRole() {
-        return registrationRoleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
+        return roleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Default role not found: " + UserRole.ROLE_USER));
     }
 }
