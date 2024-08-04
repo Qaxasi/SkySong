@@ -2,18 +2,9 @@ package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
-import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
-import org.springframework.transaction.support.TransactionTemplate;
-
 import java.util.function.Consumer;
 
 public class UserFixture {
-
-    private final UserBuilder userBuilder;
-
-    public UserFixture(UserBuilder userBuilder) {
-        this.userBuilder = userBuilder;
-    }
 
     public void createUserWithId(Integer id) {
         createUser(builder -> builder.withId(id));
