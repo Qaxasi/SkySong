@@ -1,9 +1,7 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
-import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -61,9 +59,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withRole(UserRole roleName) {
-        Role role = roleDAO.findByName(roleName).orElseThrow(
-                () -> new RoleNotFoundException("Role not found " + roleName));
+    public UserBuilder withRole(Role role) {
         this.roles.add(role);
         return this;
     }
