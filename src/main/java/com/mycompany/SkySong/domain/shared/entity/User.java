@@ -5,11 +5,11 @@ import java.util.Set;
 
 public class User {
 
-    private Integer id;
-    private String username;
-    private String email;
-    private String password;
-    private Set<Role> roles = new HashSet<>();
+    private final Integer id;
+    private final String username;
+    private final String email;
+    private final String password;
+    private final Set<Role> roles;
 
     private User(Builder builder) {
         this.id = builder.id;
