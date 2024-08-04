@@ -19,16 +19,6 @@ public class User {
         this.roles = builder.roles;
     }
 
-    public User() {}
-
-    public User(Integer id, String username, String email, String password, Set<Role> roles) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-    }
-
     public static class Builder {
 
         private Integer id;
