@@ -32,6 +32,6 @@ public class UserCreator {
 
     private Role fetchDefaultUserRole() {
         return registrationRoleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
-                () -> new RoleNotFoundException("Role not found"));
+                () -> new RoleNotFoundException("Default role not found: " + UserRole.ROLE_USER));
     }
 }
