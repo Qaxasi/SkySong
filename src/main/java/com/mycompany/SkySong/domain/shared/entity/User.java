@@ -25,7 +25,7 @@ public class User {
         private String username;
         private String email;
         private String password;
-        private Set<Role> roles = new HashSet<>();
+        private final Set<Role> roles = new HashSet<>();
 
         public Builder withId(Integer id) {
            this.id = id;
