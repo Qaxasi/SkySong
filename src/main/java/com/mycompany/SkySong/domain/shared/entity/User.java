@@ -35,18 +35,18 @@ public class User {
     }
 
     public static class Builder {
-       private final RoleDAO roleDAO;
-       private final PasswordEncoder passwordEncoder;
 
-        private Integer id;
+       private final RoleDAO roleDAO;
+
+       private Integer id;
         private String username;
         private String email;
         private String password;
         private Set<Role> roles = new HashSet<>();
 
-       public Builder(RoleDAO roleDAO, PasswordEncoder passwordEncoder) {
+       public Builder(RoleDAO roleDAO) {
             this.roleDAO = roleDAO;
-            this.passwordEncoder = passwordEncoder;
+
         }
 
         public Builder withId(Integer id) {
@@ -65,7 +65,7 @@ public class User {
         }
 
         public Builder withPassword(String password) {
-           this.password = passwordEncoder.encode(password);
+           this.password = password;
            return this;
         }
 
