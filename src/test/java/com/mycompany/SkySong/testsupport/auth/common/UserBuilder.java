@@ -81,10 +81,4 @@ public class UserBuilder {
 
         return user;
     }
-
-    public void save() {
-        User user = this.build();
-        int userId = userDAO.save(user);
-        user.getRoles().forEach(role -> userDAO.assignRoleToUser(userId, role.getId()));
-    }
 }
