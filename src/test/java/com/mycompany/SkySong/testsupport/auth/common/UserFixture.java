@@ -8,6 +8,7 @@ import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class UserFixture {
@@ -46,10 +47,15 @@ public class UserFixture {
         createUser(builder -> builder.withUsername(username).withPassword(password));
     }
 
-    private void createUser(Consumer<UserBuilder> config) {
-        UserBuilder builderCopy = userBuilder.copy();
-        config.accept(builderCopy);
-        User user = builderCopy.build();
+    private void createUser(Integer id, String username, String email, String password, Role role) {
+        User user = new User.Builder()
+                .withId(id)
+                .withUsername(username)
+                .withEmail(email)
+                .withPassword(password)
+                .withRole(role)
+                .build();
+
         saveUserAndAssignRoles(user);
     }
     private void saveUserAndAssignRoles(User user) {
