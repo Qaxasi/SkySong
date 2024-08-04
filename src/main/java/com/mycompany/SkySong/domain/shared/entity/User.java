@@ -52,6 +52,11 @@ public class User {
             return this;
        }
 
+       public Builder withRoles(Set<Role> roles) {
+            this.roles.addAll(roles);
+            return this;
+       }
+
        public User build() {
             validate();
             return new User(this);
