@@ -63,6 +63,7 @@ public class User {
        }
 
        public User build() {
+            validate();
            return new User(this);
        }
 
