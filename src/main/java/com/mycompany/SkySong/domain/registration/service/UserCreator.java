@@ -8,8 +8,6 @@ import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.domain.registration.ports.PasswordEncoder;
 import com.mycompany.SkySong.domain.registration.ports.RegistrationRoleRepository;
 
-import java.util.Collections;
-
 public class UserCreator {
 
     private final PasswordEncoder passwordEncoder;
@@ -22,12 +20,12 @@ public class UserCreator {
     }
 
     public User createUser(RegisterRequest request) {
-        User user = new User();
-        user.setUsername(request.username());
-        user.setEmail(request.email());
-        user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRoles(Collections.singleton(fetchDefaultUserRole()));
-        return user;
+        return new User.Builder()
+                .withUsername(request.username())
+                .withEmail(request.email())
+                .withPassword(passwordEncoder.encode(request.password()))
+                .withRole(fetchDefaultUserRole())
+                .build();
     }
 
     private Role fetchDefaultUserRole() {
