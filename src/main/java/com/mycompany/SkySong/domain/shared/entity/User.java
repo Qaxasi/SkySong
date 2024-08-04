@@ -1,10 +1,5 @@
 package com.mycompany.SkySong.domain.shared.entity;
 
-import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
-import com.mycompany.SkySong.domain.registration.ports.PasswordEncoder;
-import com.mycompany.SkySong.domain.shared.enums.UserRole;
-import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,6 +64,24 @@ public class User {
 
        public User build() {
            return new User(this);
+       }
+
+       private void validate() {
+            if (id == null || id < 0) {
+                throw new IllegalArgumentException("Id cannot be null or negative");
+            }
+            if (username == null || username.isEmpty()) {
+                throw new IllegalArgumentException("Username cannot be null or empty");
+            }
+            if (email == null || email.isEmpty()) {
+                throw new IllegalArgumentException("Email cannot be null or empty");
+            }
+            if (password == null || password.isEmpty()) {
+                throw new IllegalArgumentException("Password cannot be null or empty");
+            }
+            if (roles.isEmpty()) {
+                throw new IllegalArgumentException("User must have at least one role");
+            }
        }
     }
 
