@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
+import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
+import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
@@ -55,5 +57,14 @@ public class UserFixture {
             int userId = userDAO.save(user);
             user.getRoles().forEach(role -> userDAO.assignRoleToUser(userId, role.getId()));
         });
+    }
+
+    private Role fetchRegularRole() {
+        return roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
+                () -> new RoleNotFoundException("Role not found: " + UserRole.ROLE_USER));
+    }
+    private Role fetchAdminRole() {
+        return roleDAO.findByName(UserRole.ROLE_ADMIN).orElseThrow(
+                () -> new RoleNotFoundException("Role not found: " + UserRole.ROLE_ADMIN));
     }
 }
