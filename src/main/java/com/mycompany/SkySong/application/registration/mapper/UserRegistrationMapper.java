@@ -12,15 +12,16 @@ public class UserRegistrationMapper {
     }
 
     public User toEntity(UserRegistrationDTO userDto) {
-        User user = new User();
-        user.setUsername(user.getUsername());
-        user.setEmail(user.getEmail());
-        user.setPassword(user.getPassword());
-        user.setRoles(userDto.roles().stream()
-                .map(roleMapper::toEntity)
-                .collect(Collectors.toSet()));
-        return user;
+        return new User.Builder()
+                .withUsername(userDto.username())
+                .withEmail(userDto.email())
+                .withPassword(userDto.password())
+                .withRoles(userDto.roles().stream()
+                        .map(roleMapper::toEntity)
+                        .collect(Collectors.toSet()))
+                .build();
     }
+
     public UserRegistrationDTO toDto(User user) {
         return new UserRegistrationDTO(
                 user.getUsername(),
