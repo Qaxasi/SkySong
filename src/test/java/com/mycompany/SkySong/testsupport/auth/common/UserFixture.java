@@ -8,21 +8,20 @@ import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Set;
-import java.util.function.Consumer;
-
 public class UserFixture {
-
     private final RoleDAO roleDAO;
     private final PasswordEncoder passwordEncoder;
     private final UserDAO userDAO;
+    private final UserBuilder userBuilder;
 
     public UserFixture(RoleDAO roleDAO,
                        PasswordEncoder passwordEncoder,
-                       UserDAO userDAO) {
+                       UserDAO userDAO,
+                       UserBuilder userBuilder) {
         this.roleDAO = roleDAO;
         this.passwordEncoder = passwordEncoder;
         this.userDAO = userDAO;
+        this.userBuilder = userBuilder;
     }
 
     public void createUserWithId(Integer id) {
