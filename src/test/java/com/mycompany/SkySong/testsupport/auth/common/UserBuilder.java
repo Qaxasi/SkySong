@@ -61,7 +61,7 @@ public class UserBuilder {
                 .withId(id)
                 .withUsername(username)
                 .withEmail(email)
-                .withPassword(password)
+                .withPassword(encoder.encode(password))
                 .withRoles(roles)
                 .build();
     }
