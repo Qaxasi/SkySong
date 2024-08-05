@@ -7,6 +7,7 @@ import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
+import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,19 +22,22 @@ class RequestValidationTest {
     private InMemoryUserDAO userDAO;
     private InMemoryRoleDAO roleDAO;
     private UserBuilder userBuilder;
+    private UserFixture userFixture;
     private RequestValidation validation;
 
     @BeforeEach
     void setUp() {
         roleDAO = new InMemoryRoleDAO();
-        userDAO = new InMemoryUserDAO(roleDAO);
-
         roleDAO.addDefaultRoles();
+
+        userDAO = new InMemoryUserDAO(roleDAO);
 
         validation = new RequestValidation(userDAO);
 
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         userBuilder = new UserBuilder(encoder);
+
+        userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
 
         requests = new RegistrationRequests();
     }
