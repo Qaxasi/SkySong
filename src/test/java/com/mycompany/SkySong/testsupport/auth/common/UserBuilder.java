@@ -2,8 +2,6 @@ package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
-import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
@@ -11,9 +9,7 @@ import java.util.Set;
 
 public class UserBuilder {
 
-    private final RoleDAO roleDAO;
     private final PasswordEncoder encoder;
-    private final UserDAO userDAO;
 
     private Integer id = 20;
     private String username = "Username";
@@ -21,16 +17,12 @@ public class UserBuilder {
     private String password = "Password#3";
     private Set<Role> roles = new HashSet<>();
 
-    public UserBuilder(RoleDAO roleDAO,
-                       PasswordEncoder encoder,
-                       UserDAO userDAO) {
-        this.roleDAO = roleDAO;
+    public UserBuilder(PasswordEncoder encoder) {
         this.encoder = encoder;
-        this.userDAO = userDAO;
     }
 
     public UserBuilder copy() {
-        UserBuilder copy = new UserBuilder(this.roleDAO, this.encoder, this.userDAO);
+        UserBuilder copy = new UserBuilder(this.encoder);
         copy.id = this.id;
         copy.username = this.username;
         copy.email = this.email;
