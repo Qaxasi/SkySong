@@ -33,7 +33,7 @@ class RequestValidationTest {
         validation = new RequestValidation(userDAO);
 
         PasswordEncoder encoder = new BCryptPasswordEncoder();
-        userBuilder = new UserBuilder(roleDAO, encoder, userDAO);
+        userBuilder = new UserBuilder(encoder);
 
         requests = new RegistrationRequests();
     }
