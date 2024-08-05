@@ -65,20 +65,12 @@ public class UserBuilder {
     }
 
     public User build() {
-        Role defaultRole = roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
-                () -> new RoleNotFoundException("Role not found " + UserRole.ROLE_USER));
-
-        if (!roles.contains(defaultRole)) {
-            this.roles.add(defaultRole);
-        }
-
-        User user = new User();
-        user.setId(this.id);
-        user.setUsername(this.username);
-        user.setEmail(this.email);
-        user.setPassword(this.encoder.encode(this.password));
-        user.setRoles(this.roles);
-
-        return user;
+        return new User.Builder()
+                .withId(id)
+                .withUsername(username)
+                .withEmail(email)
+                .withPassword(password)
+                .withRoles(roles)
+                .build();
     }
 }
