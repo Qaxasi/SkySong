@@ -49,13 +49,13 @@ class RequestValidationTest {
 
     @Test
     void whenUserWithUsernameExists_ThrowException() {
-        createUserWithUsername("Alex");
+        createExistingUserWithUsername("Alex");
         assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithUsername("Alex")));
 
     }
     @Test
     void whenUserWithEmailExists_ThrowException() {
-        createUserWithEmail("alex@mail.com");
+        createExistingUserWithEmail("alex@mail.com");
         assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithEmail("alex@mail.com")));
     }
 
@@ -118,11 +118,11 @@ class RequestValidationTest {
         validation.validate(requests);
     }
 
-    private void createUserWithUsername(String username) {
+    private void createExistingUserWithUsername(String username) {
         userFixture.createUserWithUsername(username);
     }
 
-    private void createUserWithEmail(String email) {
+    private void createExistingUserWithEmail(String email) {
         userFixture.createUserWithEmail(email);
     }
 }
