@@ -8,11 +8,11 @@ import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
+import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.Assert.assertThrows;
 
@@ -33,7 +33,7 @@ class RequestValidationTest {
 
         validation = new RequestValidation(userDAO);
 
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
         UserBuilder userBuilder = new UserBuilder(encoder);
 
         userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
