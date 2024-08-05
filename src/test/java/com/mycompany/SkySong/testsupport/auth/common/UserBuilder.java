@@ -2,14 +2,14 @@ package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class UserBuilder {
 
-    private final PasswordEncoder encoder;
+    private final CustomPasswordEncoder encoder;
 
     private Integer id = 20;
     private String username = "Username";
@@ -17,7 +17,7 @@ public class UserBuilder {
     private String password = "Password#3";
     private Set<Role> roles = new HashSet<>();
 
-    public UserBuilder(PasswordEncoder encoder) {
+    public UserBuilder(CustomPasswordEncoder encoder) {
         this.encoder = encoder;
     }
 
