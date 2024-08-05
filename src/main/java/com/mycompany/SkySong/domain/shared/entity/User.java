@@ -63,9 +63,6 @@ public class User {
        }
 
        private void validate() {
-            if (id == null || id < 0) {
-                throw new IllegalArgumentException("Id cannot be null or negative");
-            }
             if (username == null || username.isEmpty()) {
                 throw new IllegalArgumentException("Username cannot be null or empty");
             }
