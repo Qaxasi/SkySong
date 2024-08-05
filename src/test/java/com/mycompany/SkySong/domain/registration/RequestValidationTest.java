@@ -21,7 +21,6 @@ class RequestValidationTest {
     private RegistrationRequests requests;
     private InMemoryUserDAO userDAO;
     private InMemoryRoleDAO roleDAO;
-    private UserBuilder userBuilder;
     private UserFixture userFixture;
     private RequestValidation validation;
 
@@ -35,7 +34,7 @@ class RequestValidationTest {
         validation = new RequestValidation(userDAO);
 
         PasswordEncoder encoder = new BCryptPasswordEncoder();
-        userBuilder = new UserBuilder(encoder);
+        UserBuilder userBuilder = new UserBuilder(encoder);
 
         userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
 
