@@ -120,10 +120,10 @@ class RequestValidationTest {
     }
 
     private void createUserWithUsername(String username) {
-        userBuilder.copy().withUsername(username).save();
+        userFixture.createUserWithUsername(username);
     }
 
     private void createUserWithEmail(String email) {
-        userBuilder.copy().withEmail(email).save();
+        userFixture.createUserWithEmail(email);
     }
 }
