@@ -3,6 +3,7 @@ package com.mycompany.SkySong.domain.registration;
 import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.domain.registration.service.UserCreator;
 import com.mycompany.SkySong.domain.shared.entity.User;
+import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
@@ -55,6 +56,13 @@ class UserCreatorTest {
         User user = createUser(requests.requestWithPassword("Password#3"));
         assertThat(user.getPassword()).isNotEqualTo("Password#3");
     }
+
+    @Test
+    void whenUserCreated_UserHasRole() {
+        User user = userCreator.createUser(requests.validRequest());
+        assertThat(user.getRoles().stream().anyMatch(role -> role.getName().equals(UserRole.ROLE_USER))).isTrue();
+    }
+
 
     private User createUser(RegisterRequest request) {
         return userCreator.createUser(request);
