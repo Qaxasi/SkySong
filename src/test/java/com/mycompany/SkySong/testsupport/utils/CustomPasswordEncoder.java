@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.testsupport.utils;
 
-import com.mycompany.SkySong.domain.registration.ports.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class CustomPasswordEncoder implements PasswordEncoder {
 
