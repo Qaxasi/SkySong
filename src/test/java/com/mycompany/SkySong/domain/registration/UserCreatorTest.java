@@ -4,6 +4,10 @@ import com.mycompany.SkySong.domain.registration.service.UserCreator;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
+import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 class UserCreatorTest {
 
@@ -12,4 +16,22 @@ class UserCreatorTest {
     private RegistrationRequests requests;
     private UserCreator userCreator;
 
+    @BeforeEach
+    void setUp() {
+        roleDAO = new InMemoryRoleDAO();
+        roleDAO.addDefaultRoles();
+
+        userDAO = new InMemoryUserDAO(roleDAO);
+
+        CustomPasswordEncoder passwordEncoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
+        userCreator = new UserCreator(passwordEncoder, roleDAO);
+
+        requests = new RegistrationRequests();
+    }
+
+    @AfterEach
+    void cleanup() {
+        roleDAO.clear();
+        userDAO.clear();
+    }
 }
