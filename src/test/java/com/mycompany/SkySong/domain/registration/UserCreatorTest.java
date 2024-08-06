@@ -50,6 +50,12 @@ class UserCreatorTest {
         assertThat(encoder.matches(user.getPassword(), "Password#3")).isTrue();
     }
 
+    @Test
+    void whenUserCreated_PasswordIsHashed() {
+        User user = createUser(requests.requestWithPassword("Password#3"));
+        assertThat(user.getPassword()).isNotEqualTo("Password#3");
+    }
+
     private User createUser(RegisterRequest request) {
         return userCreator.createUser(request);
     }
