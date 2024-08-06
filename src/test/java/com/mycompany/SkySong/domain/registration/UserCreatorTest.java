@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.domain.registration;
 
 import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
 import com.mycompany.SkySong.domain.registration.service.UserCreator;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserCreatorTest {
 
@@ -61,6 +63,12 @@ class UserCreatorTest {
     void whenUserCreated_UserHasRole() {
         User user = userCreator.createUser(requests.validRequest());
         assertThat(user.getRoles().stream().anyMatch(role -> role.getName().equals(UserRole.ROLE_USER))).isTrue();
+    }
+
+    @Test
+    void whenDefaultRoleNotFound_ThrowException() {
+        roleDAO.clear();
+        assertThrows(RoleNotFoundException.class, () -> userCreator.createUser(requests.validRequest()));
     }
 
 
