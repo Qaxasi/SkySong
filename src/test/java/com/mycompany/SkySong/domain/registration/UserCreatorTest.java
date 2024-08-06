@@ -41,6 +41,15 @@ class UserCreatorTest {
         userDAO.clear();
     }
 
+    @Test
+    void whenGivenRequest_CreateUserWithGivenData() {
+        User user = createUser(requests.request("Alex", "alex@mail.com", "Password#3"));
+
+        assertThat(user.getUsername()).isEqualTo("Alex");
+        assertThat(user.getEmail()).isEqualTo("alex@mail.com");
+        assertThat(encoder.matches(user.getPassword(), "Password#3")).isTrue();
+    }
+
     private User createUser(RegisterRequest request) {
         return userCreator.createUser(request);
     }
