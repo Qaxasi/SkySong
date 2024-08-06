@@ -15,6 +15,7 @@ class UserCreatorTest {
     private InMemoryUserDAO userDAO;
     private RegistrationRequests requests;
     private UserCreator userCreator;
+    private CustomPasswordEncoder encoder;
 
     @BeforeEach
     void setUp() {
@@ -23,8 +24,8 @@ class UserCreatorTest {
 
         userDAO = new InMemoryUserDAO(roleDAO);
 
-        CustomPasswordEncoder passwordEncoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
-        userCreator = new UserCreator(passwordEncoder, roleDAO);
+        encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
+        userCreator = new UserCreator(encoder, roleDAO);
 
         requests = new RegistrationRequests();
     }
