@@ -50,7 +50,7 @@ class UserCreatorTest {
 
         assertThat(user.getUsername()).isEqualTo("Alex");
         assertThat(user.getEmail()).isEqualTo("alex@mail.com");
-        assertThat(encoder.matches(user.getPassword(), "Password#3")).isTrue();
+        assertThat(encoder.matches("Password#3", user.getPassword())).isTrue();
     }
 
     @Test
