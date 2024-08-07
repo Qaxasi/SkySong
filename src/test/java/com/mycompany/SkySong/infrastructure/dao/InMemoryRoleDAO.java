@@ -13,6 +13,11 @@ public class InMemoryRoleDAO implements RoleDAO {
     private final Map<Integer, Set<Integer>> userRoles = new HashMap<>();
     int id = 10;
 
+    public InMemoryRoleDAO() {
+        save(new Role(UserRole.ROLE_USER));
+        save(new Role(UserRole.ROLE_ADMIN));
+    }
+    
     @Override
     public Optional<Role> findByName(UserRole roleName) {
         return roles.values().stream()
