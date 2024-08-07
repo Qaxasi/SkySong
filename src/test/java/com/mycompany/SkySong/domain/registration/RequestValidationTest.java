@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
 import static org.junit.Assert.assertThrows;
 
 class RequestValidationTest {
@@ -48,13 +49,14 @@ class RequestValidationTest {
     @Test
     void whenUserWithUsernameExists_ThrowException() {
         createExistingUserWithUsername("Alex");
-        assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithUsername("Alex")));
-
+        assertException(() -> validate(requests.requestWithUsername("Alex")),
+                CredentialValidationException.class, "Username is already exist!.");
     }
     @Test
     void whenUserWithEmailExists_ThrowException() {
         createExistingUserWithEmail("alex@mail.com");
-        assertThrows(CredentialValidationException.class, () -> validate(requests.requestWithEmail("alex@mail.com")));
+        assertException(() -> validate(requests.requestWithEmail("alex@mail.com")),
+                CredentialValidationException.class, "Email is already exist!.");
     }
 
     @Test
