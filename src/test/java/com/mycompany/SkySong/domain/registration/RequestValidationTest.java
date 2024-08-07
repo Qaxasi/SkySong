@@ -67,6 +67,12 @@ class RequestValidationTest {
     }
 
     @Test
+    void whenInvalidUsernameFormat_ReturnErrorMessage() {
+        assertErrorMessage(() -> validate(requests.usernameToShort), "Invalid username format. The username can " +
+                "contain only letters and numbers, and should be between 3 and 20 characters long.");
+    }
+
+    @Test
     void whenPasswordToShort_ThrowException() {
         assertThrows(CredentialValidationException.class, () -> validate(requests.passwordToShort));
     }
