@@ -61,20 +61,19 @@ class UserCreatorTest {
 
     @Test
     void whenUserCreated_UserHasRole() {
-        User user = userCreator.createUser(requests.validRequest());
+        User user = createUser(requests.validRequest());
         assertThat(user.getRoles().stream().anyMatch(role -> role.getName().equals(UserRole.ROLE_USER))).isTrue();
     }
 
     @Test
     void whenDefaultRoleNotFound_ThrowException() {
-        roleDAO.clear();
-        assertThrows(RoleNotFoundException.class, () -> userCreator.createUser(requests.validRequest()));
+        deleteRoles();
+        assertThrows(RoleNotFoundException.class, () -> createUser(requests.validRequest()));
     }
 
     private void deleteRoles() {
         roleDAO.clear();
     }
-
 
     private User createUser(RegisterRequest request) {
         return userCreator.createUser(request);
