@@ -17,7 +17,7 @@ public class InMemoryRoleDAO implements RoleDAO {
         save(new Role(UserRole.ROLE_USER));
         save(new Role(UserRole.ROLE_ADMIN));
     }
-    
+
     @Override
     public Optional<Role> findByName(UserRole roleName) {
         return roles.values().stream()
@@ -44,11 +44,6 @@ public class InMemoryRoleDAO implements RoleDAO {
 
     public void deleteUserRoles(Integer userId) {
         userRoles.remove(userId);
-    }
-
-    public void addDefaultRoles() {
-        save(new Role(UserRole.ROLE_USER));
-        save(new Role(UserRole.ROLE_ADMIN));
     }
 
     public void clear() {
