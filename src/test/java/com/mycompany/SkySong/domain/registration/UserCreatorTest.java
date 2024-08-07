@@ -28,7 +28,6 @@ class UserCreatorTest {
     @BeforeEach
     void setUp() {
         roleDAO = new InMemoryRoleDAO();
-        roleDAO.addDefaultRoles();
 
         userDAO = new InMemoryUserDAO(roleDAO);
 
