@@ -71,6 +71,10 @@ class UserCreatorTest {
         assertThrows(RoleNotFoundException.class, () -> userCreator.createUser(requests.validRequest()));
     }
 
+    private void deleteRoles() {
+        roleDAO.clear();
+    }
+
 
     private User createUser(RegisterRequest request) {
         return userCreator.createUser(request);
