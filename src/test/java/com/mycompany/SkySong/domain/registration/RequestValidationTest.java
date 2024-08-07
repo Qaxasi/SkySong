@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static com.mycompany.SkySong.testsupport.assertions.CustomAssertions.assertErrorMessage;
 import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
 import static org.junit.Assert.assertThrows;
 
@@ -57,6 +58,12 @@ class RequestValidationTest {
         createExistingUserWithEmail("alex@mail.com");
         assertException(() -> validate(requests.requestWithEmail("alex@mail.com")),
                 CredentialValidationException.class, "Email is already exist!.");
+    }
+
+    @Test
+    void whenInvalidPasswordFormat_ReturnErrorMessage() {
+        assertErrorMessage(() -> validate(requests.passwordToShort), "Invalid password format. The password" +
+                " must contain an least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters.");
     }
 
     @Test
