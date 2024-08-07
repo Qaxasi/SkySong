@@ -49,7 +49,7 @@ class UserCreatorTest {
 
         assertThat(user.getUsername()).isEqualTo("Alex");
         assertThat(user.getEmail()).isEqualTo("alex@mail.com");
-        assertThat(encoder.matches("Password#3", user.getPassword())).isTrue();
+        assertPasswordMatches("Password#3", user.getPassword());
     }
 
     @Test
@@ -77,4 +77,11 @@ class UserCreatorTest {
     private User createUser(RegisterRequest request) {
         return userCreator.createUser(request);
     }
+
+    private void assertPasswordMatches(String password, String encodedPassword) {
+        assertThat(encoder.matches(password, encodedPassword)).isTrue();
+    }
 }
+
+
+
