@@ -73,6 +73,12 @@ class RequestValidationTest {
     }
 
     @Test
+    void whenInvalidEmailFormat_ReturnErrorMessage() {
+        assertErrorMessage(() -> validate(requests.emailToShort), "Invalid email address format. The email should " +
+                "follow the standard format (e.g., user@example.com) and be between 6 and 30 characters long.");
+    }
+    
+    @Test
     void whenPasswordToShort_ThrowException() {
         assertThrows(CredentialValidationException.class, () -> validate(requests.passwordToShort));
     }
