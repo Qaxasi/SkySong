@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.application.registration.usecase;
 
+import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
 import com.mycompany.SkySong.testsupport.auth.service.UserRoleChecker;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserRegistrationHandlerTest extends BaseIT {
@@ -37,6 +39,12 @@ class UserRegistrationHandlerTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenRegistrationSuccess_ReturnMessage () {
+      ApiResponse response = registration.registerUser(requests.validRequest());
+      assertEquals("Your registration was successful!" , response.message());
     }
 
     @Test
