@@ -21,8 +21,15 @@ public class InMemoryUserDAO implements UserDAO {
     @Override
     public int save(User user) {
         id++;
-        user.setId(id);
-        users.put(id, user);
+        User newUser = new User.Builder()
+                .withId(id)
+                .withUsername(user.getUsername())
+                .withEmail(user.getEmail())
+                .withPassword(user.getPassword())
+                .withRoles(user.getRoles())
+                .build();
+
+        users.put(id, newUser);
         return id;
     }
 
