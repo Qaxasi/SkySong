@@ -29,6 +29,6 @@ public class UserRegistrationHandler {
         validation.validate(request);
         User user = userCreator.createUser(request);
         userSaver.saveUser(mapper.toDto(user));
-        return new ApiResponse("User registered successfully.");
+        return new ApiResponse("Your registration was successful!");
     }
 }
