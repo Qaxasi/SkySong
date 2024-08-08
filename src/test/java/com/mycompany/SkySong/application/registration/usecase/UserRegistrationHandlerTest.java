@@ -8,7 +8,10 @@ import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserRegistrationHandlerTest extends BaseIT {
 
@@ -34,5 +37,11 @@ class UserRegistrationHandlerTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    @Test
+    void whenUserRegistered_UserExist() {
+        registration.registerUser(requests.requestWithUsername("Maks"));
+        assertTrue(userChecker.userExist("Maks"));
     }
 }
