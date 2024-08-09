@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.application.registration.usecase;
 
+import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
@@ -44,19 +45,23 @@ class UserRegistrationTest extends BaseIT {
 
     @Test
     void whenRegistrationSuccess_ReturnMessage () {
-      ApiResponse response = registration.registerUser(requests.validRequest());
+      ApiResponse response = registerUser(requests.validRequest());
       assertEquals("Your registration was successful!" , response.message());
     }
 
     @Test
     void whenUserRegistered_UserExist() {
-        registration.registerUser(requests.requestWithUsername("Maks"));
+        registerUser(requests.requestWithUsername("Maks"));
         assertTrue(userChecker.userExist("Maks"));
     }
 
     @Test
     void whenUserRegistered_UserHasRole() {
-        registration.registerUser(requests.requestWithUsername("Maks"));
+        registerUser(requests.requestWithUsername("Maks"));
         assertTrue(roleChecker.hasUserRole("Maks", UserRole.ROLE_USER.name()));
+    }
+
+    private ApiResponse registerUser(RegisterRequest request) {
+       return registration.registerUser(request);
     }
 }
