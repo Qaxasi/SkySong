@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UserRegistrationHandlerTest extends BaseIT {
+class UserRegistrationTest extends BaseIT {
 
     @Autowired
     private UserRegistrationHandler registration;
