@@ -26,4 +26,14 @@ class RoleMapperTest {
         assertEquals(1, role.getId());
         assertEquals(UserRole.ROLE_USER, role.getName());
     }
+
+    @Test
+    void whenMappingRoleEntityToDto_FieldsAreCorrectlySet() {
+        Role role = new Role(1, UserRole.ROLE_USER);
+
+        RoleDTO roleDTO = toDto(role);
+
+        assertEquals(1, roleDTO.id());
+        assertEquals(UserRole.ROLE_USER, roleDTO.name());
+    }
 }
