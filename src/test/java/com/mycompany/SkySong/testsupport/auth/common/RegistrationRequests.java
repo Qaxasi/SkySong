@@ -8,12 +8,6 @@ public class RegistrationRequests {
             new RegisterRequest("New", "new@mail.com", "Password#3");
     public RegisterRequest emptyCredentials =
             new RegisterRequest("", "", "");
-
-    public RegisterRequest existEmail =
-            new RegisterRequest("Sam", "mark@mail.com", "Password#3");
-    public RegisterRequest existUsername =
-            new RegisterRequest("Mark", "sam@mail.com", "Password#3");
-
     public RegisterRequest requestWithUsername(String username) {
         return new RegisterRequest(username, "new@mail.com", "Password#3");
     }
@@ -68,10 +62,4 @@ public class RegistrationRequests {
 
     public RegisterRequest emailToLong =
             new RegisterRequest("Sam", "qwertyuiopasdfghjklzxcvbn@mail.com", "Password#3");
-
-    public RegisterRequest uniqueEmail =
-            new RegisterRequest("New", "unique@mail.com", "Password#3");
-
-    public RegisterRequest uniqueUsername =
-            new RegisterRequest("Unique", "new@mail.com", "Password#3");
 }
