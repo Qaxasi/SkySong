@@ -22,7 +22,6 @@ public class RegistrationControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
     private RegistrationRequests requests;
 
     @Autowired
@@ -32,6 +31,7 @@ public class RegistrationControllerTest extends BaseIT {
 
     @BeforeEach
     void setUp() throws Exception {
+        requests = new RegistrationRequests();
         initializer.setup("data_sql/test-setup.sql");
     }
 
