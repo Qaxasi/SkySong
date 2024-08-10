@@ -54,4 +54,14 @@ class UserRegistrationMapperTest {
         Set<RoleDTO> roles = Set.of(roleDTO);
         return new UserRegistrationDTO(username, email, password, roles);
     }
+
+    private User createUserEntity(String username, String email, String password, UserRole name) {
+        Set<Role> roles = Set.of(new Role(name));
+        return new User.Builder()
+                .withUsername(username)
+                .withEmail(email)
+                .withPassword(password)
+                .withRoles(roles)
+                .build();
+    }
 }
