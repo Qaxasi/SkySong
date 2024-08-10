@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
-public class RegistrationControllerTest extends BaseIT {
+class RegistrationControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
