@@ -40,4 +40,8 @@ class RoleMapperTest {
     private Role toEntity(RoleDTO roleDTO) {
         return roleMapper.toEntity(roleDTO);
     }
+
+    private RoleDTO toDto(Role role) {
+        return roleMapper.toDto(role);
+    }
 }
