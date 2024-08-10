@@ -30,7 +30,18 @@ class UserRegistrationMapperTest {
         assertEquals("alex@mail.mail", user.getEmail());
         assertEquals("Password#3", user.getPassword());
         assertTrue(user.getRoles().stream().anyMatch(r -> r.getName().equals(UserRole.ROLE_USER)));
-
     }
-    
+
+    @Test
+    void whenMappingEntityToDto_DtoHasCorrectFields() {
+        User user = createUserEntity("Alex", "alex@mail.mail", "Password#3", UserRole.ROLE_USER);
+
+        UserRegistrationDTO userDto = toDto(user);
+
+        assertEquals("Alex", userDto.username());
+        assertEquals("alex@mail.mail", userDto.email());
+        assertEquals("Password#3", userDto.password());
+        assertTrue(userDto.roles().stream().anyMatch(r -> r.name().equals(UserRole.ROLE_USER)));
+    }
+
 }
