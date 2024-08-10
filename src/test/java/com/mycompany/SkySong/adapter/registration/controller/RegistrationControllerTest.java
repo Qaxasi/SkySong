@@ -23,7 +23,7 @@ public class RegistrationControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private RegistrationRequests registrationHelper;
+    private RegistrationRequests requests;
 
     @Autowired
     private SqlDatabaseInitializer initializer;
@@ -44,7 +44,7 @@ public class RegistrationControllerTest extends BaseIT {
     void whenRegistrationSuccess_Return201() throws Exception {
         mockMvc.perform(post("/api/v1/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(registrationHelper.validCredentials)))
+                        .content(asJsonString(requests.validCredentials)))
                 .andExpect(status().is(201));
     }
 
@@ -52,7 +52,7 @@ public class RegistrationControllerTest extends BaseIT {
     void whenRegistrationSuccess_ReturnCorrectFieldName() throws Exception {
         mockMvc.perform(post("/api/v1/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(registrationHelper.validCredentials)))
+                        .content(asJsonString(requests.validCredentials)))
                 .andExpect(jsonPath("$.message").isNotEmpty());
     }
 
@@ -60,7 +60,7 @@ public class RegistrationControllerTest extends BaseIT {
     void whenInvalidCredentials_ReturnBadRequest() throws Exception {
         mockMvc.perform(post("/api/v1/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(registrationHelper.emailInvalidFormat)))
+                        .content(asJsonString(requests.emailInvalidFormat)))
                 .andExpect(status().is(400));
     }
 
@@ -68,7 +68,7 @@ public class RegistrationControllerTest extends BaseIT {
     void whenMalformedRequest_ReturnBadRequest() throws Exception {
         mockMvc.perform(post("/api/v1/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(registrationHelper.malformedRequest))
+                        .content(requests.malformedRequest))
                 .andExpect(status().is(400));
     }
 
@@ -76,7 +76,7 @@ public class RegistrationControllerTest extends BaseIT {
     void whenEmptyCredentials_ReturnErrorMessages() throws Exception {
         ResultActions actions = mockMvc.perform(post("/api/v1/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(registrationHelper.emptyCredentials)));
+                .content(asJsonString(requests.emptyCredentials)));
 
         actions.andExpect(jsonPath("$.errors.username")
                         .value("The username field cannot be empty"))
