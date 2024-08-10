@@ -64,4 +64,12 @@ class UserRegistrationMapperTest {
                 .withRoles(roles)
                 .build();
     }
+
+    private UserRegistrationDTO toDto(User user) {
+        return userMapper.toDto(user);
+    }
+
+    private User toEntity(UserRegistrationDTO userDTO) {
+        return userMapper.toEntity(userDTO);
+    }
 }
