@@ -22,6 +22,17 @@ public class RegistrationRequests {
         return new RegisterRequest("User", email, "Password#3");
     }
 
+    public RegisterRequest requestWithPassword(String password) {
+        return new RegisterRequest("User", "new@mail.com", password);
+    }
+
+    public RegisterRequest validRequest() {
+        return new RegisterRequest("Alex", "alex@mail.mail", "Password#3");
+    }
+
+    public RegisterRequest request(String username, String email, String password) {
+        return new RegisterRequest(username, email, password);
+    }
     public String malformedRequest =
             "{\"username\": \"New\", \"email\": \"new@mail.com\", \"password\": \"Password#3\"";
 
