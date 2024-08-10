@@ -1,10 +1,14 @@
 package com.mycompany.SkySong.application.registration.mapper;
 
+import com.mycompany.SkySong.application.registration.dto.RoleDTO;
 import com.mycompany.SkySong.application.registration.dto.UserRegistrationDTO;
+import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -44,4 +48,10 @@ class UserRegistrationMapperTest {
         assertTrue(userDto.roles().stream().anyMatch(r -> r.name().equals(UserRole.ROLE_USER)));
     }
 
+    private UserRegistrationDTO createUserDto(String username, String email, String password, UserRole name) {
+        Role role = new Role(name);
+        RoleDTO roleDTO = roleMapper.toDto(role);
+        Set<RoleDTO> roles = Set.of(roleDTO);
+        return new UserRegistrationDTO(username, email, password, roles);
+    }
 }
