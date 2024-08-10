@@ -36,4 +36,8 @@ class RoleMapperTest {
         assertEquals(1, roleDTO.id());
         assertEquals(UserRole.ROLE_USER, roleDTO.name());
     }
+
+    private Role toEntity(RoleDTO roleDTO) {
+        return roleMapper.toEntity(roleDTO);
+    }
 }
