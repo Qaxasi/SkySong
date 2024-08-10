@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.user;
+package com.mycompany.SkySong.adapter.user.delete.controller;
 
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-class TransactionDeleteUsersControllerTest extends BaseIT {
+class DeleteUserControllerTest extends BaseIT {
 
     @Autowired
     private MockMvc mockMvc;
