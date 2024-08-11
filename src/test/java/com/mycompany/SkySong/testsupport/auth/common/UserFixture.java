@@ -44,10 +44,9 @@ public class UserFixture {
         createUser(userBuilder.copy().withUsername(username).withPassword(password), fetchRegularRole());
     }
 
-    private User createUser(UserBuilder builder, Role role) {
+    private void createUser(UserBuilder builder, Role role) {
         User user = builder.withRole(role).build();
         saveUserAndAssignRoles(user);
-        return user;
     }
 
     private void saveUserAndAssignRoles(User user) {
