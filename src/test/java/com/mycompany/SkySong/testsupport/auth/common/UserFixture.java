@@ -42,17 +42,12 @@ public class UserFixture {
         createUser(builder -> builder.withUsername(username).withPassword(password));
     }
 
-    private void createUser(Integer id, String username, String email, String password, Role role) {
-        User user = new User.Builder()
-                .withId(id)
-                .withUsername(username)
-                .withEmail(email)
-                .withPassword(password)
-                .withRole(role)
-                .build();
-
+    private User createUser(UserBuilder builder, Role role) {
+        User user = builder.withRole(role).build();
         saveUserAndAssignRoles(user);
+        return user;
     }
+
     private void saveUserAndAssignRoles(User user) {
         int userId = userDAO.save(user);
         user.getRoles().forEach(role -> userDAO.assignRoleToUser(userId, role.getId()));
@@ -62,6 +57,7 @@ public class UserFixture {
         return roleDAO.findByName(UserRole.ROLE_USER).orElseThrow(
                 () -> new RoleNotFoundException("Role not found: " + UserRole.ROLE_USER));
     }
+
     private Role fetchAdminRole() {
         return roleDAO.findByName(UserRole.ROLE_ADMIN).orElseThrow(
                 () -> new RoleNotFoundException("Role not found: " + UserRole.ROLE_ADMIN));
