@@ -12,7 +12,6 @@ public class InMemoryUserDAO implements UserDAO {
     private final InMemoryRoleDAO roleDAO;
 
     private final Map<Integer, User> users = new HashMap<>();
-    private int id = 1;
 
     public InMemoryUserDAO(InMemoryRoleDAO roleDAO) {
         this.roleDAO = roleDAO;
@@ -20,17 +19,16 @@ public class InMemoryUserDAO implements UserDAO {
 
     @Override
     public int save(User user) {
-        id++;
         User newUser = new User.Builder()
-                .withId(id)
+                .withId(user.getId())
                 .withUsername(user.getUsername())
                 .withEmail(user.getEmail())
                 .withPassword(user.getPassword())
                 .withRoles(user.getRoles())
                 .build();
 
-        users.put(id, newUser);
-        return id;
+        users.put(user.getId(), newUser);
+        return user.getId();
     }
 
     @Override
@@ -81,6 +79,5 @@ public class InMemoryUserDAO implements UserDAO {
 
     public void clear() {
         users.clear();
-        id = 1;
     }
 }

@@ -5,7 +5,7 @@ import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
-import com.mycompany.SkySong.user.delete.domain.service.DeleteUserService;
+import com.mycompany.SkySong.user.delete.domain.service.DeleteUserHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DeleteUserServiceTest extends BaseIT {
+class DeleteUserHandlerTest extends BaseIT {
 
     @Autowired
-    private DeleteUserService deleter;
+    private DeleteUserHandler deleter;
     @Autowired
     private UserFixture userFixture;
 
