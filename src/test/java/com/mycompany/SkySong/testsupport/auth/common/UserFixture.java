@@ -21,25 +21,27 @@ public class UserFixture {
     }
 
     public void createUserWithId(Integer id) {
-        createUser(builder -> builder.withId(id));
+        createUser(userBuilder.copy().withId(id), fetchRegularRole());
     }
 
     public void createUserWithUsername(String username) {
-        createUser(builder -> builder.withUsername(username));
+        createUser(userBuilder.copy().withUsername(username), fetchRegularRole());
     }
 
     public void createUserWithEmail(String email) {
-        createUser(builder -> builder.withEmail(email));
+        createUser(userBuilder.copy().withEmail(email), fetchRegularRole());
     }
+
     public void createRegularUser() {
-        createUser(builder -> builder.withRole(UserRole.ROLE_USER));
+        createUser(userBuilder.copy(), fetchRegularRole());
     }
 
     public void createAdminUser() {
-        createUser(builder -> builder.withRole(UserRole.ROLE_ADMIN));
+        createUser(userBuilder.copy(), fetchAdminRole());
     }
+
     public void createUserWithUsernameAndPassword(String username, String password) {
-        createUser(builder -> builder.withUsername(username).withPassword(password));
+        createUser(userBuilder.copy().withUsername(username).withPassword(password), fetchRegularRole());
     }
 
     private User createUser(UserBuilder builder, Role role) {
