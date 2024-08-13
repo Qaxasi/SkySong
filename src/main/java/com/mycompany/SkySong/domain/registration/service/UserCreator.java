@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.domain.registration.service;
 
 import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.domain.registration.exception.RegistrationException;
 import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
@@ -29,7 +30,7 @@ public class UserCreator {
     }
 
     private Role fetchDefaultUserRole() {
-        return roleRepository.findByName(UserRole.ROLE_USER).orElseThrow(
-                () -> new RoleNotFoundException("Default role not found: " + UserRole.ROLE_USER));
+        return roleRepository.findByName(UserRole.ROLE_USER)
+                .orElseThrow(() -> new RoleNotFoundException("An error occurred during registration. Please try again later."));
     }
 }
