@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<Object> handlerRoleNotFoundException(final RoleNotFoundException ex) {
-        log.error("Default role not found");
+        log.error("A problem occurred while assigning a default role to the user.");
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
