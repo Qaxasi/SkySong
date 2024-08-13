@@ -5,6 +5,7 @@ import com.mycompany.SkySong.application.login.exception.UserNotFoundException;
 import com.mycompany.SkySong.adapter.security.exception.SessionNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
+import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({UserNotFoundException.class, SessionNotFoundException.class})
     public ResponseEntity<Object> handleUserNotFoundException(final UserNotFoundException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<Object> handlerRoleNotFoundException(final RoleNotFoundException ex) {
+        log.error("Default role not found");
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
