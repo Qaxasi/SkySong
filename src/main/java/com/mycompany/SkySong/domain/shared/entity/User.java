@@ -26,6 +26,7 @@ public class User {
         private String email;
         private String password;
         private final Set<Role> roles = new HashSet<>();
+        private boolean validateRoles = true;
 
         public Builder withId(Integer id) {
            this.id = id;
@@ -57,6 +58,11 @@ public class User {
             return this;
        }
 
+        public Builder withoutRoleValidation() {
+            this.validateRoles = false;
+            return this;
+        }
+
        public User build() {
             validate();
             return new User(this);
@@ -72,7 +78,7 @@ public class User {
             if (password == null || password.isEmpty()) {
                 throw new IllegalArgumentException("Password cannot be null or empty");
             }
-            if (roles.isEmpty()) {
+            if (validateRoles && roles.isEmpty()) {
                 throw new IllegalArgumentException("User must have at least one role");
             }
        }
