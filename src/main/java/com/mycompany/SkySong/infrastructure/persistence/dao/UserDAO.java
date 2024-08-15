@@ -3,7 +3,6 @@ package com.mycompany.SkySong.infrastructure.persistence.dao;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.login.ports.LoginUserRepository;
 import com.mycompany.SkySong.domain.registration.ports.RegistrationUserRepository;
-import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
@@ -21,15 +20,12 @@ public interface UserDAO extends LoginUserRepository, RegistrationUserRepository
     int save(@BindBean User user);
 
     @SqlQuery("SELECT * FROM users WHERE id = :id")
-    @RegisterBeanMapper(User.class)
     Optional<User> findById(@Bind("id") int id);
 
     @SqlQuery("SELECT * FROM users WHERE email = :email")
-    @RegisterBeanMapper(User.class)
     Optional<User> findByEmail(@Bind("email") String email);
 
     @SqlQuery("SELECT * FROM users WHERE username = :username")
-    @RegisterBeanMapper(User.class)
     Optional<User> findByUsername(@Bind("username") String username);
 
     @SqlQuery("SELECT EXISTS (SELECT 1 FROM users WHERE username = :username)")
