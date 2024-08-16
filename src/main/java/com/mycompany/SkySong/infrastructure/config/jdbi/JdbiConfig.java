@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.infrastructure.config.jdbi;
 
+import com.mycompany.SkySong.infrastructure.persistence.mapper.UserRowMapper;
+import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
@@ -13,13 +15,14 @@ import javax.sql.DataSource;
 
 @Configuration
 public class JdbiConfig {
-
     @Bean
     public Jdbi config(DataSource dataSource) {
         TransactionAwareDataSourceProxy dataSourceProxy = new TransactionAwareDataSourceProxy(dataSource);
 
         Jdbi jdbi = Jdbi.create(dataSourceProxy);
         jdbi.installPlugin(new SqlObjectPlugin());
+
+        jdbi.registerRowMapper(User.class, new UserRowMapper());
 
         return jdbi;
     }
