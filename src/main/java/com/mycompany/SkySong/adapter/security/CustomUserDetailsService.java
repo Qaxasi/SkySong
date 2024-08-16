@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.security;
 
+import com.mycompany.SkySong.adapter.security.jwt.CustomUserDetails;
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
@@ -30,9 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = findUserByUsernameOrEmail(usernameOrEmail);
         Set<GrantedAuthority> authorities = getAuthorities(user);
 
-        return new org.springframework.security.core.userdetails.User(usernameOrEmail,
-                user.getPassword(),
-                authorities);
+        return CustomUserDetails.build(user, authorities);
     }
     private User findUserByUsernameOrEmail(String usernameOrEmail) {
         return userDAO.findByUsername(usernameOrEmail)
