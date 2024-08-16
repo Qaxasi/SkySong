@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.infrastructure.config.security;
 
-
 import com.mycompany.SkySong.adapter.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.adapter.security.CustomAuthenticationEntryPoint;
 import com.mycompany.SkySong.adapter.security.filter.JwtAuthenticationFilter;
@@ -20,15 +19,15 @@ public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
-    private final SessionValidatorFilter sessionFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(CustomAuthenticationEntryPoint authenticationEntryPoint,
                           CustomAccessDeniedHandler accessDeniedHandler,
-                          SessionValidatorFilter sessionFilter) {
+                          JwtAuthenticationFilter jwtAuthenticationFilter) {
 
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
-        this.sessionFilter = sessionFilter;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -51,8 +50,8 @@ public class SecurityConfig {
                         .accessDeniedHandler(accessDeniedHandler)
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class);
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
