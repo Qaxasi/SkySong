@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.adapter.security;
 
-import com.mycompany.SkySong.adapter.security.jwt.CustomUserDetails;
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
