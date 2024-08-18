@@ -1,13 +1,20 @@
 package com.mycompany.SkySong.adapter.security.jwt;
 
+import com.mycompany.SkySong.adapter.security.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -39,5 +46,39 @@ public class JwtTokenManager {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String generateToken(CustomUserDetails userDetails) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        extraClaims.put("roles", roles);
+
+        return generateToken(extraClaims, userDetails);
+    }
+
+    public String generateToken(Map<String,Object> extraClaims,
+                                CustomUserDetails userDetails) {
+        return buildToken(extraClaims,userDetails, jwtExpiration);
+    }
+
+    public String generateRefreshToken(CustomUserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, refreshJwtExpiration);
+
+    }
+
+    private String buildToken(Map<String, Object> extraClaims,
+                              CustomUserDetails userDetails,
+                              long expiration) {
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
+                .compact();
+
     }
 }
