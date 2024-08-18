@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
@@ -16,10 +17,16 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
+
+        String errorMessage = "Unauthorized access. Please log in.";
+
+        if (authException.getCause() instanceof ExpiredJwtException) {
+            errorMessage = "Token expired. Please refresh your token.";
+        }
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.getWriter().write(new JSONObject()
-                .put("error", "Unauthorized access. Please log in.")
+                .put("error", errorMessage)
                 .toString());
     }
 }
