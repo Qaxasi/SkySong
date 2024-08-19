@@ -47,11 +47,6 @@ public class GlobalExceptionHandler {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({})
-    public ResponseEntity<Object> handleInternalServerError(final RuntimeException ex) {
-        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler({BadCredentialsException.class})
     public ResponseEntity<Object> handleUnauthorizedExceptions(final RuntimeException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
