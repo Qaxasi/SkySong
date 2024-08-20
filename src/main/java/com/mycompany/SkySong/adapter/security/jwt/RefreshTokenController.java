@@ -36,4 +36,8 @@ public class RefreshTokenController {
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse("Session renewal failed: please log in again."));
     }
+
+    private boolean validateRefreshToken(String token) {
+        return tokenManager.isTokenValid(token);
+    }
 }
