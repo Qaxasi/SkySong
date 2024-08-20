@@ -24,11 +24,11 @@ public class RefreshTokenController {
 
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(HttpServletRequest request) {
-        String refreshToken = getJwtFromCookies(request, "refreshToken");
+        String refreshToken = cookieUtils.getJwtFromCookies(request, "refreshToken");
 
         if (refreshToken != null && validateRefreshToken(refreshToken)) {
             String newJwtToken = generateAccessTokenFromRefreshToken(refreshToken);
-            ResponseCookie jwtCookie = generateCookie("jwtToken", newJwtToken, "/api");
+            ResponseCookie jwtCookie = cookieUtils.generateCookie("jwtToken", newJwtToken, "/api");
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
