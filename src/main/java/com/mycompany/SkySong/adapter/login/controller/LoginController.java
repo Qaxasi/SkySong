@@ -29,11 +29,12 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
-        AuthenticationResponse authResponse = authenticationHandler.authenticate(request);
+        AuthenticationResponse authResponse = authentication.authenticate(request);
 
-        ResponseCookie jwtCookie = generateCookie("jwtToken", authResponse.jwtToken(), "/api");
+        ResponseCookie jwtCookie = cookieUtils.generateCookie("jwtToken", authResponse.jwtToken(), "/api");
 
-        ResponseCookie refreshCookie = generateCookie("refreshToken", authResponse.refreshToken(), "/api/auth/refresh-token");
+        ResponseCookie refreshCookie = cookieUtils.generateCookie(
+                "refreshToken", authResponse.refreshToken(), "/api/auth/refresh-token");
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
