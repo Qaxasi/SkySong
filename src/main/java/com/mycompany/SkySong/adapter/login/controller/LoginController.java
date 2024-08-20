@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.adapter.login.controller;
 
+import com.mycompany.SkySong.adapter.login.dto.AuthenticationResponse;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.application.login.dto.LoginRequest;
-import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,16 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/users")
 public class LoginController {
+
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request,
-                                             HttpServletResponse response) {
-        String sessionToken = login.login(request);
+    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
+        AuthenticationResponse authResponse = authenticationHandler.authenticate(request);
 
-        Cookie sessionCookie = new Cookie("session_id", sessionToken);
-        sessionCookie.setHttpOnly(true);
-        sessionCookie.setPath("/");
-        response.addCookie(sessionCookie);
+        ResponseCookie jwtCookie = generateCookie("jwtToken", authResponse.jwtToken(), "/api");
 
-        return ResponseEntity.ok(new ApiResponse("Logged successfully."));
+        ResponseCookie refreshCookie = generateCookie("refreshToken", authResponse.refreshToken(), "/api/auth/refresh-token");
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                .body(new ApiResponse("Logged successfully."));
     }
 }
