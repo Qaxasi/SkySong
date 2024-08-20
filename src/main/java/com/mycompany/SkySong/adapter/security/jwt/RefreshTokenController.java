@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class RefreshTokenController {
     private final JwtTokenManager tokenManager;
+    private final CookieUtils cookieUtils;
 
-    public RefreshTokenController(JwtTokenManager tokenManager) {
+    public RefreshTokenController(JwtTokenManager tokenManager,
+                                  CookieUtils cookieUtils) {
         this.tokenManager = tokenManager;
+        this.cookieUtils = cookieUtils;
     }
 }
