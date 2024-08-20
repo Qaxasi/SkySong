@@ -31,7 +31,8 @@ public class LoginController {
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
         AuthenticationResponse authResponse = authentication.authenticate(request);
 
-        ResponseCookie jwtCookie = cookieUtils.generateCookie("jwtToken", authResponse.jwtToken(), "/api");
+        ResponseCookie jwtCookie = cookieUtils.generateCookie(
+                "jwtToken", authResponse.jwtToken(), "/api");
 
         ResponseCookie refreshCookie = cookieUtils.generateCookie(
                 "refreshToken", authResponse.refreshToken(), "/api/auth/refresh-token");
