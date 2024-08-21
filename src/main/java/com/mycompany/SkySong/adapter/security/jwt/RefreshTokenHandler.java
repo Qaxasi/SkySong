@@ -13,4 +13,11 @@ public class RefreshTokenHandler {
         this.tokenManager = tokenManager;
         this.userDetailsService = userDetailsService;
     }
+
+    public String generateAccessTokenFromRefreshToken(String refreshToken) {
+        String username = tokenManager.extractUsername(refreshToken);
+        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
+
+        return tokenManager.generateToken(userDetails);
+    }
 }
