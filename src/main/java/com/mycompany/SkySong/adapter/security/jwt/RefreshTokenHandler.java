@@ -20,4 +20,8 @@ public class RefreshTokenHandler {
 
         return tokenManager.generateToken(userDetails);
     }
+
+    public boolean validateRefreshToken(String token) {
+        return tokenManager.isTokenValid(token);
+    }
 }
