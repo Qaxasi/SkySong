@@ -38,8 +38,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/register",
-                                "/api/v1/auth/refresh-token",
-                                "/error")
+                                "/api/v1/auth/refresh-token")
                         .permitAll()
                         .requestMatchers(HttpMethod.DELETE,
                                 "/api/v1/users/**").hasRole("ADMIN")
