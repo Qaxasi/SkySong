@@ -3,7 +3,6 @@ package com.mycompany.SkySong.infrastructure.config.security;
 import com.mycompany.SkySong.adapter.security.CustomAccessDeniedHandler;
 import com.mycompany.SkySong.adapter.security.CustomAuthenticationEntryPoint;
 import com.mycompany.SkySong.adapter.security.filter.JwtAuthenticationFilter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -45,8 +43,6 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.DELETE,
                                 "/api/v1/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST,
-                                "/api/v1/users/logout").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
