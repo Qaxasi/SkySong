@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.adapter.user.delete.adapters;
 
-import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.user.delete.ports.DeleteUser;
@@ -13,14 +12,11 @@ import java.util.NoSuchElementException;
 class TransactionDeleteUser implements DeleteUser {
 
     private final UserDAO userRepository;
-    private final SessionDAO sessionRepository;
     private final TransactionTemplate transactionTemplate;
 
     TransactionDeleteUser(UserDAO userDAO,
-                          SessionDAO sessionDAO,
                           TransactionTemplate transactionTemplate) {
         this.userRepository = userDAO;
-        this.sessionRepository = sessionDAO;
         this.transactionTemplate = transactionTemplate;
     }
 
@@ -31,8 +27,6 @@ class TransactionDeleteUser implements DeleteUser {
                     "User not found with id: " + id));
 
             userRepository.deleteUserRoles(id);
-            sessionRepository.deleteUserSessions(id);
-
             userRepository.delete(user);
         });
     }
