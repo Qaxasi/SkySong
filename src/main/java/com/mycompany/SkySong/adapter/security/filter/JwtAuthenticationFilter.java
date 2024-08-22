@@ -6,6 +6,7 @@ import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -65,5 +68,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authEntryPoint.commence(request, response, new TokenExpiredException(
                     "Your session has expired. Please refresh your token to continue."));
         }
+    }
+
+
+    private String getJwtFromCookies(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            Optional<Cookie> jwtCookie = Arrays.stream(request.getCookies())
+                    .filter(cookie -> "jwtToken".equals(cookie.getName()))
+                    .findFirst();
+
+            if (jwtCookie.isPresent()) {
+                return jwtCookie.get().getValue();
+            }
+        }
+        return null;
     }
 }
