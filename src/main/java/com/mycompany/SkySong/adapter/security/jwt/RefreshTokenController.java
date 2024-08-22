@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class RefreshTokenController {
-    private final JwtTokenManager tokenManager;
-    private final CookieUtils cookieUtils;
 
-    public RefreshTokenController(JwtTokenManager tokenManager,
-                                  CookieUtils cookieUtils) {
-        this.tokenManager = tokenManager;
+    private final CookieUtils cookieUtils;
+    private final RefreshTokenHandler refreshToken;
+
+    public RefreshTokenController(CookieUtils cookieUtils,
+                                  RefreshTokenHandler refreshToken) {
         this.cookieUtils = cookieUtils;
+        this.refreshToken = refreshToken;
     }
 
     @PostMapping("/refresh-token")
