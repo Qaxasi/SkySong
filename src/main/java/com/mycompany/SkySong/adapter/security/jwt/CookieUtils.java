@@ -3,8 +3,10 @@ package com.mycompany.SkySong.adapter.security.jwt;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseCookie;
+import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
+@Service
 public class CookieUtils {
 
     public String getJwtFromCookies(HttpServletRequest request, String cookieName) {
