@@ -2,7 +2,9 @@ package com.mycompany.SkySong.adapter.security.jwt;
 
 import com.mycompany.SkySong.adapter.security.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.CustomUserDetailsService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RefreshTokenHandler {
 
     private final JwtTokenManager tokenManager;
