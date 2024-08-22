@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class RefreshTokenController {
 
     private final CookieUtils cookieUtils;
-    private final RefreshTokenHandler refreshToken;
+    private final RefreshTokenHandler refreshTokenHandler;
 
     public RefreshTokenController(CookieUtils cookieUtils,
-                                  RefreshTokenHandler refreshToken) {
+                                  RefreshTokenHandler refreshTokenHandler) {
         this.cookieUtils = cookieUtils;
-        this.refreshToken = refreshToken;
+        this.refreshTokenHandler = refreshTokenHandler;
     }
 
     @PostMapping("/refresh-token")
@@ -35,6 +35,7 @@ public class RefreshTokenController {
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                     .body(new ApiResponse("Your session has been successfully extended."));
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse("Session renewal failed: please log in again."));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ApiResponse("Session renewal failed: please log in again."));
     }
 }
