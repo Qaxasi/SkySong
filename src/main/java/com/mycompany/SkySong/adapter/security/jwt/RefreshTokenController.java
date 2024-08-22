@@ -15,20 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class RefreshTokenController {
 
     private final CookieUtils cookieUtils;
-    private final RefreshTokenHandler refreshTokenHandler;
+    private final RefreshTokenHandler tokenHandler;
 
     public RefreshTokenController(CookieUtils cookieUtils,
-                                  RefreshTokenHandler refreshTokenHandler) {
+                                  RefreshTokenHandler tokenHandler) {
         this.cookieUtils = cookieUtils;
-        this.refreshTokenHandler = refreshTokenHandler;
+        this.tokenHandler = tokenHandler;
     }
 
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(HttpServletRequest request) {
         String refreshToken = cookieUtils.getJwtFromCookies(request, "refreshToken");
 
-        if (refreshToken != null && validateRefreshToken(refreshToken)) {
-            String newJwtToken = generateAccessTokenFromRefreshToken(refreshToken);
+        if (refreshToken != null && tokenHandler.validateRefreshToken(refreshToken)) {
+            String newJwtToken = tokenHandler.generateAccessTokenFromRefreshToken(refreshToken);
+
             ResponseCookie jwtCookie = cookieUtils.generateCookie("jwtToken", newJwtToken, "/api");
 
             return ResponseEntity.ok()
