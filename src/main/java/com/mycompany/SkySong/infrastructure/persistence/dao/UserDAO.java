@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserDAO extends LoginUserRepository, RegistrationUserRepository {
+public interface UserDAO extends RegistrationUserRepository {
 
     @SqlUpdate("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
     @GetGeneratedKeys
