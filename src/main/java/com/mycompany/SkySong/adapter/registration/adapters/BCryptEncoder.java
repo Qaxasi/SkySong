@@ -14,7 +14,6 @@ class BCryptEncoder implements PasswordEncoder {
         this.encoder = encoder;
     }
 
-
     @Override
     public String encode(CharSequence password) {
         return encoder.encode(password);
