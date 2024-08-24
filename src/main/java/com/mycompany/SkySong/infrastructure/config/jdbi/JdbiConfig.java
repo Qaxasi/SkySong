@@ -3,7 +3,6 @@ package com.mycompany.SkySong.infrastructure.config.jdbi;
 import com.mycompany.SkySong.infrastructure.persistence.mapper.UserRowMapper;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
-import com.mycompany.SkySong.infrastructure.persistence.dao.SessionDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
@@ -28,11 +27,6 @@ public class JdbiConfig {
     }
 
     @Bean
-    public SessionDAO sessionDAO(Jdbi jdbi) {
-        return jdbi.onDemand(SessionDAO.class);
-    }
-
-    @Bean
     public UserDAO userDAO(Jdbi jdbi) {
         return jdbi.onDemand(UserDAO.class);
     }
@@ -40,5 +34,4 @@ public class JdbiConfig {
     public RoleDAO roleDAO(Jdbi jdbi) {
         return jdbi.onDemand(RoleDAO.class);
     }
-
 }
