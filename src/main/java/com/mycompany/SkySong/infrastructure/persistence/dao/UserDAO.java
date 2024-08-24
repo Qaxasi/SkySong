@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.infrastructure.persistence.dao;
 
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.domain.login.ports.LoginUserRepository;
 import com.mycompany.SkySong.domain.registration.ports.RegistrationUserRepository;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
