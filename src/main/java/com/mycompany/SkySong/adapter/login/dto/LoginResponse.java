@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.login.dto;
+package com.mycompany.SkySong.adapter.security.jwt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.security.jwt;
 
+import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
