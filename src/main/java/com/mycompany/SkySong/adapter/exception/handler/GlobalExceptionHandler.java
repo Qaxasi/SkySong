@@ -1,8 +1,6 @@
 package com.mycompany.SkySong.adapter.exception.handler;
 
-import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;
-import com.mycompany.SkySong.application.login.exception.UserNotFoundException;
-import com.mycompany.SkySong.adapter.security.exception.SessionNotFoundException;
+import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
@@ -29,11 +27,6 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error: " + ex.getMessage());
         return ErrorResponseBuilder.createErrorResponse("Internal server error",
                 HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler({UserNotFoundException.class, SessionNotFoundException.class})
-    public ResponseEntity<Object> handleUserNotFoundException(final UserNotFoundException ex) {
-        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
