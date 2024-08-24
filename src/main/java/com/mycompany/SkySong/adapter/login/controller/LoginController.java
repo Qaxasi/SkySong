@@ -1,10 +1,10 @@
 package com.mycompany.SkySong.adapter.login.controller;
 
-import com.mycompany.SkySong.adapter.login.dto.AuthenticationResponse;
-import com.mycompany.SkySong.adapter.login.service.AuthenticationHandler;
-import com.mycompany.SkySong.adapter.security.jwt.CookieUtils;
+import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
+import com.mycompany.SkySong.adapter.login.service.LoginHandler;
+import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import com.mycompany.SkySong.application.login.dto.LoginRequest;
+import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -18,24 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class LoginController {
 
-    private final AuthenticationHandler authentication;
+    private final LoginHandler login;
     private final CookieUtils cookieUtils;
 
-    public LoginController(AuthenticationHandler authentication,
+    public LoginController(LoginHandler login,
                            CookieUtils cookieUtils) {
-        this.authentication = authentication;
+        this.login = login;
         this.cookieUtils = cookieUtils;
     }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
-        AuthenticationResponse authResponse = authentication.authenticate(request);
+        LoginResponse authResponse = login.login(request);
 
         ResponseCookie jwtCookie = cookieUtils.generateCookie(
                 "jwtToken", authResponse.jwtToken(), "/api");
 
         ResponseCookie refreshCookie = cookieUtils.generateCookie(
-                "refreshToken", authResponse.refreshToken(), "/api/auth/refresh-token");
+                "refreshToken", authResponse.refreshToken(), "/api/v1/auth/refresh-token");
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
