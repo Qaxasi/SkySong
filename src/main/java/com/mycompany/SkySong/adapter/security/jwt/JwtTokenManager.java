@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.security.jwt;
 
-import com.mycompany.SkySong.adapter.security.CustomUserDetails;
+import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

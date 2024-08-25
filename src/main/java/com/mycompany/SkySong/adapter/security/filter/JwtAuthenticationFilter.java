@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.security.filter;
 
-import com.mycompany.SkySong.adapter.login.exception.TokenExpiredException;
-import com.mycompany.SkySong.adapter.security.CustomAuthenticationEntryPoint;
+import com.mycompany.SkySong.adapter.security.exception.TokenExpiredException;
+import com.mycompany.SkySong.adapter.security.handler.CustomAuthenticationEntryPoint;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

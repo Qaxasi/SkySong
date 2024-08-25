@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.security;
+package com.mycompany.SkySong.adapter.security.user;
 
 import com.mycompany.SkySong.domain.shared.entity.User;
 import org.springframework.security.core.GrantedAuthority;

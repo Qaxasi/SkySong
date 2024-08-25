@@ -1,7 +1,8 @@
-package com.mycompany.SkySong.adapter.security.jwt;
+package com.mycompany.SkySong.adapter.refreshToken.service;
 
-import com.mycompany.SkySong.adapter.security.CustomUserDetails;
-import com.mycompany.SkySong.adapter.security.CustomUserDetailsService;
+import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
+import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;
+import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import org.springframework.stereotype.Service;
 
 @Service

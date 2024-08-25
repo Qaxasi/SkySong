@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.infrastructure.config.security;
 
-import com.mycompany.SkySong.adapter.security.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.adapter.security.CustomAuthenticationEntryPoint;
+import com.mycompany.SkySong.adapter.security.handler.CustomAccessDeniedHandler;
+import com.mycompany.SkySong.adapter.security.handler.CustomAuthenticationEntryPoint;
 import com.mycompany.SkySong.adapter.security.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

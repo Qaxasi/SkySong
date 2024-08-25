@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.login.service;
 
 import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
-import com.mycompany.SkySong.adapter.security.CustomUserDetails;
+import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
 import org.springframework.security.authentication.AuthenticationManager;
