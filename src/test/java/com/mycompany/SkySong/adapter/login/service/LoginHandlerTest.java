@@ -38,7 +38,7 @@ class LoginHandlerTest extends BaseIT {
         userFixture.createUserWithUsernameAndPassword(username, password);
     }
 
-    private void login(LoginRequest request) {
-        login.login(request);
+    private void login(String usernameOrEmail, String password) {
+        login.login(usernameOrEmail, password);
     }
 }
