@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.login.service;
 
+import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
@@ -28,5 +29,9 @@ class LoginHandlerTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    private void login(LoginRequest request) {
+        login.login(request);
     }
 }
