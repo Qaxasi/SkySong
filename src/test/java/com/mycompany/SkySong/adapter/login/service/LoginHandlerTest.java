@@ -71,6 +71,13 @@ class LoginHandlerTest extends BaseIT {
         assertNotNull(response.jwtToken());
     }
 
+    @Test
+    void whenLoginSuccess_ResponseContainsRefreshToken() {
+        createUser("Alex", "Password#3");
+        LoginResponse response = login.login("Alex", "Password#3");
+        assertNotNull(response.refreshToken());
+    }
+
     private void createUser(String username, String password) {
         userFixture.createUserWithUsernameAndPassword(username, password);
     }
