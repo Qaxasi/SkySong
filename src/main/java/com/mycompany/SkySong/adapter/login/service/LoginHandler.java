@@ -23,10 +23,10 @@ public class LoginHandler {
         this.tokenManager = tokenManager;
     }
 
-    public LoginResponse login(LoginRequest request) {
+    public LoginResponse login(String usernameOrEmail, String password) {
         try {
             Authentication authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.usernameOrEmail(), request.password()));
+                    new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 

@@ -29,7 +29,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
-        LoginResponse authResponse = login.login(request);
+        LoginResponse authResponse = login.login(request.usernameOrEmail(), request.password());
 
         ResponseCookie jwtCookie = cookieUtils.generateCookie(
                 "jwtToken", authResponse.jwtToken(), "/api");
