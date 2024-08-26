@@ -6,10 +6,7 @@ import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,24 +27,12 @@ class LoginHandlerTest extends BaseIT {
     private RoleDAO roleDAO;
     private UserFixture userFixture;
 
-    @Autowired
-    private SqlDatabaseInitializer initializer;
-    @Autowired
-    private SqlDatabaseCleaner cleaner;
-
     @BeforeEach
-    void setUp() throws Exception {
+    void setup() {
         CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
         UserBuilder userBuilder = new UserBuilder(encoder);
 
         userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
-
-        initializer.setup("data_sql/test-setup.sql");
-    }
-
-    @AfterEach
-    void cleanUp() {
-        cleaner.clean();
     }
 
     @Test
