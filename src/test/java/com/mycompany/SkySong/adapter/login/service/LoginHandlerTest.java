@@ -13,8 +13,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class LoginHandlerTest extends BaseIT {
@@ -52,6 +54,13 @@ class LoginHandlerTest extends BaseIT {
         createUser("Alex", "Password#3");
         assertThrows(BadCredentialsException.class,
                 () -> login("Invalid", "Invalid"));
+    }
+
+    @Test
+    void whenLoginSuccess_SetSecurityContext() {
+        createUser("Alex", "Password#3");
+        login.login("Alex", "Password#3");
+        assertNotNull(SecurityContextHolder.getContext());
     }
 
     private void createUser(String username, String password) {
