@@ -9,6 +9,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+
+import static org.junit.Assert.assertThrows;
 
 class LoginHandlerTest extends BaseIT {
 
@@ -29,6 +32,10 @@ class LoginHandlerTest extends BaseIT {
     @AfterEach
     void cleanUp() {
         cleaner.clean();
+    }
+
+    private void createUser(String username, String password) {
+        userFixture.createUserWithUsernameAndPassword(username, password);
     }
 
     private void login(LoginRequest request) {
