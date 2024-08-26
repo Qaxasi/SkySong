@@ -1,45 +1,50 @@
 package com.mycompany.SkySong.adapter.login.service;
 
-import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
-import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
+import com.mycompany.SkySong.testsupport.common.BaseIT;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
+import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-class LoginHandlerTest {
+class LoginHandlerTest extends BaseIT {
 
     @Autowired
     private LoginHandler login;
+    @Autowired
+    private UserDAO userDAO;
+    @Autowired
+    private RoleDAO roleDAO;
     private UserFixture userFixture;
-    private InMemoryRoleDAO roleDAO;
-    private InMemoryUserDAO userDAO;
+
+    @Autowired
+    private SqlDatabaseInitializer initializer;
+    @Autowired
+    private SqlDatabaseCleaner cleaner;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
         UserBuilder userBuilder = new UserBuilder(encoder);
 
-        roleDAO = new InMemoryRoleDAO();
-        userDAO = new InMemoryUserDAO(roleDAO);
         userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
+
+        initializer.setup("data_sql/test-setup.sql");
     }
 
     @AfterEach
     void cleanUp() {
-        roleDAO.clear();
-        userDAO.clear();
+        cleaner.clean();
     }
 
     @Test
