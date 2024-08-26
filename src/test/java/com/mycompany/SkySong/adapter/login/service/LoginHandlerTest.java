@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.login.service;
 
+import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
@@ -61,6 +62,13 @@ class LoginHandlerTest extends BaseIT {
         createUser("Alex", "Password#3");
         login.login("Alex", "Password#3");
         assertNotNull(SecurityContextHolder.getContext());
+    }
+
+    @Test
+    void whenLoginSuccess_ResponseContainsJwtToken() {
+        createUser("Alex", "Password#3");
+        LoginResponse response = login.login("Alex", "Password#3");
+        assertNotNull(response.jwtToken());
     }
 
     private void createUser(String username, String password) {
