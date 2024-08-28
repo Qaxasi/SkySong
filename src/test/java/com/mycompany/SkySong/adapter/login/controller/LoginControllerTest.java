@@ -110,6 +110,21 @@ class LoginControllerTest extends BaseIT {
         createUserWithUsername("Alex");
         assertCookiePath("/api/v1/auth/login", requests.login("Alex"), "refreshToken", "/refresh-token");
     }
+
+    @Test
+    void whenLoginSuccess_JwtTokenCookieCorrectAge() throws Exception {
+        createUserWithUsername("Alex");
+        assertCookieAge("/api/v1/auth/login", requests.login("Alex"), "jwtToken", 600);
+
+    }
+
+    private void assertCookieAge(String endpoint, LoginRequest request, String cookieName, int cookieAge) throws Exception {
+        mockMvc.perform(post(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(request)))
+                .andExpect(cookie().maxAge(cookieName, cookieAge));
+
+    }
 //
 //    @Test
 //    void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
