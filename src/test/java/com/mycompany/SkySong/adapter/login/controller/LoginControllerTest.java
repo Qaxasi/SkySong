@@ -5,13 +5,10 @@ import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
 import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import jakarta.servlet.http.Cookie;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,9 +74,9 @@ class LoginControllerTest extends BaseIT {
     }
 
     @Test
-    void whenLoginSuccess_SessionCookieNotEmpty() throws Exception {
+    void whenLoginSuccess_JwtTokenCookieNotEmpty() throws Exception {
         createUserWithUsername("Alex");
-        assertCookieNotEmpty("/api/v1/users/login",
+        assertCookieNotEmpty("/api/v1/auth/login",
                 requests.login("Alex"), "session_id");
     }
 
