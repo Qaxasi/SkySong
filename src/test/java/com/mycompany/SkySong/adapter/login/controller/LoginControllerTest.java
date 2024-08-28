@@ -124,11 +124,10 @@ class LoginControllerTest extends BaseIT {
         assertCookieAge("/api/v1/auth/login", requests.login("Alex"), "refreshToken", 86400);
     }
 
-//
-//    @Test
-//    void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
-//        assertStatusCode("/api/v1/users/login", requests.login("Max"), 401);
-//    }
+    @Test
+    void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
+        assertStatusCode("/api/v1/auth/login", requests.login("Max"), 401);
+    }
 //
 //    @Test
 //    void whenInvalidCredentials_CookieIsNotSet() throws Exception {
