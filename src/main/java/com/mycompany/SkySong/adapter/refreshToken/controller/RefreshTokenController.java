@@ -32,7 +32,7 @@ public class RefreshTokenController {
         if (refreshToken != null && tokenHandler.validateRefreshToken(refreshToken)) {
             String newJwtToken = tokenHandler.generateAccessTokenFromRefreshToken(refreshToken);
 
-            ResponseCookie jwtCookie = cookieUtils.generateCookie("jwtToken", newJwtToken, "/api");
+            ResponseCookie jwtCookie = cookieUtils.generateCookie("jwtToken", newJwtToken, "/api", 600);
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
