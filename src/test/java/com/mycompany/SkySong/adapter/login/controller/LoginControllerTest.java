@@ -77,7 +77,14 @@ class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_JwtTokenCookieNotEmpty() throws Exception {
         createUserWithUsername("Alex");
         assertCookieNotEmpty("/api/v1/auth/login",
-                requests.login("Alex"), "session_id");
+                requests.login("Alex"), "jwtToken");
+    }
+
+    @Test
+    void whenLoginSuccess_refreshTokenCookieNotEmpty() throws Exception {
+        createUserWithUsername("Alex");
+        assertCookieNotEmpty("/api/v1/auth/login",
+                requests.login("Alex"), "refreshToken");
     }
 
 //    @Test
