@@ -138,23 +138,23 @@ class LoginControllerTest extends BaseIT {
     void whenInvalidCredentials_RefreshTokenCookieIsNotSet() throws Exception {
         assertCookieNotSet("/api/v1/auth/login", requests.nonExistingUser, "refreshToken");
     }
-//
-//    @Test
-//    void whenMalformedJson_ReturnBadRequest() throws Exception {
-//        assertStatusCode("/api/v1/auth/login", requests.malformedJson, 400);
-//    }
-//
-//    @Test
-//    void whenEmptyCredentials_ReturnBadRequest() throws Exception {
-//        assertStatusCode("/api/v1/auth/login", requests.emptyCredentials, 400);
-//    }
-//
-//    @Test
-//    void whenEmptyCredentials_ReturnErrorMessage() throws Exception {
-//        assertJsonErrorMessages("/api/v1/auth/login", requests.emptyCredentials,
-//                "$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
-//                "$.errors.password", "The password field cannot be empty");
-//    }
+
+    @Test
+    void whenMalformedJson_ReturnBadRequest() throws Exception {
+        assertStatusCode("/api/v1/auth/login", requests.malformedJson, 400);
+    }
+
+    @Test
+    void whenEmptyCredentials_ReturnBadRequest() throws Exception {
+        assertStatusCode("/api/v1/auth/login", requests.emptyCredentials, 400);
+    }
+
+    @Test
+    void whenEmptyCredentials_ReturnErrorMessage() throws Exception {
+        assertJsonErrorMessages("/api/v1/auth/login", requests.emptyCredentials,
+                "$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
+                "$.errors.password", "The password field cannot be empty");
+    }
 
     private void createUserWithUsername(String username) {
         userFixture.createUserWithUsername(username);
