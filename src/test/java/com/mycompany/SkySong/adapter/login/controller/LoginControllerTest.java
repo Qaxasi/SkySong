@@ -112,7 +112,7 @@ class LoginControllerTest extends BaseIT {
     }
 
     @Test
-    void whenLoginSuccess_JwtTokenCookieCorrectAge() throws Exception {
+    void whenLoginSuccess_JwtTokenCookieHasCorrectAge() throws Exception {
         createUserWithUsername("Alex");
         assertCookieAge("/api/v1/auth/login", requests.login("Alex"), "jwtToken", 600);
 
