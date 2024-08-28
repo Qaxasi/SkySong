@@ -1,11 +1,15 @@
 package com.mycompany.SkySong.adapter.login.controller;
 
-import com.mycompany.SkySong.application.login.dto.LoginRequest;
+import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
+import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
+import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
 import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
+import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -28,23 +33,20 @@ class LoginControllerTest extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private LoginRequests requests;
+    private RoleDAO roleDAO;
     @Autowired
+    private UserDAO userDAO;
+    private LoginRequests requests;
     private UserFixture userFixture;
 
-    @Autowired
-    private SqlDatabaseInitializer initializer;
-    @Autowired
-    private SqlDatabaseCleaner cleaner;
-
     @BeforeEach
-    void setUp() throws Exception {
-        initializer.setup("data_sql/test-setup.sql");
-    }
+    void setup() {
+        requests = new LoginRequests();
 
-    @AfterEach
-    void cleanUp() {
-        cleaner.clean();
+        CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
+        UserBuilder userBuilder = new UserBuilder(encoder);
+
+        userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
     }
 
     @Test
