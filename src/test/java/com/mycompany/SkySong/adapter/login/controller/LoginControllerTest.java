@@ -93,11 +93,11 @@ class LoginControllerTest extends BaseIT {
         assertCookieHttpOnly("/api/v1/auth/login", requests.login("Alex"), "jwtToken");
     }
 
-//    @Test
-//    void whenLoginSuccess_CookieIsSetHttpOnly() throws Exception {
-//        createUserWithUsername("Alex");
-//        assertCookieHttpOnly("/api/v1/users/login", requests.login("Alex"), "session_id");
-//    }
+    @Test
+    void whenLoginSuccess_RefreshTokenCookieIsHttpOnly() throws Exception {
+        createUserWithUsername("Alex");
+        assertCookieHttpOnly("/api/v1/auth/login", requests.login("Alex"), "refreshToken");
+    }
 //
 //    @Test
 //    void whenLoginSuccess_CookieHasCorrectPath() throws Exception {
