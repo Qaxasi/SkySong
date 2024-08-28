@@ -128,6 +128,11 @@ class LoginControllerTest extends BaseIT {
     void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
         assertStatusCode("/api/v1/auth/login", requests.login("Max"), 401);
     }
+
+    @Test
+    void whenInvalidCredentials_JwtTokenCookieIsNotSet() throws Exception {
+        assertCookieNotSet("/api/v1/users/login", requests.nonExistingUser, "jwtToken");
+    }
 //
 //    @Test
 //    void whenInvalidCredentials_CookieIsNotSet() throws Exception {
