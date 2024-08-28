@@ -52,13 +52,13 @@ class LoginControllerTest extends BaseIT {
     @Test
     void whenLoginSuccess_ResponseStatusOk() throws Exception {
         createUserWithUsername("Alex");
-        assertStatusCode("/api/v1/users/login", requests.login("Alex"), 200);
+        assertStatusCode("/api/v1/auth/login", requests.login("Alex"), 200);
     }
 
     @Test
     void whenLoginSuccess_ReturnMessage() throws Exception {
         createUserWithUsername("Alex");
-        assertJsonMessage("/api/v1/users/login", requests.login("Alex"),
+        assertJsonMessage("/api/v1/auth/login", requests.login("Alex"),
                 "$.message", "Logged successfully.");
     }
 
