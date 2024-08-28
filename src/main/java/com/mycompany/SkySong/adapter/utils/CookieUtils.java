@@ -18,7 +18,7 @@ public class CookieUtils {
         }
     }
 
-    public ResponseCookie generateCookie(String name, String value, String path, long maxAge) {
+    public ResponseCookie generateCookie(String name, String value, String path, int maxAge) {
         return ResponseCookie.from(name, value).path(path).maxAge(maxAge).httpOnly(true).build();
     }
 }
