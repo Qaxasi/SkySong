@@ -70,6 +70,13 @@ class LoginControllerTest extends BaseIT {
     }
 
     @Test
+    void whenLoginSuccess_RefreshTokenCookieExist() throws Exception {
+        createUserWithUsername("Alex");
+        assertCookieExists("/api/v1/auth/login",
+                requests.login("Alex"), "refreshToken");
+    }
+
+    @Test
     void whenLoginSuccess_SessionCookieNotEmpty() throws Exception {
         createUserWithUsername("Alex");
         assertCookieNotEmpty("/api/v1/users/login",
