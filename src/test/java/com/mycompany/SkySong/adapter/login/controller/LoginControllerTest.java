@@ -118,13 +118,12 @@ class LoginControllerTest extends BaseIT {
 
     }
 
-    private void assertCookieAge(String endpoint, LoginRequest request, String cookieName, int cookieAge) throws Exception {
-        mockMvc.perform(post(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(request)))
-                .andExpect(cookie().maxAge(cookieName, cookieAge));
-
+    @Test
+    void whenLoginSuccess_RefreshTokenCookieHasCorrectAge() throws Exception {
+        createUserWithUsername("Alex");
+        assertCookieAge("/api/v1/auth/login", requests.login("Alex"), "refreshToken", 86400);
     }
+
 //
 //    @Test
 //    void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
@@ -224,5 +223,13 @@ class LoginControllerTest extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
                 .andExpect(cookie().doesNotExist(cookieName));
+    }
+
+    private void assertCookieAge(String endpoint, LoginRequest request, String cookieName, int cookieAge) throws Exception {
+        mockMvc.perform(post(endpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(request)))
+                .andExpect(cookie().maxAge(cookieName, cookieAge));
+
     }
 }
