@@ -19,12 +19,19 @@ import java.util.function.Function;
 @Slf4j
 @Service
 public class JwtTokenManager {
-    @Value("${application.security.jwt.secret-key}")
-    private String secretKey;
-    @Value("${application.security.jwt.expiration}")
-    private long jwtExpiration;
-    @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshJwtExpiration;
+
+    private final String secretKey;
+    private final long jwtExpiration;
+    private final long refreshJwtExpiration;
+
+    public JwtTokenManager(@Value("${application.security.jwt.secret-key}") String secretKey,
+                           @Value("${application.security.jwt.expiration}") long jwtExpiration,
+                           @Value("${application.security.jwt.refresh-token.expiration}") long refreshJwtExpiration) {
+        this.secretKey = secretKey;
+        this.jwtExpiration = jwtExpiration;
+        this.refreshJwtExpiration = refreshJwtExpiration;
+    }
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
