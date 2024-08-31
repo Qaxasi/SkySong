@@ -1,6 +1,8 @@
 package com.mycompany.SkySong.adapter.login.controller;
 
+import com.mycompany.SkySong.adapter.exception.response.ErrorResponse;
 import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
+import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
@@ -8,27 +10,22 @@ import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.common.LoginRequests;
 import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
-import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 
-import static com.mycompany.SkySong.testsupport.common.JsonUtils.asJsonString;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.Collections;
+import java.util.List;
 
-@AutoConfigureMockMvc
+import static org.assertj.core.api.Assertions.assertThat;
+
 class LoginControllerTest extends BaseIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private TestRestTemplate restTemplate;
     @Autowired
     private RoleDAO roleDAO;
     @Autowired
@@ -47,193 +44,190 @@ class LoginControllerTest extends BaseIT {
     }
 
     @Test
-    void whenLoginSuccess_ResponseStatusOk() throws Exception {
+    void whenLoginSuccess_ResponseStatusOk() {
         createUserWithUsername("Alex");
-        assertStatusCode("/api/v1/auth/login", requests.login("Alex"), 200);
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
-    void whenLoginSuccess_ReturnMessage() throws Exception {
+    void whenLoginSuccess_ReturnMessage() {
         createUserWithUsername("Alex");
-        assertJsonMessage("/api/v1/auth/login", requests.login("Alex"),
-                "$.message", "Logged successfully.");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().message()).isEqualTo("Logged successfully.");
     }
 
     @Test
-    void whenLoginSuccess_JwtTokenCookieExist() throws Exception {
+    void whenLoginSuccess_JwtTokenCookieExist() {
         createUserWithUsername("Alex");
-        assertCookieExists("/api/v1/auth/login",
-                requests.login("Alex"), "jwtToken");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookieExists(response, "jwtToken");
     }
 
     @Test
-    void whenLoginSuccess_RefreshTokenCookieExist() throws Exception {
+    void whenLoginSuccess_RefreshTokenCookieExist() {
         createUserWithUsername("Alex");
-        assertCookieExists("/api/v1/auth/login",
-                requests.login("Alex"), "refreshToken");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookieExists(response, "refreshToken");
     }
 
     @Test
-    void whenLoginSuccess_JwtTokenCookieNotEmpty() throws Exception {
+    void whenLoginSuccess_JwtTokenCookieNotEmpty() {
         createUserWithUsername("Alex");
-        assertCookieNotEmpty("/api/v1/auth/login",
-                requests.login("Alex"), "jwtToken");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookieNotEmpty(response, "jwtToken");
     }
 
     @Test
-    void whenLoginSuccess_refreshTokenCookieNotEmpty() throws Exception {
+    void whenLoginSuccess_refreshTokenCookieNotEmpty() {
         createUserWithUsername("Alex");
-        assertCookieNotEmpty("/api/v1/auth/login",
-                requests.login("Alex"), "refreshToken");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookieNotEmpty(response, "refreshToken");
     }
 
     @Test
-    void whenLoginSuccess_JwtTokenCookieIsHttpOnly() throws Exception {
+    void whenLoginSuccess_JwtTokenCookieIsHttpOnly() {
         createUserWithUsername("Alex");
-        assertCookieHttpOnly("/api/v1/auth/login", requests.login("Alex"), "jwtToken");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookieHttpOnly(response, "jwtToken");
     }
 
     @Test
-    void whenLoginSuccess_RefreshTokenCookieIsHttpOnly() throws Exception {
+    void whenLoginSuccess_RefreshTokenCookieIsHttpOnly() {
         createUserWithUsername("Alex");
-        assertCookieHttpOnly("/api/v1/auth/login", requests.login("Alex"), "refreshToken");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookieHttpOnly(response, "refreshToken");
     }
 
     @Test
-    void whenLoginSuccess_JwtTokenCookieHasCorrectPath() throws Exception {
+    void whenLoginSuccess_JwtTokenCookieHasCorrectPath() {
         createUserWithUsername("Alex");
-        assertCookiePath("/api/v1/auth/login", requests.login("Alex"), "jwtToken", "/api");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookiePath(response, "jwtToken", "/api");
     }
 
     @Test
-    void whenLoginSuccess_RefreshTokenCookieHasCorrectPath() throws Exception {
+    void whenLoginSuccess_RefreshTokenCookieHasCorrectPath() {
         createUserWithUsername("Alex");
-        assertCookiePath("/api/v1/auth/login", requests.login("Alex"), "refreshToken", "/refresh-token");
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookiePath(response, "refreshToken", "/refresh-token");
     }
 
     @Test
-    void whenLoginSuccess_JwtTokenCookieHasCorrectAge() throws Exception {
+    void whenLoginSuccess_JwtTokenCookieHasCorrectAge()  {
         createUserWithUsername("Alex");
-        assertCookieAge("/api/v1/auth/login", requests.login("Alex"), "jwtToken", 600);
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookieAge(response, "jwtToken", 600);
 
     }
 
     @Test
-    void whenLoginSuccess_RefreshTokenCookieHasCorrectAge() throws Exception {
+    void whenLoginSuccess_RefreshTokenCookieHasCorrectAge() {
         createUserWithUsername("Alex");
-        assertCookieAge("/api/v1/auth/login", requests.login("Alex"), "refreshToken", 86400);
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
+        assertCookieAge(response, "refreshToken", 86400);
     }
 
     @Test
-    void whenInvalidCredentials_ReturnUnauthorizedStatus() throws Exception {
-        assertStatusCode("/api/v1/auth/login", requests.login("Max"), 401);
+    void whenInvalidCredentials_ReturnUnauthorizedStatus() {
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login",  requests.nonExistingUser);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @Test
-    void whenInvalidCredentials_JwtTokenCookieIsNotSet() throws Exception {
-        assertCookieNotSet("/api/v1/users/login", requests.nonExistingUser, "jwtToken");
+    void whenInvalidCredentials_JwtTokenCookieIsNotSet() {
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login",  requests.nonExistingUser);
+        assertCookieNotSet(response, "jwtToken");
     }
 
     @Test
-    void whenInvalidCredentials_RefreshTokenCookieIsNotSet() throws Exception {
-        assertCookieNotSet("/api/v1/auth/login", requests.nonExistingUser, "refreshToken");
+    void whenInvalidCredentials_RefreshTokenCookieIsNotSet() {
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login",  requests.nonExistingUser);
+        assertCookieNotSet(response, "refreshToken");
     }
 
     @Test
-    void whenMalformedJson_ReturnBadRequest() throws Exception {
-        assertStatusCode("/api/v1/auth/login", requests.malformedJson, 400);
+    void whenMalformedJson_ReturnBadRequest() {
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login",  requests.malformedJson);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void whenEmptyCredentials_ReturnBadRequest() throws Exception {
-        assertStatusCode("/api/v1/auth/login", requests.emptyCredentials, 400);
+    void whenEmptyCredentials_ReturnBadRequest()  {
+        ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login",  requests.emptyCredentials);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void whenEmptyCredentials_ReturnErrorMessage() throws Exception {
-        assertJsonErrorMessages("/api/v1/auth/login", requests.emptyCredentials,
-                "$.errors.usernameOrEmail", "The usernameOrEmail field cannot be empty",
-                "$.errors.password", "The password field cannot be empty");
+    void whenEmptyCredentials_ReturnErrorMessage() {
+        ResponseEntity<ErrorResponse> response = loginRequestForErrors("/api/v1/auth/login",  requests.emptyCredentials);
+        ErrorResponse errorResponse = response.getBody();
+        assertThat(errorResponse).isNotNull();
+        assertThat(response.getBody().getErrors().get("usernameOrEmail")).isEqualTo("The usernameOrEmail field cannot be empty");
+        assertThat(response.getBody().getErrors().get("password")).isEqualTo("The password field cannot be empty");
     }
 
     private void createUserWithUsername(String username) {
         userFixture.createUserWithUsername(username);
     }
-    
-    private void assertJsonErrorMessages(String endpoint, LoginRequest request,
-                                         String firstJsonPath, String firstMessage,
-                                         String secondJsonPath, String secondMessage) throws Exception {
-        ResultActions actions = mockMvc.perform(post(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(request)));
 
-        actions.andExpect(jsonPath(firstJsonPath)
-                        .value(firstMessage))
-                .andExpect(jsonPath(secondJsonPath)
-                        .value(secondMessage));
+    private ResponseEntity<ErrorResponse> loginRequestForErrors(String endpoint, LoginRequest loginRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LoginRequest> request = new HttpEntity<>(loginRequest, headers);
+        return restTemplate.postForEntity(endpoint, request, ErrorResponse.class);
     }
 
-    private void assertStatusCode(String endpoint, LoginRequest request, int statusCode) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(status().is(statusCode));
-    }
-    private void assertStatusCode(String endpoint, String request, int statusCode) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(status().is(statusCode));
-    }
-    private void assertJsonMessage(String endpoint, LoginRequest request,
-                                   String jsonPath, String expectedMessage) throws Exception {
-        mockMvc.perform(post(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(request)))
-                .andExpect(jsonPath(jsonPath).value(expectedMessage));
-    }
-    private void assertCookieExists(String endpoint, LoginRequest request, String cookieName) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().exists(cookieName));
-    }
-    private void assertCookieNotEmpty(String endpoint, LoginRequest request, String cookieName) throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andReturn();
-
-        Cookie cookie = mvcResult.getResponse().getCookie(cookieName);
-        assertNotNull(cookie);
-
-        String cookieValue = cookie.getValue();
-        assertNotNull(cookieValue);
-    }
-    private void assertCookieHttpOnly(String endpoint, LoginRequest request, String cookieName) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().httpOnly(cookieName, true));
-    }
-    private void assertCookiePath(String endpoint, LoginRequest request, String cookieName, String path) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().path(cookieName, path));
-    }
-    private void assertCookieNotSet(String endpoint, LoginRequest request, String cookieName) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().doesNotExist(cookieName));
+    private ResponseEntity<ApiResponse> loginRequest(String endpoint, LoginRequest loginRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<LoginRequest> request = new HttpEntity<>(loginRequest, headers);
+        return restTemplate.postForEntity(endpoint, request, ApiResponse.class);
     }
 
-    private void assertCookieAge(String endpoint, LoginRequest request, String cookieName, int cookieAge) throws Exception {
-        mockMvc.perform(post(endpoint)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(request)))
-                .andExpect(cookie().maxAge(cookieName, cookieAge));
+    private ResponseEntity<ApiResponse> loginRequest(String endpoint, String loginRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(loginRequest, headers);
+        return restTemplate.postForEntity(endpoint, request, ApiResponse.class);
+    }
 
+    private void assertCookieExists(ResponseEntity<ApiResponse> response, String cookieName) {
+        List<String> cookies = getCookieFromResponse(response);
+        assertThat(cookies).anyMatch(cookie -> cookie.startsWith(cookieName + "="));
+    }
+
+    private void assertCookieNotEmpty(ResponseEntity<ApiResponse> response, String cookieName) {
+        List<String> cookies = getCookieFromResponse(response);
+        assertThat(cookies).anyMatch(cookie -> cookie.startsWith(cookieName + "=") && !cookie.equals(cookieName + "="));
+    }
+
+    private void assertCookieHttpOnly(ResponseEntity<ApiResponse> response, String cookieName) {
+        List<String> cookies = getCookieFromResponse(response);
+        assertThat(cookies).anyMatch(cookie -> cookie.contains(cookieName) && cookie.contains("HttpOnly"));
+    }
+
+    private void assertCookiePath(ResponseEntity<ApiResponse> response, String cookieName, String path) {
+        List<String> cookies = getCookieFromResponse(response);
+        assertThat(cookies).anyMatch(cookie -> cookie.contains(cookieName) && cookie.contains("Path=" + path));
+    }
+
+    private void assertCookieAge(ResponseEntity<ApiResponse> response, String cookieName, int expectedAge) {
+        List<String> cookies = getCookieFromResponse(response);
+        assertThat(cookies).anyMatch(cookie -> cookie.contains(cookieName) && cookie.contains("Max-Age=" + expectedAge));
+    }
+
+    private void assertCookieNotSet(ResponseEntity<ApiResponse> response, String cookieName) {
+        List<String> cookies = getCookieFromResponse(response);
+        assertThat(cookies).noneMatch(cookie -> cookie.startsWith(cookieName + "="));
+    }
+
+    private List<String> getCookieFromResponse(ResponseEntity<?> response) {
+         List<String> cookies =  response.getHeaders().get(HttpHeaders.SET_COOKIE);
+         if (cookies == null || cookies.isEmpty()) {
+             return Collections.emptyList();
+         }
+         return cookies;
     }
 }
