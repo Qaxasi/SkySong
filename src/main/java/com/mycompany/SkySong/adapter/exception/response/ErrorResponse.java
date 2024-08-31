@@ -6,6 +6,9 @@ public class ErrorResponse {
     private String error;
     private Map<String, String> errors;
 
+    public ErrorResponse() {
+    }
+
     public ErrorResponse(String error) {
         this.error = error;
     }
