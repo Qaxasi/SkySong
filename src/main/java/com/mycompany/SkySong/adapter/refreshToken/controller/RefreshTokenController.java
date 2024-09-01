@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.refreshToken.controller;
 
+import com.mycompany.SkySong.adapter.exception.response.ErrorResponse;
 import com.mycompany.SkySong.adapter.refreshToken.service.RefreshTokenHandler;
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
@@ -39,6 +40,6 @@ public class RefreshTokenController {
                     .body(new ApiResponse("Your session has been successfully extended."));
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiResponse("Session renewal failed: please log in again."));
+                .body(new ErrorResponse("Session renewal failed: please log in again."));
     }
 }
