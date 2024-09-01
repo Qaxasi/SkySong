@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,6 +17,20 @@ class RefreshTokenControllerTest  {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Test
+    void whenInvalidToken_ReturnForbidden() {
+        String invalidRefreshToken = "invalidToken";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", "refreshToken=" + invalidRefreshToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<ErrorResponse> response = restTemplate.postForEntity(
+                "/api/v1/auth/refresh-token", entity, ErrorResponse.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
 
     @Test
     void whenMissingToken_ReturnForbidden() {
