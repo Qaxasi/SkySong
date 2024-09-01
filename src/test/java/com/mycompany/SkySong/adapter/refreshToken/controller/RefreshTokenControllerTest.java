@@ -22,4 +22,11 @@ class RefreshTokenControllerTest  {
                 "/api/v1/auth/refresh-token", null, ErrorResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
+    @Test
+    void whenMissingToken_ReturnErrorMessage() {
+        ResponseEntity<ErrorResponse> response = restTemplate.postForEntity(
+                "/api/v1/auth/refresh-token", null, ErrorResponse.class);
+
+        assertThat(response.getBody().getError()).isEqualTo("Session renewal failed: please log in again.");
+    }
 }
