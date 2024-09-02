@@ -52,6 +52,21 @@ class RefreshTokenControllerTest extends BaseIT {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
+
+    @Test
+    void whenTokenRefreshed_ReturnSuccessMessage() {
+        userFixture.createUserWithUsername("Alex");
+        String refreshToken = generateValidRefreshToken();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", "refreshToken=" + refreshToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<ApiResponse> response = restTemplate.postForEntity(
+                "/api/v1/auth/refresh-token", entity, ApiResponse.class);
+
+        assertThat(response.getBody().message()).isEqualTo("Your session has been successfully extended.");
+    }
+
     @Test
     void whenInvalidToken_ReturnForbidden() {
         String invalidRefreshToken = "invalidToken";
