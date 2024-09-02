@@ -42,6 +42,22 @@ class RefreshTokenControllerTest extends BaseIT {
     }
 
     @Test
+    void whenValidRefreshTokenProvided_SetCookieWithCorrectPath() {
+        userFixture.createUserWithUsername("Alex");
+        String refreshToken = jwtGenerator.generateValidRefreshToken();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", "refreshToken=" + refreshToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<ApiResponse> response = restTemplate.postForEntity(
+                "/api/v1/auth/refresh-token", entity, ApiResponse.class);
+
+        assertThat(response.getHeaders().getFirst(HttpHeaders.SET_COOKIE))
+                .isNotNull()
+                .contains("Path=/api");
+    }
+
+    @Test
     void whenValidTokenProvided_StatusOk() {
         userFixture.createUserWithUsername("Alex");
         String refreshToken = jwtGenerator.generateValidRefreshToken();
