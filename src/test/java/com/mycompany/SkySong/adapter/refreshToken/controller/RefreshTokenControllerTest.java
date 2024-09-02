@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.refreshToken.controller;
 
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponse;
+import com.mycompany.SkySong.adapter.refreshToken.service.TestJwtTokenGenerator;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static com.mycompany.SkySong.adapter.refreshToken.service.JwtTokenExample.generateValidRefreshToken;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RefreshTokenControllerTest extends BaseIT {
@@ -30,9 +30,11 @@ class RefreshTokenControllerTest extends BaseIT {
     @Autowired
     private RoleDAO roleDAO;
     private UserFixture userFixture;
+    private TestJwtTokenGenerator jwtGenerator;
 
     @BeforeEach
     void setup() {
+        jwtGenerator = new TestJwtTokenGenerator();
         CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
         UserBuilder userBuilder = new UserBuilder(encoder);
 
@@ -42,7 +44,7 @@ class RefreshTokenControllerTest extends BaseIT {
     @Test
     void whenValidTokenProvided_StatusOk() {
         userFixture.createUserWithUsername("Alex");
-        String refreshToken = generateValidRefreshToken();
+        String refreshToken = jwtGenerator.generateValidRefreshToken();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie", "refreshToken=" + refreshToken);
 
@@ -56,7 +58,7 @@ class RefreshTokenControllerTest extends BaseIT {
     @Test
     void whenTokenRefreshed_ReturnSuccessMessage() {
         userFixture.createUserWithUsername("Alex");
-        String refreshToken = generateValidRefreshToken();
+        String refreshToken = jwtGenerator.generateValidRefreshToken();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie", "refreshToken=" + refreshToken);
 
