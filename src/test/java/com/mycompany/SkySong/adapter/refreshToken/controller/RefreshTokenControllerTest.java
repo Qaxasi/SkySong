@@ -68,7 +68,7 @@ class RefreshTokenControllerTest extends BaseIT {
     }
 
     @Test
-    void whenInvalidToken_ReturnForbidden() {
+    void whenInvalidToken_StatusForbidden() {
         String invalidRefreshToken = "invalidToken";
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie", "refreshToken=" + invalidRefreshToken);
@@ -82,7 +82,7 @@ class RefreshTokenControllerTest extends BaseIT {
     }
 
     @Test
-    void whenMissingToken_ReturnForbidden() {
+    void whenMissingToken_StatusForbidden() {
         ResponseEntity<ErrorResponse> response = restTemplate.postForEntity(
                 "/api/v1/auth/refresh-token", null, ErrorResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
