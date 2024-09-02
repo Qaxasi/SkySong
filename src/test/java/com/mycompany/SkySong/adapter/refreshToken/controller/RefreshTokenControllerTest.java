@@ -42,6 +42,20 @@ class RefreshTokenControllerTest extends BaseIT {
     }
 
     @Test
+    void whenInvalidCookieProvided_ReturnStatusForbidden() {
+        String refreshToken = jwtGenerator.generateValidRefreshToken();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", "invalid=" + refreshToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<ErrorResponse> response = restTemplate.postForEntity(
+                "/api/v1/auth/refresh-token", entity, ErrorResponse.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+
+    }
+
+    @Test
     void whenValidRefreshTokenProvided_SetJwtTokenInCookie() {
         userFixture.createUserWithUsername("Alex");
         String refreshToken = jwtGenerator.generateValidRefreshToken();
