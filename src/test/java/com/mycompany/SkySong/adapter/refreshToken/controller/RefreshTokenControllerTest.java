@@ -40,7 +40,7 @@ class RefreshTokenControllerTest extends BaseIT {
     }
 
     @Test
-    void whenValidToken_StatusOk() {
+    void whenValidTokenProvided_StatusOk() {
         userFixture.createUserWithUsername("Alex");
         String refreshToken = generateValidRefreshToken();
         HttpHeaders headers = new HttpHeaders();
