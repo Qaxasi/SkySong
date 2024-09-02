@@ -94,4 +94,18 @@ class RefreshTokenControllerTest extends BaseIT {
 
         assertThat(response.getBody().getError()).isEqualTo("Session renewal failed: please log in again.");
     }
+
+    private String extractJwtTokenFromSetCookieHeader(String setCookieHeader) {
+        String prefix = "jwtToken=";
+        int startIndex = setCookieHeader.indexOf(prefix);
+        if (startIndex == -1) {
+            return "";
+        }
+        startIndex += prefix.length();
+        int endIndex = setCookieHeader.indexOf(";", startIndex);
+        if (endIndex == -1) {
+            endIndex = setCookieHeader.length();
+        }
+        return setCookieHeader.substring(startIndex, endIndex);
+    }
 }
