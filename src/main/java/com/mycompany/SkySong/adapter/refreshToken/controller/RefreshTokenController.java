@@ -30,7 +30,11 @@ public class RefreshTokenController {
     public ResponseEntity<?> refreshToken(HttpServletRequest request) {
         String refreshToken = cookieUtils.getJwtFromCookies(request, "refreshToken");
 
-        if (refreshToken != null && tokenHandler.validateRefreshToken(refreshToken)) {
+        if (refreshToken != null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ErrorResponse("Session renewal failed: please log in again."));
+        }
+        try {
             String newJwtToken = tokenHandler.generateAccessTokenFromRefreshToken(refreshToken);
 
             ResponseCookie jwtCookie = cookieUtils.generateCookie("jwtToken", newJwtToken, "/api", 600);
@@ -38,8 +42,10 @@ public class RefreshTokenController {
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                     .body(new ApiResponse("Your session has been successfully extended."));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ErrorResponse("Session renewal failed: please log in again."));
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ErrorResponse("Session renewal failed: please log in again."));
     }
 }
