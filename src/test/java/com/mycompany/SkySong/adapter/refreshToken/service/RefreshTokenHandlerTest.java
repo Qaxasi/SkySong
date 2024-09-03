@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RefreshTokenHandlerTest {
@@ -31,8 +32,8 @@ class RefreshTokenHandlerTest {
         long refreshJwtExpiration = 86400000;
         JwtTokenManager tokenManager = new JwtTokenManager(secretKey, jwtExpiration, refreshJwtExpiration);
 
-        InMemoryRoleDAO roleDAO = new InMemoryRoleDAO();
-        InMemoryUserDAO userDAO = new InMemoryUserDAO(roleDAO);
+        roleDAO = new InMemoryRoleDAO();
+        userDAO = new InMemoryUserDAO(roleDAO);
         CustomUserDetailsService userDetailsService = new CustomUserDetailsService(userDAO, roleDAO);
 
         tokenHandler = new RefreshTokenHandler(tokenManager, userDetailsService);
