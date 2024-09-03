@@ -39,7 +39,7 @@ class RefreshTokenHandlerTest {
 
         userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
 
-        jwtTokenGenerator = new TestJwtTokenGenerator();
+        jwtTokenGenerator = new TestJwtTokenGenerator(secretKey, jwtExpiration, refreshJwtExpiration);
     }
 
     @AfterEach
@@ -47,6 +47,4 @@ class RefreshTokenHandlerTest {
         roleDAO.clear();
         userDAO.clear();
     }
-
-    
 }
