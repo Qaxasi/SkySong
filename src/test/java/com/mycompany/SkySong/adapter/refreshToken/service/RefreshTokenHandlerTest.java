@@ -57,4 +57,12 @@ class RefreshTokenHandlerTest {
         String refreshToken = "invalid";
         assertThrows(IllegalArgumentException.class, () -> tokenHandler.generateAccessTokenFromRefreshToken(refreshToken));
     }
+
+    @Test
+    void whenValidRefreshToken_GenerateAccessToken() {
+        userFixture.createUserWithUsername("Alex");
+        String refreshToken = jwtTokenGenerator.generateValidRefreshToken();
+        String accessToken = tokenHandler.generateAccessTokenFromRefreshToken(refreshToken);
+        assertThat(accessToken).isNotEmpty();
+    }
 }
