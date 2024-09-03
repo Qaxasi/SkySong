@@ -11,7 +11,10 @@ import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RefreshTokenHandlerTest {
 
@@ -46,5 +49,11 @@ class RefreshTokenHandlerTest {
     void clean() {
         roleDAO.clear();
         userDAO.clear();
+    }
+
+    @Test
+    void whenInvalidToken_ValidationFailure() {
+        String refreshToken = "invalid";
+        assertThrows(IllegalArgumentException.class, () -> tokenHandler.generateAccessTokenFromRefreshToken(refreshToken));
     }
 }
