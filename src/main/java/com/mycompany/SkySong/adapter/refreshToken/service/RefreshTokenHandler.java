@@ -18,13 +18,16 @@ public class RefreshTokenHandler {
     }
 
     public String generateAccessTokenFromRefreshToken(String refreshToken) {
+        if (!validateToken(refreshToken)) {
+            throw new IllegalArgumentException("Invalid refresh token.");
+        }
         String username = tokenManager.extractUsername(refreshToken);
         CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
 
         return tokenManager.generateToken(userDetails);
     }
 
-    public boolean validateRefreshToken(String token) {
+    private boolean validateToken(String token) {
         return tokenManager.isTokenValid(token);
     }
 }
