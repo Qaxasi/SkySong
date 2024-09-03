@@ -30,7 +30,7 @@ public class RefreshTokenController {
     public ResponseEntity<?> refreshToken(HttpServletRequest request) {
         String refreshToken = cookieUtils.getJwtFromCookies(request, "refreshToken");
 
-        if (refreshToken != null) {
+        if (refreshToken == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new ErrorResponse("Session renewal failed: please log in again."));
         }

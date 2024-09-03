@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.refreshToken.controller;
 
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponse;
-import com.mycompany.SkySong.adapter.refreshToken.service.TestJwtTokenGenerator;
+import com.mycompany.SkySong.testsupport.auth.common.TestJwtTokenGenerator;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
