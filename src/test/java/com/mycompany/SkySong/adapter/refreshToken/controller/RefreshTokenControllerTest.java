@@ -105,7 +105,7 @@ class RefreshTokenControllerTest extends BaseIT {
     }
 
     @Test
-    void whenValidTokenProvided_StatusOk() {
+    void whenRefreshingTokenWithValidToken_StatusOk() {
         userFixture.createUserWithUsername("Alex");
         String refreshToken = jwtGenerator.generateValidRefreshToken();
         HttpHeaders headers = new HttpHeaders();
