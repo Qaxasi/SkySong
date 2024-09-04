@@ -1,7 +1,10 @@
 package com.mycompany.SkySong.adapter.exception.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
     private String error;
     private Map<String, String> errors;
