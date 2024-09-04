@@ -39,6 +39,19 @@ class RegistrationControllerTest extends BaseIT {
     }
 
     @Test
+    void whenUserWithGivenCredentialsExist_ReturnBadRequest() {
+        userFixture.createUserWithUsername("Alex");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.requestWithUsername("Alex")), headers);
+
+        ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
     void whenRegistrationSuccess_StatusCreated() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
