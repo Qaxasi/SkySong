@@ -1,88 +1,91 @@
 package com.mycompany.SkySong.adapter.registration.controller;
 
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
+import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
+import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
+import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
-import org.junit.jupiter.api.AfterEach;
+import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static com.mycompany.SkySong.testsupport.common.JsonUtils.asJsonString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@AutoConfigureMockMvc
 class RegistrationControllerTest extends BaseIT {
 
     @Autowired
-    private MockMvc mockMvc;
+    private TestRestTemplate restTemplate;
     private RegistrationRequests requests;
-
     @Autowired
-    private SqlDatabaseInitializer initializer;
+    private UserDAO userDAO;
     @Autowired
-    private SqlDatabaseCleaner cleaner;
+    private RoleDAO roleDAO;
+    private UserFixture userFixture;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setup() {
         requests = new RegistrationRequests();
-        initializer.setup("data_sql/test-setup.sql");
-    }
 
-    @AfterEach
-    void cleanUp() {
-        cleaner.clean();
-    }
+        CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
+        UserBuilder userBuilder = new UserBuilder(encoder);
 
-    @Test
-    void whenRegistrationSuccess_Return201() throws Exception {
-        mockMvc.perform(post("/api/v1/users/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.validCredentials)))
-                .andExpect(status().is(201));
+        userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
     }
 
     @Test
-    void whenRegistrationSuccess_ReturnCorrectFieldName() throws Exception {
-        mockMvc.perform(post("/api/v1/users/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.validCredentials)))
-                .andExpect(jsonPath("$.message").isNotEmpty());
+    void whenRegistrationSuccess_StatusCreated() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.validCredentials), headers);
+
+        ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test
-    void whenInvalidCredentials_ReturnBadRequest() throws Exception {
-        mockMvc.perform(post("/api/v1/users/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(requests.emailInvalidFormat)))
-                .andExpect(status().is(400));
+    void whenInvalidCredentials_ReturnBadRequest() {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.emailInvalidFormat), headers);
+
+            ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void whenMalformedRequest_ReturnBadRequest() throws Exception {
-        mockMvc.perform(post("/api/v1/users/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requests.malformedRequest))
-                .andExpect(status().is(400));
+    void whenMalformedRequest_ReturnBadRequest() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> request = new HttpEntity<>(requests.malformedRequest, headers);
+
+        ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void whenEmptyCredentials_ReturnErrorMessages() throws Exception {
-        ResultActions actions = mockMvc.perform(post("/api/v1/users/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(requests.emptyCredentials)));
+    void whenEmptyCredentials_ReturnErrorMessages() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        actions.andExpect(jsonPath("$.errors.username")
-                        .value("The username field cannot be empty"))
-                .andExpect(jsonPath("$.errors.email")
-                        .value("The email field cannot be empty"))
-                .andExpect(jsonPath("$.errors.password")
-                        .value("The password field cannot be empty"));
+        HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.emptyCredentials), headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/v1/auth/register", request, String.class);
+
+        assertThat(response.getBody())
+                .contains("\"username\":\"The username field cannot be empty\"")
+                .contains("\"email\":\"The email field cannot be empty\"")
+                .contains("\"password\":\"The password field cannot be empty\"");
     }
 }
