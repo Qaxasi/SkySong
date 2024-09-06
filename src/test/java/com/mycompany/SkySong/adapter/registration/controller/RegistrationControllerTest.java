@@ -65,14 +65,14 @@ class RegistrationControllerTest extends BaseIT {
 
     @Test
     void whenInvalidCredentials_ReturnBadRequest() {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-            HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.emailInvalidFormat), headers);
+        HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.emailInvalidFormat), headers);
 
-            ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+        ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
 
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test

@@ -1,12 +1,11 @@
 package com.mycompany.SkySong.adapter.user.delete.adapters;
 
+import com.mycompany.SkySong.adapter.user.delete.UserNotFoundException;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.user.delete.ports.DeleteUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.util.NoSuchElementException;
 
 @Service
 class TransactionDeleteUser implements DeleteUser {
@@ -23,7 +22,7 @@ class TransactionDeleteUser implements DeleteUser {
     @Override
     public void deleteEverythingById(int id) {
         transactionTemplate.executeWithoutResult(status -> {
-            User user = userRepository.findById(id).orElseThrow(() -> new NoSuchElementException(
+            User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
                     "User not found with id: " + id));
 
             userRepository.deleteUserRoles(id);
