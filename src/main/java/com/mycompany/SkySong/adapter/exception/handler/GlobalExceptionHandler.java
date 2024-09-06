@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.exception.handler;
 
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
+import com.mycompany.SkySong.adapter.user.delete.adapters.UserNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
@@ -32,6 +33,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<Object> handlerRoleNotFoundException(final RoleNotFoundException ex) {
         log.error("A problem occurred while assigning a default role to the user.");
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> handlerUserNotFoundException(final UserNotFoundException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
