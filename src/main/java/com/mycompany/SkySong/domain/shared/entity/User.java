@@ -4,12 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User {
+
+    private final Integer id;
     private final String username;
     private final String email;
     private final String password;
     private final Set<Role> roles;
 
     private User(Builder builder) {
+        this.id = builder.id;
         this.username = builder.username;
         this.email = builder.email;
         this.password = builder.password;
@@ -17,11 +20,18 @@ public class User {
     }
 
     public static class Builder {
+
+        private Integer id;
         private String username;
         private String email;
         private String password;
         private final Set<Role> roles = new HashSet<>();
         private boolean validateRoles = true;
+
+        public Builder withId(Integer id) {
+           this.id = id;
+           return this;
+        }
 
         public Builder withUsername(String username) {
            this.username = username;
@@ -74,6 +84,9 @@ public class User {
        }
     }
 
+    public Integer getId() {
+        return id;
+    }
     public String getUsername() {
         return username;
     }
