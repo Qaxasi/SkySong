@@ -47,13 +47,23 @@ class TransactionDeleteUserTest extends BaseIT {
     }
 
     @Test
-    void whenUserDeleted_UserNotExist() {
+    void whenUserDeletedSuccess_UserNotExist() {
         createUserWithUsername("Alex");
         int userId = fetchIdByUsername("Alex");
 
         deleteUser.deleteEverythingById(userId);
 
         assertThat(userExistenceChecker.userExist("Alex")).isFalse();
+    }
+
+    @Test
+    void whenUserSuccessDeleted_UserRoleDeleted() {
+        createUserWithUsername("Alex");
+        int userId = fetchIdByUsername("Alex");
+
+        deleteUser.deleteEverythingById(userId);
+
+        assertThat(roleChecker.userHasRoles(userId)).isFalse();
     }
 
     private int fetchIdByUsername(String username) {
