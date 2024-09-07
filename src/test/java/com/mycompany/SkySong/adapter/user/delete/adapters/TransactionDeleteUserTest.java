@@ -5,6 +5,8 @@ import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
+import com.mycompany.SkySong.testsupport.auth.security.RoleChecker;
+import com.mycompany.SkySong.testsupport.auth.service.UserRoleChecker;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
 import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +24,8 @@ class TransactionDeleteUserTest extends BaseIT {
     @Autowired
     private UserDAO userDAO;
     private UserFixture userFixture;
+    @Autowired
+    private RoleChecker roleChecker;
 
     @BeforeEach
     void setup() {
