@@ -29,7 +29,7 @@ public class UserFixture {
     }
 
     public void createRegularUser() {
-        createUser(userBuilder.copy(), fetchRegularRole());
+        createUser(userBuilder.copy().withUsername("Regular").withEmail("regular@mail.mail"), fetchRegularRole());
     }
 
     public void createAdminUser() {
