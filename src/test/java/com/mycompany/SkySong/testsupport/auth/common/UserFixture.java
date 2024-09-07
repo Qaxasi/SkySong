@@ -33,7 +33,7 @@ public class UserFixture {
     }
 
     public void createAdminUser() {
-        createUser(userBuilder.copy(), fetchAdminRole());
+        createUser(userBuilder.copy().withUsername("Admin").withEmail("admin@mail.mail"), fetchAdminRole());
     }
 
     public void createUserWithUsernameAndPassword(String username, String password) {
