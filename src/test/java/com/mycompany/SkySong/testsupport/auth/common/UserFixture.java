@@ -20,10 +20,6 @@ public class UserFixture {
         this.userBuilder = userBuilder;
     }
 
-    public void createUserWithId(Integer id) {
-        createUser(userBuilder.copy().withId(id), fetchRegularRole());
-    }
-
     public void createUserWithUsername(String username) {
         createUser(userBuilder.copy().withUsername(username), fetchRegularRole());
     }

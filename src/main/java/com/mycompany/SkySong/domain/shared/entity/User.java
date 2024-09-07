@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User {
-
     private final Integer id;
     private final String username;
     private final String email;
