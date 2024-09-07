@@ -10,8 +10,6 @@ import java.util.Set;
 public class UserBuilder {
 
     private final CustomPasswordEncoder encoder;
-
-    private Integer id = 20;
     private String username = "Username";
     private String email = "email@mail.mail";
     private String password = "Password#3";
@@ -23,17 +21,11 @@ public class UserBuilder {
 
     public UserBuilder copy() {
         UserBuilder copy = new UserBuilder(this.encoder);
-        copy.id = this.id;
         copy.username = this.username;
         copy.email = this.email;
         copy.password = this.password;
         copy.roles = new HashSet<>(this.roles);
         return copy;
-    }
-
-    public UserBuilder withId(Integer id) {
-        this.id = id;
-        return this;
     }
 
     public UserBuilder withUsername(String username) {
@@ -58,7 +50,6 @@ public class UserBuilder {
 
     public User build() {
         return new User.Builder()
-                .withId(id)
                 .withUsername(username)
                 .withEmail(email)
                 .withPassword(encoder.encode(password))
