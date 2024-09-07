@@ -1,128 +1,214 @@
 package com.mycompany.SkySong.adapter.user.delete.controller;
 
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
-import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
+import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
+import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
+import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
+import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
+import com.mycompany.SkySong.testsupport.auth.common.UserIdFetcher;
 import com.mycompany.SkySong.testsupport.common.AuthenticationTestHelper;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
-import jakarta.servlet.http.Cookie;
-import org.junit.jupiter.api.AfterEach;
+import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
 class DeleteUserControllerTest extends BaseIT {
 
     @Autowired
-    private MockMvc mockMvc;
-    private AuthenticationTestHelper auth;
-    @Autowired
-    private UserExistenceChecker userChecker;
+    private TestRestTemplate restTemplate;
 
+    private AuthenticationTestHelper auth;
+    private UserFixture userFixture;
     @Autowired
-    private SqlDatabaseInitializer initializer;
+    private RoleDAO roleDAO;
     @Autowired
-    private SqlDatabaseCleaner cleaner;
+    private UserDAO userDAO;
+    @Autowired
+    private UserIdFetcher userIdFetcher;
 
     @BeforeEach
-    void setUp() throws Exception {
-        auth = new AuthenticationTestHelper(mockMvc);
-        initializer.setup("data_sql/test-setup.sql");
-    }
+    void setup() {
+        auth = new AuthenticationTestHelper(restTemplate);
 
-    @AfterEach
-    void cleanUp() {
-        cleaner.clean();
+        CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
+        UserBuilder userBuilder = new UserBuilder(encoder);
+
+        userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
     }
 
     @Test
-    void whenUserIdNotExist_ReturnStatusNotFound() throws Exception {
+    void whenUserIdNotExist_ReturnStatusNotFound() {
         int userId = 1000;
 
-        Cookie sessionId = auth.loginAdminUser();
+        createAdminUser();
+        String jwtToken = auth.loginAdminUser();
 
-        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
-                        .andExpect(status().isNotFound());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    void whenNoUserId_ReturnBadRequest() throws Exception {
-        Cookie sessionId = auth.loginAdminUser();
+    void whenNoUserId_ReturnBadRequest() {
+      createAdminUser();
+      String jwtToken = auth.loginAdminUser();
 
-        mockMvc.perform(delete("/api/v1/users/").cookie(sessionId))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("User ID is required and cannot be empty."));
+      HttpHeaders headers = new HttpHeaders();
+      headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+
+      HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+      ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/", HttpMethod.DELETE, entity, Void.class);
+
+      assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    void whenInvalidUserIdFormat_ReturnBadRequest() throws Exception {
-        Cookie sessionId = auth.loginAdminUser();
+    void whenNoUserId_ReturnErrorMessage() {
+        createAdminUser();
+        String jwtToken = auth.loginAdminUser();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange("/api/v1/users/", HttpMethod.DELETE, entity, String.class);
+
+        assertThat(response.getBody()).contains("\"error\":\"User ID is required and cannot be empty.\"");
+    }
+
+    @Test
+    void whenInvalidUserIdFormat_ReturnErrorMessage() {
+        createAdminUser();
+        String jwtToken = auth.loginAdminUser();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
         String userId = "invalid";
+        ResponseEntity<String> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, String.class);
 
-        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Invalid input data format."));
+        assertThat(response.getBody()).contains("\"error\":\"Invalid input data format.\"");
     }
 
     @Test
-    void whenUserIsAdmin_SuccessDeletionReturnStatusOk() throws Exception {
-        int userId = 2;
+    void whenUserIsAdmin_SuccessDeletionReturnStatusOk() {
+        createUserWithUsername("Alex");
 
-        Cookie sessionId = auth.loginAdminUser();
+        int userId = userIdFetcher.fetchByUsername("Alex");
 
-        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
-                .andExpect(status().isOk());
+        createAdminUser();
+        String jwtToken = auth.loginAdminUser();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
-    void whenUserDeleted_SecondDeletionReturnNotFound() throws Exception {
-        int userId = 2;
+    void whenUserDeleted_SecondDeletionReturnNotFound() {
+        createUserWithUsername("Alex");
 
-        Cookie sessionId = auth.loginAdminUser();
+        int userId = userIdFetcher.fetchByUsername("Alex");
 
-        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId));
+        createAdminUser();
+        String jwtToken = auth.loginAdminUser();
 
-        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
-                .andExpect(status().isNotFound());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+
+        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    void whenUnauthenticatedUser_ReturnUnauthorized() throws Exception {
-        mockMvc.perform(delete("/api/v1/users/"))
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.error").value("Unauthorized access. Please log in."));
+    void whenUnauthenticatedUser_ReturnUnauthorized() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/", HttpMethod.DELETE, entity, Void.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @Test
-    void whenRegularUser_ReturnForbidden() throws Exception {
-        int userId = 2;
+    void whenUnauthenticatedUser_ReturnErrorMessage() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-        Cookie sessionId = auth.loginRegularUser();
-
-        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.error")
-                        .value("You do not have permission to perform this operation."));
+        ResponseEntity<String> response = restTemplate.exchange("/api/v1/users/", HttpMethod.DELETE, entity, String.class);
+        assertThat(response.getBody()).contains("\"error\":\"Unauthorized access. Please log in.\"");
     }
 
     @Test
-    void whenRegularUser_UserNotDeleted() throws Exception {
-        int userId = 2;
+    void whenRegularUser_ReturnForbidden() {
+        createUserWithUsername("Alex");
 
-        Cookie sessionId = auth.loginRegularUser();
+        int userId = userIdFetcher.fetchByUsername("Alex");
 
-        mockMvc.perform(delete("/api/v1/users/" + userId).cookie(sessionId))
-                .andExpect(status().isForbidden());
+        createRegularUser();
+        String jwtToken = auth.loginRegularUser();
 
-        assertThat(userChecker.userExist(userId)).isTrue();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void whenRegularUser_ReturnErrorMessage() {
+        createUserWithUsername("Alex");
+
+        int userId = userIdFetcher.fetchByUsername("Alex");
+
+        createRegularUser();
+        String jwtToken = auth.loginRegularUser();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, String.class);
+
+        assertThat(response.getBody()).contains("\"error\":\"You do not have permission to perform this operation.\"");
+    }
+
+    private void createAdminUser() {
+        userFixture.createAdminUser();
+    }
+
+    private void createRegularUser() {
+        userFixture.createRegularUser();
+    }
+
+    private void createUserWithUsername(String username) {
+        userFixture.createUserWithUsername(username);
     }
 }
