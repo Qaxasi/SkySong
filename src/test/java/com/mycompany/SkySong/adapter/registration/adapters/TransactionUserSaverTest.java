@@ -22,6 +22,15 @@ class TransactionUserSaverTest extends BaseIT {
     private UserExistenceChecker userExistenceChecker;
     @Autowired
     private UserRoleChecker userRoleChecker;
+    @Autowired
+    private UserCountChecker userCountChecker;
+
+    @Test
+    void whenUserSaved_UserExist() {
+        UserRegistrationDTO userDto = createUserDtoWithUsername("Alex");
+        userSaver.saveUser(userDto);
+        assertThat(userExistenceChecker.userExist("Alex")).isTrue();
+    }
 
     private UserRegistrationDTO createUserDtoWithUsername(String username) {
         RoleDTO roleDTO = new RoleDTO(1, UserRole.ROLE_USER);
