@@ -29,4 +29,13 @@ class PasswordEncoderTest {
         String encodedPassword = encoder.encode(password);
         assertThat(bCryptEncoder.matches(password, encodedPassword)).isTrue();
     }
+
+    @Test
+    void whenDifferentPasswordEncoded_thenDoesNotMatch() {
+        String firstPassword = "FirstPassword#3";
+        String secondPassword = "SecondPassword#3";
+
+        String encodedPassword = encoder.encode(firstPassword);
+        assertThat(bCryptEncoder.matches(secondPassword, encodedPassword)).isFalse();
+    }
 }
