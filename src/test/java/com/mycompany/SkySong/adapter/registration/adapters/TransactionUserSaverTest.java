@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TransactionUserSaverTest extends BaseIT {
     @Autowired
@@ -30,6 +29,19 @@ class TransactionUserSaverTest extends BaseIT {
         UserRegistrationDTO userDto = createUserDtoWithUsername("Alex");
         userSaver.saveUser(userDto);
         assertThat(userExistenceChecker.userExist("Alex")).isTrue();
+    }
+
+    @Test
+    void whenUserSavedWithMultipleRoles_RolesAreAssignedToUser() {
+        Set<RoleDTO> roles = Set.of(
+                new RoleDTO(1, UserRole.ROLE_USER),
+                new RoleDTO(2, UserRole.ROLE_ADMIN));
+
+        UserRegistrationDTO userDto = createUserDtoWithRoles("Alex", roles);
+        userSaver.saveUser(userDto);
+
+        assertThat(userRoleChecker.hasUserRole("Alex", UserRole.ROLE_USER.name())).isTrue();
+        assertThat(userRoleChecker.hasUserRole("Alex", UserRole.ROLE_ADMIN.name())).isTrue();
     }
 
     private UserRegistrationDTO createUserDtoWithUsername(String username) {
