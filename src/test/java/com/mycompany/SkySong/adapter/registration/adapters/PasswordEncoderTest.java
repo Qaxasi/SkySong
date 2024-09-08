@@ -15,4 +15,11 @@ class PasswordEncoderTest {
         bCryptEncoder = new BCryptPasswordEncoder();
         encoder = new BCryptEncoder(bCryptEncoder);
     }
+
+    @Test
+    void whenPasswordEncoded_EncodedPasswordIsDifferent() {
+        String password = "Password#3";
+        String encodedPassword = encoder.encode(password);
+        assertThat(password).isNotEqualTo(encodedPassword);
+    }
 }
