@@ -49,5 +49,6 @@ public class InMemoryRoleDAO implements RoleDAO {
     public void clear() {
         roles.clear();
         userRoles.clear();
+        id = 10;
     }
 }
