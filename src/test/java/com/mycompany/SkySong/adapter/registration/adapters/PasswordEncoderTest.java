@@ -27,7 +27,7 @@ class PasswordEncoderTest {
     void whenPasswordEncoded_MatchesAfterVerification() {
         String password = "Password#3";
         String encodedPassword = encodePassword(password);
-        assertThat(bCryptEncoder.matches(password, encodedPassword)).isTrue();
+        assertThat(passwordMatches(password, encodedPassword)).isTrue();
     }
 
     @Test
@@ -35,8 +35,8 @@ class PasswordEncoderTest {
         String firstPassword = "FirstPassword#3";
         String secondPassword = "SecondPassword#3";
 
-        String encodedPassword = encoder.encode(firstPassword);
-        assertThat(bCryptEncoder.matches(secondPassword, encodedPassword)).isFalse();
+        String encodedPassword = encodePassword(firstPassword);
+        assertThat(passwordMatches(secondPassword, encodedPassword)).isFalse();
     }
 
     private String encodePassword(CharSequence password) {
