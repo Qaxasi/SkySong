@@ -39,7 +39,7 @@ class PasswordEncoderTest {
         assertThat(bCryptEncoder.matches(secondPassword, encodedPassword)).isFalse();
     }
 
-    private void encodePassword(CharSequence password) {
-        encoder.encode(password);
+    private String encodePassword(CharSequence password) {
+        return encoder.encode(password);
     }
 }
