@@ -22,4 +22,11 @@ class PasswordEncoderTest {
         String encodedPassword = encoder.encode(password);
         assertThat(password).isNotEqualTo(encodedPassword);
     }
+
+    @Test
+    void whenPasswordEncoded_MatchesAfterVerification() {
+        String password = "Password#3";
+        String encodedPassword = encoder.encode(password);
+        assertThat(bCryptEncoder.matches(password, encodedPassword)).isTrue();
+    }
 }
