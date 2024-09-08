@@ -19,14 +19,14 @@ class PasswordEncoderTest {
     @Test
     void whenPasswordEncoded_EncodedPasswordIsDifferent() {
         String password = "Password#3";
-        String encodedPassword = encoder.encode(password);
+        String encodedPassword = encodePassword(password);
         assertThat(password).isNotEqualTo(encodedPassword);
     }
 
     @Test
     void whenPasswordEncoded_MatchesAfterVerification() {
         String password = "Password#3";
-        String encodedPassword = encoder.encode(password);
+        String encodedPassword = encodePassword(password);
         assertThat(bCryptEncoder.matches(password, encodedPassword)).isTrue();
     }
 
@@ -41,5 +41,9 @@ class PasswordEncoderTest {
 
     private String encodePassword(CharSequence password) {
         return encoder.encode(password);
+    }
+
+    private boolean passwordMatches(CharSequence rawPassword, String encodedPassword) {
+        return bCryptEncoder.matches(rawPassword, encodedPassword);
     }
 }
