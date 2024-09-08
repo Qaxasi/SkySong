@@ -38,4 +38,8 @@ class PasswordEncoderTest {
         String encodedPassword = encoder.encode(firstPassword);
         assertThat(bCryptEncoder.matches(secondPassword, encodedPassword)).isFalse();
     }
+
+    private void encodePassword(CharSequence password) {
+        encoder.encode(password);
+    }
 }
