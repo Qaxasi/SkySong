@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.domain.registration.ports;
 
-import com.mycompany.SkySong.application.registration.dto.UserRegistrationDTO;
+import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 
 public interface UserSaver {
-    void saveUser(UserRegistrationDTO userDto);
+    void saveUser(UserSaveDto userDto);
 }
