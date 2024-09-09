@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.application.registration.usecase;
 
-import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.application.registration.mapper.UserRegistrationMapper;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.domain.registration.ports.UserSaver;
@@ -25,9 +25,9 @@ public class UserRegistrationHandler {
         this.mapper = mapper;
     }
 
-    public ApiResponse registerUser(RegisterRequest request) {
-        validation.validate(request);
-        User user = userCreator.createUser(request);
+    public ApiResponse registerUser(UserRegistrationDto userDto) {
+        validation.validate(userDto);
+        User user = userCreator.createUser(userDto);
         userSaver.saveUser(mapper.toDto(user));
         return new ApiResponse("Your registration was successful!");
     }
