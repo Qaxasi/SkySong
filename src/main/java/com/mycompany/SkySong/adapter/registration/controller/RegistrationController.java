@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.registration.controller;
 
+import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.application.registration.usecase.UserRegistrationHandler;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
@@ -20,7 +21,8 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterRequest request) {
-        ApiResponse registrationResponse = registration.registerUser(request);
+        ApiResponse registrationResponse = registration.registerUser(
+                new UserRegistrationDto(request.username(), request.email(), request.password()));
         return new ResponseEntity<>(registrationResponse, HttpStatus.CREATED);
     }
 }
