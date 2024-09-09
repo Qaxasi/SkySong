@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.application.registration.mapper;
 
 import com.mycompany.SkySong.application.registration.dto.RoleDTO;
-import com.mycompany.SkySong.application.registration.dto.UserRegistrationDTO;
+import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
@@ -26,7 +26,7 @@ class UserRegistrationMapperTest {
 
     @Test
     void whenMappingDtoToEntity_EntityHasCorrectFields() {
-        UserRegistrationDTO userDto = createUserDto("Alex", "alex@mail.mail", "Password#3", UserRole.ROLE_USER);
+        UserSaveDto userDto = createUserDto("Alex", "alex@mail.mail", "Password#3", UserRole.ROLE_USER);
 
         User user = toEntity(userDto);
 
@@ -40,7 +40,7 @@ class UserRegistrationMapperTest {
     void whenMappingEntityToDto_DtoHasCorrectFields() {
         User user = createUserEntity("Alex", "alex@mail.mail", "Password#3", UserRole.ROLE_USER);
 
-        UserRegistrationDTO userDto = toDto(user);
+        UserSaveDto userDto = toDto(user);
 
         assertEquals("Alex", userDto.username());
         assertEquals("alex@mail.mail", userDto.email());
@@ -48,11 +48,11 @@ class UserRegistrationMapperTest {
         assertTrue(userDto.roles().stream().anyMatch(r -> r.name().equals(UserRole.ROLE_USER)));
     }
 
-    private UserRegistrationDTO createUserDto(String username, String email, String password, UserRole name) {
+    private UserSaveDto createUserDto(String username, String email, String password, UserRole name) {
         Role role = new Role(name);
         RoleDTO roleDTO = roleMapper.toDto(role);
         Set<RoleDTO> roles = Set.of(roleDTO);
-        return new UserRegistrationDTO(username, email, password, roles);
+        return new UserSaveDto(username, email, password, roles);
     }
 
     private User createUserEntity(String username, String email, String password, UserRole name) {
@@ -65,11 +65,11 @@ class UserRegistrationMapperTest {
                 .build();
     }
 
-    private UserRegistrationDTO toDto(User user) {
+    private UserSaveDto toDto(User user) {
         return userMapper.toDto(user);
     }
 
-    private User toEntity(UserRegistrationDTO userDTO) {
+    private User toEntity(UserSaveDto userDTO) {
         return userMapper.toEntity(userDTO);
     }
 }

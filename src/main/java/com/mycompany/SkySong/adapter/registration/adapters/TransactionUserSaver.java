@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.registration.adapters;
 
-import com.mycompany.SkySong.application.registration.dto.UserRegistrationDTO;
+import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 import com.mycompany.SkySong.application.registration.mapper.UserRegistrationMapper;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
@@ -25,7 +25,7 @@ class TransactionUserSaver implements UserSaver {
     }
 
     @Override
-    public void saveUser(UserRegistrationDTO userDto) {
+    public void saveUser(UserSaveDto userDto) {
         User user = mapper.toEntity(userDto);
         transactionTemplate.executeWithoutResult(status -> {
             int userId = userDAO.save(user);

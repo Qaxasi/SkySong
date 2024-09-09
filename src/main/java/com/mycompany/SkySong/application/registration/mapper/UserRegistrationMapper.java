@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.application.registration.mapper;
 
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.application.registration.dto.UserRegistrationDTO;
+import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 
 import java.util.stream.Collectors;
 
@@ -11,7 +11,7 @@ public class UserRegistrationMapper {
         this.roleMapper = roleMapper;
     }
 
-    public User toEntity(UserRegistrationDTO userDto) {
+    public User toEntity(UserSaveDto userDto) {
         return new User.Builder()
                 .withUsername(userDto.username())
                 .withEmail(userDto.email())
@@ -22,8 +22,8 @@ public class UserRegistrationMapper {
                 .build();
     }
 
-    public UserRegistrationDTO toDto(User user) {
-        return new UserRegistrationDTO(
+    public UserSaveDto toDto(User user) {
+        return new UserSaveDto(
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
