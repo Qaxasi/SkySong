@@ -1,13 +1,13 @@
 package com.mycompany.SkySong.domain.registration;
 
-import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
 import com.mycompany.SkySong.domain.registration.service.UserCreator;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
-import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
+import com.mycompany.SkySong.testsupport.auth.common.UserRegistrationData;
 import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ class UserCreatorTest {
 
     private InMemoryRoleDAO roleDAO;
     private InMemoryUserDAO userDAO;
-    private RegistrationRequests requests;
+    private UserRegistrationData registrationData;
     private UserCreator userCreator;
     private CustomPasswordEncoder encoder;
 
@@ -34,7 +34,7 @@ class UserCreatorTest {
         encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
         userCreator = new UserCreator(encoder, roleDAO);
 
-        requests = new RegistrationRequests();
+        registrationData = new UserRegistrationData();
     }
 
     @AfterEach
@@ -45,7 +45,7 @@ class UserCreatorTest {
 
     @Test
     void whenGivenRequest_CreateUserWithGivenData() {
-        User user = createUser(requests.request("Alex", "alex@mail.com", "Password#3"));
+        User user = createUser(registrationData.with("Alex", "alex@mail.com", "Password#3"));
 
         assertThat(user.getUsername()).isEqualTo("Alex");
         assertThat(user.getEmail()).isEqualTo("alex@mail.com");
@@ -54,28 +54,28 @@ class UserCreatorTest {
 
     @Test
     void whenUserCreated_PasswordIsHashed() {
-        User user = createUser(requests.requestWithPassword("Password#3"));
+        User user = createUser(registrationData.requestWithPassword("Password#3"));
         assertThat(user.getPassword()).isNotEqualTo("Password#3");
     }
 
     @Test
     void whenUserCreated_UserHasRole() {
-        User user = createUser(requests.validRequest());
+        User user = createUser(registrationData.validData());
         assertThat(user.getRoles().stream().anyMatch(role -> role.getName().equals(UserRole.ROLE_USER))).isTrue();
     }
 
     @Test
     void whenDefaultRoleNotFound_ThrowException() {
         deleteRoles();
-        assertThrows(RoleNotFoundException.class, () -> createUser(requests.validRequest()));
+        assertThrows(RoleNotFoundException.class, () -> createUser(registrationData.validData()));
     }
 
     private void deleteRoles() {
         roleDAO.clear();
     }
 
-    private User createUser(RegisterRequest request) {
-        return userCreator.createUser(request);
+    private User createUser(UserRegistrationDto registrationDto) {
+        return userCreator.createUser(registrationDto);
     }
 
     private void assertPasswordMatches(String password, String encodedPassword) {
