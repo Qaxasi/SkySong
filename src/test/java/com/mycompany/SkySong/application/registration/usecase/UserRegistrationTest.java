@@ -63,6 +63,11 @@ class UserRegistrationTest extends BaseIT {
     }
 
     @Test
+    void whenDataValidationFails_ThrowException() {
+        assertThrows(CredentialValidationException.class, () -> registerUser(registrationData.usernameToShort));
+    }
+
+    @Test
     void whenUserExistWithGivenData_ThrowException() {
         userFixture.createUserWithUsername("Maks");
         assertThrows(CredentialValidationException.class, () -> registerUser(registrationData.withUsername("Maks")));
