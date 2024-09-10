@@ -68,10 +68,15 @@ class UserRegistrationTest extends BaseIT {
     }
 
     @Test
-    void whenUserExistWithGivenData_ThrowException() {
+    void whenUsernameExist_ThrowException() {
         userFixture.createUserWithUsername("Maks");
         assertThrows(CredentialValidationException.class, () -> registerUser(registrationData.withUsername("Maks")));
+    }
 
+    @Test
+    void whenEmailExist_ThrowException() {
+        userFixture.createUserWithEmail("maks@mail.mail");
+        assertThrows(CredentialValidationException.class, () -> registerUser(registrationData.withEmail("maks@mail.mail")));
     }
 
     private ApiResponse registerUser(UserRegistrationDto registrationDto) {
