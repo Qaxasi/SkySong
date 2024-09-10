@@ -2,7 +2,7 @@ package com.mycompany.SkySong.domain.registration;
 
 import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
-import com.mycompany.SkySong.domain.registration.service.RequestValidation;
+import com.mycompany.SkySong.domain.registration.service.UserRegistrationValidator;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
@@ -18,20 +18,20 @@ import static com.mycompany.SkySong.testsupport.assertions.CustomAssertions.asse
 import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
 import static org.junit.Assert.assertThrows;
 
-class RequestValidationTest {
+class UserRegistrationValidatorTest {
 
     private UserRegistrationData registrationData;
     private InMemoryUserDAO userDAO;
     private InMemoryRoleDAO roleDAO;
     private UserFixture userFixture;
-    private RequestValidation validation;
+    private UserRegistrationValidator validation;
 
     @BeforeEach
     void setUp() {
         roleDAO = new InMemoryRoleDAO();
         userDAO = new InMemoryUserDAO(roleDAO);
 
-        validation = new RequestValidation(userDAO);
+        validation = new UserRegistrationValidator(userDAO);
 
         CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
         UserBuilder userBuilder = new UserBuilder(encoder);
