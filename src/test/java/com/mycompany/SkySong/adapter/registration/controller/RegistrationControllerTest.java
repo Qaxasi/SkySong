@@ -5,7 +5,7 @@ import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.common.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
+import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequestData;
 import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class RegistrationControllerTest extends BaseIT {
 
     @Autowired
     private TestRestTemplate restTemplate;
-    private RegistrationRequests requests;
+    private RegistrationRequestData requests;
     @Autowired
     private UserDAO userDAO;
     @Autowired
@@ -30,7 +30,7 @@ class RegistrationControllerTest extends BaseIT {
 
     @BeforeEach
     void setup() {
-        requests = new RegistrationRequests();
+        requests = new RegistrationRequestData();
 
         CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
         UserBuilder userBuilder = new UserBuilder(encoder);
