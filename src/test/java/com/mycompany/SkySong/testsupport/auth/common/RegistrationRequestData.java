@@ -2,7 +2,7 @@ package com.mycompany.SkySong.testsupport.auth.common;
 
 import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
 
-public class RegistrationRequests {
+public class RegistrationRequestTestData {
 
     public RegisterRequest validCredentials =
             new RegisterRequest("New", "new@mail.com", "Password#3");

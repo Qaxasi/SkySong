@@ -1,12 +1,12 @@
 package com.mycompany.SkySong.domain.registration;
 
-import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.domain.registration.service.RequestValidation;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
-import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequests;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
+import com.mycompany.SkySong.testsupport.auth.common.UserRegistrationData;
 import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
 import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThrows;
 
 class RequestValidationTest {
 
-    private RegistrationRequests requests;
+    private UserRegistrationData registrationData;
     private InMemoryUserDAO userDAO;
     private InMemoryRoleDAO roleDAO;
     private UserFixture userFixture;
@@ -38,7 +38,7 @@ class RequestValidationTest {
 
         userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
 
-        requests = new RegistrationRequests();
+        registrationData = new UserRegistrationData();
     }
 
     @AfterEach
@@ -50,91 +50,91 @@ class RequestValidationTest {
     @Test
     void whenUserWithUsernameExists_ThrowException() {
         createExistingUserWithUsername("Alex");
-        assertException(() -> validate(requests.requestWithUsername("Alex")),
+        assertException(() -> validate(registrationData.withUsername("Alex")),
                 CredentialValidationException.class, "Username is already exist!.");
     }
     @Test
     void whenUserWithEmailExists_ThrowException() {
         createExistingUserWithEmail("alex@mail.com");
-        assertException(() -> validate(requests.requestWithEmail("alex@mail.com")),
+        assertException(() -> validate(registrationData.withEmail("alex@mail.com")),
                 CredentialValidationException.class, "Email is already exist!.");
     }
 
     @Test
     void whenInvalidPasswordFormat_ReturnErrorMessage() {
-        assertErrorMessage(() -> validate(requests.passwordToShort), "Invalid password format. The password" +
+        assertErrorMessage(() -> validate(registrationData.passwordToShort), "Invalid password format. The password" +
                 " must contain an least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters.");
     }
 
     @Test
     void whenInvalidUsernameFormat_ReturnErrorMessage() {
-        assertErrorMessage(() -> validate(requests.usernameToShort), "Invalid username format. The username can " +
+        assertErrorMessage(() -> validate(registrationData.usernameToShort), "Invalid username format. The username can " +
                 "contain only letters and numbers, and should be between 3 and 20 characters long.");
     }
 
     @Test
     void whenInvalidEmailFormat_ReturnErrorMessage() {
-        assertErrorMessage(() -> validate(requests.emailToShort), "Invalid email address format. The email should " +
+        assertErrorMessage(() -> validate(registrationData.emailToShort), "Invalid email address format. The email should " +
                 "follow the standard format (e.g., user@example.com) and be between 6 and 30 characters long.");
     }
     
     @Test
     void whenPasswordToShort_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordToShort));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.passwordToShort));
     }
 
     @Test
     void whenPasswordNoHaveUppercaseLetter_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoUppercaseLetter));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.passwordNoUppercaseLetter));
     }
 
     @Test
     void whenPasswordNoHaveLowercaseLetter_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoLowercaseLetter));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.passwordNoLowercaseLetter));
     }
 
     @Test
     void whenPasswordNoHaveSpecialCharacter_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoSpecialCharacter));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.passwordNoSpecialCharacter));
     }
 
     @Test
     void whenPasswordNoHaveNumber_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.passwordNoNumber));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.passwordNoNumber));
     }
 
     @Test
     void whenUsernameIsToShort_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.usernameToShort));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.usernameToShort));
     }
 
     @Test
     void whenUsernameIsToLong_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.usernameToLong));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.usernameToLong));
     }
 
     @Test
     void whenUsernameHaveSpecialCharacter_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.usernameWithSpecialCharacter));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.usernameWithSpecialCharacter));
     }
 
     @Test
     void whenEmailHaveInvalidFormat_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.emailInvalidFormat));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.emailInvalidFormat));
     }
 
     @Test
     void whenEmailIsToShort_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.emailToShort));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.emailToShort));
     }
 
     @Test
     void whenEmailIsToLong_ThrowException() {
-        assertThrows(CredentialValidationException.class, () -> validate(requests.emailToLong));
+        assertThrows(CredentialValidationException.class, () -> validate(registrationData.emailToLong));
     }
 
-    private void validate(RegisterRequest requests) {
-        validation.validate(requests);
+    private void validate(UserRegistrationDto registrationDto) {
+        validation.validate(registrationDto);
     }
 
     private void createExistingUserWithUsername(String username) {

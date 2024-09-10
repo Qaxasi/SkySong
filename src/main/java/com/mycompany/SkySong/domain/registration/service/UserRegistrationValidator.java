@@ -4,11 +4,11 @@ import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.domain.registration.ports.RegistrationUserRepository;
 
-public class RequestValidation {
+public class UserRegistrationValidator {
 
     private final RegistrationUserRepository registrationUserRepository;
 
-    public RequestValidation(RegistrationUserRepository registrationUserRepository) {
+    public UserRegistrationValidator(RegistrationUserRepository registrationUserRepository) {
         this.registrationUserRepository = registrationUserRepository;
     }
 
