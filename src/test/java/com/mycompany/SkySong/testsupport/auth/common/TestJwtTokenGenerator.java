@@ -21,12 +21,12 @@ public class TestJwtTokenGenerator {
         this.jwtExpiration = jwtExpiration;
         this.refreshJwtExpiration = refreshJwtExpiration;
     }
-    public String generateValidRefreshToken() {
+    public String generateValidRefreshToken(String username) {
         JwtTokenManager jwtTokenManager = new JwtTokenManager(secretKey, jwtExpiration, refreshJwtExpiration);
 
         CustomUserDetails userDetails = new CustomUserDetails(
                 1,
-                "Alex",
+                username,
                 "alex@mail.mail",
                 "Password#3",
                 new HashSet<>()
