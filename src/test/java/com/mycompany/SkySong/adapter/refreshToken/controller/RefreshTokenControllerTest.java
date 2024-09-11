@@ -43,28 +43,20 @@ class RefreshTokenControllerTest extends BaseIT {
 
     @Test
     void whenInvalidCookieProvided_ReturnStatusForbidden() {
-        String refreshToken = jwtGenerator.generateValidRefreshToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cookie", "invalid=" + refreshToken);
+        String refreshToken = generateValidRefreshToken();
+        HttpHeaders headers = createHeadersWithCookie("invalidName", refreshToken);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<ErrorResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", entity, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> response = sendRequest("/api/v1/auth/refresh-token", headers, ErrorResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-
     }
 
     @Test
     void whenValidRefreshTokenProvided_SetJwtTokenInCookie() {
-        userFixture.createUserWithUsername("Alex");
-        String refreshToken = jwtGenerator.generateValidRefreshToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cookie", "refreshToken=" + refreshToken);
+        String refreshToken = generateValidRefreshToken();
+        HttpHeaders headers = createHeadersWithCookie("refreshToken=", refreshToken);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<ApiResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", entity, ApiResponse.class);
+        ResponseEntity<ApiResponse> response = sendRequest("/api/v1/auth/refresh-token", headers, ApiResponse.class);
 
         String setCookieHeader = response.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
         assertThat(setCookieHeader).isNotNull();
@@ -74,14 +66,10 @@ class RefreshTokenControllerTest extends BaseIT {
 
     @Test
     void whenValidRefreshTokenProvided_SetCookieWithCorrectAge() {
-        userFixture.createUserWithUsername("Alex");
-        String refreshToken = jwtGenerator.generateValidRefreshToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cookie", "refreshToken=" + refreshToken);
+        String refreshToken = generateValidRefreshToken();
+        HttpHeaders headers = createHeadersWithCookie("refreshToken=", refreshToken);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<ApiResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", entity, ApiResponse.class);
+        ResponseEntity<ApiResponse> response = sendRequest("/api/v1/auth/refresh-token", headers, ApiResponse.class);
 
         assertThat(response.getHeaders().getFirst(HttpHeaders.SET_COOKIE))
                 .isNotNull()
@@ -90,14 +78,10 @@ class RefreshTokenControllerTest extends BaseIT {
 
     @Test
     void whenValidRefreshTokenProvided_SetCookieWithCorrectPath() {
-        userFixture.createUserWithUsername("Alex");
-        String refreshToken = jwtGenerator.generateValidRefreshToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cookie", "refreshToken=" + refreshToken);
+        String refreshToken = generateValidRefreshToken();
+        HttpHeaders headers = createHeadersWithCookie("refreshToken=", refreshToken);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<ApiResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", entity, ApiResponse.class);
+        ResponseEntity<ApiResponse> response = sendRequest("/api/v1/auth/refresh-token", headers, ApiResponse.class);
 
         assertThat(response.getHeaders().getFirst(HttpHeaders.SET_COOKIE))
                 .isNotNull()
@@ -106,58 +90,58 @@ class RefreshTokenControllerTest extends BaseIT {
 
     @Test
     void whenRefreshingTokenWithValidToken_StatusOk() {
-        userFixture.createUserWithUsername("Alex");
-        String refreshToken = jwtGenerator.generateValidRefreshToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cookie", "refreshToken=" + refreshToken);
+        String refreshToken = generateValidRefreshToken();
+        HttpHeaders headers = createHeadersWithCookie("refreshToken=", refreshToken);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<ApiResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", entity, ApiResponse.class);
-
+        ResponseEntity<ApiResponse> response = sendRequest("/api/v1/auth/refresh-token", headers, ApiResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     void whenTokenRefreshed_ReturnSuccessMessage() {
-        userFixture.createUserWithUsername("Alex");
-        String refreshToken = jwtGenerator.generateValidRefreshToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cookie", "refreshToken=" + refreshToken);
+        String refreshToken = generateValidRefreshToken();
+        HttpHeaders headers = createHeadersWithCookie("refreshToken=", refreshToken);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<ApiResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", entity, ApiResponse.class);
+        ResponseEntity<ApiResponse> response = sendRequest("/api/v1/auth/refresh-token", headers, ApiResponse.class);
 
         assertThat(response.getBody().message()).isEqualTo("Your session has been successfully extended.");
     }
 
     @Test
     void whenInvalidToken_StatusForbidden() {
-        String invalidRefreshToken = "invalidToken";
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Cookie", "refreshToken=" + invalidRefreshToken);
+        HttpHeaders headers = createHeadersWithCookie("refreshToken=", "invalidTokenValue");
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<ErrorResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", entity, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> response = sendRequest("/api/v1/auth/refresh-token", headers, ErrorResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     void whenMissingToken_StatusForbidden() {
-        ResponseEntity<ErrorResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", null, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> response = sendRequest("/api/v1/auth/refresh-token", null, ErrorResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
     @Test
     void whenMissingToken_ReturnErrorMessage() {
-        ResponseEntity<ErrorResponse> response = restTemplate.postForEntity(
-                "/api/v1/auth/refresh-token", null, ErrorResponse.class);
+        ResponseEntity<ErrorResponse> response = sendRequest("/api/v1/auth/refresh-token", null, ErrorResponse.class);
 
         assertThat(response.getBody().getError()).isEqualTo("Session renewal failed: please log in again.");
+    }
+
+    private String generateValidRefreshToken() {
+        userFixture.createUserWithUsername("Alex");
+        return jwtGenerator.generateValidRefreshToken("Alex");
+    }
+
+    private <T> ResponseEntity<T> sendRequest(String endpoint, HttpHeaders headers, Class<T> responseType) {
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        return restTemplate.postForEntity(endpoint, entity, responseType);
+    }
+
+    private HttpHeaders createHeadersWithCookie(String name, String value) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", name + value);
+        return headers;
     }
 
     private String extractJwtTokenFromSetCookieHeader(String setCookieHeader) {
