@@ -211,4 +211,25 @@ class DeleteUserControllerTest extends BaseIT {
     private void createUserWithUsername(String username) {
         userFixture.createUserWithUsername(username);
     }
+
+    private HttpHeaders createHeadersWithJwtToken(String jwtToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
+        return headers;
+    }
+
+    private <T> ResponseEntity<T> sendDeleteRequest(String endpoint, int userId, HttpHeaders headers, Class<T> responseType) {
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+        return restTemplate.exchange(endpoint + userId, HttpMethod.DELETE, entity, responseType);
+    }
+
+    private String loginAsAdmin() {
+        createAdminUser();
+        return auth.loginAdminUser();
+    }
+
+    private String loginAsRegularUser() {
+        createRegularUser();
+        return auth.loginRegularUser();
+    }
 }
