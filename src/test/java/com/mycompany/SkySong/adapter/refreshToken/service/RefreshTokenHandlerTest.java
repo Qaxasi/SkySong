@@ -60,9 +60,13 @@ class RefreshTokenHandlerTest {
 
     @Test
     void whenValidRefreshToken_GenerateAccessToken() {
-        userFixture.createUserWithUsername("Alex");
-        String refreshToken = jwtTokenGenerator.generateValidRefreshToken();
+        String refreshToken = generateValidRefreshToken();
         String accessToken = tokenHandler.generateAccessTokenFromRefreshToken(refreshToken);
         assertThat(accessToken).isNotEmpty();
+    }
+
+    private String generateValidRefreshToken() {
+        userFixture.createUserWithUsername("Alex");
+        return jwtTokenGenerator.generateValidRefreshToken("Alex");
     }
 }
