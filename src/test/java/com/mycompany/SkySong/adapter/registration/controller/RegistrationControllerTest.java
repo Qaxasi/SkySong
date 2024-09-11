@@ -41,64 +41,54 @@ class RegistrationControllerTest extends BaseIT {
     @Test
     void whenUserWithGivenCredentialsExist_ReturnBadRequest() {
         userFixture.createUserWithUsername("Alex");
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.requestWithUsername("Alex")), headers);
-
-        ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+        ResponseEntity<Void> response = sendRequest("/api/v1/auth/register", requests.requestWithUsername("Alex"), Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     void whenRegistrationSuccess_StatusCreated() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.validCredentials), headers);
-
-        ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+        ResponseEntity<Void> response = sendRequest("/api/v1/auth/register", requests.validCredentials, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test
     void whenInvalidCredentials_ReturnBadRequest() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.emailInvalidFormat), headers);
-
-        ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+        ResponseEntity<Void> response = sendRequest("/api/v1/auth/register", requests.emailInvalidFormat, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     void whenMalformedRequest_ReturnBadRequest() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> request = new HttpEntity<>(requests.malformedRequest, headers);
-
-        ResponseEntity<Void> response = restTemplate.postForEntity("/api/v1/auth/register", request, Void.class);
+        ResponseEntity<Void> response = sendMalformedRequest("/api/v1/auth/register", requests.malformedRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     void whenEmptyCredentials_ReturnErrorMessages() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> request = new HttpEntity<>(asJsonString(requests.emptyCredentials), headers);
-
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/v1/auth/register", request, String.class);
+        ResponseEntity<String> response = sendRequest("/api/v1/auth/register", requests.emptyCredentials, String.class);
 
         assertThat(response.getBody())
                 .contains("\"username\":\"The username field cannot be empty\"")
                 .contains("\"email\":\"The email field cannot be empty\"")
                 .contains("\"password\":\"The password field cannot be empty\"");
+    }
+
+    private <T> ResponseEntity<T> sendRequest(String endpoint, Object requestBody, Class<T> responseType) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(asJsonString(requestBody), headers);
+        return restTemplate.postForEntity(endpoint, request, responseType);
+    }
+
+    private ResponseEntity<Void> sendMalformedRequest(String endpoint, String requestBody) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
+        return restTemplate.postForEntity(endpoint, request, Void.class);
     }
 }
