@@ -54,7 +54,6 @@ class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_ReturnMessage() {
         createUserWithUsername("Alex");
         ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
-        assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().message()).isEqualTo("Logged successfully.");
     }
 
@@ -162,8 +161,6 @@ class LoginControllerTest extends BaseIT {
     @Test
     void whenEmptyCredentials_ReturnErrorMessage() {
         ResponseEntity<ErrorResponse> response = loginRequestForErrors("/api/v1/auth/login",  requests.emptyCredentials);
-        ErrorResponse errorResponse = response.getBody();
-        assertThat(errorResponse).isNotNull();
         assertThat(response.getBody().getErrors().get("usernameOrEmail")).isEqualTo("The usernameOrEmail field cannot be empty");
         assertThat(response.getBody().getErrors().get("password")).isEqualTo("The password field cannot be empty");
     }
