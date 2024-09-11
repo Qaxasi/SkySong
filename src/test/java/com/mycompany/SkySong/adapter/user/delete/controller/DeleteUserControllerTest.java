@@ -45,101 +45,67 @@ class DeleteUserControllerTest extends BaseIT {
     void whenUserIdNotExist_ReturnStatusNotFound() {
         int userId = 1000;
 
-        createAdminUser();
-        String jwtToken = auth.loginAdminUser();
+        String jwtToken = loginAsAdmin();
+        HttpHeaders headers = createHeadersWithJwtToken(jwtToken);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
-
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+        ResponseEntity<Void> response = sendDeleteRequest("/api/v1/users/" + userId, headers, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     void whenNoUserId_ReturnBadRequest() {
-      createAdminUser();
-      String jwtToken = auth.loginAdminUser();
+      String jwtToken = loginAsAdmin();
+      HttpHeaders headers = createHeadersWithJwtToken(jwtToken);
 
-      HttpHeaders headers = new HttpHeaders();
-      headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
-
-      HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-      ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/", HttpMethod.DELETE, entity, Void.class);
+      ResponseEntity<Void> response = sendDeleteRequest("/api/v1/users/", headers, Void.class);
 
       assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     void whenNoUserId_ReturnErrorMessage() {
-        createAdminUser();
-        String jwtToken = auth.loginAdminUser();
+        String jwtToken = loginAsAdmin();
+        HttpHeaders headers = createHeadersWithJwtToken(jwtToken);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
-
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> response = restTemplate.exchange("/api/v1/users/", HttpMethod.DELETE, entity, String.class);
+        ResponseEntity<String> response = sendDeleteRequest("/api/v1/users/", headers, String.class);
 
         assertThat(response.getBody()).contains("\"error\":\"User ID is required and cannot be empty.\"");
     }
 
     @Test
     void whenInvalidUserIdFormat_ReturnErrorMessage() {
-        createAdminUser();
-        String jwtToken = auth.loginAdminUser();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+        String jwtToken = loginAsAdmin();
+        HttpHeaders headers = createHeadersWithJwtToken(jwtToken);
 
         String userId = "invalid";
-        ResponseEntity<String> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, String.class);
+        ResponseEntity<String> response = sendDeleteRequest("/api/v1/users/" + userId, headers, String.class);
 
         assertThat(response.getBody()).contains("\"error\":\"Invalid input data format.\"");
     }
 
     @Test
     void whenUserIsAdmin_SuccessDeletionReturnStatusOk() {
-        createUserWithUsername("Alex");
+        int userId = createUserAndFetchHisId("Alex");
 
-        int userId = userIdFetcher.fetchByUsername("Alex");
+        String jwtToken = loginAsAdmin();
+        HttpHeaders headers = createHeadersWithJwtToken(jwtToken);
 
-        createAdminUser();
-        String jwtToken = auth.loginAdminUser();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
-
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+        ResponseEntity<Void> response = sendDeleteRequest("/api/v1/users/" + userId, headers, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     void whenUserDeleted_SecondDeletionReturnNotFound() {
-        createUserWithUsername("Alex");
+        int userId = createUserAndFetchHisId("Alex");
 
-        int userId = userIdFetcher.fetchByUsername("Alex");
+        String jwtToken = loginAsAdmin();
+        HttpHeaders headers = createHeadersWithJwtToken(jwtToken);
 
-        createAdminUser();
-        String jwtToken = auth.loginAdminUser();
+        sendDeleteRequest("/api/v1/users/" + userId, headers, Void.class);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
-
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
-
-        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+        ResponseEntity<Void> response = sendDeleteRequest("/api/v1/users/" + userId, headers, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -147,69 +113,44 @@ class DeleteUserControllerTest extends BaseIT {
     @Test
     void whenUnauthenticatedUser_ReturnUnauthorized() {
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/", HttpMethod.DELETE, entity, Void.class);
+        ResponseEntity<Void> response = sendDeleteRequest("/api/v1/users/", headers, Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @Test
     void whenUnauthenticatedUser_ReturnErrorMessage() {
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> response = restTemplate.exchange("/api/v1/users/", HttpMethod.DELETE, entity, String.class);
+        ResponseEntity<String> response = sendDeleteRequest("/api/v1/users/", headers, String.class);
         assertThat(response.getBody()).contains("\"error\":\"Unauthorized access. Please log in.\"");
     }
 
     @Test
     void whenRegularUser_ReturnForbidden() {
-        createUserWithUsername("Alex");
+        int userId = createUserAndFetchHisId("Alex");
 
-        int userId = userIdFetcher.fetchByUsername("Alex");
+        String jwtToken = loginAsRegularUser();
+        HttpHeaders headers = createHeadersWithJwtToken(jwtToken);
 
-        createRegularUser();
-        String jwtToken = auth.loginRegularUser();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
-
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<Void> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, Void.class);
+        ResponseEntity<Void> response = sendDeleteRequest("/api/v1/users/" + userId, headers, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     void whenRegularUser_ReturnErrorMessage() {
-        createUserWithUsername("Alex");
+        int userId = createUserAndFetchHisId("Alex");
 
-        int userId = userIdFetcher.fetchByUsername("Alex");
+        String jwtToken = loginAsRegularUser();
+        HttpHeaders headers = createHeadersWithJwtToken(jwtToken);
 
-        createRegularUser();
-        String jwtToken = auth.loginRegularUser();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.COOKIE, "jwtToken=" + jwtToken);
-
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> response = restTemplate.exchange("/api/v1/users/" + userId, HttpMethod.DELETE, entity, String.class);
+        ResponseEntity<String> response = sendDeleteRequest("/api/v1/users/" + userId, headers, String.class);
 
         assertThat(response.getBody()).contains("\"error\":\"You do not have permission to perform this operation.\"");
     }
 
-    private void createAdminUser() {
-        userFixture.createAdminUser();
-    }
-
-    private void createRegularUser() {
-        userFixture.createRegularUser();
-    }
-
-    private void createUserWithUsername(String username) {
+    private int createUserAndFetchHisId(String username) {
         userFixture.createUserWithUsername(username);
+        return userIdFetcher.fetchByUsername(username);
     }
 
     private HttpHeaders createHeadersWithJwtToken(String jwtToken) {
@@ -218,18 +159,18 @@ class DeleteUserControllerTest extends BaseIT {
         return headers;
     }
 
-    private <T> ResponseEntity<T> sendDeleteRequest(String endpoint, int userId, HttpHeaders headers, Class<T> responseType) {
+    private <T> ResponseEntity<T> sendDeleteRequest(String endpoint, HttpHeaders headers, Class<T> responseType) {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
-        return restTemplate.exchange(endpoint + userId, HttpMethod.DELETE, entity, responseType);
+        return restTemplate.exchange(endpoint, HttpMethod.DELETE, entity, responseType);
     }
 
     private String loginAsAdmin() {
-        createAdminUser();
+        userFixture.createAdminUser();
         return auth.loginAdminUser();
     }
 
     private String loginAsRegularUser() {
-        createRegularUser();
+        userFixture.createRegularUser();
         return auth.loginRegularUser();
     }
 }
