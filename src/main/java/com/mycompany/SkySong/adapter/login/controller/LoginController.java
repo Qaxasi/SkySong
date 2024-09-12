@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.login.controller;
 
+import com.mycompany.SkySong.adapter.login.dto.LoginDto;
 import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
 import com.mycompany.SkySong.adapter.login.service.LoginHandler;
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
@@ -29,7 +30,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
-        LoginResponse authResponse = login.login(request.usernameOrEmail(), request.password());
+        LoginResponse authResponse = login.login(new LoginDto(request.usernameOrEmail(), request.password()));
 
         ResponseCookie jwtCookie = cookieUtils.generateCookie(
                 "jwtToken", authResponse.jwtToken(), "/api", 600);

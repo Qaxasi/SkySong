@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.adapter.login.service;
 
+import com.mycompany.SkySong.adapter.login.dto.LoginDto;
 import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
-import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,10 +23,10 @@ public class LoginHandler {
         this.tokenManager = tokenManager;
     }
 
-    public LoginResponse login(String usernameOrEmail, String password) {
+    public LoginResponse login(LoginDto loginDto) {
         try {
             Authentication authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
+                    new UsernamePasswordAuthenticationToken(loginDto.usernameOrEmail(), loginDto.password()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
