@@ -11,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -48,13 +47,13 @@ class CustomUserDetailsServiceTest {
     }
 
     @Test
-    void whenLoadNonExistentUserUsername_ThrowException() {
+    void whenLoadNonExistentUserByUsername_ThrowException() {
         assertThrows(UsernameNotFoundException.class,
                 () -> loadUserByUsername("Max"));
     }
 
     @Test
-    void whenLoadNonExistentUserEmail_ThrowException() {
+    void whenLoadNonExistentUserByEmail_ThrowException() {
         //In our implementation, the email can serve as the username
         assertThrows(UsernameNotFoundException.class,
                 () -> loadUserByUsername("max@mail.mail"));
