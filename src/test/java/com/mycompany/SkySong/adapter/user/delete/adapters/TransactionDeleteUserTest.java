@@ -47,7 +47,7 @@ class TransactionDeleteUserTest extends BaseIT {
     }
 
     @Test
-    void whenUserDeletedSuccess_UserNotExist() {
+    void whenUserSuccessDeleted_UserNotExist() {
         createUserWithUsername("Alex");
         int userId = fetchIdByUsername("Alex");
 
