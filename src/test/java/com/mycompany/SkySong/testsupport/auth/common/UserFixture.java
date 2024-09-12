@@ -36,6 +36,14 @@ public class UserFixture {
         createUser(userBuilder.copy().withUsername("Admin").withEmail("admin@mail.mail"), fetchAdminRole());
     }
 
+    public void createRegularUserWithUsername(String username) {
+        createUser(userBuilder.copy().withUsername(username).withEmail("regular@mail.mail"), fetchRegularRole());
+    }
+
+    public void createAdminUserWithUsername(String username) {
+        createUser(userBuilder.copy().withUsername(username).withEmail("admin@mail.mail"), fetchAdminRole());
+    }
+
     public void createUserWithUsernameAndPassword(String username, String password) {
         createUser(userBuilder.copy().withUsername(username).withPassword(password), fetchRegularRole());
     }
