@@ -27,7 +27,7 @@ class TransactionUserSaverTest extends BaseIT {
     @Test
     void whenUserSaved_UserExist() {
         UserSaveDto userDto = createUserDtoWithUsername("Alex");
-        userSaver.saveUser(userDto);
+        saveUser(userDto);
         assertThat(userExistenceChecker.userExist("Alex")).isTrue();
     }
 
@@ -38,7 +38,7 @@ class TransactionUserSaverTest extends BaseIT {
                 new RoleDTO(2, UserRole.ROLE_ADMIN));
 
         UserSaveDto userDto = createUserDtoWithRoles("Alex", roles);
-        userSaver.saveUser(userDto);
+        saveUser(userDto);
 
         assertThat(userRoleChecker.hasUserRole("Alex", UserRole.ROLE_USER.name())).isTrue();
         assertThat(userRoleChecker.hasUserRole("Alex", UserRole.ROLE_ADMIN.name())).isTrue();
@@ -51,5 +51,9 @@ class TransactionUserSaverTest extends BaseIT {
 
     private UserSaveDto createUserDtoWithRoles(String username, Set<RoleDTO> roles) {
         return new UserSaveDto(username, "alex@mail.mail", "Password#3", roles);
+    }
+
+    private void saveUser(UserSaveDto userDto) {
+        userSaver.saveUser(userDto);
     }
 }
