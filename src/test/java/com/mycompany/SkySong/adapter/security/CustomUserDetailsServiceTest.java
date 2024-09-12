@@ -1,97 +1,142 @@
-package com.mycompany.SkySong.common.security;
+package com.mycompany.SkySong.adapter.security;
 
-import com.mycompany.SkySong.adapter.security.CustomUserDetailsService;
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseCleaner;
-import com.mycompany.SkySong.testsupport.common.SqlDatabaseInitializer;
-import com.mycompany.SkySong.testsupport.common.BaseIT;
+import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
+import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;
+import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
+import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
+import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
+import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
+import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static com.mycompany.SkySong.testsupport.auth.security.CustomUserDetailsServiceTestHelper.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CustomUserDetailsServiceTest extends BaseIT {
-
-    @Autowired
+class CustomUserDetailsServiceTest {
+    private InMemoryUserDAO userDAO;
+    private InMemoryRoleDAO roleDAO;
     private CustomUserDetailsService detailsService;
-
-    @Autowired
-    private SqlDatabaseInitializer initializer;
-    @Autowired
-    private SqlDatabaseCleaner cleaner;
+    private UserFixture userFixture;
 
     @BeforeEach
-    void setUp() throws Exception {
-        initializer.setup("data_sql/test-setup.sql");
+    void setUp() {
+        roleDAO = new InMemoryRoleDAO();
+        userDAO = new InMemoryUserDAO(roleDAO);
+
+        detailsService = new CustomUserDetailsService(userDAO, roleDAO);
+
+        CustomPasswordEncoder encoder = new CustomPasswordEncoder(new BCryptPasswordEncoder());
+        UserBuilder userBuilder = new UserBuilder(encoder);
+
+        userFixture = new UserFixture(roleDAO, userDAO, userBuilder);
     }
 
     @AfterEach
-    void cleanUp() {
-        cleaner.clean();
+    void clean() {
+        roleDAO.clear();
+        userDAO.clear();
     }
 
     @Test
     void whenLoadNonExistentUserUsername_ThrowException() {
         assertThrows(UsernameNotFoundException.class,
-                () -> detailsService.loadUserByUsername("Tomas"));
+                () -> loadUserByUsername("Max"));
     }
 
     @Test
     void whenLoadNonExistentUserEmail_ThrowException() {
-
         //In our implementation, the email can serve as the username
         assertThrows(UsernameNotFoundException.class,
-                () -> detailsService.loadUserByUsername("tomas@mail.com"));
+                () -> loadUserByUsername("max@mail.mail"));
     }
 
     @Test
-    void whenUserRegular_AdminRoleIsNotAssigned() {
-        //when
-        UserDetails userDetails = detailsService.loadUserByUsername("User");
-
-        //then
+    void whenLoadedRegularUser_AdminRoleIsNotGranted() {
+        createRegularUserWithUsername("Alex");
+        CustomUserDetails userDetails = loadUserByUsername("Alex");
         assertUserDoesNotHaveAuthorities(userDetails, "ROLE_ADMIN");
     }
 
     @Test
-    void whenLoadedRegularUserByUsername_AssignsUserRole() {
-        //when
-        UserDetails userDetails = detailsService.loadUserByUsername("User");
-
-        //then
+    void whenLoadedRegularUserByUsername_RegularRoleHasGranted() {
+        createRegularUserWithUsername("Alex");
+        CustomUserDetails userDetails = loadUserByUsername("Alex");
         assertUserHasAuthorities(userDetails, "ROLE_USER");
     }
 
     @Test
-    void whenLoadedRegularUserByEmail_AssignsUserRole() {
-        //when
-        UserDetails userDetails = detailsService.loadUserByUsername("mail@mail.com");
-
-        //then
+    void whenLoadedRegularUserByEmail_RegularRoleHasGranted() {
+        createRegularUserWithEmail("mail@mail.com");
+        CustomUserDetails userDetails = loadUserByUsername("mail@mail.com");
         assertUserHasAuthorities(userDetails, "ROLE_USER");
     }
 
     @Test
-    void whenLoadedAdminUserByUsername_AssignsUserAndAdminRole() {
-        //when
-        UserDetails userDetails = detailsService.loadUserByUsername("testAdmin");
-
-        //then
-        assertUserHasAuthorities(userDetails, "ROLE_USER", "ROLE_ADMIN");
+    void whenLoadedAdminUserByUsername_AdminRoleHasGranted() {
+        createAdminUserWithUsername("Admin");
+        CustomUserDetails userDetails = loadUserByUsername("Admin");
+        assertUserHasAuthorities(userDetails,"ROLE_ADMIN");
     }
 
     @Test
-    void whenLoadedAdminUserByEmail_AssignsUserAndAdminRole() {
-        //In our implementation, the email can serve as the username
+    void whenLoadedAdminUserByEmail_AdminRoleHasGranted() {
+        createAdminUserWithEmail("admin@mail.mail");
+        CustomUserDetails userDetails = loadUserByUsername("admin@mail.mail");
+        assertUserHasAuthorities(userDetails,"ROLE_ADMIN");
+    }
 
-        //when
-        UserDetails userDetails = detailsService.loadUserByUsername("testAdmin@mail.com");
+    private void assertUserHasAuthorities(CustomUserDetails userDetails, String... authorities) {
+        Set<String> requiredAuthorities = new HashSet<>(Arrays.asList(authorities));
+        Set<String> userAuthorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
 
-        //then
-        assertUserHasAuthorities(userDetails, "ROLE_USER", "ROLE_ADMIN");
+        if (!userAuthorities.containsAll(requiredAuthorities)) {
+            throw new AssertionError("User does not have all the required authorities. Expected: " +
+                    Arrays.toString(authorities) + ", but has: " + userAuthorities);
+        }
+    }
+
+    private void assertUserDoesNotHaveAuthorities(CustomUserDetails userDetails, String... authorities) {
+        Set<String> forbiddenAuthorities = new HashSet<>(Arrays.asList(authorities));
+        Set<String> userAuthorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        for (String authority : forbiddenAuthorities) {
+            if (userAuthorities.contains(authority)) {
+                throw new AssertionError("User have forbidden authority: " + authority);
+            }
+        }
+    }
+
+    private void createRegularUserWithUsername(String username) {
+        userFixture.createRegularUserWithUsername(username);
+    }
+
+    private void createAdminUserWithUsername(String username) {
+        userFixture.createAdminUserWithUsername(username);
+    }
+
+    private void createRegularUserWithEmail(String email) {
+        userFixture.createRegularUserWithEmail(email);
+    }
+
+    private void createAdminUserWithEmail(String email) {
+        userFixture.createAdminUserWithEmail(email);
+    }
+
+    private CustomUserDetails loadUserByUsername(String usernameOrEmail) {
+        return detailsService.loadUserByUsername(usernameOrEmail);
     }
 }
