@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.testsupport.auth.common;
 
-import com.mycompany.SkySong.application.login.dto.LoginRequest;
+import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
 
 public class LoginRequests {
 

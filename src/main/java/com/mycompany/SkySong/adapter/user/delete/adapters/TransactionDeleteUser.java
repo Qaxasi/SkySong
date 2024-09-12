@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.user.delete.adapters;
 
+import com.mycompany.SkySong.adapter.user.delete.adapters.exception.UserNotFoundException;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.user.delete.ports.DeleteUser;

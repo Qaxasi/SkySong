@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.login.service;
 
+import com.mycompany.SkySong.adapter.login.dto.LoginDto;
 import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
@@ -45,21 +46,21 @@ class LoginHandlerTest extends BaseIT {
     @Test
     void whenLoginSuccess_SetSecurityContext() {
         createUser("Alex", "Password#3");
-        login.login("Alex", "Password#3");
+        login("Alex", "Password#3");
         assertNotNull(SecurityContextHolder.getContext());
     }
 
     @Test
     void whenLoginSuccess_ResponseContainsJwtToken() {
         createUser("Alex", "Password#3");
-        LoginResponse response = login.login("Alex", "Password#3");
+        LoginResponse response = login("Alex", "Password#3");
         assertNotNull(response.jwtToken());
     }
 
     @Test
     void whenLoginSuccess_ResponseContainsRefreshToken() {
         createUser("Alex", "Password#3");
-        LoginResponse response = login.login("Alex", "Password#3");
+        LoginResponse response = login("Alex", "Password#3");
         assertNotNull(response.refreshToken());
     }
 
@@ -67,7 +68,7 @@ class LoginHandlerTest extends BaseIT {
         userFixture.createUserWithUsernameAndPassword(username, password);
     }
 
-    private void login(String usernameOrEmail, String password) {
-        login.login(usernameOrEmail, password);
+    private LoginResponse login(String usernameOrEmail, String password) {
+        return login.login(new LoginDto(usernameOrEmail, password));
     }
 }
