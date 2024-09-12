@@ -22,7 +22,7 @@ public class RefreshTokenHandler {
             throw new IllegalArgumentException("Invalid refresh token.");
         }
         String username = tokenManager.extractUsername(refreshToken);
-        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
+        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         return tokenManager.generateToken(userDetails);
     }

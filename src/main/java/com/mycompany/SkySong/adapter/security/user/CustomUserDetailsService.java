@@ -1,13 +1,11 @@
 package com.mycompany.SkySong.adapter.security.user;
 
-import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     // This method loads a user by either username or email
     @Override
-    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
         User user = findUserByUsernameOrEmail(usernameOrEmail);
         Set<GrantedAuthority> authorities = getAuthorities(user);
 
