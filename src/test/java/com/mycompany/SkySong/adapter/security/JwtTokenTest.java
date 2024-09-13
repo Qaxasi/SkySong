@@ -3,12 +3,15 @@ package com.mycompany.SkySong.adapter.security;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class JwtTokenTest {
 
@@ -20,6 +23,14 @@ class JwtTokenTest {
         long jwtExpiration = 100000L;
         long refreshJwtExpiration = 200000L;
         jwtManager = new JwtTokenManager(secretKey, jwtExpiration, refreshJwtExpiration);
+    }
+
+    @Test
+    void whenGeneratedTokenForUser_ExtractedUsernameIsCorrect() {
+        String token = generateTokenForUserWithUsername("Alex");
+        String username = extractUsername(token);
+
+        assertThat(username).isEqualTo("Alex");
     }
 
     private String generateTokenForUserWithUsername(String username) {
