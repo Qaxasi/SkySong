@@ -41,6 +41,16 @@ class JwtTokenTest {
         assertThat(List.of("ROLE_USER")).isEqualTo(roles);
     }
 
+    @Test
+    void whenTokenIsValid_ReturnTrue() {
+        String token = generateValidToken();
+        assertThat(isTokenValid(token)).isTrue();
+    }
+
+    private boolean isTokenValid(String token) {
+        return jwtManager.isTokenValid(token);
+    }
+
     private String generateTokenForUserWithUsername(String username) {
         Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_USER"));
         CustomUserDetails customUserDetails = new CustomUserDetails(1, username, "alex@mail.mail", "Password#3", authorities);
@@ -58,6 +68,10 @@ class JwtTokenTest {
     private CustomUserDetails getCustomUserDetails() {
         Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_USER"));
         return new CustomUserDetails(1, "Alex", "alex@mail.mail", "Password#3", authorities);
+    }
+
+    private String generateValidToken() {
+        return jwtManager.generateToken(getCustomUserDetails());
     }
 
     private String extractUsername(String token) {
