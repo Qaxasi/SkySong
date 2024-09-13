@@ -33,6 +33,14 @@ class JwtTokenTest {
         assertThat(username).isEqualTo("Alex");
     }
 
+    @Test
+    void whenGeneratedTokenWithRole_ExtractedRolesAreCorrect() {
+        String token = generateTokenForUserWithRoles(List.of("ROLE_USER"));
+        List<String> roles = extractRoles(token);
+
+        assertThat(List.of("ROLE_USER")).isEqualTo(roles);
+    }
+
     private String generateTokenForUserWithUsername(String username) {
         Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_USER"));
         CustomUserDetails customUserDetails = new CustomUserDetails(1, username, "alex@mail.mail", "Password#3", authorities);
