@@ -42,9 +42,15 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenTokenIsValid_ReturnTrue() {
+    void whenTokenIsValid_ValidationReturnsTrue() {
         String token = generateValidToken();
         assertThat(isTokenValid(token)).isTrue();
+    }
+
+    @Test
+    void whenTokenIsEmpty_ValidationReturnsFalse() {
+        String emptyToken = "";
+        assertThat(isTokenValid(emptyToken)).isFalse();
     }
 
     private boolean isTokenValid(String token) {
