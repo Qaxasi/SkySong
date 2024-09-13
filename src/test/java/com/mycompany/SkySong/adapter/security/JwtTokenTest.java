@@ -65,6 +65,16 @@ class JwtTokenTest {
         assertThat(isTokenValid(malformedToken)).isFalse();
     }
 
+    @Test
+    void whenTokenIsExpired_ValidationReturnFalse() {
+        String expiredToken = createExpiredToken();
+        assertThrows(ExpiredJwtException.class, () -> isTokenValid(expiredToken));
+    }
+
+    private String createExpiredToken() {
+        return testTokenGenerator.createExpiredToken();
+    }
+
     private boolean isTokenValid(String token) {
         return jwtManager.isTokenValid(token);
     }
