@@ -2,6 +2,8 @@ package com.mycompany.SkySong.adapter.security;
 
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
+import com.mycompany.SkySong.testsupport.auth.common.TestJwtTokenGenerator;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,16 +14,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JwtTokenTest {
 
     private JwtTokenManager jwtManager;
+    private TestJwtTokenGenerator testTokenGenerator;
 
     @BeforeEach
     void setup() {
-        String secretKey = "-c4iY6yOly4Io2kfebbk/sGdU6Lq1lSS2DX7XvNr0agM=";
+        String secretKey = "wJ4ds7VbRmFHRP4fX5QbJmTcYZv5P1ZkVN7skO4id8E=s";
         long jwtExpiration = 100000L;
         long refreshJwtExpiration = 200000L;
+
+        testTokenGenerator = new TestJwtTokenGenerator(secretKey, jwtExpiration, refreshJwtExpiration);
         jwtManager = new JwtTokenManager(secretKey, jwtExpiration, refreshJwtExpiration);
     }
 
