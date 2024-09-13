@@ -53,6 +53,12 @@ class JwtTokenTest {
         assertThat(isTokenValid(emptyToken)).isFalse();
     }
 
+    @Test
+    void whenTokenIsMalformed_ValidationReturnsFalse() {
+        String malformedToken = "token.is.malformed";
+        assertThat(isTokenValid(malformedToken)).isFalse();
+    }
+
     private boolean isTokenValid(String token) {
         return jwtManager.isTokenValid(token);
     }
