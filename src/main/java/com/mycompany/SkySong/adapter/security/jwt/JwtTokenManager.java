@@ -41,7 +41,7 @@ public class JwtTokenManager {
         return extractClaim(token, claims -> claims.get("roles", List.class));
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    private  <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -65,7 +65,7 @@ public class JwtTokenManager {
         return generateToken(extraClaims, userDetails);
     }
 
-    public String generateToken(Map<String,Object> extraClaims,
+    private String generateToken(Map<String,Object> extraClaims,
                                 CustomUserDetails userDetails) {
         return buildToken(extraClaims,userDetails, jwtExpiration);
     }
