@@ -50,6 +50,13 @@ class JwtTokenTest {
     }
 
     @Test
+    void whenGeneratedToken_TokenContainsCorrectSubject() {
+        String token = generateTokenForUserWithUsername("Alex");
+        Claims claims = extractClaims(token);
+        assertThat(claims.getSubject()).isEqualTo("Alex");
+    }
+
+    @Test
     void whenGeneratedTokenForUser_ExtractedUsernameIsCorrect() {
         String token = generateTokenForUserWithUsername("Alex");
         String username = extractUsername(token); // nie używać implementacji ?
