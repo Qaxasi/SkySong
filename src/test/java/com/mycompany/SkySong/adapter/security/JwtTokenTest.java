@@ -49,6 +49,13 @@ class JwtTokenTest {
     }
 
     @Test
+    void whenGeneratedRefreshToken_TokenContainsCorrectUsername() {
+        String token = generateRefreshTokenForUserWithUsername("Alex");
+        Claims claims = extractClaims(token);
+        assertThat(claims.getSubject()).isEqualTo("Alex");
+    }
+
+    @Test
     void whenGeneratedAccessToken_TokenHasCorrectExpirationTime() {
         String token = generateToken();
         Claims claims = extractClaims(token);
@@ -126,6 +133,10 @@ class JwtTokenTest {
         return jwtManager.generateToken(getUserDetailsForAccessToken());
     }
 
+    private String generateRefreshTokenForUserWithUsername(String username) {
+        return jwtManager.generateRefreshToken(getUserDetailsForRefreshTokenWithUsername(username));
+    }
+
     private String createUnsupportedToken() {
         return testTokenGenerator.createUnsupportedToken();
     }
@@ -159,7 +170,10 @@ class JwtTokenTest {
 
     private CustomUserDetails getUserDetailsForRefreshToken() {
         return new CustomUserDetails(1, "Alex", "alex@mail.mail", "Password#3", new HashSet<>());
+    }
 
+    private CustomUserDetails getUserDetailsForRefreshTokenWithUsername(String username) {
+        return new CustomUserDetails(1, username, "alex@mail.mail", "Password#3", new HashSet<>());
     }
 
     private String generateRefreshToken() {
