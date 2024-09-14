@@ -6,7 +6,6 @@ import com.mycompany.SkySong.testsupport.auth.common.TestJwtTokenGenerator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
@@ -65,7 +64,7 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenGeneratedTokenForUser_ExtractedUsernameIsCorrect() {
+    void whenExtractUsernameFromGeneratedToken_UsernameIsCorrect() {
         String token = generateTokenForUserWithUsername("Alex");
         String username = extractUsername(token);
 
@@ -73,7 +72,7 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenGeneratedTokenWithRole_ExtractedRolesAreCorrect() {
+    void whenExtractedRolesFromGeneratedToken_RolesAreCorrect() {
         String token = generateTokenForUserWithRoles(List.of("ROLE_USER"));
         List<String> roles = extractRoles(token);
 
