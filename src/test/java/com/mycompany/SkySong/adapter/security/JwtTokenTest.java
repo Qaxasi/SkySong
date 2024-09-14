@@ -49,11 +49,8 @@ class JwtTokenTest {
 
     @Test
     void whenTokenIsValid_ValidationReturnsTrue() {
-        String token = generateValidToken();
+        String token = generateValidAccessToken();
         assertThat(isTokenValid(token)).isTrue();
-
-        // nie uzywać implementacji ?
-
     }
 
     @Test
@@ -75,7 +72,7 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenTokenIsSignedWithUnsupportedAlgorithm_thenValidationFails() {
+    void whenTokenIsSignedWithUnsupportedAlgorithm_ValidationFails() {
         String token = createUnsupportedToken();
         assertThat(isTokenValid(token)).isFalse();
     }
@@ -111,8 +108,8 @@ class JwtTokenTest {
         return new CustomUserDetails(1, "Alex", "alex@mail.mail", "Password#3", authorities);
     }
 
-    private String generateValidToken() {
-        return jwtManager.generateToken(getCustomUserDetails());
+    private String generateValidAccessToken() {
+        return testTokenGenerator.generateValidAccessToken();
     }
 
     private String extractUsername(String token) {
