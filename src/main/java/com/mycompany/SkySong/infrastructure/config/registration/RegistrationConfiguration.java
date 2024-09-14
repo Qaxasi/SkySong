@@ -7,7 +7,7 @@ import com.mycompany.SkySong.domain.registration.ports.PasswordEncoder;
 import com.mycompany.SkySong.domain.registration.ports.RegistrationRoleRepository;
 import com.mycompany.SkySong.domain.registration.ports.RegistrationUserRepository;
 import com.mycompany.SkySong.domain.registration.ports.UserSaver;
-import com.mycompany.SkySong.domain.registration.service.RequestValidation;
+import com.mycompany.SkySong.domain.registration.service.UserRegistrationValidator;
 import com.mycompany.SkySong.domain.registration.service.UserCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class RegistrationConfiguration {
         return new UserRegistrationMapper(roleMapper);
     }
     @Bean
-    public UserRegistrationHandler registrationHandler(RequestValidation validation,
+    public UserRegistrationHandler registrationHandler(UserRegistrationValidator validation,
                                                        UserCreator userCreator,
                                                        UserSaver userSaver,
                                                        UserRegistrationMapper userMapper) {
@@ -33,8 +33,8 @@ public class RegistrationConfiguration {
     }
 
     @Bean
-    public RequestValidation requestValidation(RegistrationUserRepository userRepository) {
-        return new RequestValidation(userRepository);
+    public UserRegistrationValidator requestValidation(RegistrationUserRepository userRepository) {
+        return new UserRegistrationValidator(userRepository);
     }
     @Bean
     public UserCreator userCreator(PasswordEncoder encoder, RegistrationRoleRepository roleRepository) {
