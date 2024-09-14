@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.exception.handler;
 
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
-import com.mycompany.SkySong.adapter.user.delete.adapters.UserNotFoundException;
+import com.mycompany.SkySong.adapter.user.delete.adapters.exception.UserNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
 import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
