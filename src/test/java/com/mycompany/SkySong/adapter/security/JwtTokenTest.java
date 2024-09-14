@@ -3,12 +3,17 @@ package com.mycompany.SkySong.adapter.security;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.testsupport.auth.common.TestJwtTokenGenerator;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.security.Key;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,12 +25,13 @@ class JwtTokenTest {
 
     private JwtTokenManager jwtManager;
     private TestJwtTokenGenerator testTokenGenerator;
+    private String secretKey;
 
     @BeforeEach
     void setup() {
-        String secretKey = "wJ4ds7VbRmFHRP4fX5QbJmTcYZv5P1ZkVN7skO4id8E=s";
-        long jwtExpiration = 100000L;
-        long refreshJwtExpiration = 200000L;
+        secretKey = "wJ4ds7VbRmFHRP4fX5QbJmTcYZv5P1ZkVN7skO4id8E=s";
+        long jwtExpiration = 600000L;
+        long refreshJwtExpiration = 86400000L;
 
         testTokenGenerator = new TestJwtTokenGenerator(secretKey, jwtExpiration, refreshJwtExpiration);
         jwtManager = new JwtTokenManager(secretKey, jwtExpiration, refreshJwtExpiration);
@@ -34,7 +40,7 @@ class JwtTokenTest {
     @Test
     void whenGeneratedTokenForUser_ExtractedUsernameIsCorrect() {
         String token = generateTokenForUserWithUsername("Alex");
-        String username = extractUsername(token);
+        String username = extractUsername(token); // nie używać implementacji ?
 
         assertThat(username).isEqualTo("Alex");
     }
@@ -42,7 +48,7 @@ class JwtTokenTest {
     @Test
     void whenGeneratedTokenWithRole_ExtractedRolesAreCorrect() {
         String token = generateTokenForUserWithRoles(List.of("ROLE_USER"));
-        List<String> roles = extractRoles(token);
+        List<String> roles = extractRoles(token); //nie uzywać implementacji ?
 
         assertThat(List.of("ROLE_USER")).isEqualTo(roles);
     }
@@ -118,5 +124,17 @@ class JwtTokenTest {
 
     private List<String> extractRoles(String token) {
         return jwtManager.extractRoles(token);
+    }
+
+    private Claims extractClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getTestSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private Key getTestSignKey() {
+        return testTokenGenerator.generateSignKey();
     }
 }
