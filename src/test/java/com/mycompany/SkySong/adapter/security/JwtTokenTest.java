@@ -50,6 +50,15 @@ class JwtTokenTest {
     }
 
     @Test
+    void whenGenerateToken_TokenContainsExpectedClaims() {
+        List<String> roles = List.of("ROLE_USER");
+        String token = generateTokenForUserWithRoles(roles);
+        Claims claims = extractClaims(token);
+
+        assertThat(claims.get("roles", List.class)).isEqualTo(roles);
+    }
+
+    @Test
     void whenGeneratedToken_TokenContainsCorrectSubject() {
         String token = generateTokenForUserWithUsername("Alex");
         Claims claims = extractClaims(token);
