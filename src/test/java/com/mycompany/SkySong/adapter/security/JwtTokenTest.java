@@ -51,24 +51,37 @@ class JwtTokenTest {
     void whenTokenIsValid_ValidationReturnsTrue() {
         String token = generateValidToken();
         assertThat(isTokenValid(token)).isTrue();
+
+        // nie uzywać implementacji ?
+
     }
 
     @Test
-    void whenTokenIsEmpty_ValidationReturnsFalse() {
+    void whenTokenIsEmpty_ValidationFails() {
         String emptyToken = "";
         assertThat(isTokenValid(emptyToken)).isFalse();
     }
 
     @Test
-    void whenTokenIsMalformed_ValidationReturnsFalse() {
+    void whenTokenIsMalformed_ValidationFails() {
         String malformedToken = "token.is.malformed";
         assertThat(isTokenValid(malformedToken)).isFalse();
     }
 
     @Test
-    void whenTokenIsExpired_ValidationReturnFalse() {
+    void whenTokenIsExpired_ValidationFails() {
         String expiredToken = createExpiredToken();
         assertThrows(ExpiredJwtException.class, () -> isTokenValid(expiredToken));
+    }
+
+    @Test
+    void whenTokenIsSignedWithUnsupportedAlgorithm_thenValidationFails() {
+        String token = createUnsupportedToken();
+        assertThat(isTokenValid(token)).isFalse();
+    }
+
+    private String createUnsupportedToken() {
+        return testTokenGenerator.createUnsupportedToken();
     }
 
     private String createExpiredToken() {
