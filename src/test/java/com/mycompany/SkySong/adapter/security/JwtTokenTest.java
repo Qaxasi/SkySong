@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,7 +37,19 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenGeneratedToken_TokenHasCorrectExpirationTime() {
+    void whenGeneratedRefreshToken_TokenHasCorrectExpirationTime() {
+        String token = generateRefreshToken();
+        Claims claims = extractClaims(token);
+        Date expiration = claims.getExpiration();
+        long expirationTime = expiration.getTime();
+        long expectedExpiration = System.currentTimeMillis() + 86400000;
+
+        assertThat(expirationTime <= expectedExpiration &&
+                expirationTime >= expectedExpiration - 1000).isTrue();
+    }
+
+    @Test
+    void whenGeneratedAccessToken_TokenHasCorrectExpirationTime() {
         String token = generateToken();
         Claims claims = extractClaims(token);
         Date expiration = claims.getExpiration();
@@ -48,14 +61,14 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenGeneratedToken_TokenContainsCorrectSubject() {
+    void whenGeneratedAccessToken_TokenContainsCorrectSubject() {
         String token = generateTokenForUserWithUsername("Alex");
         Claims claims = extractClaims(token);
         assertThat(claims.getSubject()).isEqualTo("Alex");
     }
 
     @Test
-    void whenGenerateToken_TokenContainsExpectedClaims() {
+    void whenGeneratedAccessToken_TokenContainsExpectedClaims() {
         List<String> roles = List.of("ROLE_USER");
         String token = generateTokenForUserWithRoles(roles);
         Claims claims = extractClaims(token);
@@ -110,7 +123,7 @@ class JwtTokenTest {
     }
 
     private String generateToken() {
-        return jwtManager.generateToken(getCustomUserDetails());
+        return jwtManager.generateToken(getUserDetailsForAccessToken());
     }
 
     private String createUnsupportedToken() {
@@ -139,9 +152,18 @@ class JwtTokenTest {
         return jwtManager.generateToken(customUserDetails);
     }
 
-    private CustomUserDetails getCustomUserDetails() {
+    private CustomUserDetails getUserDetailsForAccessToken() {
         Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_USER"));
         return new CustomUserDetails(1, "Alex", "alex@mail.mail", "Password#3", authorities);
+    }
+
+    private CustomUserDetails getUserDetailsForRefreshToken() {
+        return new CustomUserDetails(1, "Alex", "alex@mail.mail", "Password#3", new HashSet<>());
+
+    }
+
+    private String generateRefreshToken() {
+        return jwtManager.generateRefreshToken(getUserDetailsForRefreshToken());
     }
 
     private String generateValidAccessToken() {
