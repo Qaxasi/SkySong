@@ -1,58 +1,58 @@
 package com.mycompany.SkySong.testsupport.common;
 
-import com.mycompany.SkySong.login.LoginRequest;
-import jakarta.servlet.http.Cookie;
+import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-
-import java.util.Arrays;
-
-import static com.mycompany.SkySong.testsupport.common.JsonUtils.asJsonString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.http.ResponseEntity;
 
 public class AuthenticationTestHelper {
 
-    private final MockMvc mockMvc;
+    private final TestRestTemplate restTemplate;
 
-    public AuthenticationTestHelper(MockMvc mockMvc) {
-        this.mockMvc = mockMvc;
+    public AuthenticationTestHelper(TestRestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
-    public Cookie loginRegularUser() {
-        LoginRequest user = new LoginRequest("User", "Password#3");
-        return loginAndGetCookie(user);
+    public String loginRegularUser() {
+        LoginRequest user = new LoginRequest("Regular", "Password#3");
+        return loginAndGetJwtToken(user);
     }
 
-    public Cookie loginAdminUser() {
-       LoginRequest admin = new LoginRequest("testAdmin", "Password#3");
-        return loginAndGetCookie(admin);
+    public String loginAdminUser() {
+       LoginRequest admin = new LoginRequest("Admin", "Password#3");
+       return loginAndGetJwtToken(admin);
     }
 
-    public void logoutUser(Cookie sessionCookie) {
+    private String loginAndGetJwtToken(LoginRequest request) {
         try {
-            mockMvc.perform(post("/api/v1/users/logout").cookie(sessionCookie))
-                    .andExpect(status().isOk());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<LoginRequest> entity = new HttpEntity<>(request, headers);
+
+            ResponseEntity<String> response = restTemplate.postForEntity("/api/v1/auth/login", entity, String.class);
+
+            String cookieHeader = response.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+
+            return extractJwtTokenFromCookie(cookieHeader);
         } catch (Exception e) {
-            throw new RuntimeException("Logout failed " + e.getMessage());
+            throw new RuntimeException("Failed to login");
         }
     }
 
-    public Cookie loginAndGetCookie(LoginRequest request) {
-        try {
-            MvcResult mvcResult = mockMvc.perform(post("/api/v1/users/login")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(asJsonString(request)))
-                    .andExpect(status().isOk())
-                    .andReturn();
-
-            return Arrays.stream(mvcResult.getResponse().getCookies())
-                    .filter(cookie -> "session_id".equals(cookie.getName()))
-                    .findFirst()
-                    .orElseThrow(() -> new AssertionError("Session cookie not found"));
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to login for user " + request.usernameOrEmail());
+    private String extractJwtTokenFromCookie(String cookie) {
+        if (cookie == null) {
+            throw new AssertionError("Cookie header is null; JWT token not found.");
         }
+
+        String[] parts = cookie.split(";");
+        for (String part : parts) {
+            if (part.trim().startsWith("jwtToken=")) {
+                return part.trim().substring("jwtToken=".length());
+            }
+        }
+        throw new AssertionError("JWT token not found within the cookie.");
     }
 }
