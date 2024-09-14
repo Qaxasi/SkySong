@@ -25,11 +25,10 @@ class JwtTokenTest {
 
     private JwtTokenManager jwtManager;
     private TestJwtTokenGenerator testTokenGenerator;
-    private String secretKey;
 
     @BeforeEach
     void setup() {
-        secretKey = "wJ4ds7VbRmFHRP4fX5QbJmTcYZv5P1ZkVN7skO4id8E=s";
+        String secretKey = "wJ4ds7VbRmFHRP4fX5QbJmTcYZv5P1ZkVN7skO4id8E=s";
         long jwtExpiration = 600000L;
         long refreshJwtExpiration = 86400000L;
 
@@ -39,7 +38,7 @@ class JwtTokenTest {
 
     @Test
     void whenGeneratedToken_TokenHasCorrectExpirationTime() {
-        String token = jwtManager.generateToken(getCustomUserDetails());
+        String token = generateToken();
         Claims claims = extractClaims(token);
         Date expiration = claims.getExpiration();
         long expirationTime = expiration.getTime();
@@ -47,6 +46,13 @@ class JwtTokenTest {
 
         assertThat(expirationTime <= expectedExpirationTime &&
                 expirationTime >= expectedExpirationTime - 1000).isTrue();
+    }
+
+    @Test
+    void whenGeneratedToken_TokenContainsCorrectSubject() {
+        String token = generateTokenForUserWithUsername("Alex");
+        Claims claims = extractClaims(token);
+        assertThat(claims.getSubject()).isEqualTo("Alex");
     }
 
     @Test
@@ -59,16 +65,9 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenGeneratedToken_TokenContainsCorrectSubject() {
-        String token = generateTokenForUserWithUsername("Alex");
-        Claims claims = extractClaims(token);
-        assertThat(claims.getSubject()).isEqualTo("Alex");
-    }
-
-    @Test
     void whenGeneratedTokenForUser_ExtractedUsernameIsCorrect() {
         String token = generateTokenForUserWithUsername("Alex");
-        String username = extractUsername(token); // nie używać implementacji ?
+        String username = extractUsername(token);
 
         assertThat(username).isEqualTo("Alex");
     }
@@ -76,7 +75,7 @@ class JwtTokenTest {
     @Test
     void whenGeneratedTokenWithRole_ExtractedRolesAreCorrect() {
         String token = generateTokenForUserWithRoles(List.of("ROLE_USER"));
-        List<String> roles = extractRoles(token); //nie uzywać implementacji ?
+        List<String> roles = extractRoles(token);
 
         assertThat(List.of("ROLE_USER")).isEqualTo(roles);
     }
@@ -109,6 +108,10 @@ class JwtTokenTest {
     void whenTokenIsSignedWithUnsupportedAlgorithm_ValidationFails() {
         String token = createUnsupportedToken();
         assertThat(isTokenValid(token)).isFalse();
+    }
+
+    private String generateToken() {
+        return jwtManager.generateToken(getCustomUserDetails());
     }
 
     private String createUnsupportedToken() {
