@@ -38,6 +38,18 @@ class JwtTokenTest {
     }
 
     @Test
+    void whenGeneratedToken_TokenHasCorrectExpirationTime() {
+        String token = jwtManager.generateToken(getCustomUserDetails());
+        Claims claims = extractClaims(token);
+        Date expiration = claims.getExpiration();
+        long expirationTime = expiration.getTime();
+        long expectedExpirationTime = System.currentTimeMillis() + 600000;
+
+        assertThat(expirationTime <= expectedExpirationTime &&
+                expirationTime >= expectedExpirationTime - 1000).isTrue();
+    }
+
+    @Test
     void whenGeneratedTokenForUser_ExtractedUsernameIsCorrect() {
         String token = generateTokenForUserWithUsername("Alex");
         String username = extractUsername(token); // nie używać implementacji ?
