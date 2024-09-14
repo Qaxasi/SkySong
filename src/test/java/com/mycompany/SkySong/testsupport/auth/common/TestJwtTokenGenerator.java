@@ -68,7 +68,7 @@ public class TestJwtTokenGenerator {
                 .compact();
     }
 
-    private Key generateSignKey() {
+    public Key generateSignKey() {
         byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
