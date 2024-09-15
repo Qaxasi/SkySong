@@ -140,7 +140,7 @@ class RefreshTokenControllerTest extends BaseIT {
 
     private HttpHeaders createHeadersWithCookie(String name, String value) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Cookie", name + value);
+        headers.add(HttpHeaders.COOKIE, name + value);;
         return headers;
     }
 
