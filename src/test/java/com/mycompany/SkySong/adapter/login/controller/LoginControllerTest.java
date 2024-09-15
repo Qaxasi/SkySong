@@ -110,7 +110,7 @@ class LoginControllerTest extends BaseIT {
     void whenLoginSuccess_RefreshTokenCookieHasCorrectPath() {
         createUserWithUsername("Alex");
         ResponseEntity<ApiResponse> response = loginRequest("/api/v1/auth/login", requests.login("Alex"));
-        assertCookiePath(response, "refreshToken", "/refresh-token");
+        assertCookiePath(response, "refreshToken", "/api/v1/auth/refresh-token");
     }
 
     @Test
