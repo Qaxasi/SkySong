@@ -2,6 +2,7 @@ package com.mycompany.SkySong.adapter.login.service;
 
 import com.mycompany.SkySong.adapter.login.dto.LoginDto;
 import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
+import com.mycompany.SkySong.adapter.login.handler.LoginHandler;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;

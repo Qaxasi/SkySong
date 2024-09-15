@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.registration.adapters;
 
+import com.mycompany.SkySong.adapter.registration.persistence.TransactionUserSaver;
 import com.mycompany.SkySong.application.registration.dto.RoleDTO;
 import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;

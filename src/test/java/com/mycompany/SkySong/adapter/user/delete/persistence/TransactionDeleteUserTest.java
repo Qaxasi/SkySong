@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.user.delete.adapters;
 
-import com.mycompany.SkySong.adapter.user.delete.adapters.exception.UserNotFoundException;
+import com.mycompany.SkySong.adapter.user.delete.persistence.TransactionDeleteUser;
+import com.mycompany.SkySong.adapter.user.delete.persistence.exception.UserNotFoundException;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
 import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
