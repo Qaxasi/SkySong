@@ -1,14 +1,13 @@
-package com.mycompany.SkySong.adapter.refreshToken.service;
+package com.mycompany.SkySong.adapter.refreshToken.handler;
 
-import com.mycompany.SkySong.adapter.refreshToken.handler.RefreshTokenHandler;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
-import com.mycompany.SkySong.testsupport.auth.common.TestJwtTokenGenerator;
-import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
-import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
-import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
+import com.mycompany.SkySong.testutils.auth.TestJwtTokenGenerator;
+import com.mycompany.SkySong.testutils.auth.UserBuilder;
+import com.mycompany.SkySong.testutils.auth.UserFixture;
+import com.mycompany.SkySong.testutils.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 

@@ -1,8 +1,7 @@
-package com.mycompany.SkySong.adapter.security;
+package com.mycompany.SkySong.adapter.security.jwt;
 
-import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
-import com.mycompany.SkySong.testsupport.auth.common.TestJwtTokenGenerator;
+import com.mycompany.SkySong.testutils.auth.TestJwtTokenGenerator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

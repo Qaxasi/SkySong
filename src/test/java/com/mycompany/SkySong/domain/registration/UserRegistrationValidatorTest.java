@@ -5,17 +5,17 @@ import com.mycompany.SkySong.domain.registration.exception.CredentialValidationE
 import com.mycompany.SkySong.domain.registration.service.UserRegistrationValidator;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryRoleDAO;
 import com.mycompany.SkySong.infrastructure.dao.InMemoryUserDAO;
-import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
-import com.mycompany.SkySong.testsupport.auth.common.UserRegistrationData;
-import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
-import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
+import com.mycompany.SkySong.testutils.auth.UserBuilder;
+import com.mycompany.SkySong.testutils.data.UserRegistrationData;
+import com.mycompany.SkySong.testutils.auth.UserFixture;
+import com.mycompany.SkySong.testutils.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static com.mycompany.SkySong.testsupport.assertions.CustomAssertions.assertErrorMessage;
-import static com.mycompany.SkySong.testsupport.assertions.ExceptionAssertionUtils.assertException;
+import static com.mycompany.SkySong.testutils.assertions.ExceptionAssertion.assertErrorMessage;
+import static com.mycompany.SkySong.testutils.assertions.ExceptionAssertion.assertException;
 import static org.junit.Assert.assertThrows;
 
 class UserRegistrationValidatorTest {

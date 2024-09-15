@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.auth.security;
+package com.mycompany.SkySong.testutils.auth;
 
 import org.springframework.stereotype.Component;
 

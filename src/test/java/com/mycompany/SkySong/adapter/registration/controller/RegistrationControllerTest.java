@@ -2,11 +2,11 @@ package com.mycompany.SkySong.adapter.registration.controller;
 
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
-import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
-import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
-import com.mycompany.SkySong.testsupport.common.BaseIT;
-import com.mycompany.SkySong.testsupport.auth.common.RegistrationRequestData;
-import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
+import com.mycompany.SkySong.testutils.auth.UserBuilder;
+import com.mycompany.SkySong.testutils.auth.UserFixture;
+import com.mycompany.SkySong.testutils.common.BaseIT;
+import com.mycompany.SkySong.testutils.data.RegistrationRequestData;
+import com.mycompany.SkySong.testutils.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static com.mycompany.SkySong.testsupport.common.JsonUtils.asJsonString;
+import static com.mycompany.SkySong.testutils.utils.JsonUtils.asJsonString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RegistrationControllerTest extends BaseIT {

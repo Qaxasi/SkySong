@@ -1,6 +1,5 @@
-package com.mycompany.SkySong.adapter.registration.adapters;
+package com.mycompany.SkySong.adapter.registration.security;
 
-import com.mycompany.SkySong.adapter.registration.persistence.BCryptEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

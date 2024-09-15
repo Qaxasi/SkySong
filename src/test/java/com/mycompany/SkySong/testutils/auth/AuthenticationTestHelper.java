@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.common;
+package com.mycompany.SkySong.testutils.auth;
 
 import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
 import org.springframework.boot.test.web.client.TestRestTemplate;

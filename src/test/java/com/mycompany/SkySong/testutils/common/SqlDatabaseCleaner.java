@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.common;
+package com.mycompany.SkySong.testutils.common;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

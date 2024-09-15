@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.login.service;
+package com.mycompany.SkySong.adapter.login.handler;
 
 import com.mycompany.SkySong.adapter.login.dto.LoginDto;
 import com.mycompany.SkySong.adapter.login.dto.LoginResponse;

@@ -1,14 +1,14 @@
 package com.mycompany.SkySong.adapter.refreshToken.controller;
 
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponse;
-import com.mycompany.SkySong.testsupport.auth.common.TestJwtTokenGenerator;
+import com.mycompany.SkySong.testutils.auth.TestJwtTokenGenerator;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
 import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
-import com.mycompany.SkySong.testsupport.auth.common.UserBuilder;
-import com.mycompany.SkySong.testsupport.auth.common.UserFixture;
-import com.mycompany.SkySong.testsupport.common.BaseIT;
-import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
+import com.mycompany.SkySong.testutils.auth.UserBuilder;
+import com.mycompany.SkySong.testutils.auth.UserFixture;
+import com.mycompany.SkySong.testutils.common.BaseIT;
+import com.mycompany.SkySong.testutils.utils.CustomPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

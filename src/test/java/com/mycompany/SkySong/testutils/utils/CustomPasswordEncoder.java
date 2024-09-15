@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.utils;
+package com.mycompany.SkySong.testutils.utils;
 
 import com.mycompany.SkySong.domain.registration.ports.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

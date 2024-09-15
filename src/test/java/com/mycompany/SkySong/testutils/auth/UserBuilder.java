@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.testsupport.auth.common;
+package com.mycompany.SkySong.testutils.auth;
 
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.testsupport.utils.CustomPasswordEncoder;
+import com.mycompany.SkySong.testutils.utils.CustomPasswordEncoder;
 
 import java.util.HashSet;
 import java.util.Set;

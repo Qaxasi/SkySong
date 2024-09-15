@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.common;
+package com.mycompany.SkySong.testutils.common;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

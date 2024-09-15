@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.auth.common;
+package com.mycompany.SkySong.testutils.data;
 
 import com.mycompany.SkySong.application.registration.dto.RegisterRequest;
 
@@ -9,9 +9,6 @@ public class RegistrationRequestData {
             new RegisterRequest("", "", "");
     public RegisterRequest requestWithUsername(String username) {
         return new RegisterRequest(username, "new@mail.com", "Password#3");
-    }
-    public RegisterRequest validRequest() {
-        return new RegisterRequest("Alex", "alex@mail.mail", "Password#3");
     }
     public String malformedRequest =
             "{\"username\": \"New\", \"email\": \"new@mail.com\", \"password\": \"Password#3\"";

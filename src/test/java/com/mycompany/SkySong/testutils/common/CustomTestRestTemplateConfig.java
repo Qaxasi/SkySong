@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.common;
+package com.mycompany.SkySong.testutils.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

@@ -1,13 +1,11 @@
-package com.mycompany.SkySong.adapter.registration.adapters;
+package com.mycompany.SkySong.adapter.registration.persistence;
 
-import com.mycompany.SkySong.adapter.registration.persistence.TransactionUserSaver;
 import com.mycompany.SkySong.application.registration.dto.RoleDTO;
 import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
-import com.mycompany.SkySong.testsupport.auth.common.UserCountChecker;
-import com.mycompany.SkySong.testsupport.auth.common.UserExistenceChecker;
-import com.mycompany.SkySong.testsupport.auth.service.UserRoleChecker;
-import com.mycompany.SkySong.testsupport.common.BaseIT;
+import com.mycompany.SkySong.testutils.auth.UserExistenceChecker;
+import com.mycompany.SkySong.testutils.auth.UserRoleChecker;
+import com.mycompany.SkySong.testutils.common.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,8 +20,6 @@ class TransactionUserSaverTest extends BaseIT {
     private UserExistenceChecker userExistenceChecker;
     @Autowired
     private UserRoleChecker userRoleChecker;
-    @Autowired
-    private UserCountChecker userCountChecker;
 
     @Test
     void whenUserSaved_UserExist() {

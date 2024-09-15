@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.registration.adapters;
+package com.mycompany.SkySong.adapter.registration.security;
 
 
 import com.mycompany.SkySong.domain.registration.ports.PasswordEncoder;

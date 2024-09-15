@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.auth.common;
+package com.mycompany.SkySong.testutils.data;
 
 import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 

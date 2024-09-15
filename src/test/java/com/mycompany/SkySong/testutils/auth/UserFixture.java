@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.auth.common;
+package com.mycompany.SkySong.testutils.auth;
 
 import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
 import com.mycompany.SkySong.domain.shared.entity.Role;

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.registration.adapters;
+package com.mycompany.SkySong.adapter.registration.persistence;
 
 import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 import com.mycompany.SkySong.application.registration.mapper.UserRegistrationMapper;

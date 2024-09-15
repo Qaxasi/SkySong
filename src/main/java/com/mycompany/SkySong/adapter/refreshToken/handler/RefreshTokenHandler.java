@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.refreshToken.service;
+package com.mycompany.SkySong.adapter.refreshToken.handler;
 
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;

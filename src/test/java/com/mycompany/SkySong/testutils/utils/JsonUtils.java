@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.common;
+package com.mycompany.SkySong.testutils.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

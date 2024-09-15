@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.testsupport.auth.common;
+package com.mycompany.SkySong.testutils.auth;
 
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
