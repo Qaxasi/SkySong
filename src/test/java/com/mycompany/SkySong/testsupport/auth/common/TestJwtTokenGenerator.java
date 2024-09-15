@@ -19,7 +19,7 @@ public class TestJwtTokenGenerator {
     private final long refreshJwtExpiration;
 
     public TestJwtTokenGenerator() {
-        this.secretKey = "wJ4ds7VbRmFHRP4fX5QbJmTcYZv5P1ZkVN7skO4id8E=";
+        this.secretKey = "wJ4ds7VbRmFHRP4fX5QbJmTcYZv5P1ZkVN7/kO4id8E=";
         this.jwtExpiration = 600000;
         this.refreshJwtExpiration = 86400000;
     }
