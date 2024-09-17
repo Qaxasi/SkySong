@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.exception.handler;
 
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
+import com.mycompany.SkySong.adapter.geocoding.exception.*;
 import com.mycompany.SkySong.adapter.user.delete.persistence.exception.UserNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
@@ -18,6 +19,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TooManyListenersException;
 
 @Slf4j
 @ControllerAdvice
@@ -28,6 +30,32 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error: " + ex.getMessage());
         return ErrorResponseBuilder.createErrorResponse("Internal server error",
                 HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(TooManyListenersException.class)
+    public ResponseEntity<Object> handleTooManyListenersException(final TooManyRequestsException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<Object> handleAuthorizationException(final AuthorizationException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(ServerIsUnavailable.class)
+    public ResponseEntity<Object> handleServerIsUnavailableException(final ServerIsUnavailable ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+
+    @ExceptionHandler(WebClientException.class)
+    public ResponseEntity<Object> handleWebClientException(final WebClientException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<Object> handleDataNotFoundException(final DataNotFoundException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
