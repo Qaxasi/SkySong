@@ -10,7 +10,7 @@ public class WebClientConfig {
     @Bean
     public WebClient geocodingWebClient() {
         return WebClient.builder()
-                .baseUrl("https://api.geoapify.com/v1/geocode")
+                .baseUrl("https://api.geoapify.com/v1/geocode/search")
                 .defaultHeaders(headers -> headers.setContentType(MediaType.APPLICATION_JSON))
                 .build();
     }
