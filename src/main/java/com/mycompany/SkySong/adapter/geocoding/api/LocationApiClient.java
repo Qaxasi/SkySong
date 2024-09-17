@@ -1,0 +1,73 @@
+package com.mycompany.SkySong.adapter.geocoding.api;
+
+import com.mycompany.SkySong.adapter.geocoding.dto.LocationResponse;
+import com.mycompany.SkySong.adapter.geocoding.dto.LocationResult;
+import com.mycompany.SkySong.adapter.geocoding.exception.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.Objects;
+
+@Service
+@Slf4j
+public class LocationApiClient {
+
+    private final String API_KEY;
+    private final WebClient webClient;
+    private final Duration timeout;
+
+    public LocationApiClient(@Qualifier("geocodingWebClient") WebClient webClient,
+                             @Value("${GEOCODING_API_KEY}") String apiKey) {
+        this.webClient = Objects.requireNonNull(webClient, "WebClient cannot be null");
+        this.API_KEY = Objects.requireNonNull(apiKey, "API_KEY cannot be null");
+        this.timeout = Duration.ofSeconds(5);
+    }
+
+    public LocationResult fetchGeocodingData(String locationName) {
+        LocationResponse response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("text", locationName)
+                        .queryParam("format", "json")
+                        .queryParam("apiKey", API_KEY)
+                        .queryParam("limit", 1)
+                        .build())
+                .retrieve()
+                .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
+                    log.error("Exceeded number of allowed calls to Geocoding API: {}", res.statusCode());
+                    return Mono.error(new TooManyRequestsException(
+                            "Exceeded number of allowed calls to Geocoding API. Please try again later."));
+                })
+                .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
+                    log.error("Invalid authorization token: {}", res.statusCode());
+                    return Mono.error(new AuthorizationException("Invalid authorization token."));
+                })
+                .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
+                    log.error("Server is unavailable: {}", res.statusCode());
+                    return Mono.error(new ServerIsUnavailable(
+                            "Failed to fetch geocoding data. Please try again later."));
+                })
+                .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, res -> {
+                    log.error("An error occurred while fetching geocoding data: {}", res.statusCode());
+                    return Mono.error(new WebClientException(
+                            "An error occurred while fetching geocoding data."));
+                })
+                .bodyToMono(LocationResponse.class)
+                .timeout(timeout)
+                .block();
+
+        return extractResult(response);
+    }
+
+    private LocationResult extractResult(LocationResponse response) {
+        if (response == null || response.results() == null || response.results().isEmpty()) {
+            throw new DataNotFoundException("The specified location could not be found in our data source.");
+        }
+        return response.results().get(0);
+    }
+}
