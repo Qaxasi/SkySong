@@ -16,14 +16,14 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-public class LocationApiClient {
+public class GeocodingApiClient {
 
     private final String API_KEY;
     private final WebClient webClient;
     private final Duration timeout;
 
-    public LocationApiClient(@Qualifier("geocodingWebClient") WebClient webClient,
-                             @Value("${GEOCODING_API_KEY}") String apiKey) {
+    public GeocodingApiClient(@Qualifier("geocodingWebClient") WebClient webClient,
+                              @Value("${GEOCODING_API_KEY}") String apiKey) {
         this.webClient = Objects.requireNonNull(webClient, "WebClient cannot be null");
         this.API_KEY = Objects.requireNonNull(apiKey, "API_KEY cannot be null");
         this.timeout = Duration.ofSeconds(5);
