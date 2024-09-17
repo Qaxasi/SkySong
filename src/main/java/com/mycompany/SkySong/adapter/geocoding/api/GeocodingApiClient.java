@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.geocoding.api;
 
-import com.mycompany.SkySong.adapter.geocoding.dto.LocationResponse;
-import com.mycompany.SkySong.adapter.geocoding.dto.LocationResult;
+import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResponse;
+import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResult;
 import com.mycompany.SkySong.adapter.geocoding.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,8 +29,8 @@ public class LocationApiClient {
         this.timeout = Duration.ofSeconds(5);
     }
 
-    public LocationResult fetchGeocodingData(String locationName) {
-        LocationResponse response = webClient.get()
+    public GeocodingResult fetchGeocodingData(String locationName) {
+        GeocodingResponse response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("text", locationName)
                         .queryParam("format", "json")
@@ -57,14 +57,14 @@ public class LocationApiClient {
                     return Mono.error(new WebClientException(
                             "An error occurred while fetching geocoding data."));
                 })
-                .bodyToMono(LocationResponse.class)
+                .bodyToMono(GeocodingResponse.class)
                 .timeout(timeout)
                 .block();
 
         return extractResult(response);
     }
 
-    private LocationResult extractResult(LocationResponse response) {
+    private GeocodingResult extractResult(GeocodingResponse response) {
         if (response == null || response.results() == null || response.results().isEmpty()) {
             throw new DataNotFoundException("The specified location could not be found in our data source.");
         }
