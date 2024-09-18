@@ -1,0 +1,103 @@
+{
+  "results": [
+    {
+      "country": "Poland",
+      "country_code": "pl",
+      "state": "Masovian Voivodeship",
+      "city": "Warsaw",
+      "postcode": "00-001",
+      "suburb": "Midtown",
+      "quarter": "Śródmieście Północne",
+      "datasource": {
+        "sourcename": "openstreetmap",
+        "attribution": "© OpenStreetMap contributors",
+        "license": "Open Database License",
+        "url": "https://www.openstreetmap.org/copyright"
+      },
+      "result_type": "suburb",
+      "lon": 21.006524862,
+      "lat": 52.22985215,
+      "parent_as_place_id": true,
+      "formatted": "00-001 Warsaw, Poland",
+      "address_line1": "00-001 Warsaw",
+      "address_line2": "Poland",
+      "category": "administrative",
+      "timezone": {
+        "name": "Europe/Warsaw",
+        "offset_STD": "+01:00",
+        "offset_STD_seconds": 3600,
+        "offset_DST": "+02:00",
+        "offset_DST_seconds": 7200,
+        "abbreviation_STD": "CET",
+        "abbreviation_DST": "CEST"
+      },
+      "plus_code": "9G4362H4+WJ",
+      "plus_code_short": "H4+WJ Warsaw, Masovian Voivodeship, Poland",
+      "rank": {
+        "popularity": 9.995467104553104,
+        "confidence": 1,
+        "confidence_city_level": 1,
+        "match_type": "full_match"
+      },
+      "place_id": "51a2e6049dab01354059289595cb6b1d4a40f00101f90112c5aa0000000000c00205",
+      "bbox": {
+        "lon1": 20.9936039,
+        "lat1": 52.2277151,
+        "lon2": 21.0264704,
+        "lat2": 52.2468228
+      }
+    },
+    {
+      "datasource": {
+        "sourcename": "openstreetmap",
+        "attribution": "© OpenStreetMap contributors",
+        "license": "Open Database License",
+        "url": "https://www.openstreetmap.org/copyright"
+      },
+      "country": "Poland",
+      "country_code": "pl",
+      "state": "Masovian Voivodeship",
+      "city": "Warsaw",
+      "lon": 21.0067249,
+      "lat": 52.2319581,
+      "result_type": "city",
+      "formatted": "Warsaw, Masovian Voivodeship, Poland",
+      "address_line1": "Warsaw",
+      "address_line2": "Masovian Voivodeship, Poland",
+      "category": "administrative",
+      "timezone": {
+        "name": "Europe/Warsaw",
+        "offset_STD": "+01:00",
+        "offset_STD_seconds": 3600,
+        "offset_DST": "+02:00",
+        "offset_DST_seconds": 7200,
+        "abbreviation_STD": "CET",
+        "abbreviation_DST": "CEST"
+      },
+      "plus_code": "9G4362J4+QM",
+      "plus_code_short": "J4+QM Warsaw, Masovian Voivodeship, Poland",
+      "rank": {
+        "importance": 0.8366192757766009,
+        "popularity": 9.995467104553104,
+        "confidence": 1,
+        "confidence_city_level": 1,
+        "match_type": "full_match"
+      },
+      "place_id": "51a19119b9b8013540596ac592cdb01d4a40f00101f901cb20050000000000c00208",
+      "bbox": {
+        "lon1": 20.8516882,
+        "lat1": 52.0978497,
+        "lon2": 21.2711512,
+        "lat2": 52.3681531
+      }
+    }
+  ],
+  "query": {
+    "text": "Warsaw 00-001",
+    "parsed": {
+      "postcode": "00-001",
+      "city": "warsaw",
+      "expected_type": "postcode"
+    }
+  }
+}
