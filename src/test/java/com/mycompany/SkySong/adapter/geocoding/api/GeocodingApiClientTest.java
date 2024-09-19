@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.geocoding.api;
 
+import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResult;
-import com.mycompany.SkySong.adapter.geocoding.exception.*;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,6 +118,23 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withBody("{\"results\": []}")));
 
         assertThrows(DataNotFoundException.class, () -> fetchGeocodingData("NonexistentLocation"));
+    }
+
+    @Test
+    void whenRequestTimeout_ClientThrowsException() {
+        wireMockServer.stubFor(get(urlPathEqualTo("/v1/geocode"))
+                .withQueryParam("text", equalTo("Warsaw 00-001"))
+                .withQueryParam("format", equalTo("json"))
+                .withQueryParam("apiKey", equalTo("test-api-key"))
+                .withQueryParam("limit", equalTo("1"))
+                .willReturn(aResponse()
+                        .withFixedDelay(6000)
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(geocodingResponse)));
+
+        assertThrows(WebClientTimeoutException.class,  () -> fetchGeocodingData("Warsaw 00-001"));
+
     }
 
     private GeocodingResult fetchGeocodingData(String locationName) {
