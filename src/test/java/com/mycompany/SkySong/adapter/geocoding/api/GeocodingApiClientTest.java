@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.geocoding.api;
 
 import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResult;
+import com.mycompany.SkySong.adapter.geocoding.exception.AuthorizationException;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GeocodingApiClientTest extends BaseWireMock {
 
@@ -45,6 +47,19 @@ class GeocodingApiClientTest extends BaseWireMock {
 
         assertThat(result.lat()).isEqualTo(52.22985215);
         assertThat(result.lon()).isEqualTo(21.006524862);
+    }
 
+    @Test
+    void whenInvalidApiKeyProvided_ThrowException() {
+        wireMockServer.stubFor(get(urlPathEqualTo("/v1/geocode"))
+                .withQueryParam("text", equalTo("Warsaw 00-001"))
+                .withQueryParam("format", equalTo("json"))
+                .withQueryParam("apiKey", equalTo("test-api-key"))
+                .withQueryParam("limit", equalTo("1"))
+                .willReturn(aResponse()
+                        .withStatus(401)
+                        .withHeader("Content-Type", "application/json")));
+
+        assertThrows(AuthorizationException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
     }
 }
