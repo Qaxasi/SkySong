@@ -54,7 +54,7 @@ public class GeocodingApiClient {
                 })
                 .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, res -> {
                     log.error("An error occurred while fetching geocoding data: {}", res.statusCode());
-                    return Mono.error(new WebClientException(
+                    return Mono.error(new InternalServerErrorException(
                             "An error occurred while fetching geocoding data."));
                 })
                 .bodyToMono(GeocodingResponse.class)

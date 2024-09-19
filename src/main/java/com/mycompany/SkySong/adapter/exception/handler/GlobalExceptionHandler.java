@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(WebClientException.class)
-    public ResponseEntity<Object> handleWebClientException(final WebClientException ex) {
+    @ExceptionHandler(InternalServerErrorException.class)
+    public ResponseEntity<Object> handleWebClientException(final InternalServerErrorException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
