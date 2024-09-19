@@ -27,4 +27,24 @@ class GeocodingApiClientTest extends BaseWireMock {
 
         geocodingApi = new GeocodingApiClient(webClient, "test-api-key");
     }
+
+    @Test
+    void whenGeocodingIsSuccessful_ReturnCorrectCoordinates() {
+        wireMockServer.stubFor(get(urlPathEqualTo("/v1/geocode"))
+                .withQueryParam("text", equalTo("Warsaw 00-001"))
+                .withQueryParam("format", equalTo("json"))
+                .withQueryParam("apiKey", equalTo("test-api-key"))
+                .withQueryParam("limit", equalTo("1"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(geocodingResponse)));
+
+        GeocodingResult result = geocodingApi.fetchGeocodingData("Warsaw 00-001");
+
+
+        assertThat(result.lat()).isEqualTo(52.22985215);
+        assertThat(result.lon()).isEqualTo(21.006524862);
+
+    }
 }
