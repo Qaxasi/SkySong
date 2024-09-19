@@ -106,7 +106,7 @@ class GeocodingApiClientTest extends BaseWireMock {
     }
 
     @Test
-    void whenNoResultsFound_ClientThrowsDataNotFoundException() {
+    void whenNoResultsFound_ClientThrowsException() {
         wireMockServer.stubFor(get(urlPathEqualTo("/v1/geocode"))
                 .withQueryParam("text", equalTo("NonexistentLocation"))
                 .withQueryParam("format", equalTo("json"))
