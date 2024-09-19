@@ -2,6 +2,7 @@ package com.mycompany.SkySong.adapter.geocoding.api;
 
 import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResult;
 import com.mycompany.SkySong.adapter.geocoding.exception.AuthorizationException;
+import com.mycompany.SkySong.adapter.geocoding.exception.InternalServerErrorException;
 import com.mycompany.SkySong.adapter.geocoding.exception.ServiceUnavailableException;
 import com.mycompany.SkySong.adapter.geocoding.exception.TooManyRequestsException;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
@@ -91,5 +92,19 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withHeader("Content-Type", "application/json")));
 
         assertThrows(ServiceUnavailableException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
+    }
+
+    @Test
+    void whenServerReturnsInternalError_ClientThrowsException() {
+        wireMockServer.stubFor(get(urlPathEqualTo("/v1/geocode"))
+                .withQueryParam("text", equalTo("Warsaw 00-001"))
+                .withQueryParam("format", equalTo("json"))
+                .withQueryParam("apiKey", equalTo("test-api-key"))
+                .withQueryParam("limit", equalTo("1"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")));
+
+        assertThrows(InternalServerErrorException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
     }
 }
