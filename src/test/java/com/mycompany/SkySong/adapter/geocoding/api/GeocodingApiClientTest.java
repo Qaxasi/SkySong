@@ -2,6 +2,7 @@ package com.mycompany.SkySong.adapter.geocoding.api;
 
 import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResult;
 import com.mycompany.SkySong.adapter.geocoding.exception.AuthorizationException;
+import com.mycompany.SkySong.adapter.geocoding.exception.TooManyRequestsException;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,5 +62,19 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withHeader("Content-Type", "application/json")));
 
         assertThrows(AuthorizationException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
+    }
+
+    @Test
+    void whenToManyRequests_ThrowException() {
+        wireMockServer.stubFor(get(urlPathEqualTo("/v1/geocode"))
+                .withQueryParam("text", equalTo("Warsaw 00-001"))
+                .withQueryParam("format", equalTo("json"))
+                .withQueryParam("apiKey", equalTo("test-api-key"))
+                .withQueryParam("limit", equalTo("1"))
+                .willReturn(aResponse()
+                        .withStatus(429)
+                        .withHeader("Content-Type", "application/json")));
+
+        assertThrows(TooManyRequestsException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
     }
 }
