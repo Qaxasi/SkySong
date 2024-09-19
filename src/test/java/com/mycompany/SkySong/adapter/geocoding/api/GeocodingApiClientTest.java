@@ -58,7 +58,8 @@ class GeocodingApiClientTest extends BaseWireMock {
                 .withQueryParam("limit", equalTo("1"))
                 .willReturn(aResponse()
                         .withStatus(401)
-                        .withHeader("Content-Type", "application/json")));
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Invalid API key\"")));
 
         assertThrows(AuthorizationException.class, () -> fetchGeocodingData("Warsaw 00-001"));
     }
@@ -72,7 +73,8 @@ class GeocodingApiClientTest extends BaseWireMock {
                 .withQueryParam("limit", equalTo("1"))
                 .willReturn(aResponse()
                         .withStatus(429)
-                        .withHeader("Content-Type", "application/json")));
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"To many requests error\"")));
 
         assertThrows(TooManyRequestsException.class, () -> fetchGeocodingData("Warsaw 00-001"));
     }
@@ -86,7 +88,8 @@ class GeocodingApiClientTest extends BaseWireMock {
                 .withQueryParam("limit", equalTo("1"))
                 .willReturn(aResponse()
                         .withStatus(503)
-                        .withHeader("Content-Type", "application/json")));
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Service unavailable error\"")));
 
         assertThrows(ServiceUnavailableException.class, () -> fetchGeocodingData("Warsaw 00-001"));
     }
@@ -100,7 +103,8 @@ class GeocodingApiClientTest extends BaseWireMock {
                 .withQueryParam("limit", equalTo("1"))
                 .willReturn(aResponse()
                         .withStatus(500)
-                        .withHeader("Content-Type", "application/json")));
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Internal server error\"")));
 
         assertThrows(InternalServerErrorException.class, () -> fetchGeocodingData("Warsaw 00-001"));
     }
