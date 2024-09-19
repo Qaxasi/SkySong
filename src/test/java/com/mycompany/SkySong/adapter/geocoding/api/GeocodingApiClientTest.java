@@ -42,7 +42,7 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withHeader("Content-Type", "application/json")
                         .withBody(geocodingResponse)));
 
-        GeocodingResult result = geocodingApi.fetchGeocodingData("Warsaw 00-001");
+        GeocodingResult result = fetchGeocodingData("Warsaw 00-001");
 
 
         assertThat(result.lat()).isEqualTo(52.22985215);
@@ -60,7 +60,7 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withStatus(401)
                         .withHeader("Content-Type", "application/json")));
 
-        assertThrows(AuthorizationException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
+        assertThrows(AuthorizationException.class, () -> fetchGeocodingData("Warsaw 00-001"));
     }
 
     @Test
@@ -74,7 +74,7 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withStatus(429)
                         .withHeader("Content-Type", "application/json")));
 
-        assertThrows(TooManyRequestsException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
+        assertThrows(TooManyRequestsException.class, () -> fetchGeocodingData("Warsaw 00-001"));
     }
 
     @Test
@@ -88,7 +88,7 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withStatus(503)
                         .withHeader("Content-Type", "application/json")));
 
-        assertThrows(ServiceUnavailableException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
+        assertThrows(ServiceUnavailableException.class, () -> fetchGeocodingData("Warsaw 00-001"));
     }
 
     @Test
@@ -102,7 +102,7 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withStatus(500)
                         .withHeader("Content-Type", "application/json")));
 
-        assertThrows(InternalServerErrorException.class, () -> geocodingApi.fetchGeocodingData("Warsaw 00-001"));
+        assertThrows(InternalServerErrorException.class, () -> fetchGeocodingData("Warsaw 00-001"));
     }
 
     @Test
@@ -117,6 +117,10 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withHeader("Content-Type", "application/json")
                         .withBody("{\"results\": []}")));
 
-        assertThrows(DataNotFoundException.class, () -> geocodingApi.fetchGeocodingData("NonexistentLocation"));
+        assertThrows(DataNotFoundException.class, () -> fetchGeocodingData("NonexistentLocation"));
+    }
+
+    private GeocodingResult fetchGeocodingData(String locationName) {
+        return geocodingApi.fetchGeocodingData(locationName);
     }
 }
