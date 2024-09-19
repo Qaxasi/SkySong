@@ -32,6 +32,11 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(WebClientTimeoutException.class)
+    public ResponseEntity<Object> handleWebClientTimeoutException(final WebClientTimeoutException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.REQUEST_TIMEOUT);
+    }
+
     @ExceptionHandler(TooManyListenersException.class)
     public ResponseEntity<Object> handleTooManyListenersException(final TooManyRequestsException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS);
