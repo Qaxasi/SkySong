@@ -14,7 +14,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static com.mycompany.SkySong.testutils.utils.JsonUtils.asJsonString;
+import static com.mycompany.SkySong.testutils.utils.JsonConverter.asJsonString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RegistrationControllerTest extends BaseIT {

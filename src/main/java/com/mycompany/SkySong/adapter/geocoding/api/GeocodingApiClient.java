@@ -49,7 +49,7 @@ public class GeocodingApiClient {
                 })
                 .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
                     log.error("Server is unavailable: {}", res.statusCode());
-                    return Mono.error(new ServerIsUnavailable(
+                    return Mono.error(new ServiceUnavailableException(
                             "Failed to fetch geocoding data. Please try again later."));
                 })
                 .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, res -> {

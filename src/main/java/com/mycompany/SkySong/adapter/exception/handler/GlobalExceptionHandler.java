@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(ServerIsUnavailable.class)
-    public ResponseEntity<Object> handleServerIsUnavailableException(final ServerIsUnavailable ex) {
+    @ExceptionHandler(ServiceUnavailableException.class)
+    public ResponseEntity<Object> handleServerIsUnavailableException(final ServiceUnavailableException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
