@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.geocoding.exception;
+package com.mycompany.SkySong.adapter.exception.common;
 
 public class ServiceUnavailableException extends RuntimeException {
     public ServiceUnavailableException(String message) {

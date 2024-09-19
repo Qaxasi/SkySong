@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.geocoding.exception;
+package com.mycompany.SkySong.adapter.exception.common;
 
 public class WebClientTimeoutException extends RuntimeException {
     public WebClientTimeoutException(String message) {

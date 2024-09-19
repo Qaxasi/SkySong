@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.exception.handler;
 
+import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
-import com.mycompany.SkySong.adapter.geocoding.exception.*;
 import com.mycompany.SkySong.adapter.user.delete.persistence.exception.UserNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
