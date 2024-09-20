@@ -14,4 +14,12 @@ public class WebClientConfig {
                 .defaultHeaders(headers -> headers.setContentType(MediaType.APPLICATION_JSON))
                 .build();
     }
+
+    @Bean
+    public WebClient weatherWebClient() {
+        return WebClient.builder()
+                .baseUrl("https://api.openweathermap.org/data/2.5/weather?")
+                .defaultHeaders(headers -> headers.setContentType(MediaType.APPLICATION_JSON))
+                .build();
+    }
 }
