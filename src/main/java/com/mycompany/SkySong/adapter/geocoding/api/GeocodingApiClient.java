@@ -19,14 +19,14 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class GeocodingApiClient {
 
-    private final String API_KEY;
+    private final String apiKey;
     private final WebClient webClient;
     private final Duration timeout;
 
     public GeocodingApiClient(@Qualifier("geocodingWebClient") WebClient webClient,
                               @Value("${GEOCODING_API_KEY}") String apiKey) {
         this.webClient = Objects.requireNonNull(webClient, "WebClient cannot be null");
-        this.API_KEY = Objects.requireNonNull(apiKey, "API_KEY cannot be null");
+        this.apiKey = Objects.requireNonNull(apiKey, "API_KEY cannot be null");
         this.timeout = Duration.ofSeconds(5);
     }
 
@@ -36,7 +36,7 @@ public class GeocodingApiClient {
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("text", locationName)
                             .queryParam("format", "json")
-                            .queryParam("apiKey", API_KEY)
+                            .queryParam("apiKey", apiKey)
                             .queryParam("limit", 1)
                             .build())
                     .retrieve()
