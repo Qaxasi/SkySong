@@ -1,4 +1,4 @@
 package com.mycompany.SkySong.adapter.geocoding.dto;
 
-public record GeocodingResult(Double lat, Double lon) {
+public record GeocodingResult(double lat, double lon) {
 }
