@@ -77,8 +77,8 @@ public class WeatherApiClient {
             throw new NullPointerException("Weather API response is null");
         }
 
-        if (response.daytimeInfoDto() == null || response.conditionsDto() == null ||
-                response.windInfoDto() == null || response.cloudsInfoDto() == null || response.weather().isEmpty()) {
+        if (response.daytimeInfo() == null || response.atmosphericConditions() == null ||
+                response.windInfo() == null || response.cloudsInfo() == null || response.weather().isEmpty()) {
             log.error("Incomplete weather data received: {}", response);
             throw new DataNotFoundException("Received incomplete weather data.");
         }
