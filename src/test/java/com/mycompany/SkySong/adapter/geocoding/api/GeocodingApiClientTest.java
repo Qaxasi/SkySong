@@ -110,7 +110,7 @@ class GeocodingApiClientTest extends BaseWireMock {
     }
 
     @Test
-    void whenNoResultsFound_ClientThrowsException() {
+    void whenNoResultsFound_ThrowException() {
         wireMockServer.stubFor(get(urlPathEqualTo("/v1/geocode"))
                 .withQueryParam("text", equalTo("NonexistentLocation"))
                 .withQueryParam("format", equalTo("json"))
@@ -125,7 +125,7 @@ class GeocodingApiClientTest extends BaseWireMock {
     }
 
     @Test
-    void whenRequestTimeout_ClientThrowsException() {
+    void whenRequestTimeout_ThrowException() {
         wireMockServer.stubFor(get(urlPathEqualTo("/v1/geocode"))
                 .withQueryParam("text", equalTo("Warsaw 00-001"))
                 .withQueryParam("format", equalTo("json"))
