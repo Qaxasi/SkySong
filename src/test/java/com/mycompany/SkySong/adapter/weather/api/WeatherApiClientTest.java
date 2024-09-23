@@ -1,9 +1,6 @@
 package com.mycompany.SkySong.adapter.weather.api;
 
-import com.mycompany.SkySong.adapter.exception.common.AuthorizationException;
-import com.mycompany.SkySong.adapter.exception.common.InternalServerErrorException;
-import com.mycompany.SkySong.adapter.exception.common.ServiceUnavailableException;
-import com.mycompany.SkySong.adapter.exception.common.TooManyRequestsException;
+import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.weather.dto.WeatherResponse;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;
@@ -18,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class WeatherApiClientTest extends BaseWireMock {
+class WeatherApiClientTest extends BaseWireMock {
 
     private WeatherApiClient weatherApiClient;
     private String weatherResponse;
@@ -113,6 +110,20 @@ public class WeatherApiClientTest extends BaseWireMock {
                         .withBody("\"message\": \"Internal server error\"")));
 
         assertThrows(InternalServerErrorException.class, () -> fetchWeatherData(52.2299, 21.0065));
+    }
+
+    @Test
+    void whenResponseIsIncomplete_ThrowException() {
+        wireMockServer.stubFor(get(urlPathEqualTo("/v1/weather"))
+                .withQueryParam("lat", equalTo("52.2299"))
+                .withQueryParam("lon", equalTo("21.0065"))
+                .withQueryParam("appid", equalTo("test-api-key"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("{ \"daytimeInfo\": {}, \"weather\": [] }")));
+
+        assertThrows(DataNotFoundException.class, () -> fetchWeatherData(52.2299, 21.0065));
     }
 
     private WeatherResponse fetchWeatherData(double lat, double lon) {
