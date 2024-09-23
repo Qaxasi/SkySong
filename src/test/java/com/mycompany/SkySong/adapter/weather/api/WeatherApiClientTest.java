@@ -126,6 +126,21 @@ class WeatherApiClientTest extends BaseWireMock {
         assertThrows(DataNotFoundException.class, () -> fetchWeatherData(52.2299, 21.0065));
     }
 
+    @Test
+    void whenRequestTimeout_ThrowException() {
+        wireMockServer.stubFor(get(urlPathEqualTo("/v1/weather"))
+                .withQueryParam("lat", equalTo("52.2299"))
+                .withQueryParam("lon", equalTo("21.0065"))
+                .withQueryParam("appid", equalTo("test-api-key"))
+                .willReturn(aResponse()
+                        .withFixedDelay(6000)
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(weatherResponse)));
+
+        assertThrows(RequestTimeoutException.class, () -> fetchWeatherData(52.2299, 21.0065));
+    }
+
     private WeatherResponse fetchWeatherData(double lat, double lon) {
         return weatherApiClient.fetchWeatherData(lat, lon);
     }
