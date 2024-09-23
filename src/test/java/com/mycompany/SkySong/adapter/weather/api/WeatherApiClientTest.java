@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.weather.api;
 
 import com.mycompany.SkySong.adapter.exception.common.AuthorizationException;
+import com.mycompany.SkySong.adapter.exception.common.InternalServerErrorException;
 import com.mycompany.SkySong.adapter.exception.common.ServiceUnavailableException;
 import com.mycompany.SkySong.adapter.exception.common.TooManyRequestsException;
 import com.mycompany.SkySong.adapter.weather.dto.WeatherResponse;
@@ -98,6 +99,20 @@ public class WeatherApiClientTest extends BaseWireMock {
                         .withBody("\"message\": \"Service unavailable error\"")));
 
         assertThrows(ServiceUnavailableException.class, () -> fetchWeatherData(52.2299, 21.0065));
+    }
+
+    @Test
+    void whenServerReturnsInternalError_ClientThrowsException() {
+        wireMockServer.stubFor(get(urlPathEqualTo("/v1/weather"))
+                .withQueryParam("lat", equalTo("52.2299"))
+                .withQueryParam("lon", equalTo("21.0065"))
+                .withQueryParam("appid", equalTo("test-api-key"))
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Internal server error\"")));
+
+        assertThrows(InternalServerErrorException.class, () -> fetchWeatherData(52.2299, 21.0065));
     }
 
     private WeatherResponse fetchWeatherData(double lat, double lon) {
