@@ -66,7 +66,7 @@ public class GeocodingApiClient {
             return extractResult(response);
         } catch (RuntimeException ex) {
             if (ex.getCause() instanceof TimeoutException) {
-                throw new WebClientTimeoutException("Request timed out while fetching geocoding data", ex);
+                throw new RequestTimeoutException("Request timed out while fetching geocoding data", ex);
             }
             throw ex;
         }

@@ -32,8 +32,8 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(WebClientTimeoutException.class)
-    public ResponseEntity<Object> handleWebClientTimeoutException(final WebClientTimeoutException ex) {
+    @ExceptionHandler(RequestTimeoutException.class)
+    public ResponseEntity<Object> handleWebClientTimeoutException(final RequestTimeoutException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.REQUEST_TIMEOUT);
     }
 

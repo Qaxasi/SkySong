@@ -137,7 +137,7 @@ class GeocodingApiClientTest extends BaseWireMock {
                         .withHeader("Content-Type", "application/json")
                         .withBody(geocodingResponse)));
 
-        assertThrows(WebClientTimeoutException.class,  () -> fetchGeocodingData("Warsaw 00-001"));
+        assertThrows(RequestTimeoutException.class,  () -> fetchGeocodingData("Warsaw 00-001"));
 
     }
 
