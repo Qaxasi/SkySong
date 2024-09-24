@@ -7,6 +7,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
+
+    @Bean
+    public WebClient spotifyWebClient() {
+        return WebClient.builder()
+                .baseUrl("https://accounts.spotify.com")
+                .defaultHeaders(headers -> headers.setContentType(MediaType.APPLICATION_JSON))
+                .build();
+    }
+
     @Bean
     public WebClient geocodingWebClient() {
         return WebClient.builder()
