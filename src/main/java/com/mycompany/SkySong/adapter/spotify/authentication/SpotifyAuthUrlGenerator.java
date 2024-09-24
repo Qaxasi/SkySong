@@ -8,17 +8,17 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class SpotifyAuthUrlHandler {
+public class SpotifyAuthUrlGenerator {
 
     private final String authUri;
     private final String spotifyClientId;
     private final String redirectUri;
     private final String scope;
 
-    public SpotifyAuthUrlHandler(@Value("${SPOTIFY_AUTH_URI}") String authUri,
-                                 @Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
-                                 @Value("${REDIRECT_URI}") String redirectUri,
-                                 @Value("${SPOTIFY_SCOPE") String scope) {
+    public SpotifyAuthUrlGenerator(@Value("${SPOTIFY_AUTH_URI}") String authUri,
+                                   @Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
+                                   @Value("${REDIRECT_URI}") String redirectUri,
+                                   @Value("${SPOTIFY_SCOPE}") String scope) {
         this.authUri = authUri;
         this.spotifyClientId = spotifyClientId;
         this.redirectUri = redirectUri;
