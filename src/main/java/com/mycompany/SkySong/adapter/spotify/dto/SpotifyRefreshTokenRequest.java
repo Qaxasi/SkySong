@@ -9,7 +9,7 @@ import java.util.List;
 public record SpotifyRefreshTokenRequest(@JsonProperty("grant_type") String grantType,
                                          @JsonProperty("refresh_token") String refreshToken) {
 
-    public MultiValueMap<String, String> toMultivalueMap() {
+    public MultiValueMap<String, String> toMultiValueMap() {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.put("grant_type", List.of(this.grantType));
         formData.put("refresh_token", List.of(this.refreshToken));
