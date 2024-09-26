@@ -2,6 +2,8 @@ package com.mycompany.SkySong.adapter.exception.handler;
 
 import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
+import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestClientException;
+import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestServerException;
 import com.mycompany.SkySong.adapter.user.delete.persistence.exception.UserNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
@@ -30,6 +32,16 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error: " + ex.getMessage());
         return ErrorResponseBuilder.createErrorResponse("Internal server error",
                 HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(TokenRequestClientException.class)
+    public ResponseEntity<Object> handleTokenRequestClientException(final TokenRequestClientException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TokenRequestServerException.class)
+    public ResponseEntity<Object> handleTokenRequestServerException(final TokenRequestServerException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(RequestTimeoutException.class)
