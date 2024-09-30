@@ -65,6 +65,7 @@ public class JwtTokenManager {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         extraClaims.put("roles", roles);
+        extraClaims.put("userId", userDetails.id());
 
         return generateToken(extraClaims, userDetails);
     }
