@@ -91,7 +91,14 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenExtractUsernameFromGeneratedToken_UsernameIsCorrect() {
+    void whenExtractingUserIdFromToken_CorrectIdIsReturned() {
+        String token = generateTokenForUserWithId(5);
+        int userId = extractUserId(token);
+        assertThat(userId).isEqualTo(5);
+    }
+
+    @Test
+    void whenExtractingUsernameFromToken_CorrectUsernameIsReturned() {
         String token = generateTokenForUserWithUsername("Alex");
         String username = extractUsername(token);
 
@@ -99,7 +106,7 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenExtractedRolesFromGeneratedToken_RolesAreCorrect() {
+    void whenExtractingRolesFromToken_CorrectRolesAreReturned() {
         String token = generateTokenForUserWithRoles(List.of("ROLE_USER"));
         List<String> roles = extractRoles(token);
 
@@ -203,6 +210,10 @@ class JwtTokenTest {
 
     private List<String> extractRoles(String token) {
         return jwtManager.extractRoles(token);
+    }
+
+    private int extractUserId(String token) {
+        return jwtManager.extractUserId(token);
     }
 
     private Claims extractClaims(String token) {
