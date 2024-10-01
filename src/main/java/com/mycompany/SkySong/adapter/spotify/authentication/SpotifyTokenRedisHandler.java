@@ -1,7 +1,9 @@
 package com.mycompany.SkySong.adapter.spotify.authentication;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SpotifyTokenRedisHandler {
 
     private final RedisTemplate<String, String> redisTemplate;
