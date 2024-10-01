@@ -83,6 +83,14 @@ class JwtTokenTest {
     }
 
     @Test
+    void whenGeneratedAccessToken_TokenContainsExpectedUserId() {
+        String token = generateTokenForUserWithId(5);
+        Claims claims = extractClaims(token);
+
+        assertThat(claims).containsEntry("userId", 5);
+    }
+
+    @Test
     void whenExtractUsernameFromGeneratedToken_UsernameIsCorrect() {
         String token = generateTokenForUserWithUsername("Alex");
         String username = extractUsername(token);
@@ -146,6 +154,12 @@ class JwtTokenTest {
 
     private boolean isTokenValid(String token) {
         return jwtManager.isTokenValid(token);
+    }
+
+    private String generateTokenForUserWithId(int id) {
+        Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_USER"));
+        CustomUserDetails customUserDetails = new CustomUserDetails(id, "alex", "alex@mail.mail", "Password#3", authorities);
+        return jwtManager.generateToken(customUserDetails);
     }
 
     private String generateTokenForUserWithUsername(String username) {
