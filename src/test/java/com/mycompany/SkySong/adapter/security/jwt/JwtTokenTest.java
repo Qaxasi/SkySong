@@ -74,7 +74,7 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenGeneratedAccessToken_TokenContainsExpectedRoles() {
+    void whenAccessTokenIsGenerated_RolesAreIncludedInTokenClaims() {
         List<String> roles = List.of("ROLE_USER");
         String token = generateTokenForUserWithRoles(roles);
         Claims claims = extractClaims(token);
@@ -83,7 +83,7 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenGeneratedAccessToken_TokenContainsExpectedUserId() {
+    void whenAccessTokenIsGenerated_UserIdIsIncludedInTokenClaims() {
         String token = generateTokenForUserWithId(5);
         Claims claims = extractClaims(token);
 
