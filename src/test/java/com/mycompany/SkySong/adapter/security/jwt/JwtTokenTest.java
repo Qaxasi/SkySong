@@ -74,7 +74,7 @@ class JwtTokenTest {
     }
 
     @Test
-    void whenGeneratedAccessToken_TokenContainsExpectedClaims() {
+    void whenGeneratedAccessToken_TokenContainsExpectedRoles() {
         List<String> roles = List.of("ROLE_USER");
         String token = generateTokenForUserWithRoles(roles);
         Claims claims = extractClaims(token);
