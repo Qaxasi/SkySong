@@ -1,9 +1,7 @@
-package com.mycompany.SkySong.adapter.spotify.authentication;
+package com.mycompany.SkySong.adapter.spotify.api;
 
 import com.mycompany.SkySong.adapter.exception.common.RequestTimeoutException;
 import com.mycompany.SkySong.adapter.spotify.dto.SpotifyAccessTokenResponse;
-import com.mycompany.SkySong.adapter.spotify.dto.SpotifyAccessTokenRequest;
-import com.mycompany.SkySong.adapter.spotify.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestClientException;
 import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestServerException;
 import lombok.extern.slf4j.Slf4j;
@@ -20,30 +18,17 @@ import java.util.concurrent.TimeoutException;
 
 @Service
 @Slf4j
-public class SpotifyTokenHandler {
+public class SpotifyTokenClient {
     private final String spotifyClientId;
     private final String spotifyClientSecret;
-    private final String redirectUri;
     private final WebClient webClient;
 
-    public SpotifyTokenHandler(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
-                               @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
-                               @Value("${REDIRECT_URI}") String redirectUri,
-                               @Qualifier("spotifyWebClient") WebClient webClient) {
+    public SpotifyTokenClient(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
+                              @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
+                              @Qualifier("spotifyWebClient") WebClient webClient) {
         this.spotifyClientId = spotifyClientId;
         this.spotifyClientSecret = spotifyClientSecret;
-        this.redirectUri = redirectUri;
         this.webClient = webClient;
-    }
-
-    public SpotifyAccessTokenResponse getAccessToken(String authorizationCode) {
-        MultiValueMap<String, String> formData = new SpotifyAccessTokenRequest("authorization_code", authorizationCode, redirectUri).toMultiValueMap();
-        return sendTokenRequest(formData);
-    }
-
-    public SpotifyAccessTokenResponse refreshAccessToken(String refreshToken) {
-        MultiValueMap<String, String> formData = new SpotifyRefreshTokenRequest("refresh_token", refreshToken).toMultiValueMap();
-        return sendTokenRequest(formData);
     }
 
     public SpotifyAccessTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
