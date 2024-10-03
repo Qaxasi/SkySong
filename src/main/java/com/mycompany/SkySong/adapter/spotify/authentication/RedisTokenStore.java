@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class SpotifyTokenRedisHandler {
+public class RedisTokenStore {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public SpotifyTokenRedisHandler(RedisTemplate<String, String> redisTemplate) {
+    public RedisTokenStore(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
