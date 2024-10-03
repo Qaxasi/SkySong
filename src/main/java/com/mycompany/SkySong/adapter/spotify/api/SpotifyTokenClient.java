@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.spotify.api;
 
 import com.mycompany.SkySong.adapter.exception.common.RequestTimeoutException;
-import com.mycompany.SkySong.adapter.spotify.dto.SpotifyAccessTokenResponse;
+import com.mycompany.SkySong.adapter.spotify.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestClientException;
 import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestServerException;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class SpotifyTokenClient {
         this.webClient = webClient;
     }
 
-    public SpotifyAccessTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
+    public SpotifyTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
         if (bodyData == null || bodyData.isEmpty()) {
             throw new IllegalArgumentException("Request body cannot be null or empty");
         }
@@ -63,7 +63,7 @@ public class SpotifyTokenClient {
                         log.error("Server error while retrieving token. Status: {}, Body: {}", response.statusCode(), errorBody);
                         throw new TokenRequestServerException("Server error: " + errorBody);
                     })
-                    .bodyToMono(SpotifyAccessTokenResponse.class)
+                    .bodyToMono(SpotifyTokenResponse.class)
                     .timeout(Duration.ofSeconds(5))
                     .block();
         } catch (RuntimeException ex) {
