@@ -3,7 +3,7 @@ package com.mycompany.SkySong.adapter.spotify.authentication;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.spotify.api.SpotifyTokenClient;
 import com.mycompany.SkySong.adapter.spotify.dto.SpotifyAccessTokenRequest;
-import com.mycompany.SkySong.adapter.spotify.dto.SpotifyAccessTokenResponse;
+import com.mycompany.SkySong.adapter.spotify.dto.SpotifyTokenResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -12,12 +12,12 @@ import org.springframework.util.MultiValueMap;
 public class SpotifyAccessTokenHandler {
     private final String redirectUri;
     private final JwtTokenManager jwtTokenManager;
-    private final SpotifyTokenRedisHandler redisHandler;
+    private final RedisTokenStore redisTokenStore;
     private final SpotifyTokenClient spotifyTokenClient;
 
     public SpotifyAccessTokenHandler(@Value("${REDIRECT_URI}") String redirectUri,
                                      JwtTokenManager jwtTokenManager,
-                                     SpotifyTokenRedisHandler redisHandler,
+                                     RedisTokenStore redisTokenStore,
                                      SpotifyTokenClient spotifyTokenClient) {
 
         if (redirectUri == null || redirectUri.isEmpty()) {
@@ -25,7 +25,7 @@ public class SpotifyAccessTokenHandler {
         }
         this.redirectUri = redirectUri;
         this.jwtTokenManager = jwtTokenManager;
-        this.redisHandler = redisHandler;
+        this.redisTokenStore = redisTokenStore;
         this.spotifyTokenClient = spotifyTokenClient;
     }
 
@@ -37,13 +37,12 @@ public class SpotifyAccessTokenHandler {
             throw new IllegalArgumentException("Jwt token is missing or invalid");
         }
 
-        int userId = jwtTokenManager.extractUserId(jwtToken);
-
         MultiValueMap<String, String> formData = new SpotifyAccessTokenRequest(
                 "authorization_code", authCode, redirectUri).toMultiValueMap();
-        SpotifyAccessTokenResponse response = spotifyTokenClient.sendTokenRequest(formData);
+        SpotifyTokenResponse response = spotifyTokenClient.sendTokenRequest(formData);
 
-        redisHandler.saveRefreshToken(userId, response.refreshToken());
+        int userId = jwtTokenManager.extractUserId(jwtToken);
+        redisTokenStore.saveRefreshToken(userId, response.refreshToken());
 
         return response.accessToken();
     }

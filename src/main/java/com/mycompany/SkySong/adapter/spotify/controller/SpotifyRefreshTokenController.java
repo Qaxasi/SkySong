@@ -19,7 +19,7 @@ public class SpotifyRefreshTokenController {
 
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse> refreshAccessToken(@CookieValue(name = "jwtToken") String jwtToken,
-                                                     HttpServletResponse response) {
+                                                          HttpServletResponse response) {
         if (jwtToken == null || jwtToken.isEmpty()) {
             throw new IllegalArgumentException("Jwt token is missing or invalid");
         }
