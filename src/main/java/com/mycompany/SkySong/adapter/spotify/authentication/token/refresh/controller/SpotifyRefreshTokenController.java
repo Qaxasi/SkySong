@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.controller;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.handler.SpotifyRefreshTokenHandler;
+import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class SpotifyRefreshTokenController {
 
     private final SpotifyRefreshTokenHandler refreshTokenHandler;
+    private final CookieUtils cookieUtils;
 
-    public SpotifyRefreshTokenController(SpotifyRefreshTokenHandler refreshTokenHandler) {
+    public SpotifyRefreshTokenController(SpotifyRefreshTokenHandler refreshTokenHandler,
+                                         CookieUtils cookieUtils) {
         this.refreshTokenHandler = refreshTokenHandler;
+        this.cookieUtils = cookieUtils;
     }
 
     @PostMapping("/refresh")
@@ -26,12 +31,12 @@ public class SpotifyRefreshTokenController {
 
         String newAccessToken = refreshTokenHandler.refreshSpotifyAccessToken(jwtToken);
 
-        Cookie accessTokenCookie = new Cookie("spotifyAccessToken", newAccessToken);
-        accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setPath("/api/v1/spotify/");
-        accessTokenCookie.setMaxAge(3600);
-        response.addCookie(accessTokenCookie);
+        ResponseCookie cookie = cookieUtils.generateCookie("spotifyAccessToken", newAccessToken, "/api/v1/spotify/", 3600);
 
-        return ResponseEntity.ok(new ApiResponse("Access token refreshed successfully."));
+
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new ApiResponse("Access token refreshed successfully."));
     }
 }

@@ -1,9 +1,11 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.token.access.controller;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.token.access.handler.SpotifyAccessTokenHandler;
+import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class SpotifyCallbackController {
 
     private final SpotifyAccessTokenHandler tokenHandler;
+    private final CookieUtils cookieUtils;
 
-    public SpotifyCallbackController(SpotifyAccessTokenHandler tokenHandler) {
+    public SpotifyCallbackController(SpotifyAccessTokenHandler tokenHandler,
+                                     CookieUtils cookieUtils) {
         this.tokenHandler = tokenHandler;
+        this.cookieUtils = cookieUtils;
     }
 
     @GetMapping("/callback")
@@ -30,12 +35,11 @@ public class SpotifyCallbackController {
 
         String accessToken = tokenHandler.retrieveSpotifyAccessToken(authCode, jwtToken);
 
-        Cookie accessTokenCookie = new Cookie("spotifyAccessToken", accessToken);
-        accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setPath("/api/v1/spotify/");
-        accessTokenCookie.setMaxAge(3600);
-        response.addCookie(accessTokenCookie);
+        ResponseCookie cookie = cookieUtils.generateCookie("spotifyAccessToken", accessToken, "/api/v1/spotify", 3600);
 
-        return ResponseEntity.ok(new ApiResponse("Spotify authorization successful."));
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new ApiResponse("Spotify authorization successful."));
     }
 }
