@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.spotify.authentication;
+package com.mycompany.SkySong.adapter.spotify.authentication.token.access.handler;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,10 @@
-package com.mycompany.SkySong.adapter.spotify.authentication;
+package com.mycompany.SkySong.adapter.spotify.authentication.token.access.handler;
 
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
-import com.mycompany.SkySong.adapter.spotify.api.SpotifyTokenClient;
-import com.mycompany.SkySong.adapter.spotify.dto.SpotifyAccessTokenRequest;
-import com.mycompany.SkySong.adapter.spotify.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.adapter.spotify.authentication.api.SpotifyTokenClient;
+import com.mycompany.SkySong.adapter.spotify.authentication.repository.RedisTokenRepository;
+import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
+import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -12,12 +13,12 @@ import org.springframework.util.MultiValueMap;
 public class SpotifyAccessTokenHandler {
     private final String redirectUri;
     private final JwtTokenManager jwtTokenManager;
-    private final RedisTokenStore redisTokenStore;
+    private final RedisTokenRepository redisTokenRepository;
     private final SpotifyTokenClient spotifyTokenClient;
 
     public SpotifyAccessTokenHandler(@Value("${REDIRECT_URI}") String redirectUri,
                                      JwtTokenManager jwtTokenManager,
-                                     RedisTokenStore redisTokenStore,
+                                     RedisTokenRepository redisTokenRepository,
                                      SpotifyTokenClient spotifyTokenClient) {
 
         if (redirectUri == null || redirectUri.isEmpty()) {
@@ -25,7 +26,7 @@ public class SpotifyAccessTokenHandler {
         }
         this.redirectUri = redirectUri;
         this.jwtTokenManager = jwtTokenManager;
-        this.redisTokenStore = redisTokenStore;
+        this.redisTokenRepository = redisTokenRepository;
         this.spotifyTokenClient = spotifyTokenClient;
     }
 
@@ -42,7 +43,7 @@ public class SpotifyAccessTokenHandler {
         SpotifyTokenResponse response = spotifyTokenClient.sendTokenRequest(formData);
 
         int userId = jwtTokenManager.extractUserId(jwtToken);
-        redisTokenStore.saveRefreshToken(userId, response.refreshToken());
+        redisTokenRepository.saveRefreshToken(userId, response.refreshToken());
 
         return response.accessToken();
     }

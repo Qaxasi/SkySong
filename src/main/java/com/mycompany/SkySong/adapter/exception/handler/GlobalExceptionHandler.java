@@ -2,9 +2,9 @@ package com.mycompany.SkySong.adapter.exception.handler;
 
 import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
-import com.mycompany.SkySong.adapter.spotify.exception.RefreshTokenNotFoundException;
-import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestClientException;
-import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestServerException;
+import com.mycompany.SkySong.adapter.spotify.authentication.exception.RefreshTokenNotFoundException;
+import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestClientException;
+import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
 import com.mycompany.SkySong.adapter.user.delete.persistence.exception.UserNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;

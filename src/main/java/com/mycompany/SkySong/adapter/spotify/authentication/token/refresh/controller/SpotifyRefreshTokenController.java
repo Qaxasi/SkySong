@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.adapter.spotify.controller;
+package com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.controller;
 
-import com.mycompany.SkySong.adapter.spotify.authentication.SpotifyRefreshTokenHandler;
+import com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.handler.SpotifyRefreshTokenHandler;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

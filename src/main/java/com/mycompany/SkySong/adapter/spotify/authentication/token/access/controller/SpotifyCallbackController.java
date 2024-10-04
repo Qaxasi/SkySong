@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.adapter.spotify.controller;
+package com.mycompany.SkySong.adapter.spotify.authentication.token.access.controller;
 
-import com.mycompany.SkySong.adapter.spotify.authentication.SpotifyAccessTokenHandler;
+import com.mycompany.SkySong.adapter.spotify.authentication.token.access.handler.SpotifyAccessTokenHandler;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.adapter.spotify.api;
+package com.mycompany.SkySong.adapter.spotify.authentication.api;
 
 import com.mycompany.SkySong.adapter.exception.common.RequestTimeoutException;
-import com.mycompany.SkySong.adapter.spotify.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestClientException;
-import com.mycompany.SkySong.adapter.spotify.exception.TokenRequestServerException;
+import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestClientException;
+import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.spotify.exception;
+package com.mycompany.SkySong.adapter.spotify.authentication.exception;
 
 public class TokenRequestClientException extends RuntimeException {
     public TokenRequestClientException(String message) {

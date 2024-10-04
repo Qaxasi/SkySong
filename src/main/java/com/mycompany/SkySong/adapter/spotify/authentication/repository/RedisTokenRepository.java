@@ -1,17 +1,17 @@
-package com.mycompany.SkySong.adapter.spotify.authentication;
+package com.mycompany.SkySong.adapter.spotify.authentication.repository;
 
-import com.mycompany.SkySong.adapter.spotify.exception.RefreshTokenNotFoundException;
+import com.mycompany.SkySong.adapter.spotify.authentication.exception.RefreshTokenNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class RedisTokenStore {
+public class RedisTokenRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public RedisTokenStore(RedisTemplate<String, String> redisTemplate) {
+    public RedisTokenRepository(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
