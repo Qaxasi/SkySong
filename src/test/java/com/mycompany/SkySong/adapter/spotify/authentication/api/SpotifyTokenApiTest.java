@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.api;
 
+import com.mycompany.SkySong.adapter.exception.common.RequestTimeoutException;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SpotifyTokenApiTest extends BaseWireMock {
 
@@ -44,6 +46,15 @@ class SpotifyTokenApiTest extends BaseWireMock {
         assertThat(response.accessToken())
                 .isNotEmpty()
                 .isNotNull();
+    }
+
+    @Test
+    void whenRequestTimeout_ThrowException() {
+        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
+                .willReturn(aResponse()
+                        .withFixedDelay(6000)));
+
+        assertThrows(RequestTimeoutException.class, () -> sendTokenRequest());
     }
 
     private SpotifyTokenResponse sendTokenRequest() {
