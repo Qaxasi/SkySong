@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.handler;
 
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
-import com.mycompany.SkySong.adapter.spotify.authentication.api.SpotifyTokenClient;
-import com.mycompany.SkySong.adapter.spotify.authentication.repository.RedisTokenRepository;
+import com.mycompany.SkySong.adapter.spotify.authentication.api.SpotifyTokenApi;
+import com.mycompany.SkySong.adapter.spotify.authentication.repository.RedisTokenStore;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
 import org.springframework.stereotype.Service;
@@ -11,15 +11,15 @@ import org.springframework.util.MultiValueMap;
 @Service
 public class SpotifyRefreshTokenHandler {
     private final JwtTokenManager jwtTokenManager;
-    private final SpotifyTokenClient spotifyTokenClient;
-    private final RedisTokenRepository redisTokenRepository;
+    private final SpotifyTokenApi spotifyTokenApi;
+    private final RedisTokenStore redisTokenStore;
 
     public SpotifyRefreshTokenHandler(JwtTokenManager jwtTokenManager,
-                                      SpotifyTokenClient spotifyTokenClient,
-                                      RedisTokenRepository tokenStore) {
+                                      SpotifyTokenApi spotifyTokenApi,
+                                      RedisTokenStore tokenStore) {
         this.jwtTokenManager = jwtTokenManager;
-        this.spotifyTokenClient = spotifyTokenClient;
-        this.redisTokenRepository = tokenStore;
+        this.spotifyTokenApi = spotifyTokenApi;
+        this.redisTokenStore = tokenStore;
     }
 
     public String refreshSpotifyAccessToken(String jwtToken) {
@@ -29,13 +29,15 @@ public class SpotifyRefreshTokenHandler {
 
         int userId = jwtTokenManager.extractUserId(jwtToken);
 
-        String refreshToken = redisTokenRepository.getRefreshToken(userId);
+        String refreshToken = redisTokenStore.getRefreshToken(userId);
 
         MultiValueMap<String, String> formData = new SpotifyRefreshTokenRequest(
                 "refresh_token", refreshToken).toMultiValueMap();
-        SpotifyTokenResponse response = spotifyTokenClient.sendTokenRequest(formData);
+        SpotifyTokenResponse response = spotifyTokenApi.sendTokenRequest(formData);
 
-        redisTokenRepository.saveRefreshToken(userId, response.refreshToken());
+        if (response.refreshToken() != null && !response.refreshToken().isEmpty()) {
+            redisTokenStore.saveRefreshToken(userId, response.refreshToken());
+        }
 
         return response.accessToken();
     }

@@ -19,7 +19,7 @@ public class RedisTokenRepository {
     if (refreshToken == null || refreshToken.isEmpty()) {
         log.warn("Attempted to save null or empty refresh token for userId: " + userId);
         return;
-    }
+    } // ddo usunięcia ?
         String redisKey = generateRedisKey(userId);
         redisTemplate.opsForValue().set(redisKey, refreshToken);
     }
