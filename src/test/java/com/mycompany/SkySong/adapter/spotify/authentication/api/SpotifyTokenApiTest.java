@@ -3,6 +3,7 @@ package com.mycompany.SkySong.adapter.spotify.authentication.api;
 import com.mycompany.SkySong.adapter.exception.common.RequestTimeoutException;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestClientException;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;
@@ -47,6 +48,17 @@ class SpotifyTokenApiTest extends BaseWireMock {
         assertThat(response.accessToken())
                 .isNotEmpty()
                 .isNotNull();
+    }
+
+    @Test
+    void whenRequestFailsWith4xxError_ThrowException() {
+        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Client error\"")));
+
+        assertThrows(TokenRequestClientException.class, this::sendTokenRequest);
     }
 
     @Test
