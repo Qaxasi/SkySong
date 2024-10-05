@@ -132,13 +132,9 @@ class GeocodingApiClientTest extends BaseWireMock {
                 .withQueryParam("apiKey", equalTo("test-api-key"))
                 .withQueryParam("limit", equalTo("1"))
                 .willReturn(aResponse()
-                        .withFixedDelay(6000)
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(geocodingResponse)));
+                        .withFixedDelay(6000)));
 
         assertThrows(RequestTimeoutException.class,  () -> fetchGeocodingData("Warsaw 00-001"));
-
     }
 
     private GeocodingResult fetchGeocodingData(String locationName) {
