@@ -3,6 +3,7 @@ package com.mycompany.SkySong.adapter.spotify.authentication.api;
 import com.mycompany.SkySong.adapter.exception.common.RequestTimeoutException;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,12 +50,23 @@ class SpotifyTokenApiTest extends BaseWireMock {
     }
 
     @Test
+    void whenRequestFailsWith5xxError_ThrowException() {
+        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
+                .willReturn(aResponse()
+                        .withStatus(500)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Server error\"")));
+
+        assertThrows(TokenRequestServerException.class, this::sendTokenRequest);
+    }
+
+    @Test
     void whenRequestTimeout_ThrowException() {
         wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
                 .willReturn(aResponse()
                         .withFixedDelay(6000)));
 
-        assertThrows(RequestTimeoutException.class, () -> sendTokenRequest());
+        assertThrows(RequestTimeoutException.class, this::sendTokenRequest);
     }
 
     private SpotifyTokenResponse sendTokenRequest() {
