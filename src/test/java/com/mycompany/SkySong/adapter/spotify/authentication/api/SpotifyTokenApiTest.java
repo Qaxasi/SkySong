@@ -30,4 +30,25 @@ class SpotifyTokenApiTest extends BaseWireMock {
 
         spotifyTokenApi = new SpotifyTokenApi("clientId", "clientSecret", webClient);
     }
+
+    @Test
+    void whenTokenRequestSuccessful_ReturnNonEmptyAccessToken() {
+        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(tokenResponse)));
+
+        SpotifyTokenResponse response = sendTokenRequest();
+
+        assertThat(response.accessToken())
+                .isNotEmpty()
+                .isNotNull();
+    }
+
+    private SpotifyTokenResponse sendTokenRequest() {
+        SpotifyAccessTokenRequest tokenRequest = new SpotifyAccessTokenRequest(
+                "authorization_code", "code", "http://localhost:8080/callback");
+        return spotifyTokenApi.sendTokenRequest(tokenRequest.toMultiValueMap());
+    }
 }
