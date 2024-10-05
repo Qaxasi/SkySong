@@ -133,10 +133,7 @@ class WeatherApiClientTest extends BaseWireMock {
                 .withQueryParam("lon", equalTo("21.0065"))
                 .withQueryParam("appid", equalTo("test-api-key"))
                 .willReturn(aResponse()
-                        .withFixedDelay(6000)
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(weatherResponse)));
+                        .withFixedDelay(6000)));
 
         assertThrows(RequestTimeoutException.class, () -> fetchWeatherData(52.2299, 21.0065));
     }
