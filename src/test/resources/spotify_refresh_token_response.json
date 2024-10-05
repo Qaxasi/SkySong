@@ -1,0 +1,7 @@
+{
+  "access_token": "BQD5C-ZTpHXfGHFzyRXuMVc_xyzdf",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "refresh_token": "AQB8y3NfrMlzHqEupNEaGXYZdf",
+  "scope": "user-read-private user-read-email"
+}
