@@ -9,6 +9,7 @@ import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
@@ -40,6 +41,11 @@ class SpotifyTokenApiTest extends BaseWireMock {
     void whenClientSecretIsNull_ThrowException() {
         assertThrows(IllegalArgumentException.class,
                 () -> new SpotifyTokenApi("clientId", null, webClient));
+    }
+
+    @Test
+    void whenBodyDataIsEmpty_ThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> spotifyTokenApi.sendTokenRequest(new LinkedMultiValueMap<>()));
     }
 
     @Test
