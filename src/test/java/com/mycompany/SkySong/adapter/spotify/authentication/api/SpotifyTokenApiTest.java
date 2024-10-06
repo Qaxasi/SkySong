@@ -37,9 +37,15 @@ class SpotifyTokenApiTest extends BaseWireMock {
     }
 
     @Test
+    void whenClientSecretIsNull_ThrowException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new SpotifyTokenApi("clientId", null, webClient));
+    }
+
+    @Test
     void whenClientIdIsNull_ThrowException() {
         assertThrows(IllegalArgumentException.class,
-                () -> new SpotifyTokenApi(null, "testClientSecret", webClient));
+                () -> new SpotifyTokenApi(null, "clientSecret", webClient));
     }
 
     @Test
