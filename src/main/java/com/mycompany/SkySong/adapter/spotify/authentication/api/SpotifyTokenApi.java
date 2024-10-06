@@ -26,14 +26,6 @@ public class SpotifyTokenApi {
     public SpotifyTokenApi(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
                            @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
                            @Qualifier("spotifyWebClient") WebClient webClient) {
-        if (spotifyClientId == null || spotifyClientId.isEmpty()) {
-            throw new IllegalArgumentException("Spotify client id cannot be null or empty");
-        }
-
-        if (spotifyClientSecret == null || spotifyClientSecret.isEmpty()) {
-            throw new IllegalArgumentException("Spotify client secret cannot be null or empty");
-        }
-
         this.spotifyClientId = spotifyClientId;
         this.spotifyClientSecret = spotifyClientSecret;
         this.webClient = webClient;
