@@ -18,14 +18,14 @@ import java.util.concurrent.TimeoutException;
 
 @Service
 @Slf4j
-public class SpotifyTokenClient {
+public class SpotifyTokenApi {
     private final String spotifyClientId;
     private final String spotifyClientSecret;
     private final WebClient webClient;
 
-    public SpotifyTokenClient(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
-                              @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
-                              @Qualifier("spotifyWebClient") WebClient webClient) {
+    public SpotifyTokenApi(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
+                           @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
+                           @Qualifier("spotifyWebClient") WebClient webClient) {
         if (spotifyClientId == null || spotifyClientId.isEmpty()) {
             throw new IllegalArgumentException("Spotify client id cannot be null or empty");
         }
@@ -54,14 +54,12 @@ public class SpotifyTokenClient {
                     .bodyValue(bodyData)
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, response -> {
-                        String errorBody = response.bodyToMono(String.class).block();
-                        log.error("Client error while retrieving token. Status: {}, Body: {}", response.statusCode(), errorBody);
-                        throw new TokenRequestClientException("Client error: " + errorBody);
+                        log.error("Client error while retrieving token. Status: {}", response.statusCode());
+                        throw new TokenRequestClientException("Client error: " + response.statusCode());
                     })
                     .onStatus(HttpStatusCode::is5xxServerError, response -> {
-                        String errorBody = response.bodyToMono(String.class).block();
-                        log.error("Server error while retrieving token. Status: {}, Body: {}", response.statusCode(), errorBody);
-                        throw new TokenRequestServerException("Server error: " + errorBody);
+                        log.error("Server error while retrieving token. Status: {}", response.statusCode());
+                        throw new TokenRequestServerException("Server error: " + response.statusCode());
                     })
                     .bodyToMono(SpotifyTokenResponse.class)
                     .timeout(Duration.ofSeconds(5))
