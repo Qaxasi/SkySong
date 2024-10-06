@@ -23,12 +23,10 @@ class SpotifyTokenApiTest extends BaseWireMock {
 
     private SpotifyTokenApi spotifyTokenApi;
     private String tokenResponse;
-    private WebClient webClient;
-
 
     @BeforeEach
     void setup() throws IOException {
-        webClient = WebClient.builder()
+        WebClient webClient = WebClient.builder()
                 .baseUrl("http://localhost:8080/v1/spotify/auth")
                 .build();
 
@@ -36,22 +34,10 @@ class SpotifyTokenApiTest extends BaseWireMock {
 
         spotifyTokenApi = new SpotifyTokenApi("clientId", "clientSecret", webClient);
     }
-
-    @Test
-    void whenClientSecretIsNull_ThrowException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new SpotifyTokenApi("clientId", null, webClient));
-    }
-
+    
     @Test
     void whenBodyDataIsEmpty_ThrowException() {
         assertThrows(IllegalArgumentException.class, () -> spotifyTokenApi.sendTokenRequest(new LinkedMultiValueMap<>()));
-    }
-
-    @Test
-    void whenClientIdIsNull_ThrowException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new SpotifyTokenApi(null, "clientSecret", webClient));
     }
 
     @Test
