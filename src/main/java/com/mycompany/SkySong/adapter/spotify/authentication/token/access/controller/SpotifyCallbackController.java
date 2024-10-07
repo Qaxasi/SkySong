@@ -25,7 +25,7 @@ public class SpotifyCallbackController {
     public ResponseEntity<ApiResponse> handleSpotifyCallback(@RequestParam("code") String authCode,
                                                              @CookieValue(name = "jwtToken") String jwtToken) {
         if (jwtToken.isEmpty()) {
-            throw new IllegalArgumentException("Jwt token is missing or invalid");
+            throw new IllegalArgumentException("Jwt is empty");
         }
 
         String accessToken = tokenHandler.retrieveSpotifyAccessToken(authCode, jwtToken);
