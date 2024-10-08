@@ -37,7 +37,7 @@ public class JwtTokenManager {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public int extractUserId(String token) {
+    public Integer extractUserId(String token) {
         return extractClaim(token, claims -> claims.get("userId", Integer.class));
     }
 
