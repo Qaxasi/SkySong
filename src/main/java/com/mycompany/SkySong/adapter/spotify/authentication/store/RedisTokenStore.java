@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.repository;
+package com.mycompany.SkySong.adapter.spotify.authentication.store;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.RefreshTokenNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +16,6 @@ public class RedisTokenStore {
     }
 
     public void saveRefreshToken(int userId, String refreshToken) {
-    if (refreshToken == null || refreshToken.isEmpty()) {
-        log.warn("Attempted to save null or empty refresh token for userId: " + userId);
-        return;
-    } // ddo usunięcia ?
         String redisKey = generateRedisKey(userId);
         redisTemplate.opsForValue().set(redisKey, refreshToken);
     }
