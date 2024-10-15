@@ -78,7 +78,7 @@ public class SpotifyTokenApi {
         }
     }
 
-    public Result<SpotifyTokenResponse> sendTokenRequestWithValidation(MultiValueMap<String, String> bodyData,
+    private Result<SpotifyTokenResponse> sendTokenRequestWithValidation(MultiValueMap<String, String> bodyData,
                                                                        Function<SpotifyTokenResponse, Result<Void>> validator) {
         SpotifyTokenResponse response = sendTokenRequest(bodyData);
 
