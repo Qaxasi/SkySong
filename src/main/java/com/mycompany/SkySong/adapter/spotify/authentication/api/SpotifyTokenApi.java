@@ -1,9 +1,13 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.api;
 
 import com.mycompany.SkySong.adapter.exception.common.RequestTimeoutException;
+import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
+import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestClientException;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
+import com.mycompany.SkySong.adapter.spotify.authentication.xyz.SpotifyTokenValidator;
+import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,20 +26,19 @@ public class SpotifyTokenApi {
     private final String spotifyClientId;
     private final String spotifyClientSecret;
     private final WebClient webClient;
+    private final SpotifyTokenValidator tokenValidator;
 
     public SpotifyTokenApi(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
                            @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
-                           @Qualifier("spotifyWebClient") WebClient webClient) {
+                           @Qualifier("spotifyWebClient") WebClient webClient,
+                           SpotifyTokenValidator tokenValidator) {
         this.spotifyClientId = spotifyClientId;
         this.spotifyClientSecret = spotifyClientSecret;
         this.webClient = webClient;
+        this.tokenValidator = tokenValidator;
     }
 
     public SpotifyTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
-        if (bodyData == null || bodyData.isEmpty()) {
-            throw new IllegalArgumentException("Request body cannot be null or empty");
-        }
-
         try {
             return webClient.post()
                     .uri("/api/token")
@@ -62,5 +65,25 @@ public class SpotifyTokenApi {
             }
             throw ex;
         }
+    }
+
+    public Result<SpotifyTokenResponse> sendAccessTokenRequest(SpotifyAccessTokenRequest request) {
+        SpotifyTokenResponse response = sendTokenRequest(request.toMultiValueMap());
+
+        Result<Void> validationResult = tokenValidator.validateAccessTokenResponse(response);
+        if (!validationResult.success()) {
+            return Result.failure(validationResult.errorMessage());
+        }
+        return Result.success(response);
+    }
+
+    public Result<SpotifyTokenResponse> sendRefreshTokenRequest(SpotifyRefreshTokenRequest request) {
+        SpotifyTokenResponse response = sendTokenRequest(request.toMultiValueMap());
+
+        Result<Void> validationResult = tokenValidator.validateRefreshTokenResponse(response);
+        if (!validationResult.success()) {
+            return Result.failure(validationResult.errorMessage());
+        }
+         return Result.success(response);
     }
 }
