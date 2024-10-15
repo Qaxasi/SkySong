@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.api;
 
+import com.mycompany.SkySong.adapter.exception.common.AuthorizationException;
 import com.mycompany.SkySong.adapter.exception.common.RequestTimeoutException;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
@@ -11,6 +12,7 @@ import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class SpotifyTokenApi {
         this.tokenValidator = tokenValidator;
     }
 
-    public SpotifyTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
+    private SpotifyTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
         try {
             return webClient.post()
                     .uri("/api/token")
@@ -49,8 +51,16 @@ public class SpotifyTokenApi {
                     .bodyValue(bodyData)
                     .retrieve()
                     .onStatus(HttpStatusCode::is4xxClientError, response -> {
-                        log.error("Client error while retrieving token. Status: {}", response.statusCode());
-                        throw new TokenRequestClientException("Client error: " + response.statusCode());
+                        if (response.statusCode() == HttpStatus.UNAUTHORIZED) {
+                            log.error("Unauthorized: Invalid Spotify credentials");
+                            throw new AuthorizationException("Unauthorized access: Invalid client credentials");
+                        } else if (response.statusCode() == HttpStatus.FORBIDDEN) {
+                            log.error("Forbidden: Access denied by Spotify");
+                            throw new AuthorizationException("Access denied: The application does not have permission to access this resource");
+                        } else {
+                            log.error("Client error while retrieving token. Status - {}", response.statusCode());
+                            throw new TokenRequestClientException("Client error: " + response.statusCode());
+                        }
                     })
                     .onStatus(HttpStatusCode::is5xxServerError, response -> {
                         log.error("Server error while retrieving token. Status: {}", response.statusCode());
