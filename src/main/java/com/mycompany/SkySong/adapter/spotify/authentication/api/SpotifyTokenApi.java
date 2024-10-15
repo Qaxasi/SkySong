@@ -21,6 +21,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Function;
 
 @Service
 @Slf4j
@@ -77,23 +78,22 @@ public class SpotifyTokenApi {
         }
     }
 
-    public Result<SpotifyTokenResponse> sendAccessTokenRequest(SpotifyAccessTokenRequest request) {
-        SpotifyTokenResponse response = sendTokenRequest(request.toMultiValueMap());
+    public Result<SpotifyTokenResponse> sendTokenRequestWithValidation(MultiValueMap<String, String> bodyData,
+                                                                       Function<SpotifyTokenResponse, Result<Void>> validator) {
+        SpotifyTokenResponse response = sendTokenRequest(bodyData);
 
-        Result<Void> validationResult = tokenValidator.validateAccessTokenResponse(response);
+        Result<Void> validationResult = validator.apply(response);
         if (!validationResult.success()) {
             return Result.failure(validationResult.errorMessage());
         }
         return Result.success(response);
     }
 
-    public Result<SpotifyTokenResponse> sendRefreshTokenRequest(SpotifyRefreshTokenRequest request) {
-        SpotifyTokenResponse response = sendTokenRequest(request.toMultiValueMap());
+    public Result<SpotifyTokenResponse> sendAccessTokenRequest(SpotifyAccessTokenRequest request) {
+        return sendTokenRequestWithValidation(request.toMultiValueMap(), tokenValidator::validateAccessTokenResponse);
+    }
 
-        Result<Void> validationResult = tokenValidator.validateRefreshTokenResponse(response);
-        if (!validationResult.success()) {
-            return Result.failure(validationResult.errorMessage());
-        }
-         return Result.success(response);
+    public Result<SpotifyTokenResponse> sendRefreshTokenRequest(SpotifyRefreshTokenRequest request) {
+        return sendTokenRequestWithValidation(request.toMultiValueMap(), tokenValidator::validateRefreshTokenResponse);
     }
 }
