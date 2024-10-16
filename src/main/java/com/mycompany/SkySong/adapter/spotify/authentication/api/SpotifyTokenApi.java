@@ -7,7 +7,7 @@ import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTo
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestClientException;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
-import com.mycompany.SkySong.adapter.spotify.authentication.xyz.SpotifyTokenValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyTokenResponseValidator;
 import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,12 +29,12 @@ public class SpotifyTokenApi {
     private final String spotifyClientId;
     private final String spotifyClientSecret;
     private final WebClient webClient;
-    private final SpotifyTokenValidator tokenValidator;
+    private final SpotifyTokenResponseValidator tokenValidator;
 
     public SpotifyTokenApi(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
                            @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
                            @Qualifier("spotifyWebClient") WebClient webClient,
-                           SpotifyTokenValidator tokenValidator) {
+                           SpotifyTokenResponseValidator tokenValidator) {
         this.spotifyClientId = spotifyClientId;
         this.spotifyClientSecret = spotifyClientSecret;
         this.webClient = webClient;
