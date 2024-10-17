@@ -53,6 +53,11 @@ public class SpotifyAccessTokenHandler {
         return Result.success(responseResult.data().accessToken());
     }
 
-        return response.accessToken();
+    private Result<Integer> extractAndValidateUserId(String jwtToken) {
+        Integer userId = jwtTokenManager.extractUserId(jwtToken);
+        if (userId == null || userId <= 0) {
+            return Result.failure("User id is null or invalid");
+        }
+        return Result.success(userId);
     }
 }
