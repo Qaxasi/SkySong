@@ -3,6 +3,7 @@ package com.mycompany.SkySong.adapter.spotify.authentication.token.access.contro
 import com.mycompany.SkySong.adapter.spotify.authentication.token.access.handler.SpotifyAccessTokenHandler;
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
+import com.mycompany.SkySong.shared.utils.Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,17 @@ public class SpotifyCallbackController {
     public ResponseEntity<ApiResponse> handleSpotifyCallback(@RequestParam("code") String authCode,
                                                              @CookieValue(name = "jwtToken") String jwtToken) {
         if (jwtToken.isEmpty()) {
-            throw new IllegalArgumentException("Jwt is empty");
+            return ResponseEntity.badRequest()
+                    .body(new ApiResponse("Jwt token is empty"));
         }
 
-        String accessToken = tokenHandler.retrieveSpotifyAccessToken(authCode, jwtToken);
+        Result<String> accessTokenResult = tokenHandler.retrieveSpotifyAccessToken(authCode, jwtToken);
+        if (!accessTokenResult.success()) {
+            return ResponseEntity.internalServerError()
+                    .body(new ApiResponse(accessTokenResult.errorMessage()));
+        }
 
+        String accessToken = accessTokenResult.data();
         ResponseCookie cookie = cookieUtils.generateCookie("spotifyAccessToken", accessToken, "/api/v1/spotify", 3600);
 
         return ResponseEntity.ok()
