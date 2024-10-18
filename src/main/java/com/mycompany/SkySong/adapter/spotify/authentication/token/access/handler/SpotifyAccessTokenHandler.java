@@ -31,33 +31,23 @@ public class SpotifyAccessTokenHandler {
     }
 
     public Result<String> retrieveSpotifyAccessToken(String authCode, String jwtToken) {
-        Result<Integer> userIdResult = extractAndValidateUserId(jwtToken);
-        if (!userIdResult.success()) {
-            return Result.failure(userIdResult.errorMessage());
-        }
+        return jwtTokenManager.extractAndValidateUserId(jwtToken)
+                .flatMap(userId -> {
+                    SpotifyAccessTokenRequest accessTokenRequest = new SpotifyAccessTokenRequest(
+                            "authorization_code", authCode, redirectUri);
+                    Result<Void> validationResult = tokenValidator.validateRequest(accessTokenRequest);
+                    if (!validationResult.success()) {
+                        return Result.success(validationResult.errorMessage());
+                    }
 
-        int userId = userIdResult.data();
+                    Result<SpotifyTokenResponse> responseResult = spotifyTokenApi.sendAccessTokenRequest(accessTokenRequest);
+                    if (!responseResult.success()) {
+                        return Result.failure(responseResult.errorMessage());
+                    }
 
-        SpotifyAccessTokenRequest accessTokenRequest = new SpotifyAccessTokenRequest("authorization_code", authCode, redirectUri);
-        Result<Void> validationResult = tokenValidator.validateRequest(accessTokenRequest);
-        if (!validationResult.success()) {
-            return Result.success(validationResult.errorMessage());
-        }
+                    redisTokenStore.saveRefreshToken(userId, responseResult.data().refreshToken());
+                    return Result.success(responseResult.data().accessToken());
 
-        Result<SpotifyTokenResponse> responseResult = spotifyTokenApi.sendAccessTokenRequest(accessTokenRequest);
-        if (!responseResult.success()) {
-            return Result.failure(responseResult.errorMessage());
-        }
-
-        redisTokenStore.saveRefreshToken(userId, responseResult.data().refreshToken());
-        return Result.success(responseResult.data().accessToken());
-    }
-
-    private Result<Integer> extractAndValidateUserId(String jwtToken) {
-        Integer userId = jwtTokenManager.extractUserId(jwtToken);
-        if (userId == null || userId <= 0) {
-            return Result.failure("User id is null or invalid");
-        }
-        return Result.success(userId);
+                });
     }
 }
