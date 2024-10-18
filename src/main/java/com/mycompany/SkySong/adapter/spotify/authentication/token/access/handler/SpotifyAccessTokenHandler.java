@@ -37,7 +37,7 @@ public class SpotifyAccessTokenHandler {
                             "authorization_code", authCode, redirectUri);
                     Result<Void> validationResult = tokenValidator.validateRequest(accessTokenRequest);
                     if (!validationResult.success()) {
-                        return Result.success(validationResult.errorMessage());
+                        return Result.failure(validationResult.errorMessage());
                     }
 
                     Result<SpotifyTokenResponse> responseResult = spotifyTokenApi.sendAccessTokenRequest(accessTokenRequest);
