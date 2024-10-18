@@ -19,19 +19,6 @@ public class SpotifyAuthUrlGenerator {
                                    @Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
                                    @Value("${REDIRECT_URI}") String redirectUri,
                                    @Value("${SPOTIFY_SCOPE}") String scope) {
-        if (authUri == null || authUri.isEmpty()) {
-             throw new IllegalArgumentException("Authorization uri is missing or invalid");
-        }
-        if (spotifyClientId == null || spotifyClientId.isEmpty()) {
-            throw new IllegalArgumentException("Spotify client id is missing or invalid");
-        }
-        if (redirectUri == null || redirectUri.isEmpty()) {
-            throw new IllegalArgumentException("Redirect Uri is missing or invalid");
-        }
-        if (scope == null || scope.isEmpty()) {
-            throw new IllegalArgumentException("Scope is missing or invalid");
-        }
-
         this.authUri = authUri;
         this.spotifyClientId = spotifyClientId;
         this.redirectUri = redirectUri;
