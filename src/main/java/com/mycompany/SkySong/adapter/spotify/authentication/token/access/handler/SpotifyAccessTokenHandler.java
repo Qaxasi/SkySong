@@ -2,7 +2,6 @@ package com.mycompany.SkySong.adapter.spotify.authentication.token.access.handle
 
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
-import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyAccessTokenValidator;
 import com.mycompany.SkySong.shared.utils.Result;
 import com.mycompany.SkySong.adapter.spotify.authentication.api.SpotifyTokenApi;
@@ -16,18 +15,18 @@ public class SpotifyAccessTokenHandler {
     private final JwtTokenManager jwtTokenManager;
     private final RedisTokenStore redisTokenStore;
     private final SpotifyTokenApi spotifyTokenApi;
-    private final SpotifyAccessTokenValidator tokenValidator;
+    private final SpotifyAccessTokenValidator validator;
 
     public SpotifyAccessTokenHandler(@Value("${REDIRECT_URI}") String redirectUri,
                                      JwtTokenManager jwtTokenManager,
                                      RedisTokenStore redisTokenStore,
                                      SpotifyTokenApi spotifyTokenApi,
-                                     SpotifyAccessTokenValidator tokenValidator) {
+                                     SpotifyAccessTokenValidator validator) {
         this.redirectUri = redirectUri;
         this.jwtTokenManager = jwtTokenManager;
         this.redisTokenStore = redisTokenStore;
         this.spotifyTokenApi = spotifyTokenApi;
-        this.tokenValidator = tokenValidator;
+        this.validator = validator;
     }
 
     public Result<String> retrieveSpotifyAccessToken(String authCode, String jwtToken) {
@@ -36,22 +35,18 @@ public class SpotifyAccessTokenHandler {
         }
 
         return jwtTokenManager.extractUserId(jwtToken)
-                .flatMap(userId -> {
-                    SpotifyAccessTokenRequest accessTokenRequest = new SpotifyAccessTokenRequest(
-                            "authorization_code", authCode, redirectUri);
-                    Result<Void> validationResult = tokenValidator.validateRequest(accessTokenRequest);
-                    if (!validationResult.success()) {
-                        return Result.failure(validationResult.errorMessage());
-                    }
+                .flatMap(userId -> fetchToken(authCode, userId));
+    }
 
-                    Result<SpotifyTokenResponse> responseResult = spotifyTokenApi.sendAccessTokenRequest(accessTokenRequest);
-                    if (!responseResult.success()) {
-                        return Result.failure(responseResult.errorMessage());
-                    }
+    private Result<String> fetchToken(String authCode, int userId) {
+        SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest(
+                "authorization_code", authCode, redirectUri);
 
-                    redisTokenStore.saveRefreshToken(userId, responseResult.data().refreshToken());
-                    return Result.success(responseResult.data().accessToken());
-
+        return validator.validateRequest(request)
+                .flatMap(v -> spotifyTokenApi.sendAccessTokenRequest(request))
+                .flatMap(response -> {
+                    redisTokenStore.saveRefreshToken(userId, response.accessToken());
+                    return Result.success(response.accessToken());
                 });
     }
 }
