@@ -45,7 +45,7 @@ public class SpotifyAccessTokenHandler {
         return validator.validateRequest(request)
                 .flatMap(v -> spotifyTokenApi.sendAccessTokenRequest(request))
                 .flatMap(response -> {
-                    redisTokenStore.saveRefreshToken(userId, response.accessToken());
+                    redisTokenStore.saveRefreshToken(userId, response.refreshToken());
                     return Result.success(response.accessToken());
                 });
     }
