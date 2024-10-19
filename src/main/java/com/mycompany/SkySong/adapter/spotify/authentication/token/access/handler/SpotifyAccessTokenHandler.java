@@ -31,7 +31,11 @@ public class SpotifyAccessTokenHandler {
     }
 
     public Result<String> retrieveSpotifyAccessToken(String authCode, String jwtToken) {
-        return jwtTokenManager.extractAndValidateUserId(jwtToken)
+        if (jwtToken == null || jwtToken.isEmpty()) {
+            return Result.failure("Jwt token is null or empty");
+        }
+
+        return jwtTokenManager.extractUserId(jwtToken)
                 .flatMap(userId -> {
                     SpotifyAccessTokenRequest accessTokenRequest = new SpotifyAccessTokenRequest(
                             "authorization_code", authCode, redirectUri);
