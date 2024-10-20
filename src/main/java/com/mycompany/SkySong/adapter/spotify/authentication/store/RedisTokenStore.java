@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.store;
 
-import com.mycompany.SkySong.adapter.spotify.authentication.exception.RefreshTokenNotFoundException;
+import com.mycompany.SkySong.shared.utils.ErrorType;
+import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,14 @@ public class RedisTokenStore {
         redisTemplate.opsForValue().set(redisKey, refreshToken);
     }
 
-    public String getRefreshToken(int userId) {
+    public Result<String> getRefreshToken(int userId) {
         String redisKey = generateRedisKey(userId);
         String refreshToken = redisTemplate.opsForValue().get(redisKey);
 
         if (refreshToken == null || refreshToken.isEmpty()) {
-            throw new RefreshTokenNotFoundException("Refresh token not found for user with ID: " + userId);
+            return Result.failure("Refresh token not found for user with ID: " + userId, ErrorType.NOT_FOUND);
         }
-        return refreshToken;
+        return Result.success(refreshToken);
     }
 
     private String generateRedisKey(int userId) {
