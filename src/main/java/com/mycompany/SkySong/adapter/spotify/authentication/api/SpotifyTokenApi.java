@@ -59,11 +59,11 @@ public class SpotifyTokenApi {
 
         Result<Void> validationResult = validator.apply(response);
         if (!validationResult.success()) {
-            return Result.failure(validationResult.errorMessage());
+            return Result.failure(validationResult.errorMessage(), validationResult.errorType());
         }
         return Result.success(response);
     }
-    
+
     private SpotifyTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
         try {
             return webClient.post()
