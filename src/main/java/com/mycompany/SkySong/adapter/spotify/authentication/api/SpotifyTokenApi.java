@@ -45,6 +45,25 @@ public class SpotifyTokenApi {
         this.refreshTokenValidator = refreshTokenValidator;
     }
 
+    public Result<SpotifyTokenResponse> sendAccessTokenRequest(SpotifyAccessTokenRequest request) {
+        return sendTokenRequestWithValidation(request.toMultiValueMap(), accessTokenValidator::validateResponse);
+    }
+
+    public Result<SpotifyTokenResponse> sendRefreshTokenRequest(SpotifyRefreshTokenRequest request) {
+        return sendTokenRequestWithValidation(request.toMultiValueMap(), refreshTokenValidator::validateResponse);
+    }
+
+    private Result<SpotifyTokenResponse> sendTokenRequestWithValidation(MultiValueMap<String, String> bodyData,
+                                                                        Function<SpotifyTokenResponse, Result<Void>> validator) {
+        SpotifyTokenResponse response = sendTokenRequest(bodyData);
+
+        Result<Void> validationResult = validator.apply(response);
+        if (!validationResult.success()) {
+            return Result.failure(validationResult.errorMessage());
+        }
+        return Result.success(response);
+    }
+    
     private SpotifyTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
         try {
             return webClient.post()
@@ -80,24 +99,5 @@ public class SpotifyTokenApi {
             }
             throw ex;
         }
-    }
-
-    private Result<SpotifyTokenResponse> sendTokenRequestWithValidation(MultiValueMap<String, String> bodyData,
-                                                                       Function<SpotifyTokenResponse, Result<Void>> validator) {
-        SpotifyTokenResponse response = sendTokenRequest(bodyData);
-
-        Result<Void> validationResult = validator.apply(response);
-        if (!validationResult.success()) {
-            return Result.failure(validationResult.errorMessage());
-        }
-        return Result.success(response);
-    }
-
-    public Result<SpotifyTokenResponse> sendAccessTokenRequest(SpotifyAccessTokenRequest request) {
-        return sendTokenRequestWithValidation(request.toMultiValueMap(), accessTokenValidator::validateResponse);
-    }
-
-    public Result<SpotifyTokenResponse> sendRefreshTokenRequest(SpotifyRefreshTokenRequest request) {
-        return sendTokenRequestWithValidation(request.toMultiValueMap(), refreshTokenValidator::validateResponse);
     }
 }
