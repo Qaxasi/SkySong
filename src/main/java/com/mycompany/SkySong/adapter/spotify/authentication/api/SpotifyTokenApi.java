@@ -7,7 +7,8 @@ import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTo
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestClientException;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
-import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyTokenResponseValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyAccessTokenValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyRefreshTokenValidator;
 import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,16 +30,19 @@ public class SpotifyTokenApi {
     private final String spotifyClientId;
     private final String spotifyClientSecret;
     private final WebClient webClient;
-    private final SpotifyTokenResponseValidator tokenValidator;
+    private final SpotifyAccessTokenValidator accessTokenValidator;
+    private final SpotifyRefreshTokenValidator refreshTokenValidator;
 
     public SpotifyTokenApi(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
                            @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
                            @Qualifier("spotifyWebClient") WebClient webClient,
-                           SpotifyTokenResponseValidator tokenValidator) {
+                           SpotifyAccessTokenValidator accessTokenValidator,
+                           SpotifyRefreshTokenValidator refreshTokenValidator) {
         this.spotifyClientId = spotifyClientId;
         this.spotifyClientSecret = spotifyClientSecret;
         this.webClient = webClient;
-        this.tokenValidator = tokenValidator;
+        this.accessTokenValidator = accessTokenValidator;
+        this.refreshTokenValidator = refreshTokenValidator;
     }
 
     private SpotifyTokenResponse sendTokenRequest(MultiValueMap<String, String> bodyData) {
@@ -90,10 +94,10 @@ public class SpotifyTokenApi {
     }
 
     public Result<SpotifyTokenResponse> sendAccessTokenRequest(SpotifyAccessTokenRequest request) {
-        return sendTokenRequestWithValidation(request.toMultiValueMap(), tokenValidator::validateAccessTokenResponse);
+        return sendTokenRequestWithValidation(request.toMultiValueMap(), accessTokenValidator::validateResponse);
     }
 
     public Result<SpotifyTokenResponse> sendRefreshTokenRequest(SpotifyRefreshTokenRequest request) {
-        return sendTokenRequestWithValidation(request.toMultiValueMap(), tokenValidator::validateRefreshTokenResponse);
+        return sendTokenRequestWithValidation(request.toMultiValueMap(), refreshTokenValidator::validateResponse);
     }
 }
