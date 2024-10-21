@@ -2,7 +2,6 @@ package com.mycompany.SkySong.adapter.exception.handler;
 
 import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
-import com.mycompany.SkySong.adapter.spotify.authentication.exception.RefreshTokenNotFoundException;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestClientException;
 import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
 import com.mycompany.SkySong.adapter.user.delete.persistence.exception.UserNotFoundException;
@@ -33,11 +32,6 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error: " + ex.getMessage());
         return ErrorResponseBuilder.createErrorResponse("Internal server error",
                 HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(RefreshTokenNotFoundException.class)
-    public ResponseEntity<Object> handleRefreshTokenNotFoundException(final RefreshTokenNotFoundException ex) {
-        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(TokenRequestClientException.class)
