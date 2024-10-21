@@ -35,16 +35,17 @@ public class SpotifyRefreshTokenHandler {
     }
 
     private Result<String> refreshToken(int userId) {
-        String refreshToken = redisTokenStore.getRefreshToken(userId);
-        SpotifyRefreshTokenRequest request = new SpotifyRefreshTokenRequest("refresh_token", refreshToken);
-
-        return validator.validateRequest(request)
-                .flatMap(validationPassed -> spotifyTokenApi.sendRefreshTokenRequest(request))
-                .flatMap(response -> {
-                    if (response.refreshToken() != null && !response.refreshToken().isEmpty()) {
-                        redisTokenStore.saveRefreshToken(userId, response.refreshToken());
-                    }
-                    return Result.success(response.accessToken());
+        return redisTokenStore.getRefreshToken(userId)
+                .flatMap(refreshToken -> {
+                    SpotifyRefreshTokenRequest request = new SpotifyRefreshTokenRequest("refresh_token", refreshToken);
+                    return validator.validateRequest(request)
+                            .flatMap(validationPassed -> spotifyTokenApi.sendRefreshTokenRequest(request))
+                            .flatMap(response -> {
+                            if (response.refreshToken() != null && !response.refreshToken().isEmpty()) {
+                                redisTokenStore.saveRefreshToken(userId, response.refreshToken());
+                            }
+                            return Result.success(response.accessToken());
+                            });
                 });
     }
 }
