@@ -77,25 +77,25 @@ public class SpotifyTokenApi {
                     .onStatus(HttpStatusCode::is4xxClientError, response -> {
                         if (response.statusCode() == HttpStatus.UNAUTHORIZED) {
                             log.error("Unauthorized: Invalid Spotify credentials");
-                            throw new AuthorizationException("Unauthorized access: Invalid client credentials");
+                            throw new AuthorizationException("Unable to authenticate with Spotify. Please check your credentials.");
                         } else if (response.statusCode() == HttpStatus.FORBIDDEN) {
                             log.error("Forbidden: Access denied by Spotify");
-                            throw new AuthorizationException("Access denied: The application does not have permission to access this resource");
+                            throw new AuthorizationException("Access to Spotify has been denied. Please ensure the necessary permissions are granted.");
                         } else {
                             log.error("Client error while retrieving token. Status - {}", response.statusCode());
-                            throw new TokenRequestClientException("Client error: " + response.statusCode());
+                            throw new TokenRequestClientException("There was an issue with your request to Spotify. Please try again late");
                         }
                     })
                     .onStatus(HttpStatusCode::is5xxServerError, response -> {
                         log.error("Server error while retrieving token. Status: {}", response.statusCode());
-                        throw new TokenRequestServerException("Server error: " + response.statusCode());
+                        throw new TokenRequestServerException("Spotify is currently unavailable. Please try again later");
                     })
                     .bodyToMono(SpotifyTokenResponse.class)
                     .timeout(Duration.ofSeconds(5))
                     .block();
         } catch (RuntimeException ex) {
             if (ex.getCause() instanceof TimeoutException) {
-                throw new RequestTimeoutException("Request timed out while retrieving token", ex);
+                throw new RequestTimeoutException("The request to Spotify timed out. Please check your connection and try again.", ex);
             }
             throw ex;
         }
