@@ -5,6 +5,7 @@ import com.mycompany.SkySong.adapter.spotify.authentication.api.SpotifyTokenApi;
 import com.mycompany.SkySong.adapter.spotify.authentication.store.RedisTokenStore;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyRefreshTokenValidator;
+import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class SpotifyRefreshTokenHandler {
 
     public Result<String> refreshSpotifyAccessToken(String jwtToken) {
         if (jwtToken == null || jwtToken.isEmpty()) {
-            return Result.failure("Jwt token is null or empty");
+            return Result.failure("Jwt token is null or empty", ErrorType.BAD_REQUEST);
         }
 
         return jwtTokenManager.extractUserId(jwtToken)
