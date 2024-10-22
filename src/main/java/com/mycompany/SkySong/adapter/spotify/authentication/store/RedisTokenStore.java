@@ -26,6 +26,7 @@ public class RedisTokenStore {
         String refreshToken = redisTemplate.opsForValue().get(redisKey);
 
         if (refreshToken == null || refreshToken.isEmpty()) {
+            log.error("Refresh token not found for user with ID: " + userId);
             return Result.failure("Refresh token not found for user with ID: " + userId, ErrorType.NOT_FOUND);
         }
         return Result.success(refreshToken);
