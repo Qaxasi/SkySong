@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.validation;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +20,20 @@ public class SpotifyAccessTokenValidatorTest {
     @Test
     void whenResponseValid_ValidationSuccess() {
         SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", "refreshToken", "scope");
-        Result<Void> result = validateResponse(response);
-        assertThat(result.success()).isTrue();
 
+        Result<Void> result = validateResponse(response);
+
+        assertThat(result.success()).isTrue();
+    }
+
+    @Test
+    void whenAccessTokenIsEmpty_ValidationFails() {
+        SpotifyTokenResponse response = new SpotifyTokenResponse("", "refreshToken", "scope");
+
+        Result<Void> result = validateResponse(response);
+
+        assertThat(result.success()).isFalse();
+        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
     }
 
     private Result<Void> validateResponse(SpotifyTokenResponse response) {
