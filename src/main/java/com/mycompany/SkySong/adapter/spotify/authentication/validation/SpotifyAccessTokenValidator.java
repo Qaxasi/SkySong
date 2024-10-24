@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SpotifyAccessTokenValidator {
     public Result<Void> validateRequest(SpotifyAccessTokenRequest request) {
-        if (request.grantType() == null || request.grantType().isEmpty()) {
+        if (request.grantType() == null || request.grantType().isBlank()) {
             log.error("Request validation failed: grant type is null or empty");
             return Result.failure("Grant type cannot be null or empty", ErrorType.BAD_REQUEST);
         }
-        if (request.authCode() == null || request.authCode().isEmpty()) {
+        if (request.authCode() == null || request.authCode().isBlank()) {
             log.error("Request validation failed: authorization code is null or empty");
             return Result.failure("Authorization code cannot be null or empty", ErrorType.BAD_REQUEST);
         }
-        if (request.redirectUri() == null || request.redirectUri().isEmpty()) {
+        if (request.redirectUri() == null || request.redirectUri().isBlank()) {
             log.error("Request validation failed: redirect uri is null or empty");
             return Result.failure("Redirect uri cannot be null or empty", ErrorType.BAD_REQUEST);
         }
@@ -27,15 +27,15 @@ public class SpotifyAccessTokenValidator {
     }
 
     public Result<Void> validateResponse(SpotifyTokenResponse response) {
-        if (response.accessToken() == null || response.accessToken().isEmpty()) {
+        if (response.accessToken() == null || response.accessToken().isBlank()) {
             log.error("Response validation failed: access token is null or empty");
             return Result.failure("Access token cannot be null or empty",ErrorType.UNPROCESSABLE_ENTITY);
         }
-        if (response.refreshToken() == null || response.refreshToken().isEmpty()) {
+        if (response.refreshToken() == null || response.refreshToken().isBlank()) {
             log.error("Response validation failed: refresh token is null or empty");
             return Result.failure("Refresh token cannot be null or empty", ErrorType.UNPROCESSABLE_ENTITY);
         }
-        if (response.scope() == null || response.scope().isEmpty()) {
+        if (response.scope() == null || response.scope().isBlank()) {
             log.error("Response validation failed: scope is null or empty");
             return Result.failure("Scope cannot be null or empty", ErrorType.UNPROCESSABLE_ENTITY);
         }
