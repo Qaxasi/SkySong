@@ -36,6 +36,16 @@ public class SpotifyAccessTokenValidatorTest {
         assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
     }
 
+    @Test
+    void whenAccessTokenIsNull_ValidationFails() {
+        SpotifyTokenResponse response = new SpotifyTokenResponse(null, "refreshToken", "scope");
+
+        Result<Void> result = validateResponse(response);
+
+        assertThat(result.success()).isFalse();
+        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
+    }
+
     private Result<Void> validateResponse(SpotifyTokenResponse response) {
         return validator.validateResponse(response);
     }
