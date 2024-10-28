@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.validation;
 
+import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
@@ -86,7 +87,20 @@ public class SpotifyAccessTokenValidatorTest {
         assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
     }
 
+    @Test
+    void whenRequestIsValid_ValidationSuccess() {
+        SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest("grant_type", "auth_code", "redirect_uri");
+
+        Result<Void> result = validateRequest(request);
+
+        assertThat(result.success()).isTrue();
+    }
+
     private Result<Void> validateResponse(SpotifyTokenResponse response) {
         return validator.validateResponse(response);
+    }
+
+    private Result<Void> validateRequest(SpotifyAccessTokenRequest request) {
+        return validator.validateRequest(request);
     }
 }
