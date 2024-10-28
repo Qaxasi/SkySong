@@ -28,7 +28,7 @@ public class SpotifyAccessTokenValidatorTest {
 
     @Test
     void whenAccessTokenIsEmpty_ValidationFails() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse("", "refreshToken", "scope");
+        SpotifyTokenResponse response = new SpotifyTokenResponse(" ", "refreshToken", "scope");
 
         Result<Void> result = validateResponse(response);
 
@@ -48,7 +48,7 @@ public class SpotifyAccessTokenValidatorTest {
 
     @Test
     void whenRefreshTokenIsEmpty_ValidationFails() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", "", "scope");
+        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", " ", "scope");
 
         Result<Void> result = validateResponse(response);
 
@@ -59,6 +59,16 @@ public class SpotifyAccessTokenValidatorTest {
     @Test
     void whenRefreshTokenIsNull_ValidationFails() {
         SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", null, "scope");
+
+        Result<Void> result = validateResponse(response);
+
+        assertThat(result.success()).isFalse();
+        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
+    }
+
+    @Test
+    void whenScopeIsEmpty_ValidationFails() {
+        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", "refreshToken", " ");
 
         Result<Void> result = validateResponse(response);
 
