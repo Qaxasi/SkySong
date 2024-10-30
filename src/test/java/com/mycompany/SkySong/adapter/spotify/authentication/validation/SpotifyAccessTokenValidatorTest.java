@@ -96,6 +96,16 @@ public class SpotifyAccessTokenValidatorTest {
         assertThat(result.success()).isTrue();
     }
 
+    @Test
+    void whenGrantTypeIsNull_ValidationFailure() {
+        SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest(null, "authorization_code", "redirect_uri");
+
+        Result<Void> result = validateRequest(request);
+
+        assertThat(result.success()).isFalse();
+        assertThat(result.errorType()).isEqualTo(ErrorType.BAD_REQUEST);
+    }
+
     private Result<Void> validateResponse(SpotifyTokenResponse response) {
         return validator.validateResponse(response);
     }
