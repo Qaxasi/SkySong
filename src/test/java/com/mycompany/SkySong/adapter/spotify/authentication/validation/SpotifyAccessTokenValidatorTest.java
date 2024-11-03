@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SpotifyAccessTokenValidatorTest {
+class SpotifyAccessTokenValidatorTest {
 
     private SpotifyAccessTokenValidator validator;
 
@@ -35,56 +35,6 @@ public class SpotifyAccessTokenValidatorTest {
     @ParameterizedTest(name = "Invalid token response: {0}")
     @MethodSource("invalidSpotifyTokenResponses")
     void whenSpotifyTokenResponseInvalid_ValidationsFails(String caseDescription, SpotifyTokenResponse response) {
-        Result<Void> result = validateResponse(response);
-
-        assertThat(result.success()).isFalse();
-        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
-    }
-
-    @Test
-    void whenAccessTokenIsNull_ValidationFails() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse(null, "refreshToken", "scope");
-
-        Result<Void> result = validateResponse(response);
-
-        assertThat(result.success()).isFalse();
-        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
-    }
-
-    @Test
-    void whenRefreshTokenIsEmpty_ValidationFails() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", " ", "scope");
-
-        Result<Void> result = validateResponse(response);
-
-        assertThat(result.success()).isFalse();
-        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
-    }
-
-    @Test
-    void whenRefreshTokenIsNull_ValidationFails() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", null, "scope");
-
-        Result<Void> result = validateResponse(response);
-
-        assertThat(result.success()).isFalse();
-        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
-    }
-
-    @Test
-    void whenScopeIsEmpty_ValidationFails() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", "refreshToken", " ");
-
-        Result<Void> result = validateResponse(response);
-
-        assertThat(result.success()).isFalse();
-        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
-    }
-
-    @Test
-    void whenScopeIsNull_ValidationFails() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", "refreshToken", null);
-
         Result<Void> result = validateResponse(response);
 
         assertThat(result.success()).isFalse();
