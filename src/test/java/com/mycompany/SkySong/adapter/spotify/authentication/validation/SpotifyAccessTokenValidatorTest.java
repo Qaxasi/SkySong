@@ -24,7 +24,7 @@ class SpotifyAccessTokenValidatorTest {
     }
 
     @Test
-    void whenResponseValid_ValidationSuccess() {
+    void whenValidTokenResponse_ValidationSuccess() {
         SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", "refreshToken", "scope");
 
         Result<Void> result = validateResponse(response);
@@ -34,7 +34,7 @@ class SpotifyAccessTokenValidatorTest {
 
     @ParameterizedTest(name = "Invalid token response: {0}")
     @MethodSource("invalidSpotifyTokenResponses")
-    void whenSpotifyTokenResponseInvalid_ValidationsFails(String caseDescription, SpotifyTokenResponse response) {
+    void whenInvalidTokenResponse_ValidationFailure(String caseDescription, SpotifyTokenResponse response) {
         Result<Void> result = validateResponse(response);
 
         assertThat(result.success()).isFalse();
@@ -42,7 +42,7 @@ class SpotifyAccessTokenValidatorTest {
     }
 
     @Test
-    void whenRequestIsValid_ValidationSuccess() {
+    void whenValidTokenRequest_ValidationSuccess() {
         SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest("grant_type", "auth_code", "redirect_uri");
 
         Result<Void> result = validateRequest(request);
@@ -52,7 +52,7 @@ class SpotifyAccessTokenValidatorTest {
 
     @ParameterizedTest(name = "Invalid token request: {0}")
     @MethodSource("invalidSpotifyTokenRequests")
-    void whenInvalidRequest_ValidationFailure(String caseDescription, SpotifyAccessTokenRequest request) {
+    void whenInvalidTokenRequest_ValidationFailure(String caseDescription, SpotifyAccessTokenRequest request) {
         Result<Void> result = validateRequest(request);
 
         assertThat(result.success()).isFalse();
