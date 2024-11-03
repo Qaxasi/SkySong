@@ -41,6 +41,24 @@ class SpotifyAccessTokenValidatorTest {
         assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
     }
 
+    @Test
+    void whenRequestIsValid_ValidationSuccess() {
+        SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest("grant_type", "auth_code", "redirect_uri");
+
+        Result<Void> result = validateRequest(request);
+
+        assertThat(result.success()).isTrue();
+    }
+
+    @ParameterizedTest(name = "Invalid token request: {0}")
+    @MethodSource("invalidSpotifyTokenRequests")
+    void whenInvalidRequest_ValidationFailure(String caseDescription, SpotifyAccessTokenRequest request) {
+        Result<Void> result = validateRequest(request);
+
+        assertThat(result.success()).isFalse();
+        assertThat(result.errorType()).isEqualTo(ErrorType.BAD_REQUEST);
+    }
+
     private static Stream<Arguments> invalidSpotifyTokenResponses() {
         return Stream.of(
                 Arguments.of("Empty access token", new SpotifyTokenResponse(" ", "refreshToken", "scope")),
@@ -52,23 +70,15 @@ class SpotifyAccessTokenValidatorTest {
         );
     }
 
-    @Test
-    void whenRequestIsValid_ValidationSuccess() {
-        SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest("grant_type", "auth_code", "redirect_uri");
-
-        Result<Void> result = validateRequest(request);
-
-        assertThat(result.success()).isTrue();
-    }
-
-    @Test
-    void whenGrantTypeIsNull_ValidationFailure() {
-        SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest(null, "authorization_code", "redirect_uri");
-
-        Result<Void> result = validateRequest(request);
-
-        assertThat(result.success()).isFalse();
-        assertThat(result.errorType()).isEqualTo(ErrorType.BAD_REQUEST);
+    private static Stream<Arguments> invalidSpotifyTokenRequests() {
+        return Stream.of(
+                Arguments.of("Empty grant type", new SpotifyAccessTokenRequest(" ", "authorization_code", "redirect_uri")),
+                Arguments.of("Null grant type", new SpotifyAccessTokenRequest(null, "authorization_code", "redirect_uri")),
+                Arguments.of("Empty authorization code", new SpotifyAccessTokenRequest("grant_type", " ", "redirect_uri")),
+                Arguments.of("Null authorization code", new SpotifyAccessTokenRequest("grant_type", null, "redirect_uri")),
+                Arguments.of("Empty redirect uri", new SpotifyAccessTokenRequest("grant_type", "authorization_code", " ")),
+                Arguments.of("Null redirect uri", new SpotifyAccessTokenRequest("grant_type", "authorization_code", null))
+        );
     }
 
     private Result<Void> validateResponse(SpotifyTokenResponse response) {
