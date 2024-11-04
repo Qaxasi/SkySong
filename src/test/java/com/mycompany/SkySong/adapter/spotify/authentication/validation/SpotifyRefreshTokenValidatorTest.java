@@ -50,12 +50,30 @@ class SpotifyRefreshTokenValidatorTest {
         assertThat(result.success()).isTrue();
     }
 
+    @ParameterizedTest(name = "Invalid token response: {0}")
+    @MethodSource("invalidRefreshTokenResponses")
+    void whenInvalidResponse_ValidationFailure(String caseDescription, SpotifyTokenResponse response) {
+        Result<Void> result = validateResponse(response);
+
+        assertThat(result.success()).isFalse();
+        assertThat(result.errorType()).isEqualTo(ErrorType.UNPROCESSABLE_ENTITY);
+    }
+
     private static Stream<Arguments> invalidRefreshTokenRequests() {
         return Stream.of(
                 Arguments.of("Null grant type", new SpotifyRefreshTokenRequest(null, "refresh_token")),
                 Arguments.of("Empty grant type", new SpotifyRefreshTokenRequest(" ", "refresh_token")),
                 Arguments.of("Null refresh token", new SpotifyRefreshTokenRequest("grant_type", null)),
                 Arguments.of("Empty refresh token", new SpotifyRefreshTokenRequest("grant_type", " "))
+        );
+    }
+
+    private static Stream<Arguments> invalidRefreshTokenResponses() {
+        return Stream.of(
+                Arguments.of("Null access token", new SpotifyTokenResponse(null, "refresh_token", "scope")),
+                Arguments.of("Empty access token", new SpotifyTokenResponse(" ", "refresh_token", "scope")),
+                Arguments.of("Null scope", new SpotifyTokenResponse("access_token", "refresh_token", null)),
+                Arguments.of("Empty scope", new SpotifyTokenResponse("access_token", "refresh_token", " "))
         );
     }
 
