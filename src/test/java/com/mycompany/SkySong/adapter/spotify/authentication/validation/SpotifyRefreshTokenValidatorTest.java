@@ -2,9 +2,15 @@ package com.mycompany.SkySong.adapter.spotify.authentication.validation;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +32,15 @@ class SpotifyRefreshTokenValidatorTest {
         assertThat(result.success()).isTrue();
     }
 
+    @ParameterizedTest(name = "Invalid token request: {0}")
+    @MethodSource("invalidRefreshTokenRequests")
+    void whenInvalidRequest_ValidationFailure(String caseDescription, SpotifyRefreshTokenRequest request) {
+        Result<Void> result = validateRequest(request);
+
+        assertThat(result.success()).isFalse();
+        assertThat(result.errorType()).isEqualTo(ErrorType.BAD_REQUEST);
+    }
+
     @Test
     void whenResponseWithoutRefreshToken_ValidationSuccess() {
         SpotifyTokenResponse response = new SpotifyTokenResponse("access_token", null, "scope");
@@ -33,6 +48,15 @@ class SpotifyRefreshTokenValidatorTest {
         Result<Void> result = validateResponse(response);
 
         assertThat(result.success()).isTrue();
+    }
+
+    private static Stream<Arguments> invalidRefreshTokenRequests() {
+        return Stream.of(
+                Arguments.of("Null grant type", new SpotifyRefreshTokenRequest(null, "refresh_token")),
+                Arguments.of("Empty grant type", new SpotifyRefreshTokenRequest(" ", "refresh_token")),
+                Arguments.of("Null refresh token", new SpotifyRefreshTokenRequest("grant_type", null)),
+                Arguments.of("Empty refresh token", new SpotifyRefreshTokenRequest("grant_type", " "))
+        );
     }
 
 
