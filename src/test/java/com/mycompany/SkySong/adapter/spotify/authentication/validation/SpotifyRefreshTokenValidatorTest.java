@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.validation;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
+import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.shared.utils.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,21 @@ class SpotifyRefreshTokenValidatorTest {
         assertThat(result.success()).isTrue();
     }
 
+    @Test
+    void whenResponseWithoutRefreshToken_ValidationSuccess() {
+        SpotifyTokenResponse response = new SpotifyTokenResponse("access_token", null, "scope");
+
+        Result<Void> result = validateResponse(response);
+
+        assertThat(result.success()).isTrue();
+    }
+
+
     private Result<Void> validateRequest(SpotifyRefreshTokenRequest request) {
         return validator.validateRequest(request);
+    }
+
+    private Result<Void> validateResponse(SpotifyTokenResponse response) {
+        return validator.validateResponse(response);
     }
 }
