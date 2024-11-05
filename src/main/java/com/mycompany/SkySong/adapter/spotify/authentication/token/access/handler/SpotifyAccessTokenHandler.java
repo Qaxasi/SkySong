@@ -7,10 +7,12 @@ import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
 import com.mycompany.SkySong.adapter.spotify.authentication.api.SpotifyTokenApi;
 import com.mycompany.SkySong.adapter.spotify.authentication.store.RedisTokenStore;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class SpotifyAccessTokenHandler {
     private final String redirectUri;
     private final JwtTokenManager jwtTokenManager;
@@ -31,8 +33,9 @@ public class SpotifyAccessTokenHandler {
     }
 
     public Result<String> retrieveSpotifyAccessToken(String authCode, String jwtToken) {
-        if (jwtToken == null || jwtToken.isEmpty()) {
-            return Result.failure("Jwt token is null or empty", ErrorType.BAD_REQUEST);
+        if (jwtToken == null || jwtToken.isBlank()) {
+            log.error("JWT token is null or empty");
+            return Result.failure("Jwt token is missing or invalid", ErrorType.BAD_REQUEST);
         }
 
         return jwtTokenManager.extractUserId(jwtToken)
