@@ -26,7 +26,7 @@ public class SpotifyAccessTokenValidator {
         return Result.success(null);
     }
 
-    public Result<Void> validateResponse(SpotifyTokenResponse response) {
+    public Result<Void> validateAccessTokenResponse(SpotifyTokenResponse response) {
         if (response.accessToken() == null || response.accessToken().isBlank()) {
             log.error("Response validation failed: access token is null or empty");
             return Result.failure("Access token cannot be null or empty",ErrorType.UNPROCESSABLE_ENTITY);
