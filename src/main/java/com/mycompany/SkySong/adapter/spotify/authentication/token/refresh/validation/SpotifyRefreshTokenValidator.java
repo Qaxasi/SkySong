@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.validation;
+package com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.validation;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
@@ -22,7 +22,7 @@ public class SpotifyRefreshTokenValidator {
         return Result.success(null);
     }
 
-    public Result<Void> validateRefreshTokenResponse(SpotifyTokenResponse response) {
+    public Result<Void> validateResponse(SpotifyTokenResponse response) {
         if (response.accessToken() == null || response.accessToken().isBlank()) {
             log.error("Response validation failed: access token is null or empty");
             return Result.failure("Access token cannot be null or empty", ErrorType.UNPROCESSABLE_ENTITY);
