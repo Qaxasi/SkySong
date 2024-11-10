@@ -1,10 +1,10 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.handler;
 
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
-import com.mycompany.SkySong.adapter.spotify.authentication.api.SpotifyTokenApi;
 import com.mycompany.SkySong.adapter.spotify.authentication.store.RedisTokenStore;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
-import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyRefreshTokenValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.api.SpotifyRefreshTokenApi;
+import com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.validation.SpotifyRefreshTokenValidator;
 import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
 import org.springframework.stereotype.Service;
@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpotifyRefreshTokenHandler {
     private final JwtTokenManager jwtTokenManager;
-    private final SpotifyTokenApi spotifyTokenApi;
+    private final SpotifyRefreshTokenApi tokenApi;
     private final RedisTokenStore redisTokenStore;
     private final SpotifyRefreshTokenValidator validator;
 
     public SpotifyRefreshTokenHandler(JwtTokenManager jwtTokenManager,
-                                      SpotifyTokenApi spotifyTokenApi,
+                                      SpotifyRefreshTokenApi tokenApi,
                                       RedisTokenStore tokenStore,
                                       SpotifyRefreshTokenValidator validator) {
         this.jwtTokenManager = jwtTokenManager;
-        this.spotifyTokenApi = spotifyTokenApi;
+        this.tokenApi = tokenApi;
         this.redisTokenStore = tokenStore;
         this.validator = validator;
     }
@@ -40,7 +40,7 @@ public class SpotifyRefreshTokenHandler {
                 .flatMap(refreshToken -> {
                     SpotifyRefreshTokenRequest request = new SpotifyRefreshTokenRequest("refresh_token", refreshToken);
                     return validator.validateRequest(request)
-                            .flatMap(validationPassed -> spotifyTokenApi.sendRefreshTokenRequest(request))
+                            .flatMap(validationPassed -> tokenApi.fetchRefreshToken(request))
                             .flatMap(response -> {
                             if (response.refreshToken() != null && !response.refreshToken().isEmpty()) {
                                 redisTokenStore.saveRefreshToken(userId, response.refreshToken());
