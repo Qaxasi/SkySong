@@ -2,8 +2,8 @@ package com.mycompany.SkySong.adapter.exception.handler;
 
 import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.exception.response.ErrorResponseBuilder;;
-import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestClientException;
-import com.mycompany.SkySong.adapter.spotify.authentication.exception.TokenRequestServerException;
+import com.mycompany.SkySong.adapter.exception.common.ApiClientErrorException;
+import com.mycompany.SkySong.adapter.exception.common.ApiServerErrorException;
 import com.mycompany.SkySong.adapter.user.delete.persistence.exception.UserNotFoundException;
 import com.mycompany.SkySong.domain.registration.exception.CredentialValidationException;
 import com.mycompany.SkySong.adapter.user.delete.controller.exception.NullOrEmptyInputException;
@@ -34,18 +34,23 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(TokenRequestClientException.class)
-    public ResponseEntity<Object> handleTokenRequestClientException(final TokenRequestClientException ex) {
+    @ExceptionHandler(ApiAccessDeniedException.class)
+    public ResponseEntity<Object> handleApiAccessDeniedException(final ApiAccessDeniedException ex) {
+        return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(ApiClientErrorException.class)
+    public ResponseEntity<Object> handleTokenRequestClientException(final ApiClientErrorException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(TokenRequestServerException.class)
-    public ResponseEntity<Object> handleTokenRequestServerException(final TokenRequestServerException ex) {
+    @ExceptionHandler(ApiServerErrorException.class)
+    public ResponseEntity<Object> handleTokenRequestServerException(final ApiServerErrorException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(RequestTimeoutException.class)
-    public ResponseEntity<Object> handleWebClientTimeoutException(final RequestTimeoutException ex) {
+    @ExceptionHandler(ApiRequestTimeoutException.class)
+    public ResponseEntity<Object> handleWebClientTimeoutException(final ApiRequestTimeoutException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.REQUEST_TIMEOUT);
     }
 
@@ -54,8 +59,8 @@ public class GlobalExceptionHandler {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS);
     }
 
-    @ExceptionHandler(AuthorizationException.class)
-    public ResponseEntity<Object> handleAuthorizationException(final AuthorizationException ex) {
+    @ExceptionHandler(ApiAuthenticationException.class)
+    public ResponseEntity<Object> handleAuthorizationException(final ApiAuthenticationException ex) {
         return ErrorResponseBuilder.createErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 

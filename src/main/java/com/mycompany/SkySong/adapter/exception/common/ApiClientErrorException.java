@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.exception.exception;
+package com.mycompany.SkySong.adapter.exception.common;
 
 public class ApiClientErrorException extends RuntimeException {
     public ApiClientErrorException(String message) {
