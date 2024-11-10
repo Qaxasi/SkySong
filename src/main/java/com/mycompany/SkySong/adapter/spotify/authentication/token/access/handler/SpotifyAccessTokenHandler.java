@@ -2,10 +2,10 @@ package com.mycompany.SkySong.adapter.spotify.authentication.token.access.handle
 
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
-import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyAccessTokenValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.token.access.api.SpotifyAccessTokenApi;
+import com.mycompany.SkySong.adapter.spotify.authentication.token.access.validation.SpotifyAccessTokenValidator;
 import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
-import com.mycompany.SkySong.adapter.spotify.authentication.api.SpotifyTokenApi;
 import com.mycompany.SkySong.adapter.spotify.authentication.store.RedisTokenStore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,18 +17,18 @@ public class SpotifyAccessTokenHandler {
     private final String redirectUri;
     private final JwtTokenManager jwtTokenManager;
     private final RedisTokenStore redisTokenStore;
-    private final SpotifyTokenApi spotifyTokenApi;
+    private final SpotifyAccessTokenApi tokenApi;
     private final SpotifyAccessTokenValidator validator;
 
     public SpotifyAccessTokenHandler(@Value("${REDIRECT_URI}") String redirectUri,
                                      JwtTokenManager jwtTokenManager,
                                      RedisTokenStore redisTokenStore,
-                                     SpotifyTokenApi spotifyTokenApi,
+                                     SpotifyAccessTokenApi tokenApi,
                                      SpotifyAccessTokenValidator validator) {
         this.redirectUri = redirectUri;
         this.jwtTokenManager = jwtTokenManager;
         this.redisTokenStore = redisTokenStore;
-        this.spotifyTokenApi = spotifyTokenApi;
+        this.tokenApi = tokenApi;
         this.validator = validator;
     }
 
@@ -47,7 +47,7 @@ public class SpotifyAccessTokenHandler {
                 "authorization_code", authCode, redirectUri);
 
         return validator.validateRequest(request)
-                .flatMap(validationPassed -> spotifyTokenApi.sendAccessTokenRequest(request))
+                .flatMap(validationPassed -> tokenApi.fetchAccessToken(request))
                 .flatMap(response -> {
                     redisTokenStore.saveRefreshToken(userId, response.refreshToken());
                     return Result.success(response.accessToken());
