@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.token.access.api;
 
+import com.mycompany.SkySong.adapter.exception.common.ApiAuthenticationException;
 import com.mycompany.SkySong.adapter.exception.common.ApiRequestTimeoutException;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
@@ -57,6 +58,17 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
                         .withFixedDelay(6000)));
 
         assertThrows(ApiRequestTimeoutException.class, this::sendTokenRequest);
+    }
+
+    @Test
+    void whenRequestFailsWith401Error_ThrowException() {
+        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
+                .willReturn(aResponse()
+                        .withStatus(401)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Client error\"")));
+
+        assertThrows(ApiAuthenticationException.class, this::sendTokenRequest);
     }
 
     private Result<SpotifyTokenResponse> sendTokenRequest() {
