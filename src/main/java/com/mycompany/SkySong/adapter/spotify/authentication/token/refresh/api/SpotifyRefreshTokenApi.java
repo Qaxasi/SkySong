@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.token.access.api;
+package com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.api;
 
 import com.mycompany.SkySong.adapter.exception.common.*;
-import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
+import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.adapter.spotify.authentication.token.access.validation.SpotifyAccessTokenValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.validation.SpotifyRefreshTokenValidator;
 import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,23 +20,23 @@ import java.util.concurrent.TimeoutException;
 
 @Service
 @Slf4j
-public class SpotifyAccessTokenApi {
+public class SpotifyRefreshTokenApi {
     private final String spotifyClientId;
     private final String spotifyClientSecret;
     private final WebClient webClient;
-    private final SpotifyAccessTokenValidator validator;
+    private final SpotifyRefreshTokenValidator validator;
 
-    public SpotifyAccessTokenApi(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
-                                 @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
-                                 @Qualifier("spotifyWebClient") WebClient webClient,
-                                 SpotifyAccessTokenValidator validator) {
+    public SpotifyRefreshTokenApi(@Value("${SPOTIFY_CLIENT_ID}") String spotifyClientId,
+                                  @Value("${SPOTIFY_CLIENT_SECRET}") String spotifyClientSecret,
+                                  @Qualifier("spotifyWebClient") WebClient webClient,
+                                  SpotifyRefreshTokenValidator validator) {
         this.spotifyClientId = spotifyClientId;
         this.spotifyClientSecret = spotifyClientSecret;
         this.webClient = webClient;
         this.validator = validator;
     }
 
-    public Result<SpotifyTokenResponse> fetchAccessToken(SpotifyAccessTokenRequest request) {
+    public Result<SpotifyTokenResponse> fetchRefreshToken(SpotifyRefreshTokenRequest request) {
         SpotifyTokenResponse response = sendTokenRequest(request.toMultiValueMap());
         Result<Void> validationResult = validator.validateResponse(response);
         if (!validationResult.success()) {
