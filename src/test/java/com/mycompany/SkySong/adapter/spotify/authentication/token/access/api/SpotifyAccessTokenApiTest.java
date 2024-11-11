@@ -1,9 +1,6 @@
 package com.mycompany.SkySong.adapter.spotify.authentication.token.access.api;
 
-import com.mycompany.SkySong.adapter.exception.common.ApiAccessDeniedException;
-import com.mycompany.SkySong.adapter.exception.common.ApiAuthenticationException;
-import com.mycompany.SkySong.adapter.exception.common.ApiRequestTimeoutException;
-import com.mycompany.SkySong.adapter.exception.common.ApiTooManyRequestsException;
+import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.spotify.authentication.token.access.validation.SpotifyAccessTokenValidator;
@@ -82,6 +79,17 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
                         .withBody("\"message\": \"To many requests\"")));
 
         assertThrows(ApiTooManyRequestsException.class, this::sendTokenRequest);
+    }
+
+    @Test
+    void whenRequestFailsWith400Error_ThrowException() {
+        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
+                .willReturn(aResponse()
+                        .withStatus(400)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Bad request\"")));
+
+        assertThrows(ApiBadRequestException.class, this::sendTokenRequest);
     }
 
     private Result<SpotifyTokenResponse> sendTokenRequest() {
