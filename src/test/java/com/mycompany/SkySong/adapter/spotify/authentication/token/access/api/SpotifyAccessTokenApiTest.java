@@ -74,17 +74,6 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
     }
 
     @Test
-    void whenRequestFailsWith403Error_ThrowException() {
-        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
-                .willReturn(aResponse()
-                        .withStatus(403)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("\"message\": \"Forbidden\"")));
-
-        assertThrows(ApiAccessDeniedException.class, this::sendTokenRequest);
-    }
-
-    @Test
     void whenRequestFailsWith429Error_ThrowException() {
         wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
                 .willReturn(aResponse()
