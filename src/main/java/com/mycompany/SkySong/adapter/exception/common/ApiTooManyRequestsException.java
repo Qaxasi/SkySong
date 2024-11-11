@@ -1,10 +1,11 @@
 package com.mycompany.SkySong.adapter.exception.common;
 
-public class TooManyRequestsException extends RuntimeException {
-    public TooManyRequestsException(String message) {
+public class ApiTooManyRequestsException extends RuntimeException {
+    
+    public ApiTooManyRequestsException(String message) {
         super(message);
     }
-    public TooManyRequestsException(String message, Throwable cause) {
+    public ApiTooManyRequestsException(String message, Throwable cause) {
         super(message, cause);
     }
 }
