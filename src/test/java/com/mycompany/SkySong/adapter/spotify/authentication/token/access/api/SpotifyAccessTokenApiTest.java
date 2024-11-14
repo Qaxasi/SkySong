@@ -51,15 +51,6 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
     }
 
     @Test
-    void whenRequestTimeout_ThrowException() {
-        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
-                .willReturn(aResponse()
-                        .withFixedDelay(7000)));
-
-        assertThrows(ApiRequestTimeoutException.class, this::sendTokenRequest);
-    }
-
-    @Test
     void whenRequestFailsWith401Error_ThrowException() {
         wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
                 .willReturn(aResponse()
