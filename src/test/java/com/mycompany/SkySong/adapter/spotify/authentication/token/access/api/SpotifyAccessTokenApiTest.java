@@ -54,7 +54,7 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
     void whenRequestTimeout_ThrowException() {
         wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
                 .willReturn(aResponse()
-                        .withFixedDelay(6000)));
+                        .withFixedDelay(7000)));
 
         assertThrows(ApiRequestTimeoutException.class, this::sendTokenRequest);
     }
@@ -90,6 +90,17 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
                         .withBody("\"message\": \"Bad request\"")));
 
         assertThrows(ApiBadRequestException.class, this::sendTokenRequest);
+    }
+
+    @Test
+    void whenRequestFailsWith5xxError_ThrowException() {
+        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
+                .willReturn(aResponse()
+                        .withStatus(503)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("\"message\": \"Service unavailable\"")));
+
+        assertThrows(ApiServerErrorException.class, this::sendTokenRequest);
     }
 
     private Result<SpotifyTokenResponse> sendTokenRequest() {
