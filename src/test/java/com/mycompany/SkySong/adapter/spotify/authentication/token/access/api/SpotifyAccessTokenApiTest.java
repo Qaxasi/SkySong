@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThrows;
 
 class SpotifyAccessTokenApiTest extends BaseWireMock {
     private SpotifyAccessTokenApi tokenApi;
-    private String tokenResponse;
+    private String response;
 
     @BeforeEach
     void setup() throws IOException {
@@ -28,20 +28,15 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
                 .baseUrl("http://localhost:8080/v1/spotify/auth")
                 .build();
 
-        tokenResponse = JsonFileLoader.loadJson("spotify_access_token_response.json");
-
+        response = JsonFileLoader.loadJson("spotify_access_token_response.json");
 
         SpotifyAccessTokenValidator validator = new SpotifyAccessTokenValidator();
         tokenApi = new SpotifyAccessTokenApi("clientId", "clientSecret", webClient, validator);
     }
 
     @Test
-    void whenRequestSuccessful_ReturnNonEmptyAccessToken() {
-        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(tokenResponse)));
+    void whenRequestSuccessful_ReturnAccessToken() {
+        mockApiResponse(200, response);
 
         Result<SpotifyTokenResponse> response = sendTokenRequest();
 
@@ -51,47 +46,61 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
     }
 
     @Test
+    void whenRequestSuccessful_ReturnRefreshToken() {
+        mockApiResponse(200, response);
+
+        Result<SpotifyTokenResponse> response = sendTokenRequest();
+
+        assertThat(response.data().refreshToken())
+                .isNotBlank()
+                .isNotNull();
+    }
+
+    @Test
+    void whenRequestSuccessful_ReturnScope() {
+        mockApiResponse(200, response);
+
+        Result<SpotifyTokenResponse> response = sendTokenRequest();
+
+        assertThat(response.data().scope())
+                .isNotBlank()
+                .isNotNull();
+    }
+
+    @Test
     void whenRequestFailsWith401Error_ThrowException() {
-        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
-                .willReturn(aResponse()
-                        .withStatus(401)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("\"message\": \"Unauthorized\"")));
+        mockApiResponse(401, "\"message\": \"Unauthorized\"");
 
         assertThrows(ApiAuthenticationException.class, this::sendTokenRequest);
     }
 
     @Test
     void whenRequestFailsWith429Error_ThrowException() {
-        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
-                .willReturn(aResponse()
-                        .withStatus(429)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("\"message\": \"To many requests\"")));
+        mockApiResponse(429, "\"message\": \"To many requests\"");
 
         assertThrows(ApiTooManyRequestsException.class, this::sendTokenRequest);
     }
 
     @Test
     void whenRequestFailsWith400Error_ThrowException() {
-        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
-                .willReturn(aResponse()
-                        .withStatus(400)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("\"message\": \"Bad request\"")));
+        mockApiResponse(400, "\"message\": \"Bad request\"");
 
         assertThrows(ApiBadRequestException.class, this::sendTokenRequest);
     }
 
     @Test
     void whenRequestFailsWith5xxError_ThrowException() {
-        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
-                .willReturn(aResponse()
-                        .withStatus(503)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("\"message\": \"Service unavailable\"")));
+        mockApiResponse(503, "\"message\": \"Service unavailable\"");
 
         assertThrows(ApiServerErrorException.class, this::sendTokenRequest);
+    }
+
+    private void mockApiResponse(int statusCode, String response) {
+        wireMockServer.stubFor(post("/v1/spotify/auth/api/token")
+                .willReturn(aResponse()
+                        .withStatus(statusCode)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(response)));
     }
 
     private Result<SpotifyTokenResponse> sendTokenRequest() {
