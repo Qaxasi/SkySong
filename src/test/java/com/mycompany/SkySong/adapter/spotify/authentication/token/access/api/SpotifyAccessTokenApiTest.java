@@ -38,9 +38,9 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
     void whenRequestSuccessful_ReturnAccessToken() {
         mockApiResponse(200, response);
 
-        Result<SpotifyTokenResponse> response = sendTokenRequest();
+        Result<SpotifyTokenResponse> result = sendTokenRequest();
 
-        assertThat(response.data().accessToken())
+        assertThat(result.data().accessToken())
                 .isNotBlank()
                 .isNotNull();
     }
@@ -49,9 +49,9 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
     void whenRequestSuccessful_ReturnRefreshToken() {
         mockApiResponse(200, response);
 
-        Result<SpotifyTokenResponse> response = sendTokenRequest();
+        Result<SpotifyTokenResponse> result = sendTokenRequest();
 
-        assertThat(response.data().refreshToken())
+        assertThat(result.data().refreshToken())
                 .isNotBlank()
                 .isNotNull();
     }
@@ -60,9 +60,9 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
     void whenRequestSuccessful_ReturnScope() {
         mockApiResponse(200, response);
 
-        Result<SpotifyTokenResponse> response = sendTokenRequest();
+        Result<SpotifyTokenResponse> result = sendTokenRequest();
 
-        assertThat(response.data().scope())
+        assertThat(result.data().scope())
                 .isNotBlank()
                 .isNotNull();
     }
