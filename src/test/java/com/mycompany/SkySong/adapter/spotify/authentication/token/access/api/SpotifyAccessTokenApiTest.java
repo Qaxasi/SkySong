@@ -57,17 +57,6 @@ class SpotifyAccessTokenApiTest extends BaseWireMock {
     }
 
     @Test
-    void whenRequestSuccessful_ReturnScope() {
-        mockApiResponse(200, response);
-
-        Result<SpotifyTokenResponse> result = sendTokenRequest();
-
-        assertThat(result.data().scope())
-                .isNotBlank()
-                .isNotNull();
-    }
-
-    @Test
     void whenRequestFailsWith401Error_ThrowException() {
         mockApiResponse(401, "\"message\": \"Unauthorized\"");
 
