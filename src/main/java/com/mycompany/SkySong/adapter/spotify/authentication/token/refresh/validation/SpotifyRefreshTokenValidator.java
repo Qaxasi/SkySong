@@ -27,11 +27,6 @@ public class SpotifyRefreshTokenValidator {
             log.error("Response validation failed: access token is null or empty");
             return Result.failure("Access token cannot be null or empty", ErrorType.UNPROCESSABLE_ENTITY);
         }
-        if (response.scope() == null || response.scope().isBlank()) {
-            log.error("Response validation failed: scope is null or empty");
-            return Result.failure("Scope cannot be null or empty", ErrorType.UNPROCESSABLE_ENTITY);
-        }
-
         return Result.success(null);
     }
 }
