@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.validation;
+package com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.validation;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
@@ -43,7 +43,7 @@ class SpotifyRefreshTokenValidatorTest {
 
     @Test
     void whenResponseWithoutRefreshToken_ValidationSuccess() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse("access_token", null, "scope");
+        SpotifyTokenResponse response = new SpotifyTokenResponse("access_token", null);
 
         Result<Void> result = validateResponse(response);
 
@@ -70,13 +70,10 @@ class SpotifyRefreshTokenValidatorTest {
 
     private static Stream<Arguments> invalidRefreshTokenResponses() {
         return Stream.of(
-                Arguments.of("Null access token", new SpotifyTokenResponse(null, "refresh_token", "scope")),
-                Arguments.of("Empty access token", new SpotifyTokenResponse(" ", "refresh_token", "scope")),
-                Arguments.of("Null scope", new SpotifyTokenResponse("access_token", "refresh_token", null)),
-                Arguments.of("Empty scope", new SpotifyTokenResponse("access_token", "refresh_token", " "))
+                Arguments.of("Null access token", new SpotifyTokenResponse(null, "refresh_token")),
+                Arguments.of("Empty access token", new SpotifyTokenResponse(" ", "refresh_token"))
         );
     }
-
 
     private Result<Void> validateRequest(SpotifyRefreshTokenRequest request) {
         return validator.validateRequest(request);

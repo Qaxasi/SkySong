@@ -1,7 +1,8 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.validation;
+package com.mycompany.SkySong.adapter.spotify.authentication.token.access.validation;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.adapter.spotify.authentication.token.access.validation.SpotifyAccessTokenValidator;
 import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ class SpotifyAccessTokenValidatorTest {
 
     @Test
     void whenValidTokenResponse_ValidationSuccess() {
-        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", "refreshToken", "scope");
+        SpotifyTokenResponse response = new SpotifyTokenResponse("accessToken", "refreshToken");
 
         Result<Void> result = validateResponse(response);
 
@@ -61,12 +62,10 @@ class SpotifyAccessTokenValidatorTest {
 
     private static Stream<Arguments> invalidSpotifyTokenResponses() {
         return Stream.of(
-                Arguments.of("Empty access token", new SpotifyTokenResponse(" ", "refreshToken", "scope")),
-                Arguments.of("Null access token", new SpotifyTokenResponse(null, "refreshToken", "scope")),
-                Arguments.of("Empty refresh token", new SpotifyTokenResponse("accessToken", " ", "scope")),
-                Arguments.of("Null refresh token", new SpotifyTokenResponse("accessToken", null, "scope")),
-                Arguments.of("Empty scope", new SpotifyTokenResponse("accessToken", "refreshToken", " ")),
-                Arguments.of("Null scope", new SpotifyTokenResponse("accessToken", "refreshToken", null))
+                Arguments.of("Empty access token", new SpotifyTokenResponse(" ", "refreshToken")),
+                Arguments.of("Null access token", new SpotifyTokenResponse(null, "refreshToken")),
+                Arguments.of("Empty refresh token", new SpotifyTokenResponse("accessToken", " ")),
+                Arguments.of("Null refresh token", new SpotifyTokenResponse("accessToken", null))
         );
     }
 
