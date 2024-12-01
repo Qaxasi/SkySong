@@ -1,7 +1,12 @@
 package com.mycompany.SkySong.adapter.weather.api;
 
 import com.mycompany.SkySong.adapter.exception.common.*;
-import com.mycompany.SkySong.adapter.weather.dto.WeatherResponse;
+import com.mycompany.SkySong.adapter.weather.dto.WeatherApiResponse;
+import com.mycompany.SkySong.adapter.weather.mapper.WeatherMapper;
+import com.mycompany.SkySong.domain.weather.model.Weather;
+import com.mycompany.SkySong.domain.weather.port.WeatherIntegration;
+import com.mycompany.SkySong.shared.utils.ErrorType;
+import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,77 +14,72 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
 @Service
 @Slf4j
-public class WeatherApiClient {
+public class WeatherApiClient implements WeatherIntegration {
     private final String apiKey;
     private final WebClient webClient;
-    private final Duration timeout;
+    private final WeatherMapper mapper;
 
     public WeatherApiClient(@Value("${WEATHER_API_KEY}") String apiKey,
-                            @Qualifier("weatherWebClient") WebClient webClient) {
+                            @Qualifier("weatherWebClient") WebClient webClient,
+                            WeatherMapper mapper) {
         this.apiKey = Objects.requireNonNull(apiKey, "API_KEY cannot be null");
         this.webClient = Objects.requireNonNull(webClient, "WebClient cannot be null");
-        this.timeout = Duration.ofSeconds(5);
+        this.mapper = mapper;
     }
 
-    public WeatherResponse fetchWeatherData(double lat, double lon) {
-        try {
-            WeatherResponse response = webClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .queryParam("lat", lat)
-                            .queryParam("lon", lon)
-                            .queryParam("appid", apiKey)
-                            .build())
-                    .retrieve()
-                    .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
-                        log.error("Exceeded number of allowed calls to Weather API: {}", res.statusCode());
-                        throw new TooManyRequestsException(
-                                "Exceeded number of allowed calls to Weather API. Please try again later.");
-                    })
-                    .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
-                        log.error("Invalid authorization token: {}", res.statusCode());
-                        throw new AuthorizationException("Invalid authorization token.");
-                    })
-                    .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
-                        log.error("Server is unavailable: {}", res.statusCode());
-                        throw new ServiceUnavailableException(
-                                "Failed to fetch weather data. Please try again later.");
-                    })
-                    .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, res -> {
-                        log.error("An error occurred while fetching weather data: {}", res.statusCode());
-                        throw new InternalServerErrorException(
-                                "An error occurred while fetching weather data.");
-                    })
-                    .bodyToMono(WeatherResponse.class)
-                    .timeout(timeout)
-                    .block();
+    @Override
+    public Result<Weather> fetchWeatherData(double lat, double lon) {
+        WeatherApiResponse response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("lat", lat)
+                        .queryParam("lon", lon)
+                        .queryParam("appid", apiKey)
+                        .build())
+                .retrieve()
+                .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
+                    log.error("Exceeded number of allowed calls to Weather API: {}", res.statusCode());
+                    throw new ApiTooManyRequestsException(
+                            "Exceeded number of allowed calls to Weather API. Please try again later.");
+                })
+                .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
+                    log.error("Invalid authorization token: {}", res.statusCode());
+                    throw new ApiAuthenticationException("Invalid authorization token.");
+                })
+                .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
+                    log.error("Server is unavailable: {}", res.statusCode());
+                    throw new ServiceUnavailableException(
+                            "Failed to fetch weather data. Please try again later.");
+                })
+                .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, res -> {
+                    log.error("An error occurred while fetching weather data: {}", res.statusCode());
+                    throw new InternalServerErrorException(
+                            "An error occurred while fetching weather data.");
+                })
+                .bodyToMono(WeatherApiResponse.class)
+                .onErrorMap(TimeoutException.class, ex ->
+                        new ApiRequestTimeoutException("The request to Spotify timed out. Please check your connection and try again."))
+                .block();
 
-            validateWeatherResponse(response);
-            return response;
-
-        } catch (RuntimeException ex) {
-            if (ex.getCause() instanceof TimeoutException) {
-                throw new RequestTimeoutException("Request timed out while fetching geocoding data", ex);
-            }
-            throw ex;
-        }
+        return validateWeatherResponse(response)
+                .map(mapper::mapToModel);
     }
 
-    private void validateWeatherResponse(WeatherResponse response) {
+    private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse response) {
         if (response == null) {
             log.error("Received null response from Weather API ");
-            throw new NullPointerException("Weather API response is null");
+            return Result.failure("Weather API response is null", ErrorType.UNPROCESSABLE_ENTITY);
         }
 
-        if (response.daytimeInfo() == null || response.atmosphericConditions() == null ||
-                response.windInfo() == null || response.cloudsInfo() == null || response.weather().isEmpty()) {
+        if (response.daytime() == null || response.atmosphericConditions() == null ||
+                response.wind() == null || response.clouds() == null || response.conditions() == null) {
             log.error("Incomplete weather data received: {}", response);
-            throw new DataNotFoundException("Received incomplete weather data.");
+            return Result.failure("Received incomplete weather data.", ErrorType.UNPROCESSABLE_ENTITY);
         }
+        return Result.success(response);
     }
 }
