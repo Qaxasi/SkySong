@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public record WeatherResponse(@JsonProperty("main") AtmosphericConditionsData atmosphericConditions,
-                              @JsonProperty("clouds") CloudsData clouds,
-                              @JsonProperty("wind") WindData wind,
-                              @JsonProperty("sys") DaytimeData daytime,
-                              @JsonProperty("weather") List<WeatherTypeData> conditions) {
+public record WeatherApiResponse(@JsonProperty("main") AtmosphericConditions atmosphericConditions,
+                                 @JsonProperty("clouds") Clouds clouds,
+                                 @JsonProperty("wind") Wind wind,
+                                 @JsonProperty("sys") Daytime daytime,
+                                 @JsonProperty("weather") List<WeatherType> conditions) {
 }
