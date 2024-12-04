@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Objects;
+import java.util.concurrent.TimeoutException;
 
 @Service
 @Slf4j
@@ -58,6 +59,8 @@ public class GeocodingApiClient implements GeocodingIntegration {
                             "An error occurred while fetching geocoding data.");
                 })
                 .bodyToMono(GeocodingResponse.class)
+                .onErrorMap(TimeoutException.class, ex ->
+                        new ApiRequestTimeoutException("The request timed out. Please check your connection and try again."))
                 .block();
 
         return validateAndExtractCoordinates(response)
