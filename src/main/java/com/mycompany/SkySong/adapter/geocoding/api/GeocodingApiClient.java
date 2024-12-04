@@ -2,7 +2,11 @@ package com.mycompany.SkySong.adapter.geocoding.api;
 
 import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResponse;
-import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResult;
+import com.mycompany.SkySong.adapter.geocoding.dto.Coordinates;
+import com.mycompany.SkySong.domain.geocoding.model.Location;
+import com.mycompany.SkySong.domain.geocoding.port.GeocodingIntegration;
+import com.mycompany.SkySong.shared.utils.ErrorType;
+import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,71 +14,60 @@ import org.springframework.http.HttpStatus;;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.TimeoutException;
 
 @Service
 @Slf4j
-public class GeocodingApiClient {
+public class GeocodingApiClient implements GeocodingIntegration {
 
     private final String apiKey;
     private final WebClient webClient;
-    private final Duration timeout;
 
     public GeocodingApiClient(@Qualifier("geocodingWebClient") WebClient webClient,
-                              @Value("${GEOCODING_API_KEY}") String apiKey) {
+                              @Value("${geocoding.api.key}") String apiKey) {
         this.webClient = Objects.requireNonNull(webClient, "WebClient cannot be null");
-        this.apiKey = Objects.requireNonNull(apiKey, "API_KEY cannot be null");
-        this.timeout = Duration.ofSeconds(5);
+        this.apiKey = Objects.requireNonNull(apiKey, "Api key cannot be null");;
     }
 
-    public GeocodingResult fetchGeocodingData(String locationName) {
-        try {
-            GeocodingResponse response = webClient.get()
-                    .uri(uriBuilder -> uriBuilder
-                            .queryParam("text", locationName)
-                            .queryParam("format", "json")
-                            .queryParam("apiKey", apiKey)
-                            .queryParam("limit", 1)
-                            .build())
-                    .retrieve()
-                    .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
-                        log.error("Exceeded number of allowed calls to Geocoding API: {}", res.statusCode());
-                        throw new TooManyRequestsException(
-                                "Exceeded number of allowed calls to Geocoding API. Please try again later.");
-                    })
-                    .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
-                        log.error("Invalid authorization token: {}", res.statusCode());
-                        throw new AuthorizationException("Invalid authorization token.");
-                    })
-                    .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
-                        log.error("Server is unavailable: {}", res.statusCode());
-                        throw new ServiceUnavailableException(
-                                "Failed to fetch geocoding data. Please try again later.");
-                    })
-                    .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, res -> {
-                        log.error("An error occurred while fetching geocoding data: {}", res.statusCode());
-                        throw new InternalServerErrorException(
-                                "An error occurred while fetching geocoding data.");
-                    })
-                    .bodyToMono(GeocodingResponse.class)
-                    .timeout(timeout)
-                    .block();
+    @Override
+    public Result<Location> getCoordinates(String address) {
+        GeocodingResponse response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("text", address)
+                        .queryParam("apiKey", apiKey)
+                        .queryParam("limit", 1)
+                        .build())
+                .retrieve()
+                .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
+                    log.error("Exceeded number of allowed calls to Geocoding API: {}", res.statusCode());
+                    throw new ApiTooManyRequestsException(
+                            "Exceeded number of allowed calls to Geocoding API. Please try again later.");
+                })
+                .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
+                    log.error("Invalid authorization token: {}", res.statusCode());
+                    throw new ApiAuthenticationException("Invalid authorization token.");
+                })
+                .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
+                    log.error("Server is unavailable: {}", res.statusCode());
+                    throw new ServiceUnavailableException(
+                            "Failed to fetch geocoding data. Please try again later.");
+                })
+                .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, res -> {
+                    log.error("An error occurred while fetching geocoding data: {}", res.statusCode());
+                    throw new InternalServerErrorException(
+                            "An error occurred while fetching geocoding data.");
+                })
+                .bodyToMono(GeocodingResponse.class)
+                .block();
 
-            return extractResult(response);
-        } catch (RuntimeException ex) {
-            if (ex.getCause() instanceof TimeoutException) {
-                throw new RequestTimeoutException("Request timed out while fetching geocoding data", ex);
-            }
-            throw ex;
-        }
+        return validateAndExtractCoordinates(response)
+                .map(result -> new Location(result.lat(), result.lon()));
     }
 
-    private GeocodingResult extractResult(GeocodingResponse response) {
+    private Result<Coordinates> validateAndExtractCoordinates(GeocodingResponse response) {
         if (response == null || response.results() == null || response.results().isEmpty()) {
-            throw new DataNotFoundException("The specified location could not be found in our data source.");
+            return Result.failure("The specified location could not be found in our data source.", ErrorType.UNPROCESSABLE_ENTITY);
         }
-        return response.results().get(0);
+        return Result.success(response.results().get(0));
     }
 }
