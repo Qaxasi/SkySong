@@ -3,6 +3,7 @@ package com.mycompany.SkySong.infrastructure.config.webclient;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -36,18 +37,18 @@ public class WebClientConfig {
     }
 
     @Bean
-    public WebClient geocodingWebClient() {
+    public WebClient geocodingWebClient(@Value("${geocoding.api.base-url}") String baseUrl) {
         return WebClient.builder()
-                .baseUrl("https://api.geoapify.com/v1/geocode/search")
+                .baseUrl(baseUrl)
                 .clientConnector(new ReactorClientHttpConnector(createHttpClient()))
                 .defaultHeaders(headers -> headers.setContentType(MediaType.APPLICATION_JSON))
                 .build();
     }
 
     @Bean
-    public WebClient weatherWebClient() {
+    public WebClient weatherWebClient(@Value("${weather.api.base-url}") String baseUrl) {
         return WebClient.builder()
-                .baseUrl("https://api.openweathermap.org/data/2.5/weather?")
+                .baseUrl(baseUrl)
                 .clientConnector(new ReactorClientHttpConnector(createHttpClient()))
                 .defaultHeaders(headers -> headers.setContentType(MediaType.APPLICATION_JSON))
                 .build();

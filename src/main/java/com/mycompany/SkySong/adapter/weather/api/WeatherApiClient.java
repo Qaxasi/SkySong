@@ -24,10 +24,10 @@ public class WeatherApiClient implements WeatherIntegration {
     private final WebClient webClient;
     private final WeatherMapper mapper;
 
-    public WeatherApiClient(@Value("${WEATHER_API_KEY}") String apiKey,
+    public WeatherApiClient(@Value("${weather.api.key}") String apiKey,
                             @Qualifier("weatherWebClient") WebClient webClient,
                             WeatherMapper mapper) {
-        this.apiKey = Objects.requireNonNull(apiKey, "API_KEY cannot be null");
+        this.apiKey = Objects.requireNonNull(apiKey, "Api key cannot be null");
         this.webClient = Objects.requireNonNull(webClient, "WebClient cannot be null");
         this.mapper = mapper;
     }
@@ -62,7 +62,7 @@ public class WeatherApiClient implements WeatherIntegration {
                 })
                 .bodyToMono(WeatherApiResponse.class)
                 .onErrorMap(TimeoutException.class, ex ->
-                        new ApiRequestTimeoutException("The request to Spotify timed out. Please check your connection and try again."))
+                        new ApiRequestTimeoutException("The request timed out. Please check your connection and try again."))
                 .block();
 
         return validateWeatherResponse(response)
