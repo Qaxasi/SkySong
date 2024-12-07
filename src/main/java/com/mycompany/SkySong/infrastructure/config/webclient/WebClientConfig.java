@@ -28,9 +28,9 @@ public class WebClientConfig {
     }
 
     @Bean
-    public WebClient spotifyWebClient() {
+    public WebClient spotifyTokenClient(@Value("${spotify.api.token.base-url}") String baseUrl) {
         return WebClient.builder()
-                .baseUrl("https://accounts.spotify.com")
+                .baseUrl(baseUrl)
                 .clientConnector(new ReactorClientHttpConnector(createHttpClient()))
                 .defaultHeaders(headers -> headers.setContentType(MediaType.APPLICATION_JSON))
                 .build();
