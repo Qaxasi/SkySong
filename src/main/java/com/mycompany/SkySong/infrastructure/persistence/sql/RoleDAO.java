@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.infrastructure.persistence.dao;
+package com.mycompany.SkySong.infrastructure.persistence.sql;
 
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
