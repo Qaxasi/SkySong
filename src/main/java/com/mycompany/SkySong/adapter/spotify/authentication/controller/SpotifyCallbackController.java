@@ -9,6 +9,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.mycompany.SkySong.shared.utils.ErrorStatusMapper.mapErrorTypeToStatus;
+
 @RestController
 @RequestMapping("/api/v1/spotify/auth")
 public class SpotifyCallbackController {
@@ -27,13 +29,13 @@ public class SpotifyCallbackController {
                                                              @CookieValue(name = "jwtToken") String jwtToken) {
         if (jwtToken.isEmpty()) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse("Jwt token is empty"));
+                    .body(new ApiResponse("Missing authorization token. Please try logging in again."));
         }
 
         Result<String> accessTokenResult = tokenHandler.retrieveSpotifyAccessToken(authCode, jwtToken);
         if (!accessTokenResult.success()) {
-            return ResponseEntity.internalServerError()
-                    .body(new ApiResponse(accessTokenResult.errorMessage()));
+            return ResponseEntity.status(mapErrorTypeToStatus(accessTokenResult.errorType()))
+                    .body(new ApiResponse("We encountered an issue processing your request. Please try again later."));
         }
 
         String accessToken = accessTokenResult.data();
