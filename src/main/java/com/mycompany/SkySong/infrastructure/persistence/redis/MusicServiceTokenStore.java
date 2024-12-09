@@ -4,11 +4,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SpotifyTokenStore {
+public class MusicServiceTokenStore {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public SpotifyTokenStore(RedisTemplate<String, String> redisTemplate) {
+    public MusicServiceTokenStore(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -23,6 +23,6 @@ public class SpotifyTokenStore {
     }
 
     private String generateRefreshTokenKey(int userId) {
-        return "spotify:refresh_token:" + userId;
+        return "music:refresh_token:" + userId;
     }
 }
