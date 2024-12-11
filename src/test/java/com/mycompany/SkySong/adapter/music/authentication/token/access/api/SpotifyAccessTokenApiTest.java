@@ -3,7 +3,7 @@ package com.mycompany.SkySong.adapter.spotify.authentication.token.access.api;
 import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.adapter.spotify.authentication.token.access.validation.SpotifyAccessTokenValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyAccessTokenValidator;
 import com.mycompany.SkySong.shared.utils.Result;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;

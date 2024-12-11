@@ -2,7 +2,7 @@ package com.mycompany.SkySong.adapter.spotify.authentication.token.access.valida
 
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.adapter.spotify.authentication.token.access.validation.SpotifyAccessTokenValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyAccessTokenValidator;
 import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
 import org.junit.jupiter.api.BeforeEach;

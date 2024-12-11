@@ -6,7 +6,7 @@ import com.mycompany.SkySong.adapter.exception.common.ApiServerErrorException;
 import com.mycompany.SkySong.adapter.exception.common.ApiTooManyRequestsException;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.adapter.spotify.authentication.token.refresh.validation.SpotifyRefreshTokenValidator;
+import com.mycompany.SkySong.adapter.spotify.authentication.validation.SpotifyRefreshTokenValidator;
 import com.mycompany.SkySong.shared.utils.Result;
 import com.mycompany.SkySong.testutils.common.BaseWireMock;
 import com.mycompany.SkySong.testutils.utils.JsonFileLoader;

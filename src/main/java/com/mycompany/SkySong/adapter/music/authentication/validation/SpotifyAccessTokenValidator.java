@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.token.access.validation;
+package com.mycompany.SkySong.adapter.spotify.authentication.validation;
 
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;

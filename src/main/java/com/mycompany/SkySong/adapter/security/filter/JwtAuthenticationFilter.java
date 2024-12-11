@@ -3,6 +3,7 @@ package com.mycompany.SkySong.adapter.security.filter;
 import com.mycompany.SkySong.adapter.security.exception.TokenExpiredException;
 import com.mycompany.SkySong.adapter.security.handler.CustomAuthenticationEntryPoint;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
+import com.mycompany.SkySong.infrastructure.config.security.SecurityProperties;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,11 +28,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenManager jwtManager;
     private final CustomAuthenticationEntryPoint authEntryPoint;
+    private final SecurityProperties securityProperties;
 
     public JwtAuthenticationFilter(JwtTokenManager jwtManager,
-                                   CustomAuthenticationEntryPoint authEntryPoint) {
+                                   CustomAuthenticationEntryPoint authEntryPoint,
+                                   SecurityProperties securityProperties) {
         this.jwtManager = jwtManager;
         this.authEntryPoint = authEntryPoint;
+        this.securityProperties = securityProperties;
     }
 
 
@@ -87,8 +91,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return  path.startsWith("/api/v1/auth/login") ||
-                path.startsWith("/api/v1/auth/register") ||
-                path.startsWith("/api/v1/auth/refresh-token");
+        return securityProperties.getExcludePaths().stream().anyMatch(path::startsWith);
     }
 }

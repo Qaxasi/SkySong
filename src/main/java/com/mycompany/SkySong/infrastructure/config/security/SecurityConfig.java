@@ -20,14 +20,17 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final SecurityProperties securityProperties;
 
     public SecurityConfig(CustomAuthenticationEntryPoint authenticationEntryPoint,
                           CustomAccessDeniedHandler accessDeniedHandler,
-                          JwtAuthenticationFilter jwtAuthenticationFilter) {
+                          JwtAuthenticationFilter jwtAuthenticationFilter,
+                          SecurityProperties securityProperties) {
 
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.securityProperties = securityProperties;
     }
 
     @Bean
@@ -35,10 +38,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                "/api/v1/auth/login",
-                                "/api/v1/auth/register",
-                                "/api/v1/auth/refresh-token")
+                        .requestMatchers(securityProperties.getExcludePaths().toArray(String[]::new))
                         .permitAll()
                         .requestMatchers(HttpMethod.DELETE,
                                 "/api/v1/users/**").hasRole("ADMIN")
