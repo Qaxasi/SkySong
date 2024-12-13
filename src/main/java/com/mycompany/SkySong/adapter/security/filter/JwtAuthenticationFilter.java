@@ -3,6 +3,7 @@ package com.mycompany.SkySong.adapter.security.filter;
 import com.mycompany.SkySong.adapter.security.exception.TokenExpiredException;
 import com.mycompany.SkySong.adapter.security.handler.CustomAuthenticationEntryPoint;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
+import com.mycompany.SkySong.application.user.context.UserContext;
 import com.mycompany.SkySong.infrastructure.config.security.SecurityProperties;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -53,26 +54,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromCookies(request);
             if (jwt != null && (jwtManager.isTokenValid(jwt))) {
                 String username = jwtManager.extractUsername(jwt);
-                List<String> roles = jwtManager.extractRoles(jwt);
-
-                List<SimpleGrantedAuthority> authorities = roles.stream()
+                List<SimpleGrantedAuthority> authorities = jwtManager.extractRoles(jwt).stream()
                         .map(SimpleGrantedAuthority::new)
                         .toList();
+
+                int id = jwtManager.extractUserId(jwt);
+                UserContext.setUserId(id);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(username, null, authorities);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
             }
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException e) {
             SecurityContextHolder.clearContext();
             authEntryPoint.commence(request, response, new TokenExpiredException(
                     "Your session has expired. Please refresh your token to continue."));
+        } finally {
+            UserContext.clear();
         }
     }
+
 
 
     private String getJwtFromCookies(HttpServletRequest request) {
