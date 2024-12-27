@@ -2,11 +2,11 @@ package com.mycompany.SkySong.adapter.music.spotify.authentication.out.persisten
 
 import org.springframework.data.redis.core.RedisTemplate;
 
-public class RedisRefreshTokenStore {
+public class RedisTokenStore {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public RedisRefreshTokenStore(RedisTemplate<String, String> redisTemplate) {
+    public RedisTokenStore(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.music.spotify.authentication.out.validation;
+package com.mycompany.SkySong.adapter.music.spotify.authentication.out.refresh;
 
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
