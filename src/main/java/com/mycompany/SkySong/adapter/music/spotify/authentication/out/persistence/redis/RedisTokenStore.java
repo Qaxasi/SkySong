@@ -1,14 +1,12 @@
-package com.mycompany.SkySong.infrastructure.persistence.redis;
+package com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis;
 
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 
-@Component
-public class MusicServiceTokenStore {
+public class RedisRefreshTokenStore {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public MusicServiceTokenStore(RedisTemplate<String, String> redisTemplate) {
+    public RedisRefreshTokenStore(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

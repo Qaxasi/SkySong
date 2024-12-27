@@ -1,6 +1,5 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.controller;
+package com.mycompany.SkySong.adapter.music.spotify.authentication.in;
 
-import com.mycompany.SkySong.adapter.spotify.authentication.handler.SpotifyAuthUrlGenerator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

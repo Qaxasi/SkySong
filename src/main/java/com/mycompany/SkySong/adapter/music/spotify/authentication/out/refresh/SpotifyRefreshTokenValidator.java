@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.validation;
+package com.mycompany.SkySong.adapter.music.spotify.authentication.out.validation;
 
-import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyRefreshTokenRequest;
-import com.mycompany.SkySong.adapter.spotify.authentication.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyRefreshTokenRequest;
+import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.shared.utils.ErrorType;
 import com.mycompany.SkySong.shared.utils.Result;
 import lombok.extern.slf4j.Slf4j;

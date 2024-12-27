@@ -1,9 +1,8 @@
-package com.mycompany.SkySong.adapter.spotify.authentication.controller;
+package com.mycompany.SkySong.adapter.music.spotify.authentication.in;
 
-import com.mycompany.SkySong.adapter.spotify.authentication.handler.SpotifyRefreshTokenHandler;
+import com.mycompany.SkySong.adapter.music.spotify.authentication.out.handler.SpotifyRefreshTokenHandler;
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import com.mycompany.SkySong.domain.music.authentication.MusicServiceAuthentication;
 import com.mycompany.SkySong.shared.utils.Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -16,22 +15,17 @@ import static com.mycompany.SkySong.shared.utils.ErrorStatusMapper.mapErrorTypeT
 @RequestMapping("/api/v1/spotify/token")
 public class SpotifyRefreshTokenController {
 
-    private final MusicServiceAuthentication authentication;
+    private final SpotifyRefreshTokenHandler handler;
     private final CookieUtils cookieUtils;
 
-    public SpotifyRefreshTokenController(MusicServiceAuthentication authentication,
+    public SpotifyRefreshTokenController(SpotifyRefreshTokenHandler handler,
                                          CookieUtils cookieUtils) {
-        this.authentication = authentication;
+        this.handler = handler;
         this.cookieUtils = cookieUtils;
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<ApiResponse> refreshAccessToken(@CookieValue(name = "jwtToken") String jwtToken) {
-        if (jwtToken.isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body(new ApiResponse("Jwt token is empty"));
-        }
-
+    public ResponseEntity<ApiResponse> refreshAccessToken() {
         Result<String> newAccessTokenResult = authentication.refreshUserAccessToken(jwtToken);
         if (!newAccessTokenResult.success()) {
             return ResponseEntity.status(mapErrorTypeToStatus(newAccessTokenResult.errorType()))
