@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeoutException;
 
@@ -41,23 +40,24 @@ public class SpotifyTokenClient {
                 .onStatus(HttpStatusCode::is4xxClientError, response -> {
                     if (response.statusCode() == HttpStatus.UNAUTHORIZED) {
                         log.error("Unauthorized: Invalid Spotify credentials");
-                        return Mono.error(new ApiAuthenticationException(
-                                "Unable to authenticate with Spotify. Please check your credentials."));
+                        throw new ApiAuthenticationException(
+                                "Unable to authenticate with Spotify. Please check your credentials.");
                     } else if (response.statusCode() == HttpStatus.TOO_MANY_REQUESTS) {
                         log.warn("Too many requests sent to Spotify API");
-                        return Mono.error(new ApiTooManyRequestsException(
-                                "You've made too many requests in a short period. Please wait a moment and try again."));
+                        throw new ApiTooManyRequestsException(
+                                "You've made too many requests in a short period. Please wait a moment and try again.");
                     } else if (response.statusCode() == HttpStatus.BAD_REQUEST) {
                         log.warn("Bad request: Request to Spotify is malformed or contains invalid parameters");
-                        return Mono.error(new ApiBadRequestException(
-                                "There seems to be an issue with the request to Spotify. Please check your input and try again."));
+                        throw new ApiBadRequestException(
+                                "There seems to be an issue with the request to Spotify. Please check your input and try again.");
                     }
-                    return Mono.empty();
+                    log.error("Unexpected error: {}", response.statusCode());
+                    throw new ApiClientErrorException("Unexpected error occurred. Please try again");
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, response -> {
                     log.error("Server error while retrieving token from Spotify. Status - {}", response.statusCode());
-                    return Mono.error(new ApiServerErrorException(
-                            "Spotify is currently experiencing technical issues. Please try again later."));
+                    throw new ApiServerErrorException(
+                            "Spotify is currently experiencing technical issues. Please try again later.");
                 })
                 .bodyToMono(SpotifyTokenResponse.class)
                 .onErrorMap(TimeoutException.class, ex ->
