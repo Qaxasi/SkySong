@@ -8,5 +8,6 @@ public record WeatherApiResponse(@JsonProperty("main") AtmosphericConditions atm
                                  @JsonProperty("clouds") Clouds clouds,
                                  @JsonProperty("wind") Wind wind,
                                  @JsonProperty("sys") Daytime daytime,
-                                 @JsonProperty("weather") List<WeatherType> conditions) {
+                                 @JsonProperty("weather") List<WeatherType> conditions,
+                                 @JsonProperty("rain") Rain rain) {
 }

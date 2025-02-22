@@ -69,17 +69,17 @@ public class WeatherApiClient implements WeatherIntegration {
                 .map(mapper::mapToModel);
     }
 
-    private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse response) {
-        if (response == null) {
-            log.error("Received null response from Weather API ");
-            return Result.failure("Weather API response is null", ErrorType.UNPROCESSABLE_ENTITY);
+    private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse weather) {
+        if (weather == null) {
+            log.error("Received null weather from Weather API ");
+            return Result.failure("Weather API weather is null", ErrorType.UNPROCESSABLE_ENTITY);
         }
 
-        if (response.daytime() == null || response.atmosphericConditions() == null ||
-                response.wind() == null || response.clouds() == null || response.conditions() == null) {
-            log.error("Incomplete weather data received: {}", response);
+        if (weather.daytime() == null || weather.atmosphericConditions() == null ||
+                weather.wind() == null || weather.clouds() == null || weather.conditions() == null || weather.rain() == null) {
+            log.error("Incomplete weather data received: {}", weather);
             return Result.failure("Received incomplete weather data.", ErrorType.UNPROCESSABLE_ENTITY);
         }
-        return Result.success(response);
+        return Result.success(weather);
     }
 }
