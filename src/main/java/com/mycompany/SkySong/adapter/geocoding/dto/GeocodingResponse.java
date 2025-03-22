@@ -3,4 +3,7 @@ package com.mycompany.SkySong.adapter.geocoding.dto;
 import java.util.List;
 
 public record GeocodingResponse(List<Coordinates> results) {
+    public boolean isIncomplete() {
+        return results == null || results.isEmpty();
+    }
 }

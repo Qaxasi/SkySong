@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.geocoding.api;
+package com.mycompany.SkySong.adapter.geocoding.client;
 
 import com.mycompany.SkySong.adapter.exception.common.*;
 import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResponse;
@@ -68,7 +68,8 @@ public class GeocodingApiClient implements GeocodingIntegration {
     }
 
     private Result<Coordinates> validateAndExtractCoordinates(GeocodingResponse response) {
-        if (response == null || response.results() == null || response.results().isEmpty()) {
+        if (response == null || response.isIncomplete()) {
+            log.warn("Empty or null geocoding response received");
             return Result.failure("The specified location could not be found in our data source.", ErrorType.UNPROCESSABLE_ENTITY);
         }
         return Result.success(response.results().get(0));
