@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 public class SpotifyRefreshTokenValidator {
     public Result<Void> validateRequest(SpotifyRefreshTokenRequest request) {
         if (request.grantType() == null || request.grantType().isBlank()) {
-            log.error("Request validation failed: grant type is null or empty");
+            log.warn("Request validation failed: grant type is null or empty");
             return Result.failure("Grant type cannot be null or empty", ErrorType.BAD_REQUEST);
         }
         if (request.refreshToken() == null || request.refreshToken().isBlank()) {
-            log.error("Request validation failed: refresh token is null or empty");
+            log.warn("Request validation failed: refresh token is null or empty");
             return Result.failure("Refresh token cannot be null or empty", ErrorType.BAD_REQUEST);
         }
         return Result.success(null);
