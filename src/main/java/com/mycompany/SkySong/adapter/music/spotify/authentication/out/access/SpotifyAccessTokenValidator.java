@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.music.spotify.authentication.out.validation;
+package com.mycompany.SkySong.adapter.music.spotify.authentication.out.access;
 
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 public class SpotifyAccessTokenValidator {
     public Result<Void> validateRequest(SpotifyAccessTokenRequest request) {
         if (request.grantType() == null || request.grantType().isBlank()) {
-            log.error("Request validation failed: grant type is null or empty");
+            log.warn("Request validation failed: grant type is null or empty");
             return Result.failure("Grant type cannot be null or empty", ErrorType.BAD_REQUEST);
         }
         if (request.authCode() == null || request.authCode().isBlank()) {
-            log.error("Request validation failed: authorization code is null or empty");
+            log.warn("Request validation failed: authorization code is null or empty");
             return Result.failure("Authorization code cannot be null or empty", ErrorType.BAD_REQUEST);
         }
         if (request.redirectUri() == null || request.redirectUri().isBlank()) {
-            log.error("Request validation failed: redirect uri is null or empty");
+            log.warn("Request validation failed: redirect uri is null or empty");
             return Result.failure("Redirect uri cannot be null or empty", ErrorType.BAD_REQUEST);
         }
         return Result.success(null);
