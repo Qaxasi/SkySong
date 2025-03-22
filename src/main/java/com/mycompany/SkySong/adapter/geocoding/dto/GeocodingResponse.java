@@ -4,6 +4,6 @@ import java.util.List;
 
 public record GeocodingResponse(List<Coordinates> results) {
     public boolean isIncomplete() {
-        return results == null || results.isEmpty();
+        return results == null || results.isEmpty() || results.get(0) == null;
     }
 }

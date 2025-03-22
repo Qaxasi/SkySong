@@ -64,7 +64,7 @@ public class GeocodingApiClient implements GeocodingIntegration {
                 .block();
 
         return validateAndExtractCoordinates(response)
-                .map(result -> new Location(result.lat(), result.lon()));
+                .map(coords -> new Location(coords.lat(), coords.lon()));
     }
 
     private Result<Coordinates> validateAndExtractCoordinates(GeocodingResponse response) {
@@ -72,6 +72,14 @@ public class GeocodingApiClient implements GeocodingIntegration {
             log.warn("Empty or null geocoding response received");
             return Result.failure("The specified location could not be found in our data source.", ErrorType.UNPROCESSABLE_ENTITY);
         }
-        return Result.success(response.results().get(0));
+
+        Coordinates coordinates = response.results().get(0);
+
+        if (!coordinates.isValidCoordinate()) {
+            log.warn("Received invalid coordinates: {}", coordinates);
+            return Result.failure("Received invalid coordinates from geocoding provider", ErrorType.UNPROCESSABLE_ENTITY);
+        }
+
+        return Result.success(coordinates);
     }
 }
