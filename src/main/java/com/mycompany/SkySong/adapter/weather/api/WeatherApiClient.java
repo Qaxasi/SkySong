@@ -71,7 +71,7 @@ public class WeatherApiClient implements WeatherIntegration {
 
     private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse weather) {
         if (weather == null || weather.isIncomplete()) {
-            log.error("Incomplete weather data");
+            log.warn("Incomplete weather data");
             return Result.failure("Incomplete weather data", ErrorType.UNPROCESSABLE_ENTITY);
         }
         return Result.success(weather);
