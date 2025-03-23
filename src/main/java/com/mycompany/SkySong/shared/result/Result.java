@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.shared.result;
 
-import com.mycompany.SkySong.shared.utils.ErrorType;
+import com.mycompany.SkySong.shared.error.ErrorType;
 
 import java.util.function.Function;
 
