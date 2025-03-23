@@ -3,4 +3,7 @@ package com.mycompany.SkySong.adapter.weather.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record Clouds(@JsonProperty("all") int cloudCoverage) {
+    public boolean isIncomplete() {
+        return cloudCoverage < 0;
+    }
 }

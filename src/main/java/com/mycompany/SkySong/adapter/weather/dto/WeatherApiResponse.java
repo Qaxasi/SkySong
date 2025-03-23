@@ -13,11 +13,11 @@ public record WeatherApiResponse(@JsonProperty("main") AtmosphericConditions atm
                                  @JsonProperty("snow") Snow snow) {
 
     public boolean isIncomplete() {
-        return daytime == null
-                || wind == null
-                || clouds == null
-                || atmosphericConditions == null
-                || conditions == null
-                || conditions.isEmpty();
+        return daytime == null || daytime().isIncomplete()
+                || wind == null || wind().isIncomplete()
+                || clouds == null || clouds.isIncomplete()
+                || atmosphericConditions == null || atmosphericConditions.isIncomplete()
+                || conditions == null || conditions.stream().anyMatch(WeatherType::isIncomplete);
+
     }
 }
