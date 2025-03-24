@@ -2,8 +2,8 @@ package com.mycompany.SkySong.adapter.music.spotify.authentication.out.access;
 
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyAccessTokenRequest;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.shared.utils.ErrorType;
-import com.mycompany.SkySong.shared.utils.Result;
+import com.mycompany.SkySong.shared.error.ErrorType;
+import com.mycompany.SkySong.shared.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

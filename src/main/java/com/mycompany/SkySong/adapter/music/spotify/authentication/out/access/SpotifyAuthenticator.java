@@ -6,6 +6,7 @@ import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.Spotif
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis.RedisTokenStore;
 import com.mycompany.SkySong.domain.music.authentication.dto.AuthParams;
 import com.mycompany.SkySong.domain.music.authentication.port.MusicServiceAuthenticator;
+import com.mycompany.SkySong.shared.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,17 +30,25 @@ public class SpotifyAuthenticator implements MusicServiceAuthenticator {
     }
 
     @Override
-    public String authenticateAndReturnToken(int userId, AuthParams params) {
+    public Result<String> authenticateAndReturnToken(int userId, AuthParams params) {
         String authCode = params.authCode();
         SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest(
                 "authorization_code", authCode, redirectUri);
-        accessTokenValidator.validateRequest(request);
+
+        Result<Void> requestValidation = accessTokenValidator.validateRequest(request);
+        if (requestValidation.isFailure()) {
+            return Result.failure(requestValidation.errorMessage(), requestValidation.errorType());
+        }
 
         SpotifyTokenResponse response = api.sendTokenRequest(request.toMultiValueMap());
-        accessTokenValidator.validateResponse(response);
+
+        Result<Void> responseValidation = accessTokenValidator.validateResponse(response);
+        if (responseValidation.isFailure()) {
+            return Result.failure(responseValidation.errorMessage(), requestValidation.errorType());
+        }
 
         tokenStore.saveRefreshToken(userId, response.refreshToken());
 
-        return response.accessToken();
+        return Result.success(response.accessToken());
     }
 }

@@ -1,10 +1,12 @@
-package com.mycompany.SkySong.adapter.music.spotify.authentication.in;
+package com.mycompany.SkySong.adapter.music.spotify.authentication.in.access;
 
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.application.music.authentication.usecase.MusicServiceAuthUseCase;
 import com.mycompany.SkySong.domain.music.authentication.dto.AuthParams;
 import com.mycompany.SkySong.infrastructure.context.UserContext;
+import com.mycompany.SkySong.shared.error.ErrorResponse;
+import com.mycompany.SkySong.shared.result.Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -25,28 +27,31 @@ public class SpotifyCallbackController {
 
 
     @GetMapping("/callback")
-    public ResponseEntity<ApiResponse> handleCallback(@RequestParam("code") String authCode) {
-        // Pobieranie userId z kontekstu użytkownika
+    public ResponseEntity<?> handleCallback(@RequestParam("code") String authCode) {
         Integer userId = UserContext.getUserId();
-
-        // Tworzenie obiektu AuthParams
         AuthParams params = new AuthParams(authCode);
 
-        try {
-            // Wywołanie use case
-            String accessToken = authUseCase.authenticateUser(userId, params);
-
-            // Generowanie cookie z accessToken
-            ResponseCookie cookie = cookieUtils.generateCookie("spotifyAccessToken", accessToken, "/api/v1/spotify", 3600);
-
-            // Zwrot odpowiedzi sukcesu
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(new ApiResponse("Spotify authorization successful."));
-        } catch (Exception ex) {
-            // Obsługa błędów (np. walidacja, brak odpowiedzi od API itp.)
-            return ResponseEntity.status(500)
-                    .body(new ApiResponse("We encountered an issue processing your request. Please try again later."));
+        Result<String> authResult = authUseCase.authenticateUser(userId, params);
+        if (authResult.isFailure()) {
+            return ResponseEntity
+                    .status(authResult.errorType().getHttpStatus())
+                    .body(new ErrorResponse(
+                            authResult.errorMessage(),
+                            authResult.errorType().name(),
+                            authResult.errorType().getHttpStatus().value()
+                    ));
         }
+
+        String accessToken = authResult.data();
+        ResponseCookie cookie = cookieUtils.generateCookie(
+                "spotifyAccessToken",
+                accessToken,
+                "/api/v1/spotify",
+                3600);
+
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new ApiResponse("Spotify authorization successful."));
     }
 }

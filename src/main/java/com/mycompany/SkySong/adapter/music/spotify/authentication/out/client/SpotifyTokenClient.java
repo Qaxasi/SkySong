@@ -52,7 +52,7 @@ public class SpotifyTokenClient {
                                 "There seems to be an issue with the request to Spotify. Please check your input and try again.");
                     }
                     log.error("Unexpected error: {}", response.statusCode());
-                    throw new ApiClientErrorException("Unexpected error occurred. Please try again");
+                    throw new ApiClientErrorException("Unexpected error occurred. Please try again.");
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, response -> {
                     log.error("Server error while retrieving token from Spotify. Status - {}", response.statusCode());
