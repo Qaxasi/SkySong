@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.shared.result;
 
+import com.mycompany.SkySong.shared.error.ErrorResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
 
 import java.util.function.Function;
@@ -36,5 +37,9 @@ public record Result<T>(T data, String errorMessage, boolean success, ErrorType 
         } else {
             return Result.failure(this.errorMessage(), this.errorType());
         }
+    }
+
+    public ErrorResponse toErrorResponse() {
+        return new ErrorResponse(errorMessage, errorType.name(), errorType.getHttpStatus().value());
     }
 }

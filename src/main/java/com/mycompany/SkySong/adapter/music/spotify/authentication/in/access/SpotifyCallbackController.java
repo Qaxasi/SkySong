@@ -35,11 +35,7 @@ public class SpotifyCallbackController {
         if (authResult.isFailure()) {
             return ResponseEntity
                     .status(authResult.errorType().getHttpStatus())
-                    .body(new ErrorResponse(
-                            authResult.errorMessage(),
-                            authResult.errorType().name(),
-                            authResult.errorType().getHttpStatus().value()
-                    ));
+                    .body(authResult.toErrorResponse());
         }
 
         String accessToken = authResult.data();
