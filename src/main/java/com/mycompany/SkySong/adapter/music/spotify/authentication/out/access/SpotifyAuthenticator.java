@@ -15,16 +15,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SpotifyAuthenticator implements MusicServiceAuthenticator {
     private final SpotifyTokenClient api;
-    private final SpotifyAccessTokenValidator accessTokenValidator;
+    private final SpotifyAccessTokenValidator validator;
     private final String redirectUri;
     private final RedisTokenStore tokenStore;
 
     public SpotifyAuthenticator(SpotifyTokenClient api,
-                                SpotifyAccessTokenValidator accessTokenValidator,
+                                SpotifyAccessTokenValidator validator,
                                 @Value("${redirect.uri}") String redirectUri,
                                 RedisTokenStore tokenStore) {
         this.api = api;
-        this.accessTokenValidator = accessTokenValidator;
+        this.validator = validator;
         this.redirectUri = redirectUri;
         this.tokenStore = tokenStore;
     }
@@ -32,23 +32,30 @@ public class SpotifyAuthenticator implements MusicServiceAuthenticator {
     @Override
     public Result<String> authenticateAndReturnToken(int userId, AuthParams params) {
         String authCode = params.authCode();
+
         SpotifyAccessTokenRequest request = new SpotifyAccessTokenRequest(
                 "authorization_code", authCode, redirectUri);
 
-        Result<Void> requestValidation = accessTokenValidator.validateRequest(request);
-        if (requestValidation.isFailure()) {
-            return Result.failure(requestValidation.errorMessage(), requestValidation.errorType());
-        }
+        return validateRequest(request)
+                .flatMap(ignored -> callSpotifyApi(request))
+                .flatMap(response -> validateAndStoreRefreshToken(response, userId));
+    }
 
+    private Result<Void> validateRequest(SpotifyAccessTokenRequest request) {
+        return validator.validateRequest(request);
+    }
+
+    private Result<SpotifyTokenResponse> callSpotifyApi(SpotifyAccessTokenRequest request) {
         SpotifyTokenResponse response = api.sendTokenRequest(request.toMultiValueMap());
+        return Result.success(response);
+    }
 
-        Result<Void> responseValidation = accessTokenValidator.validateResponse(response);
-        if (responseValidation.isFailure()) {
-            return Result.failure(responseValidation.errorMessage(), requestValidation.errorType());
-        }
+    private Result<String> validateAndStoreRefreshToken(SpotifyTokenResponse response, int userId) {
+        return validator.validateResponse(response)
+                .map(ignored -> {
+                    tokenStore.saveRefreshToken(userId, response.refreshToken());
+                    return response.accessToken();
+                });
 
-        tokenStore.saveRefreshToken(userId, response.refreshToken());
-
-        return Result.success(response.accessToken());
     }
 }
