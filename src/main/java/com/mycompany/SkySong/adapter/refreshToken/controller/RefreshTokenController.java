@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.refreshToken.controller;
 
-import com.mycompany.SkySong.adapter.exception.response.ErrorResponse;
+import com.mycompany.SkySong.shared.error.ErrorResponse;
 import com.mycompany.SkySong.adapter.refreshToken.handler.RefreshTokenHandler;
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;

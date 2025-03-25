@@ -4,6 +4,7 @@ import com.mycompany.SkySong.adapter.music.spotify.authentication.out.refresh.Sp
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.infrastructure.context.UserContext;
+import com.mycompany.SkySong.shared.result.Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,18 @@ public class SpotifyRefreshTokenController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<ApiResponse> refreshAccessToken() {
+    public ResponseEntity<Object> refreshAccessToken() {
         Integer userId = UserContext.getUserId();
 
-        String newAccessToken = refresher.refreshAccessToken(userId);
+        Result<String> result = refresher.refreshAccessToken(userId);
+
+        if (result.isFailure()) {
+            return ResponseEntity
+                    .status(result.errorType().getHttpStatus())
+                    .body(result.toErrorResponse());
+        }
+
+        String newAccessToken = result.data();
 
         ResponseCookie cookie = cookieUtils.generateCookie("spotifyAccessToken", newAccessToken, "/api/v1/spotify/", 3600);
 

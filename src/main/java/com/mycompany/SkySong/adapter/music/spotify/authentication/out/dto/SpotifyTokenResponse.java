@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.music.spotify.authentication.dto;
+package com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

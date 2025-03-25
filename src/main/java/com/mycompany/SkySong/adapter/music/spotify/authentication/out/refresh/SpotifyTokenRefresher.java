@@ -4,6 +4,7 @@ import com.mycompany.SkySong.adapter.music.spotify.authentication.out.client.Spo
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyRefreshTokenRequest;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis.RedisTokenStore;
+import com.mycompany.SkySong.shared.result.Result;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,18 +21,31 @@ public class SpotifyTokenRefresher {
         this.tokenStore = tokenStore;
     }
 
-    public String refreshAccessToken(int userId) {
-        String refreshToken = tokenStore.getRefreshToken(userId);
-        SpotifyRefreshTokenRequest request = new SpotifyRefreshTokenRequest("refresh_token", refreshToken);
-        validator.validateRequest(request);
+    public Result<String> refreshAccessToken(int userId) {
+       return tokenStore.getRefreshToken(userId)
+               .map(token -> new SpotifyRefreshTokenRequest("refresh_token", token))
+               .flatMap(request ->
+                       validateRequest(request)
+                               .flatMap(ignored -> callSpotifyApi(request))
+                               .flatMap(response -> validateAndStoreRefreshToken(response, userId)));
+    }
 
+    private Result<Void> validateRequest(SpotifyRefreshTokenRequest request) {
+        return validator.validateRequest(request);
+    }
+
+    private Result<SpotifyTokenResponse> callSpotifyApi(SpotifyRefreshTokenRequest request) {
         SpotifyTokenResponse response = api.sendTokenRequest(request.toMultiValueMap());
-        validator.validateResponse(response);
+        return Result.success(response);
+    }
 
-        if (response.refreshToken() != null && !response.refreshToken().isEmpty()) {
-            tokenStore.saveRefreshToken(userId, response.refreshToken());
-        }
-
-        return response.accessToken();
+    private Result<String> validateAndStoreRefreshToken(SpotifyTokenResponse response, int userId) {
+        return validator.validateResponse(response)
+                .map(ignored -> {
+                    if (response.refreshToken() != null && !response.refreshToken().isBlank()) {
+                        tokenStore.saveRefreshToken(userId, response.refreshToken());
+                    }
+                    return response.accessToken();
+                });
     }
 }
