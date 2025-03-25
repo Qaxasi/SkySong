@@ -5,7 +5,6 @@ import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.application.music.authentication.usecase.MusicServiceAuthUseCase;
 import com.mycompany.SkySong.domain.music.authentication.dto.AuthParams;
 import com.mycompany.SkySong.infrastructure.context.UserContext;
-import com.mycompany.SkySong.shared.error.ErrorResponse;
 import com.mycompany.SkySong.shared.result.Result;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -27,7 +26,7 @@ public class SpotifyCallbackController {
 
 
     @GetMapping("/callback")
-    public ResponseEntity<?> handleCallback(@RequestParam("code") String authCode) {
+    public ResponseEntity<Object> handleCallback(@RequestParam("code") String authCode) {
         Integer userId = UserContext.getUserId();
         AuthParams params = new AuthParams(authCode);
 
