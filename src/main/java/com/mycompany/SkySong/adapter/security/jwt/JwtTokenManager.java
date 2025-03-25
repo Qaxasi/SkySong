@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.adapter.security.jwt;
 
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
-import com.mycompany.SkySong.shared.utils.Result;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -38,12 +37,8 @@ public class JwtTokenManager {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public Result<Integer> extractUserId(String token) {
-        Integer userId = extractClaim(token, claims -> claims.get("userId", Integer.class));
-        if (userId == null || userId <= 0) {
-            return Result.failure("User id is null or invalid");
-        }
-        return Result.success(userId);
+    public Integer extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", Integer.class));
     }
 
     public List<String> extractRoles(String token) {
@@ -101,7 +96,10 @@ public class JwtTokenManager {
 
     public boolean isTokenValid(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(getSignKey()).build().parse(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(getSignKey())
+                    .build()
+                    .parseClaimsJws(token);
             return true;
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token: {}", e.getMessage());
