@@ -1,8 +1,10 @@
 package com.mycompany.SkySong.adapter.refreshToken.handler;
 
+import com.mycompany.SkySong.adapter.exception.common.InvalidRefreshTokenException;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,12 +21,17 @@ public class RefreshTokenHandler {
 
     public String generateAccessTokenFromRefreshToken(String refreshToken) {
         if (!validateToken(refreshToken)) {
-            throw new IllegalArgumentException("Invalid refresh token.");
+            throw new InvalidRefreshTokenException("Refresh token is invalid or expired.");
         }
-        String username = tokenManager.extractUsername(refreshToken);
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        return tokenManager.generateToken(userDetails);
+        String username = tokenManager.extractUsername(refreshToken);
+
+        try {
+            CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            return tokenManager.generateRefreshToken(userDetails);
+        } catch (UsernameNotFoundException ex) {
+            throw new InvalidRefreshTokenException("Session renewal failed: please log in again.");
+        }
     }
 
     private boolean validateToken(String token) {
