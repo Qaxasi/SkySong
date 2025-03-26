@@ -28,7 +28,7 @@ public class RefreshTokenController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+    public ResponseEntity<Object> refreshToken(HttpServletRequest request) {
         String refreshToken = cookieUtils.getJwtFromCookies(request, "refreshToken");
 
         if (refreshToken == null || refreshToken.isBlank()) {
