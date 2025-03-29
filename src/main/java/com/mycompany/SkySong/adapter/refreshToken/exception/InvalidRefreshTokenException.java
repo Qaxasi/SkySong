@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.exception.common;
+package com.mycompany.SkySong.adapter.refreshToken.exception;
 
 import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.error.ErrorType;

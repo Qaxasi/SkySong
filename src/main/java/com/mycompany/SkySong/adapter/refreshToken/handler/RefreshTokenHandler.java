@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.refreshToken.handler;
 
-import com.mycompany.SkySong.adapter.exception.common.InvalidRefreshTokenException;
+import com.mycompany.SkySong.adapter.refreshToken.exception.InvalidRefreshTokenException;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
