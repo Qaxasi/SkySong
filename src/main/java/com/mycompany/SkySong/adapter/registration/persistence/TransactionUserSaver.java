@@ -1,11 +1,11 @@
 package com.mycompany.SkySong.adapter.registration.persistence;
 
 import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
-import com.mycompany.SkySong.application.registration.mapper.UserRegistrationMapper;
+import com.mycompany.SkySong.application.registration.mapper.UserSaveMapper;
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
+import com.mycompany.SkySong.infrastructure.persistence.sql.UserDAO;
 import com.mycompany.SkySong.domain.shared.entity.Role;
-import com.mycompany.SkySong.domain.registration.ports.UserSaver;
+import com.mycompany.SkySong.application.registration.ports.UserSaver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -14,11 +14,11 @@ class TransactionUserSaver implements UserSaver {
 
     private final UserDAO userDAO;
     private final TransactionTemplate transactionTemplate;
-    private final UserRegistrationMapper mapper;
+    private final UserSaveMapper mapper;
 
     public TransactionUserSaver(UserDAO userDAO,
                                 TransactionTemplate transactionTemplate,
-                                UserRegistrationMapper mapper) {
+                                UserSaveMapper mapper) {
         this.userDAO = userDAO;
         this.transactionTemplate = transactionTemplate;
         this.mapper = mapper;

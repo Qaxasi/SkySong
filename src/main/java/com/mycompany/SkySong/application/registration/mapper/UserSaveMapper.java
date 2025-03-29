@@ -5,9 +5,9 @@ import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 
 import java.util.stream.Collectors;
 
-public class UserRegistrationMapper {
+public class UserSaveMapper {
     private final RoleMapper roleMapper;
-    public UserRegistrationMapper(RoleMapper roleMapper) {
+    public UserSaveMapper(RoleMapper roleMapper) {
         this.roleMapper = roleMapper;
     }
 

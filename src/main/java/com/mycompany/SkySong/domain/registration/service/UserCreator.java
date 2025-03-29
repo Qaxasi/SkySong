@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.domain.registration.service;
 
-import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.domain.registration.exception.RoleNotFoundException;
+import com.mycompany.SkySong.domain.registration.model.UserRegistrationData;
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
@@ -19,11 +19,11 @@ public class UserCreator {
         this.roleRepository = roleRepository;
     }
 
-    public User createUser(UserRegistrationDto userDto) {
+    public User createUser(UserRegistrationData data) {
         return new User.Builder()
-                .withUsername(userDto.username())
-                .withEmail(userDto.email())
-                .withPassword(passwordEncoder.encode(userDto.password()))
+                .withUsername(data.username())
+                .withEmail(data.email())
+                .withPassword(passwordEncoder.encode(data.password()))
                 .withRole(fetchDefaultUserRole())
                 .build();
     }

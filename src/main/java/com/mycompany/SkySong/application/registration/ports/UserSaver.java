@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.domain.registration.ports;
+package com.mycompany.SkySong.application.registration.ports;
 
 import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
 

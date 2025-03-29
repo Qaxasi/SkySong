@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 class BCryptEncoder implements PasswordEncoder {
 
-    private final BCryptPasswordEncoder encoder;
+    private final BCryptPasswordEncoder bcrypt;
 
     BCryptEncoder(BCryptPasswordEncoder encoder) {
-        this.encoder = encoder;
+        this.bcrypt = encoder;
     }
 
     @Override
     public String encode(CharSequence password) {
-        return encoder.encode(password);
+        return bcrypt.encode(password);
     }
 }
