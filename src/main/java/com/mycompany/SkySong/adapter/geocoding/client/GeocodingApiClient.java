@@ -41,45 +41,53 @@ public class GeocodingApiClient implements GeocodingIntegration {
                         .build())
                 .retrieve()
                 .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
-                    log.warn("Invalid address format: {}", res.statusCode());
+                    log.warn("[Geocoding API] Invalid address format - status: {}", res.statusCode());
                     throw new ApiBadRequestException(
-                            "Invalid address format. Please correct it.", ErrorType.EXTERNAL_API_BAD_REQUEST);
+                            "The provided address could not be processed. Please check the spelling and try again.",
+                            ErrorType.EXTERNAL_API_BAD_REQUEST);
                 })
                 .onStatus(HttpStatus.FORBIDDEN::equals, res -> {
-                    log.error("Access denied: {}", res.statusCode());
+                    log.error("[Geocoding API] Access forbidden - status: {}", res.statusCode());
                     throw new ApiForbiddenException(
-                            "You are not authorized to access geolocation data.", ErrorType.EXTERNAL_API_FORBIDDEN);
+                            "You are not authorized to access geolocation data.",
+                            ErrorType.EXTERNAL_API_FORBIDDEN);
                 })
                 .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
-                    log.error("Exceeded number of allowed calls to Geocoding API: {}", res.statusCode());
+                    log.error("[Geocoding API] Rate limit exceeded - status: {}", res.statusCode());
                     throw new ApiTooManyRequestsException(
-                            "Exceeded number of allowed calls to Geocoding API. Please wait a moment and try again.", ErrorType.EXTERNAL_API_RATE_LIMIT);
+                            "Exceeded number of allowed calls to Geocoding API. Please wait a moment and try again.",
+                            ErrorType.EXTERNAL_API_RATE_LIMIT);
                 })
                 .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
-                    log.error("Invalid authorization token: {}", res.statusCode());
+                    log.error("[Geocoding API] Unauthorized access - invalid API key - status: {}", res.statusCode());
                     throw new ApiAuthenticationException(
-                            "Authentication with Geocoding API failed. Please verify your API credentials.", ErrorType.EXTERNAL_API_UNAUTHORIZED );
+                            "Authentication with Geocoding API failed. Please verify your API credentials.",
+                            ErrorType.EXTERNAL_API_UNAUTHORIZED );
                 })
                 .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
-                    log.error("Geocoding service is unavailable: {}", res.statusCode());
+                    log.error("[Geocoding API] Service unavailable - status: {}", res.statusCode());
                     throw new ApiServerErrorException(
-                            "Geocoding service is temporarily unavailable. Please try again shortly.", ErrorType.EXTERNAL_API_UNAVAILABLE);
+                            "Geocoding service is temporarily unavailable. Please try again shortly.",
+                            ErrorType.EXTERNAL_API_UNAVAILABLE);
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, res -> {
-                    log.error("Unexpected server error from Geocoding API: {}", res.statusCode());
+                    log.error("[Geocoding API] Unexpected server error - status: {}", res.statusCode());
                     throw new ApiServerErrorException(
-                            "An error occurred while fetching geocoding data.", ErrorType.EXTERNAL_API_SERVER_ERROR);
+                            "A server error occurred while retrieving geolocation data. Please try again soon.",
+                            ErrorType.EXTERNAL_API_SERVER_ERROR);
                 })
                 .onStatus(HttpStatusCode::is4xxClientError, res -> {
-                    log.error("Unexpected client error from Geocoding API: {}", res.statusCode());
+                    log.error("[Geocoding API] Unexpected client error - status: {}", res.statusCode());
                     throw new ApiClientErrorException(
-                            "The request could not be processed due to a client-side error. Please verify request parameters.", ErrorType.EXTERNAL_API_CLIENT_ERROR);
+                            "The request could not be processed due to a client-side error. Please verify request parameters.",
+                            ErrorType.EXTERNAL_API_CLIENT_ERROR);
                 })
                 .bodyToMono(GeocodingResponse.class)
                 .onErrorMap(TimeoutException.class, ex -> {
-                    log.error("Geocoding request timeout", ex);
+                    log.error("[Geocoding API] Request timed out", ex);
                     return new ApiRequestTimeoutException(
-                            "The request timed out. Please check your connection and try again.", ErrorType.EXTERNAL_API_TIMEOUT);
+                            "The request timed out. Please check your connection and try again.",
+                            ErrorType.EXTERNAL_API_TIMEOUT);
                 })
                 .block();
 
@@ -89,15 +97,19 @@ public class GeocodingApiClient implements GeocodingIntegration {
 
     private Result<Coordinates> validateAndExtractCoordinates(GeocodingResponse response) {
         if (response == null || response.isIncomplete()) {
-            log.warn("Empty or null geocoding response received");
-            return Result.failure("The specified location could not be found in our data source.", ErrorType.UNPROCESSABLE_ENTITY);
+            log.warn("[Geocoding API] Empty or incomplete response received for location request.");
+            return Result.failure(
+                    "We couldn't find any results for the specified location.",
+                    ErrorType.GEOCODING_NO_RESULTS);
         }
 
         Coordinates coordinates = response.results().get(0);
 
         if (!coordinates.isValidCoordinate()) {
-            log.warn("Received invalid coordinates: {}", coordinates);
-            return Result.failure("Received invalid coordinates from geocoding provider", ErrorType.UNPROCESSABLE_ENTITY);
+            log.warn("[Geocoding API] Invalid coordinates received: {}", coordinates);
+            return Result.failure(
+                    "Received invalid coordinates from geocoding provider",
+                    ErrorType.GEOCODING_INVALID_COORDINATES);
         }
 
         return Result.success(coordinates);

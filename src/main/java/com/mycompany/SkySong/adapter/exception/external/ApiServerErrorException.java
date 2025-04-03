@@ -1,10 +1,10 @@
-package com.mycompany.SkySong.adapter.exception.common;
+package com.mycompany.SkySong.adapter.exception.external;
 
-public class ApiServerErrorException extends RuntimeException {
-    public ApiServerErrorException(String message) {
-        super(message);
-    }
-    public ApiServerErrorException(String message, Throwable cause) {
-        super(message, cause);
+import com.mycompany.SkySong.shared.error.BaseApiException;
+import com.mycompany.SkySong.shared.error.ErrorType;
+
+public class ApiServerErrorException extends BaseApiException {
+    public ApiServerErrorException(String message, ErrorType errorType) {
+        super(message, errorType);
     }
 }
