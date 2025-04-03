@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.weather.api;
 
-import com.mycompany.SkySong.adapter.exception.common.*;
+import com.mycompany.SkySong.adapter.exception.external.*;
 import com.mycompany.SkySong.adapter.weather.dto.WeatherApiResponse;
 import com.mycompany.SkySong.adapter.weather.mapper.WeatherMapper;
 import com.mycompany.SkySong.domain.weather.model.Weather;
@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -41,28 +42,55 @@ public class WeatherApiClient implements WeatherIntegration {
                         .queryParam("appid", apiKey)
                         .build())
                 .retrieve()
+                .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
+                    log.warn("[Weather API] Bad request - status: {}", res.statusCode());
+                    throw new ApiBadRequestException(
+                            "The provided coordinates could not be processed. Please check and try again.",
+                            ErrorType.EXTERNAL_API_BAD_REQUEST);
+                })
+                .onStatus(HttpStatus.FORBIDDEN::equals, res -> {
+                    log.error("[Weather API] Access forbidden - status: {}", res.statusCode());
+                    throw new ApiForbiddenException(
+                            "You are not authorized to access weather data.",
+                            ErrorType.EXTERNAL_API_FORBIDDEN);
+                })
                 .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
-                    log.error("Exceeded number of allowed calls to Weather API: {}", res.statusCode());
+                    log.error("[Weather API] Rate limit exceeded - status: {}", res.statusCode());
                     throw new ApiTooManyRequestsException(
-                            "Exceeded number of allowed calls to Weather API. Please try again later.");
+                            "Exceeded number of allowed calls to Weather API. Please try again later.",
+                            ErrorType.EXTERNAL_API_RATE_LIMIT);
                 })
                 .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
-                    log.error("Invalid authorization token: {}", res.statusCode());
-                    throw new ApiAuthenticationException("Invalid authorization token.");
+                    log.error("[Weather API] Unauthorized access - invalid API key - status: {}", res.statusCode());
+                    throw new ApiAuthenticationException(
+                            "Weather API authentication failed. Please verify your API key.",
+                            ErrorType.EXTERNAL_API_UNAUTHORIZED);
                 })
                 .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
-                    log.error("Server is unavailable: {}", res.statusCode());
-                    throw new ServiceUnavailableException(
-                            "Failed to fetch weather data. Please try again later.");
+                    log.error("[Weather API] Service unavailable - status: {}", res.statusCode());
+                    throw new ApiServerErrorException(
+                            "Weather service is temporarily unavailable. Please try again shortly.",
+                            ErrorType.EXTERNAL_API_SERVER_ERROR);
                 })
-                .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals, res -> {
-                    log.error("An error occurred while fetching weather data: {}", res.statusCode());
-                    throw new InternalServerErrorException(
-                            "An error occurred while fetching weather data.");
+                .onStatus(HttpStatusCode::is5xxServerError, res -> {
+                    log.error("[Weather API] Unexpected server error - status: {}", res.statusCode());
+                    throw new ApiServerErrorException(
+                            "A server error occurred while retrieving weather data. Please try again soon.",
+                            ErrorType.EXTERNAL_API_SERVER_ERROR);
+                })
+                .onStatus(HttpStatusCode::is4xxClientError, res -> {
+                    log.error("[Weather API] Unexpected client error - status: {}", res.statusCode());
+                    throw new ApiClientErrorException(
+                            "The request could not be processed due to a client-side error. Please verify request parameters.",
+                            ErrorType.EXTERNAL_API_CLIENT_ERROR);
                 })
                 .bodyToMono(WeatherApiResponse.class)
-                .onErrorMap(TimeoutException.class, ex ->
-                        new ApiRequestTimeoutException("The request timed out. Please check your connection and try again."))
+                .onErrorMap(TimeoutException.class, ex -> {
+                    log.error("[Weather API] Request timed out", ex);
+                    return new ApiRequestTimeoutException(
+                            "The request timed out. Please check your connection and try again.",
+                            ErrorType.EXTERNAL_API_TIMEOUT);
+                })
                 .block();
 
         return validateWeatherResponse(response)
@@ -71,8 +99,10 @@ public class WeatherApiClient implements WeatherIntegration {
 
     private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse weather) {
         if (weather == null || weather.isIncomplete()) {
-            log.warn("Weather API response is missing required data");
-            return Result.failure("Weather information could not be processed due to missing data.", ErrorType.UNPROCESSABLE_ENTITY);
+            log.warn("[Weather API] Empty or incomplete response.");
+            return Result.failure(
+                    "The weather data could not be processed due to missing or invalid content.",
+                    ErrorType.WEATHER_DATA_INCOMPLETE);
         }
         return Result.success(weather);
     }
