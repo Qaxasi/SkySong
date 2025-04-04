@@ -99,7 +99,7 @@ public class WeatherApiClient implements WeatherIntegration {
 
     private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse weather) {
         if (weather == null || weather.isIncomplete()) {
-            log.warn("[Weather API] Empty or incomplete response.");
+            log.warn("[Weather API] Validation failed - response is null or incomplete: {}", weather);
             return Result.failure(
                     "The weather data could not be processed due to missing or invalid content.",
                     ErrorType.WEATHER_DATA_INCOMPLETE);
