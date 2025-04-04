@@ -43,7 +43,7 @@ public class WeatherApiClient implements WeatherIntegration {
                         .build())
                 .retrieve()
                 .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
-                    log.warn("[Weather API] Bad request for coordinates (lat={}, lon={}) - status: {}", lat, lon,  res.statusCode());
+                    log.warn("[Weather API] Received Bad request for coordinates (lat={}, lon={}) - status: {}", lat, lon,  res.statusCode());
                     throw new ApiBadRequestException(
                             "The provided coordinates could not be processed. Please check and try again.",
                             ErrorType.EXTERNAL_API_BAD_REQUEST);
@@ -97,13 +97,20 @@ public class WeatherApiClient implements WeatherIntegration {
                 .map(mapper::mapToModel);
     }
 
-    private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse weather) {
-        if (weather == null || weather.isIncomplete()) {
-            log.warn("[Weather API] Validation failed - response is null or incomplete: {}", weather);
+    private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse response) {
+        if (response == null) {
+            log.warn("[Weather API] Null response received from API.");
             return Result.failure(
-                    "The weather data could not be processed due to missing or invalid content.",
-                    ErrorType.WEATHER_DATA_INCOMPLETE);
+                    "No response was received from the weather provider.",
+                    ErrorType.WEATHER_NO_RESULTS);
         }
-        return Result.success(weather);
+
+        if (response.isIncomplete()) {
+            log.warn("[Weather API] Incomplete response received: {}", response);
+            return Result.failure(
+                    "The weather data is incomplete and cannot be processed",
+                    ErrorType.WEATHER_INCOMPLETE_RESPONSE);
+        }
+        return Result.success(response);
     }
 }
