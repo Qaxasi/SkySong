@@ -41,7 +41,7 @@ public class GeocodingApiClient implements GeocodingIntegration {
                         .build())
                 .retrieve()
                 .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
-                    log.warn("[Geocoding API] Bad request for address: '{}' - status: {}", address, res.statusCode());
+                    log.warn("[Geocoding API] Received Bad request for address: '{}' - status: {}", address, res.statusCode());
                     throw new ApiBadRequestException(
                             "The provided address could not be processed. Please check the spelling and try again.",
                             ErrorType.EXTERNAL_API_BAD_REQUEST);
