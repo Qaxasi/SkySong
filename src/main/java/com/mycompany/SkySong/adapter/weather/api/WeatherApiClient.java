@@ -43,7 +43,7 @@ public class WeatherApiClient implements WeatherIntegration {
                         .build())
                 .retrieve()
                 .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
-                    log.warn("[Weather API] Bad request for lat={}, lon={} - status: {}", lat, lon,  res.statusCode());
+                    log.warn("[Weather API] Bad request for coordinates (lat={}, lon={}) - status: {}", lat, lon,  res.statusCode());
                     throw new ApiBadRequestException(
                             "The provided coordinates could not be processed. Please check and try again.",
                             ErrorType.EXTERNAL_API_BAD_REQUEST);
