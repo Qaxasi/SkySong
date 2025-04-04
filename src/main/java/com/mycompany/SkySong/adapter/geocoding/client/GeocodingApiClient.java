@@ -41,7 +41,7 @@ public class GeocodingApiClient implements GeocodingIntegration {
                         .build())
                 .retrieve()
                 .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
-                    log.warn("[Geocoding API] Invalid address format - status: {}", res.statusCode());
+                    log.warn("[Geocoding API] Bad request for address: '{}' - status: {}", address, res.statusCode());
                     throw new ApiBadRequestException(
                             "The provided address could not be processed. Please check the spelling and try again.",
                             ErrorType.EXTERNAL_API_BAD_REQUEST);
@@ -96,11 +96,19 @@ public class GeocodingApiClient implements GeocodingIntegration {
     }
 
     private Result<Coordinates> validateAndExtractCoordinates(GeocodingResponse response) {
-        if (response == null || response.isIncomplete()) {
-            log.warn("[Geocoding API] Empty or incomplete response received for location request.");
+        if (response == null) {
+            log.warn("[Geocoding API] Null response received from API.");
             return Result.failure(
-                    "We couldn't find any results for the specified location.",
+                    "No response was received from the geolocation provider.",
                     ErrorType.GEOCODING_NO_RESULTS);
+        }
+
+        if (response.isIncomplete()) {
+            log.warn("[Geocoding API] Incomplete response received: {}", response);
+            return Result.failure(
+                    "The geolocation data is incomplete and cannot be processed.",
+                    ErrorType.GEOCODING_INCOMPLETE_RESPONSE);
+
         }
 
         Coordinates coordinates = response.results().get(0);
@@ -108,7 +116,7 @@ public class GeocodingApiClient implements GeocodingIntegration {
         if (!coordinates.isValidCoordinate()) {
             log.warn("[Geocoding API] Invalid coordinates received: {}", coordinates);
             return Result.failure(
-                    "Received invalid coordinates from geocoding provider",
+                    "The geolocation service returned invalid coordinates.",
                     ErrorType.GEOCODING_INVALID_COORDINATES);
         }
 
