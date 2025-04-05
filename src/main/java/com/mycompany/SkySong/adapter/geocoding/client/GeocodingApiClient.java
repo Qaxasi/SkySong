@@ -6,7 +6,6 @@ import com.mycompany.SkySong.adapter.geocoding.dto.Coordinates;
 import com.mycompany.SkySong.domain.geocoding.model.Location;
 import com.mycompany.SkySong.domain.geocoding.port.GeocodingIntegration;
 import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +31,7 @@ public class GeocodingApiClient implements GeocodingIntegration {
     }
 
     @Override
-    public Result<Location> getCoordinates(String address) {
+    public Location getCoordinates(String address) {
         GeocodingResponse response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("text", address)
@@ -91,35 +90,26 @@ public class GeocodingApiClient implements GeocodingIntegration {
                 })
                 .block();
 
-        return validateAndExtractCoordinates(response)
-                .map(coords -> new Location(coords.lat(), coords.lon()));
+        return validateAndExtractCoordinates(response);
     }
 
-    private Result<Coordinates> validateAndExtractCoordinates(GeocodingResponse response) {
+    private Location validateAndExtractCoordinates(GeocodingResponse response) {
         if (response == null) {
             log.warn("[Geocoding API] Null response received from API.");
-            return Result.failure(
+            throw new ApiResponseException(
                     "No response was received from the geolocation provider.",
                     ErrorType.GEOCODING_NO_RESULTS);
         }
 
         if (response.isIncomplete()) {
             log.warn("[Geocoding API] Incomplete response received: {}", response);
-            return Result.failure(
+            throw new ApiResponseException(
                     "The geolocation data is incomplete and cannot be processed.",
                     ErrorType.GEOCODING_INCOMPLETE_RESPONSE);
-
         }
 
         Coordinates coordinates = response.results().get(0);
 
-        if (!coordinates.isValidCoordinate()) {
-            log.warn("[Geocoding API] Invalid coordinates received: {}", coordinates);
-            return Result.failure(
-                    "The geolocation service returned invalid coordinates.",
-                    ErrorType.GEOCODING_INVALID_COORDINATES);
-        }
-
-        return Result.success(coordinates);
+        return new Location(coordinates.lat(), coordinates.lon());
     }
 }
