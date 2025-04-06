@@ -27,12 +27,22 @@ public class GeocodingApiClient implements GeocodingIntegration {
     public GeocodingApiClient(@Qualifier("geocodingWebClient") WebClient webClient,
                               @Value("${geocoding.api.key}") String apiKey) {
         this.webClient = Objects.requireNonNull(webClient, "WebClient cannot be null");
-        this.apiKey = Objects.requireNonNull(apiKey, "Api key cannot be null");;
+        this.apiKey = Objects.requireNonNull(apiKey, "Api key cannot be null");
     }
 
     @Override
-    public Location getCoordinates(String address) {
-        GeocodingResponse response = webClient.get()
+    public Location fetchCoordinates(String address) {
+        log.debug("[Geocoding API] Requesting geocoding data for address = {}", address);
+
+        GeocodingResponse response = fetchFromApi(address);
+        log.debug("[Geocoding API] Response received for address = {}", address);
+
+        validateResponse(response);
+        return mapToLocation(response);
+    }
+
+    private GeocodingResponse fetchFromApi(String address) {
+        return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("text", address)
                         .queryParam("apiKey", apiKey)
@@ -89,11 +99,9 @@ public class GeocodingApiClient implements GeocodingIntegration {
                             ErrorType.EXTERNAL_API_TIMEOUT);
                 })
                 .block();
-
-        return validateAndExtractCoordinates(response);
     }
 
-    private Location validateAndExtractCoordinates(GeocodingResponse response) {
+    private void validateResponse(GeocodingResponse response) {
         if (response == null) {
             log.warn("[Geocoding API] Null response received from API.");
             throw new ApiResponseException(
@@ -107,9 +115,10 @@ public class GeocodingApiClient implements GeocodingIntegration {
                     "The geolocation data is incomplete and cannot be processed.",
                     ErrorType.GEOCODING_INCOMPLETE_RESPONSE);
         }
-
+    }
+    
+    private Location mapToLocation(GeocodingResponse response) {
         Coordinates coordinates = response.results().get(0);
-
         return new Location(coordinates.lat(), coordinates.lon());
     }
 }
