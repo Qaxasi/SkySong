@@ -6,7 +6,6 @@ import com.mycompany.SkySong.adapter.weather.mapper.WeatherMapper;
 import com.mycompany.SkySong.domain.weather.model.Weather;
 import com.mycompany.SkySong.domain.weather.port.WeatherIntegration;
 import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +33,22 @@ public class WeatherApiClient implements WeatherIntegration {
     }
 
     @Override
-    public Result<Weather> fetchWeatherData(double lat, double lon) {
-        WeatherApiResponse response = webClient.get()
+    public Weather fetchWeatherData(double lat, double lon) {
+        log.debug("[Weather API] Requesting weather data for lat={}, lon={}", lat, lon);
+
+        WeatherApiResponse response = fetchFromApi(lat, lon);
+        log.debug("[Weather API] Response received for lat={}, lon={}", lat, lon);
+
+        return validateAndMapToDomain(response);
+    }
+
+    private Weather validateAndMapToDomain(WeatherApiResponse response) {
+        validateWeatherResponse(response);
+        return mapper.mapToModel(response);
+    }
+
+    private WeatherApiResponse fetchFromApi(double lat, double lon) {
+        return webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("lat", lat)
                         .queryParam("lon", lon)
@@ -92,25 +105,21 @@ public class WeatherApiClient implements WeatherIntegration {
                             ErrorType.EXTERNAL_API_TIMEOUT);
                 })
                 .block();
-
-        return validateWeatherResponse(response)
-                .map(mapper::mapToModel);
     }
 
-    private Result<WeatherApiResponse> validateWeatherResponse(WeatherApiResponse response) {
+    private void validateWeatherResponse(WeatherApiResponse response) {
         if (response == null) {
             log.warn("[Weather API] Null response received from API.");
-            return Result.failure(
+            throw new ApiResponseException(
                     "No response was received from the weather provider.",
                     ErrorType.WEATHER_NO_RESULTS);
         }
 
         if (response.isIncomplete()) {
             log.warn("[Weather API] Incomplete response received: {}", response);
-            return Result.failure(
+            throw new ApiResponseException(
                     "The weather data is incomplete and cannot be processed",
                     ErrorType.WEATHER_INCOMPLETE_RESPONSE);
         }
-        return Result.success(response);
     }
 }
