@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
@@ -51,45 +52,45 @@ public class GeocodingApiClient implements GeocodingIntegration {
                 .retrieve()
                 .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
                     log.warn("[Geocoding API] Received Bad request for address: '{}' - status: {}", address, res.statusCode());
-                    throw new ApiBadRequestException(
+                    return Mono.error(new ApiBadRequestException(
                             "The provided address could not be processed. Please check the spelling and try again.",
-                            ErrorType.EXTERNAL_API_BAD_REQUEST);
+                            ErrorType.EXTERNAL_API_BAD_REQUEST));
                 })
                 .onStatus(HttpStatus.FORBIDDEN::equals, res -> {
                     log.error("[Geocoding API] Access forbidden - status: {}", res.statusCode());
-                    throw new ApiForbiddenException(
+                    return Mono.error(new ApiForbiddenException(
                             "You are not authorized to access geolocation data.",
-                            ErrorType.EXTERNAL_API_FORBIDDEN);
+                            ErrorType.EXTERNAL_API_FORBIDDEN));
                 })
                 .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
                     log.error("[Geocoding API] Rate limit exceeded - status: {}", res.statusCode());
-                    throw new ApiTooManyRequestsException(
+                    return Mono.error(new ApiTooManyRequestsException(
                             "Exceeded number of allowed calls to Geocoding API. Please wait a moment and try again.",
-                            ErrorType.EXTERNAL_API_RATE_LIMIT);
+                            ErrorType.EXTERNAL_API_RATE_LIMIT));
                 })
                 .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
                     log.error("[Geocoding API] Unauthorized access - invalid API key - status: {}", res.statusCode());
-                    throw new ApiAuthenticationException(
+                    return Mono.error(new ApiAuthenticationException(
                             "Authentication with Geocoding API failed. Please verify your API credentials.",
-                            ErrorType.EXTERNAL_API_UNAUTHORIZED );
+                            ErrorType.EXTERNAL_API_UNAUTHORIZED ));
                 })
                 .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
                     log.error("[Geocoding API] Service unavailable - status: {}", res.statusCode());
-                    throw new ApiServerErrorException(
+                    return Mono.error(new ApiServerErrorException(
                             "Geocoding service is temporarily unavailable. Please try again shortly.",
-                            ErrorType.EXTERNAL_API_UNAVAILABLE);
+                            ErrorType.EXTERNAL_API_UNAVAILABLE));
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, res -> {
                     log.error("[Geocoding API] Unexpected server error - status: {}", res.statusCode());
-                    throw new ApiServerErrorException(
+                    return Mono.error(new ApiServerErrorException(
                             "A server error occurred while retrieving geolocation data. Please try again soon.",
-                            ErrorType.EXTERNAL_API_SERVER_ERROR);
+                            ErrorType.EXTERNAL_API_SERVER_ERROR));
                 })
                 .onStatus(HttpStatusCode::is4xxClientError, res -> {
                     log.error("[Geocoding API] Unexpected client error - status: {}", res.statusCode());
-                    throw new ApiClientErrorException(
+                    return Mono.error(new ApiClientErrorException(
                             "The request could not be processed due to a client-side error. Please verify request parameters.",
-                            ErrorType.EXTERNAL_API_CLIENT_ERROR);
+                            ErrorType.EXTERNAL_API_CLIENT_ERROR));
                 })
                 .bodyToMono(GeocodingResponse.class)
                 .onErrorMap(TimeoutException.class, ex -> {

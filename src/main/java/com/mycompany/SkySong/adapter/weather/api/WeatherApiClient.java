@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
@@ -57,45 +58,45 @@ public class WeatherApiClient implements WeatherIntegration {
                 .retrieve()
                 .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
                     log.warn("[Weather API] Received Bad request for coordinates (lat={}, lon={}) - status: {}", lat, lon,  res.statusCode());
-                    throw new ApiBadRequestException(
+                    return Mono.error(new ApiBadRequestException(
                             "The provided coordinates could not be processed. Please check and try again.",
-                            ErrorType.EXTERNAL_API_BAD_REQUEST);
+                            ErrorType.EXTERNAL_API_BAD_REQUEST));
                 })
                 .onStatus(HttpStatus.FORBIDDEN::equals, res -> {
                     log.error("[Weather API] Access forbidden - status: {}", res.statusCode());
-                    throw new ApiForbiddenException(
+                    return Mono.error(new ApiForbiddenException(
                             "You are not authorized to access weather data.",
-                            ErrorType.EXTERNAL_API_FORBIDDEN);
+                            ErrorType.EXTERNAL_API_FORBIDDEN));
                 })
                 .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
                     log.error("[Weather API] Rate limit exceeded - status: {}", res.statusCode());
-                    throw new ApiTooManyRequestsException(
+                    return Mono.error(new ApiTooManyRequestsException(
                             "Exceeded number of allowed calls to Weather API. Please try again later.",
-                            ErrorType.EXTERNAL_API_RATE_LIMIT);
+                            ErrorType.EXTERNAL_API_RATE_LIMIT));
                 })
                 .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
                     log.error("[Weather API] Unauthorized access - invalid API key - status: {}", res.statusCode());
-                    throw new ApiAuthenticationException(
+                    return Mono.error(new ApiAuthenticationException(
                             "Weather API authentication failed. Please verify your API key.",
-                            ErrorType.EXTERNAL_API_UNAUTHORIZED);
+                            ErrorType.EXTERNAL_API_UNAUTHORIZED));
                 })
                 .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
                     log.error("[Weather API] Service unavailable - status: {}", res.statusCode());
-                    throw new ApiServerErrorException(
+                    return Mono.error(new ApiServerErrorException(
                             "Weather service is temporarily unavailable. Please try again shortly.",
-                            ErrorType.EXTERNAL_API_SERVER_ERROR);
+                            ErrorType.EXTERNAL_API_SERVER_ERROR));
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, res -> {
                     log.error("[Weather API] Unexpected server error - status: {}", res.statusCode());
-                    throw new ApiServerErrorException(
+                    return Mono.error(new ApiServerErrorException(
                             "A server error occurred while retrieving weather data. Please try again soon.",
-                            ErrorType.EXTERNAL_API_SERVER_ERROR);
+                            ErrorType.EXTERNAL_API_SERVER_ERROR));
                 })
                 .onStatus(HttpStatusCode::is4xxClientError, res -> {
                     log.error("[Weather API] Unexpected client error - status: {}", res.statusCode());
-                    throw new ApiClientErrorException(
+                    return Mono.error(new ApiClientErrorException(
                             "The request could not be processed due to a client-side error. Please verify request parameters.",
-                            ErrorType.EXTERNAL_API_CLIENT_ERROR);
+                            ErrorType.EXTERNAL_API_CLIENT_ERROR));
                 })
                 .bodyToMono(WeatherApiResponse.class)
                 .onErrorMap(TimeoutException.class, ex -> {
