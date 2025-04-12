@@ -79,7 +79,7 @@ public class SpotifyTokenClient {
                     log.error("[Spotify API] Unexpected server error - status: {}", response.statusCode());
                     return Mono.error(new ApiServerErrorException(
                             "An unexpected server error occurred while calling Spotify.",
-                            ErrorType.API_SERVER_ERROR));
+                            ErrorType.EXTERNAL_API_SERVER_ERROR));
                 })
 
                 .bodyToMono(SpotifyTokenResponse.class)
@@ -87,7 +87,7 @@ public class SpotifyTokenClient {
                     log.error("[Spotify API] Request timed out", ex);
                     return new ApiRequestTimeoutException(
                             "The request to Spotify timed out. Please check your connection and try again.",
-                            ErrorType.API_REQUEST_TIMEOUT);
+                            ErrorType.EXTERNAL_API_REQUEST_TIMEOUT);
                 })
                 .block();
     }
