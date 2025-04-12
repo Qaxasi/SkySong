@@ -2,7 +2,7 @@ package com.mycompany.SkySong.adapter.music.spotify.authentication.in.access;
 
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import com.mycompany.SkySong.application.music.authentication.usecase.MusicServiceAuthUseCase;
+import com.mycompany.SkySong.application.music.authentication.usecase.AuthenticateMusicUser;
 import com.mycompany.SkySong.domain.music.authentication.dto.AuthParams;
 import com.mycompany.SkySong.infrastructure.context.UserContext;
 import com.mycompany.SkySong.shared.result.Result;
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/music/auth")
 public class SpotifyCallbackController {
 
-    private final MusicServiceAuthUseCase authUseCase;
+    private final AuthenticateMusicUser authenticateMusicUser;
     private final CookieUtils cookieUtils;
 
-    public SpotifyCallbackController(MusicServiceAuthUseCase authUseCase,
+    public SpotifyCallbackController(AuthenticateMusicUser authenticateMusicUser,
                                      CookieUtils cookieUtils) {
-        this.authUseCase = authUseCase;
+        this.authenticateMusicUser = authenticateMusicUser;
         this.cookieUtils = cookieUtils;
     }
 
@@ -30,7 +30,7 @@ public class SpotifyCallbackController {
         Integer userId = UserContext.getUserId();
         AuthParams params = new AuthParams(authCode);
 
-        Result<String> authResult = authUseCase.authenticateUser(userId, params);
+        Result<String> authResult = authenticateMusicUser.execute(userId, params);
         if (authResult.isFailure()) {
             return ResponseEntity
                     .status(authResult.errorType().getHttpStatus())
