@@ -41,7 +41,7 @@ public class SpotifyAuthenticator implements MusicServiceAuthenticator {
 
         return validator.validateRequest(request)
                 .flatMap(ignored -> callSpotifyApi(request, userId))
-                .flatMap(response -> validateResponseAndReturnAccessToken(response, userId));
+                .flatMap(response -> validateAndHandleTokenResponse(response, userId));
     }
 
     private Result<SpotifyTokenResponse> callSpotifyApi(SpotifyAccessTokenRequest request, int userId) {
@@ -55,12 +55,12 @@ public class SpotifyAuthenticator implements MusicServiceAuthenticator {
         }
     }
 
-    private Result<String> validateResponseAndReturnAccessToken(SpotifyTokenResponse response, int userId) {
+    private Result<String> validateAndHandleTokenResponse(SpotifyTokenResponse response, int userId) {
         return validator.validateResponse(response)
-                .map(ignored -> storeRefreshAndReturnAccessToken(response, userId));
+                .map(ignored -> saveRefreshTokenAndExtractAccessToken(response, userId));
     }
 
-    private String storeRefreshAndReturnAccessToken(SpotifyTokenResponse response, int userId) {
+    private String saveRefreshTokenAndExtractAccessToken(SpotifyTokenResponse response, int userId) {
         tokenStore.saveRefreshToken(userId, response.refreshToken());
         log.debug("Refresh token for user: {} successfully stored", userId);
         return response.accessToken();
