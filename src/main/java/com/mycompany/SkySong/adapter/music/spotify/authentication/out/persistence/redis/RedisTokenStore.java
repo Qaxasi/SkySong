@@ -47,7 +47,7 @@ public class RedisTokenStore {
                 log.info("No refresh token found in Redis for user id: {}", userId);
                 return Result.failure(
                         "Refresh token not found. Spotify reauthorization required",
-                        ErrorType.REFRESH_TOKEN_NOT_FOUND);
+                        ErrorType.TOKEN_NOT_FOUND);
             }
             return Result.success(token);
         } catch (RedisConnectionFailureException ex) {
