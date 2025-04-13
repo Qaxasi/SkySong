@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.domain.music.authentication.port;
+package com.mycompany.SkySong.application.music.authentication.port;
 
 import com.mycompany.SkySong.domain.music.authentication.dto.AuthParams;
 import com.mycompany.SkySong.shared.result.Result;
