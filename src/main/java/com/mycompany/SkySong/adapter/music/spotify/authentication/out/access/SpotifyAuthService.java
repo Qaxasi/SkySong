@@ -5,7 +5,6 @@ import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.Spotif
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis.RedisTokenStore;
 import com.mycompany.SkySong.domain.music.authentication.dto.AuthParams;
-import com.mycompany.SkySong.domain.music.authentication.port.MusicServiceAuthenticator;
 import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.result.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -14,23 +13,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class SpotifyAuthenticator implements MusicServiceAuthenticator {
+public class SpotifyAuthService {
     private final SpotifyTokenClient api;
     private final SpotifyAccessTokenValidator validator;
     private final String redirectUri;
     private final RedisTokenStore tokenStore;
 
-    public SpotifyAuthenticator(SpotifyTokenClient api,
-                                SpotifyAccessTokenValidator validator,
-                                @Value("${redirect.uri}") String redirectUri,
-                                RedisTokenStore tokenStore) {
+    public SpotifyAuthService(SpotifyTokenClient api,
+                              SpotifyAccessTokenValidator validator,
+                              @Value("${redirect.uri}") String redirectUri,
+                              RedisTokenStore tokenStore) {
         this.api = api;
         this.validator = validator;
         this.redirectUri = redirectUri;
         this.tokenStore = tokenStore;
     }
 
-    @Override
     public Result<String> authenticateAndReturnToken(int userId, AuthParams params) {
         String authCode = params.authCode();
 
