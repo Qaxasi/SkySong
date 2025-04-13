@@ -1,13 +1,13 @@
 package com.mycompany.SkySong.adapter.music.spotify.authentication.in.access;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@Service
+@Component
 public class SpotifyAuthUrlGenerator {
 
     private final String authUri;
