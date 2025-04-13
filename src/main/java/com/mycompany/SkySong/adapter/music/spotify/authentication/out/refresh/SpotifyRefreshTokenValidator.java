@@ -13,11 +13,15 @@ public class SpotifyRefreshTokenValidator {
     public Result<Void> validateRequest(SpotifyRefreshTokenRequest request) {
         if (request.grantType() == null || request.grantType().isBlank()) {
             log.warn("Request validation failed: grant type is null or empty");
-            return Result.failure("Grant type cannot be null or empty", ErrorType.BAD_REQUEST);
+            return Result.failure(
+                    "Grant type cannot be null or empty",
+                    ErrorType.USER_REQUEST_INVALID);
         }
         if (request.refreshToken() == null || request.refreshToken().isBlank()) {
             log.warn("Request validation failed: refresh token is null or empty");
-            return Result.failure("Refresh token cannot be null or empty", ErrorType.BAD_REQUEST);
+            return Result.failure(
+                    "Refresh token cannot be null or empty",
+                    ErrorType.USER_REQUEST_INVALID);
         }
         return Result.success(null);
     }
@@ -25,7 +29,9 @@ public class SpotifyRefreshTokenValidator {
     public Result<Void> validateResponse(SpotifyTokenResponse response) {
         if (response.accessToken() == null || response.accessToken().isBlank()) {
             log.error("Response validation failed: access token is null or empty");
-            return Result.failure("Access token cannot be null or empty", ErrorType.UNPROCESSABLE_ENTITY);
+            return Result.failure(
+                    "Access token cannot be null or empty",
+                    ErrorType.SPOTIFY_INVALID_RESPONSE);
         }
         return Result.success(null);
     }
