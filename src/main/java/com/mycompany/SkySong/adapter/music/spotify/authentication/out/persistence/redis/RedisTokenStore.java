@@ -33,7 +33,7 @@ public class RedisTokenStore {
             log.error("Unexpected Redis error while saving token for user id: {}", userId, ex);
             throw new RedisUnavailableException(
                     "Unexpected Redis error occurred while saving refresh token",
-                    ErrorType.REDIS_SERVER_ERROR);
+                    ErrorType.REDIS_INTERNAL_ERROR);
         }
     }
 
@@ -59,7 +59,7 @@ public class RedisTokenStore {
             log.error("Unexpected Redis error", ex);
             return Result.failure(
                     "Unexpected Redis error occurred",
-                    ErrorType.REDIS_SERVER_ERROR);
+                    ErrorType.REDIS_INTERNAL_ERROR);
         }
     }
 
