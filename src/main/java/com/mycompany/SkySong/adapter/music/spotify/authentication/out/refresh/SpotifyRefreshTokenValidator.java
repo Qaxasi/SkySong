@@ -5,9 +5,9 @@ import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.Spotif
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Slf4j
 public class SpotifyRefreshTokenValidator {
     public Result<Void> validateRequest(SpotifyRefreshTokenRequest request) {
