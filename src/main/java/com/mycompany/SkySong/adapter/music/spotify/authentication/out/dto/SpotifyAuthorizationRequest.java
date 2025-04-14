@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-public record SpotifyAccessTokenRequest(@JsonProperty("grant_type") String grantType,
-                                        @JsonProperty("code") String authCode,
-                                        @JsonProperty("redirect_uri") String redirectUri) {
+public record SpotifyAuthorizationRequest(@JsonProperty("grant_type") String grantType,
+                                          @JsonProperty("code") String authCode,
+                                          @JsonProperty("redirect_uri") String redirectUri) {
     
     public MultiValueMap<String, String> toMultiValueMap() {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();

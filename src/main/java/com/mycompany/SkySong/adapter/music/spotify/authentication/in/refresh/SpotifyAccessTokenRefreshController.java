@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.music.spotify.authentication.in.refresh;
 
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.refresh.SpotifyTokenRefresher;
+import com.mycompany.SkySong.adapter.music.spotify.authentication.out.refresh.SpotifyAccessTokenRefresher;
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.infrastructure.context.UserContext;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/spotify/token")
-public class SpotifyRefreshTokenController {
+public class SpotifyAccessTokenRefreshController {
 
-    private final SpotifyTokenRefresher refresher;
+    private final SpotifyAccessTokenRefresher refresher;
     private final CookieUtils cookieUtils;
 
-    public SpotifyRefreshTokenController(SpotifyTokenRefresher refresher,
-                                         CookieUtils cookieUtils) {
+    public SpotifyAccessTokenRefreshController(SpotifyAccessTokenRefresher refresher,
+                                               CookieUtils cookieUtils) {
         this.refresher = refresher;
         this.cookieUtils = cookieUtils;
     }
@@ -37,7 +37,11 @@ public class SpotifyRefreshTokenController {
 
         String newAccessToken = result.data();
 
-        ResponseCookie cookie = cookieUtils.generateCookie("spotifyAccessToken", newAccessToken, "/api/v1/spotify/", 3600);
+        ResponseCookie cookie = cookieUtils.generateCookie(
+                "spotifyAccessToken",
+                newAccessToken,
+                "/api/v1/spotify/",
+                3600);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())

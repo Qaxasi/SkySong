@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.music.spotify.authentication.in.access;
 
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.access.SpotifyAuthService;
+import com.mycompany.SkySong.adapter.music.spotify.authentication.out.access.SpotifyAuthorizationService;
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.domain.music.authentication.dto.AuthParams;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/music/auth")
 public class SpotifyCallbackController {
 
-    private final SpotifyAuthService spotifyAuth;
+    private final SpotifyAuthorizationService spotifyAuth;
     private final CookieUtils cookieUtils;
 
-    public SpotifyCallbackController(SpotifyAuthService spotifyAuth,
+    public SpotifyCallbackController(SpotifyAuthorizationService spotifyAuth,
                                      CookieUtils cookieUtils) {
         this.spotifyAuth = spotifyAuth;
         this.cookieUtils = cookieUtils;

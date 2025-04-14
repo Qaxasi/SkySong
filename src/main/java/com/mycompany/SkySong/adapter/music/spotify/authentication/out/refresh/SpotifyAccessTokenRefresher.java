@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.music.spotify.authentication.out.refresh;
 
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.client.SpotifyTokenClient;
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyRefreshTokenRequest;
+import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyAccessTokenRefreshRequest;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis.RedisTokenStore;
 import com.mycompany.SkySong.shared.result.Result;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SpotifyAccessTokenRefresher {
     private final SpotifyTokenClient api;
-    private final SpotifyRefreshTokenValidator validator;
+    private final SpotifyAccessTokenRefreshValidator validator;
     private final RedisTokenStore tokenStore;
 
     public SpotifyAccessTokenRefresher(SpotifyTokenClient api,
-                                       SpotifyRefreshTokenValidator validator,
+                                       SpotifyAccessTokenRefreshValidator validator,
                                        RedisTokenStore tokenStore) {
         this.api = api;
         this.validator = validator;
@@ -25,12 +25,12 @@ public class SpotifyAccessTokenRefresher {
 
     public Result<String> refreshAccessToken(int userId) {
        return tokenStore.getRefreshToken(userId)
-               .map(token -> new SpotifyRefreshTokenRequest("refresh_token", token))
+               .map(token -> new SpotifyAccessTokenRefreshRequest("refresh_token", token))
                .flatMap(this::validateRequestAndCallSpotify)
                .flatMap(response -> validateAndHandleTokenResponse(response, userId));
     }
 
-    private Result<SpotifyTokenResponse> validateRequestAndCallSpotify(SpotifyRefreshTokenRequest request) {
+    private Result<SpotifyTokenResponse> validateRequestAndCallSpotify(SpotifyAccessTokenRefreshRequest request) {
         return validator.validateRequest(request)
                 .map(ignored -> api.sendTokenRequest(request.toMultiValueMap()));
     }

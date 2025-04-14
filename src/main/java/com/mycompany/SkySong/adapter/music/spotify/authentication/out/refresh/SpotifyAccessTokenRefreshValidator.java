@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.music.spotify.authentication.out.refresh;
 
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyRefreshTokenRequest;
+import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyAccessTokenRefreshRequest;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class SpotifyRefreshTokenValidator {
-    public Result<Void> validateRequest(SpotifyRefreshTokenRequest request) {
+public class SpotifyAccessTokenRefreshValidator {
+    public Result<Void> validateRequest(SpotifyAccessTokenRefreshRequest request) {
         if (request.grantType() == null || request.grantType().isBlank()) {
             log.warn("Request validation failed: grant type is null or empty");
             return Result.failure(
