@@ -5,17 +5,19 @@ import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.Spotif
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis.RedisTokenStore;
 import com.mycompany.SkySong.shared.result.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SpotifyTokenRefresher {
+@Slf4j
+public class SpotifyAccessTokenRefresher {
     private final SpotifyTokenClient api;
     private final SpotifyRefreshTokenValidator validator;
     private final RedisTokenStore tokenStore;
 
-    public SpotifyTokenRefresher(SpotifyTokenClient api,
-                                 SpotifyRefreshTokenValidator validator,
-                                 RedisTokenStore tokenStore) {
+    public SpotifyAccessTokenRefresher(SpotifyTokenClient api,
+                                       SpotifyRefreshTokenValidator validator,
+                                       RedisTokenStore tokenStore) {
         this.api = api;
         this.validator = validator;
         this.tokenStore = tokenStore;
@@ -24,27 +26,23 @@ public class SpotifyTokenRefresher {
     public Result<String> refreshAccessToken(int userId) {
        return tokenStore.getRefreshToken(userId)
                .map(token -> new SpotifyRefreshTokenRequest("refresh_token", token))
-               .flatMap(request ->
-                       validateRequest(request)
-                               .flatMap(ignored -> callSpotifyApi(request))
-                               .flatMap(response -> validateAndStoreRefreshToken(response, userId)));
+               .flatMap(this::validateRequestAndCallApi)
+               .flatMap(response -> validateAndHandleTokenResponse(response, userId));
     }
 
-    private Result<Void> validateRequest(SpotifyRefreshTokenRequest request) {
-        return validator.validateRequest(request);
+    private Result<SpotifyTokenResponse> validateRequestAndCallApi(SpotifyRefreshTokenRequest request) {
+        return validator.validateRequest(request)
+                .map(ignored -> api.sendTokenRequest(request.toMultiValueMap()));
     }
 
-    private Result<SpotifyTokenResponse> callSpotifyApi(SpotifyRefreshTokenRequest request) {
-        SpotifyTokenResponse response = api.sendTokenRequest(request.toMultiValueMap());
-        return Result.success(response);
-    }
-
-    private Result<String> validateAndStoreRefreshToken(SpotifyTokenResponse response, int userId) {
+    private Result<String> validateAndHandleTokenResponse(SpotifyTokenResponse response, int userId) {
         return validator.validateResponse(response)
                 .map(ignored -> {
                     if (response.refreshToken() != null && !response.refreshToken().isBlank()) {
+                        log.debug("New refresh token received from Spotify for user id: {}", userId);
                         tokenStore.saveRefreshToken(userId, response.refreshToken());
                     }
+                    log.info("Spotify access token successfully refreshed for user id: {}", userId);
                     return response.accessToken();
                 });
     }
