@@ -4,6 +4,7 @@ import com.mycompany.SkySong.adapter.music.spotify.authentication.out.client.Spo
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyAccessTokenRefreshRequest;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis.RedisTokenStore;
+import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,15 @@ public class SpotifyAccessTokenRefresher {
 
     private Result<SpotifyTokenResponse> validateRequestAndCallSpotify(SpotifyAccessTokenRefreshRequest request) {
         return validator.validateRequest(request)
-                .map(ignored -> api.sendTokenRequest(request.toMultiValueMap()));
+                .flatMap(ignored -> {
+                    try {
+                        SpotifyTokenResponse response = api.sendTokenRequest(request.toMultiValueMap());
+                        return Result.success(response);
+                    } catch (BaseApiException e) {
+                        log.warn("Failed to refresh Spotify access token", e);
+                        return Result.failure(e.getMessage(), e.getErrorType());
+                    }
+                });
     }
 
     private Result<String> validateAndHandleTokenResponse(SpotifyTokenResponse response, int userId) {
