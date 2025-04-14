@@ -26,11 +26,11 @@ public class SpotifyAccessTokenRefresher {
     public Result<String> refreshAccessToken(int userId) {
        return tokenStore.getRefreshToken(userId)
                .map(token -> new SpotifyRefreshTokenRequest("refresh_token", token))
-               .flatMap(this::validateRequestAndCallApi)
+               .flatMap(this::validateRequestAndCallSpotify)
                .flatMap(response -> validateAndHandleTokenResponse(response, userId));
     }
 
-    private Result<SpotifyTokenResponse> validateRequestAndCallApi(SpotifyRefreshTokenRequest request) {
+    private Result<SpotifyTokenResponse> validateRequestAndCallSpotify(SpotifyRefreshTokenRequest request) {
         return validator.validateRequest(request)
                 .map(ignored -> api.sendTokenRequest(request.toMultiValueMap()));
     }
