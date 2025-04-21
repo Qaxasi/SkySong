@@ -37,30 +37,30 @@ public class SpotifyAuthorizationService {
         SpotifyAuthorizationRequest request = new SpotifyAuthorizationRequest(
                 "authorization_code", authCode, redirectUri);
 
-        return validator.validateRequest(request)
-                .flatMap(ignored -> callSpotifyApi(request, userId))
+        return validateRequestAndCallSpotify(request, userId)
                 .flatMap(response -> validateAndHandleTokenResponse(response, userId));
     }
 
-    private Result<SpotifyTokenResponse> callSpotifyApi(SpotifyAuthorizationRequest request, int userId) {
-        try {
-            SpotifyTokenResponse response = api.sendTokenRequest(request.toMultiValueMap());
-            log.info("Spotify access token successfully received for user: {}", userId);
-            return Result.success(response);
-        } catch (BaseApiException e) {
-            log.warn("Spotify token request failed for user: {}", userId);
-            return Result.failure(e.getMessage(), e.getErrorType());
-        }
+    private Result<SpotifyTokenResponse> validateRequestAndCallSpotify(SpotifyAuthorizationRequest request, int userId) {
+        return validator.validateRequest(request)
+                .flatMap(ignored -> {
+                    try {
+                        SpotifyTokenResponse response = api.sendTokenRequest(request.toMultiValueMap());
+                        log.info("Spotify access token successfully received for user: {}", userId);
+                        return Result.success(response);
+                    } catch (BaseApiException e) {
+                        log.warn("Spotify token request failed for user: {}", userId);
+                        return Result.failure(e.getMessage(), e.getErrorType());
+                    }
+                });
     }
 
     private Result<String> validateAndHandleTokenResponse(SpotifyTokenResponse response, int userId) {
         return validator.validateResponse(response)
-                .map(ignored -> saveRefreshTokenAndExtractAccessToken(response, userId));
-    }
-
-    private String saveRefreshTokenAndExtractAccessToken(SpotifyTokenResponse response, int userId) {
-        tokenStore.saveRefreshToken(userId, response.refreshToken());
-        log.debug("Refresh token for user: {} successfully stored", userId);
-        return response.accessToken();
+                .map(ignored -> {
+                    tokenStore.saveRefreshToken(userId, response.refreshToken());
+                    log.info("Spotify access token successfully received and refresh token stored for user: {}", userId);
+                    return response.accessToken();
+                });
     }
 }
