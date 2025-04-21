@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.adapter.security.jwt;
 
+import com.mycompany.SkySong.adapter.exception.security.ExpiredTokenException;
+import com.mycompany.SkySong.adapter.exception.security.InvalidTokenException;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -94,25 +96,29 @@ public class JwtTokenManager {
 
     }
 
-    public boolean isTokenValid(String token) {
+    public void isTokenValid(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(getSignKey())
                     .build()
                     .parseClaimsJws(token);
-            return true;
-        } catch (MalformedJwtException e) {
-            log.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            log.error("JWT token is expired: {}", e.getMessage());
-            throw e;
-        } catch (UnsupportedJwtException e) {
-            log.error("JWT token is unsupported: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            log.error("JWT claims string is empty: {}", e.getMessage());
-        }
 
-        return false;
+        } catch (ExpiredJwtException e) {
+            log.warn("JWT token expired: {}", e.getMessage());
+            throw new ExpiredTokenException("Jwt token has expired.");
+
+        } catch (MalformedJwtException e) {
+            log.warn("JWT token is malformed: {}", e.getMessage());
+            throw new InvalidTokenException("Jwt token is malformed.");
+
+        } catch (UnsupportedJwtException e) {
+            log.warn("JWT token uses unsupported format or algorithm: {}", e.getMessage());
+            throw new InvalidTokenException("Jwt token uses unsupported format or algorithm.");
+
+        } catch (JwtException | IllegalArgumentException e) {
+            log.warn("JWT token is invalid: {}", e.getMessage());
+            throw new InvalidTokenException("JWT token is invalid.");
+        }
     }
 
     private Key getSignKey() {
