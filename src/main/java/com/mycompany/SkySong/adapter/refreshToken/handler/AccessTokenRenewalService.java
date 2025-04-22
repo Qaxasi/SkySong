@@ -4,37 +4,36 @@ import com.mycompany.SkySong.adapter.refreshToken.exception.InvalidRefreshTokenE
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
+import com.mycompany.SkySong.shared.error.ErrorType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RefreshTokenHandler {
-
-    private final JwtTokenManager tokenManager;
+@Slf4j
+public class AccessTokenRenewalService {
+    private final JwtTokenManager jwtManager;
     private final CustomUserDetailsService userDetailsService;
 
-    public RefreshTokenHandler(JwtTokenManager tokenManager,
-                               CustomUserDetailsService userDetailsService) {
-        this.tokenManager = tokenManager;
+    public AccessTokenRenewalService(JwtTokenManager jwtManager,
+                                     CustomUserDetailsService userDetailsService) {
+        this.jwtManager = jwtManager;
         this.userDetailsService = userDetailsService;
     }
 
     public String generateAccessTokenFromRefreshToken(String refreshToken) {
-        if (!validateToken(refreshToken)) {
-            throw new InvalidRefreshTokenException("Refresh token is invalid or expired.");
-        }
+        jwtManager.validateToken(refreshToken);
 
-        String username = tokenManager.extractUsername(refreshToken);
+        String username = jwtManager.extractUsername(refreshToken);
 
         try {
             CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            return tokenManager.generateRefreshToken(userDetails);
+            return jwtManager.generateToken(userDetails);
         } catch (UsernameNotFoundException ex) {
-            throw new InvalidRefreshTokenException("Session renewal failed: please log in again.");
+            log.warn("Refresh token valid, but user '{}' not found", username);
+            throw new InvalidRefreshTokenException(
+                    "Session renewal failed. Please log in again.",
+                    ErrorType.INVALID_REFRESH_TOKEN);
         }
-    }
-
-    private boolean validateToken(String token) {
-        return tokenManager.isTokenValid(token);
     }
 }
