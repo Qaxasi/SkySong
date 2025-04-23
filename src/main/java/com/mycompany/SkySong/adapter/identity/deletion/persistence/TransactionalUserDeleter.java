@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.adapter.user.delete.persistence;
+package com.mycompany.SkySong.adapter.identity.deletion.persistence;
 
-import com.mycompany.SkySong.adapter.user.delete.persistence.exception.UserNotFoundException;
-import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
+import com.mycompany.SkySong.adapter.identity.deletion.persistence.exception.UserNotFoundException;
+import com.mycompany.SkySong.infrastructure.persistence.sql.UserDAO;
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.domain.user.delete.ports.DeleteUser;
+import com.mycompany.SkySong.application.user.delete.ports.DeleteUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 

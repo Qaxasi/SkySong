@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.adapter.login.handler;
+package com.mycompany.SkySong.adapter.identity.login.handler;
 
-import com.mycompany.SkySong.adapter.login.dto.LoginDto;
-import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
+import com.mycompany.SkySong.adapter.identity.login.dto.LoginDto;
+import com.mycompany.SkySong.adapter.identity.login.dto.LoginResponse;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class LoginHandler {
+public class UserLoginService {
 
     private final AuthenticationManager authManager;
-    private final JwtTokenManager tokenManager;
+    private final JwtTokenManager jwtManager;
 
-    public LoginHandler(AuthenticationManager authManager,
-                        JwtTokenManager tokenManager) {
+    public UserLoginService(AuthenticationManager authManager,
+                            JwtTokenManager tokenManager) {
         this.authManager = authManager;
-        this.tokenManager = tokenManager;
+        this.jwtManager = tokenManager;
     }
 
     public LoginResponse login(LoginDto loginDto) {
@@ -36,8 +36,8 @@ public class LoginHandler {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             log.info("User '{}' (id:{}) authenticated successfully", userDetails.getUsername(), userDetails.id());
 
-            String jwtToken = tokenManager.generateToken(userDetails);
-            String refreshToken = tokenManager.generateRefreshToken(userDetails);
+            String jwtToken = jwtManager.generateToken(userDetails);
+            String refreshToken = jwtManager.generateRefreshToken(userDetails);
 
             return new LoginResponse(jwtToken, refreshToken);
         } catch (BadCredentialsException e) {

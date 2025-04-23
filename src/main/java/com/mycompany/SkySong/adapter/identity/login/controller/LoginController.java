@@ -2,7 +2,7 @@ package com.mycompany.SkySong.adapter.login.controller;
 
 import com.mycompany.SkySong.adapter.login.dto.LoginDto;
 import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
-import com.mycompany.SkySong.adapter.login.handler.LoginHandler;
+import com.mycompany.SkySong.adapter.login.handler.UserLoginService;
 import com.mycompany.SkySong.adapter.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class LoginController {
 
-    private final LoginHandler login;
+    private final UserLoginService login;
     private final CookieUtils cookieUtils;
 
-    public LoginController(LoginHandler login,
+    public LoginController(UserLoginService login,
                            CookieUtils cookieUtils) {
         this.login = login;
         this.cookieUtils = cookieUtils;
