@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class UserDeletionHandler {
+public class UserDeletionUseCase {
 
     private final UserDeletion userDeletion;
 
-    public UserDeletionHandler(UserDeletion userDeletion) {
+    public UserDeletionUseCase(UserDeletion userDeletion) {
         this.userDeletion = userDeletion;
     }
 

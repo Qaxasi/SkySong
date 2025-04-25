@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.identity.deletion.persistence.exception;
+package com.mycompany.SkySong.adapter.identity.deletion.persistence;
 
 import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.error.ErrorType;
