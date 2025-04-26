@@ -4,21 +4,21 @@ import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.application.registration.mapper.UserSaveMapper;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.application.registration.ports.UserSaver;
-import com.mycompany.SkySong.domain.registration.model.UserRegistrationData;
-import com.mycompany.SkySong.domain.registration.service.UserRegistrationValidator;
-import com.mycompany.SkySong.domain.registration.service.UserCreator;
+import com.mycompany.SkySong.domain.user.registration.model.UserRegistrationData;
+import com.mycompany.SkySong.domain.user.registration.service.UserRegistrationValidator;
+import com.mycompany.SkySong.domain.user.registration.service.UserCreator;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.result.Result;
 
-public class UserRegistrationHandler {
+public class UserRegistrationUseCase {
 
     private final UserRegistrationValidator validation;
     private final UserCreator userCreator;
     private final UserSaver userSaver;
     private final UserSaveMapper mapper;
 
-    public UserRegistrationHandler(UserRegistrationValidator validation,
+    public UserRegistrationUseCase(UserRegistrationValidator validation,
                                    UserCreator userCreator,
                                    UserSaver userSaver,
                                    UserSaveMapper mapper) {

@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.adapter.refreshToken.handler;
+package com.mycompany.SkySong.adapter.identity.session.service;
 
-import com.mycompany.SkySong.adapter.refreshToken.exception.InvalidRefreshTokenException;
+import com.mycompany.SkySong.adapter.identity.session.exception.InvalidRefreshTokenException;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;
 import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;

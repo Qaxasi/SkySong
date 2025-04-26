@@ -1,11 +1,11 @@
-package com.mycompany.SkySong.adapter.login.controller;
+package com.mycompany.SkySong.adapter.identity.login.controller;
 
-import com.mycompany.SkySong.adapter.login.dto.LoginDto;
-import com.mycompany.SkySong.adapter.login.dto.LoginResponse;
-import com.mycompany.SkySong.adapter.login.handler.UserLoginService;
-import com.mycompany.SkySong.adapter.utils.CookieUtils;
+import com.mycompany.SkySong.adapter.identity.login.service.UserLoginService;
+import com.mycompany.SkySong.adapter.identity.login.dto.LoginDto;
+import com.mycompany.SkySong.adapter.identity.login.dto.LoginResponse;
+import com.mycompany.SkySong.adapter.shared.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import com.mycompany.SkySong.adapter.login.dto.LoginRequest;
+import com.mycompany.SkySong.adapter.identity.login.dto.LoginRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;

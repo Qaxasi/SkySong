@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.adapter.refreshToken.controller;
+package com.mycompany.SkySong.adapter.identity.session.controller;
 
 import com.mycompany.SkySong.shared.error.ErrorResponse;
-import com.mycompany.SkySong.adapter.refreshToken.handler.AccessTokenRenewalService;
-import com.mycompany.SkySong.adapter.utils.CookieUtils;
+import com.mycompany.SkySong.adapter.identity.session.service.AccessTokenRenewalService;
+import com.mycompany.SkySong.adapter.shared.utils.CookieUtils;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import jakarta.servlet.http.HttpServletRequest;
