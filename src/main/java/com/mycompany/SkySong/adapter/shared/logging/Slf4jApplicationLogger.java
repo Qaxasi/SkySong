@@ -45,7 +45,7 @@ public class Slf4jApplicationLogger implements ApplicationLogger {
     @Override
     public void warn(String message, Context context) {
         if (log.isWarnEnabled()) {
-            log.warn(message, context);
+            log.warn(appendContext(message, context));
         }
     }
 

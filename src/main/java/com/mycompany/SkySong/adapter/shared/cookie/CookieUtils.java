@@ -1,12 +1,12 @@
-package com.mycompany.SkySong.adapter.utils;
+package com.mycompany.SkySong.adapter.shared.utils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseCookie;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
-@Service
+@Component
 public class CookieUtils {
 
     public String getJwtFromCookies(HttpServletRequest request, String cookieName) {
