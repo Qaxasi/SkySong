@@ -1,10 +1,10 @@
-package com.mycompany.SkySong.adapter.registration.controller;
+package com.mycompany.SkySong.adapter.user.registration.controller;
 
-import com.mycompany.SkySong.adapter.registration.mapper.RegisterRequestMapper;
-import com.mycompany.SkySong.application.registration.dto.UserRegistrationDto;
-import com.mycompany.SkySong.application.registration.usecase.UserRegistrationHandler;
+import com.mycompany.SkySong.adapter.user.registration.mapper.RegisterRequestMapper;
+import com.mycompany.SkySong.adapter.user.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationDto;
+import com.mycompany.SkySong.application.user.registration.usecase.UserRegistrationUseCase;
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import com.mycompany.SkySong.adapter.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.shared.result.Result;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 public class RegistrationController {
 
-    private final UserRegistrationHandler registration;
+    private final UserRegistrationUseCase registration;
     private final RegisterRequestMapper mapper;
 
-    public RegistrationController(UserRegistrationHandler registration,
-                                  RegisterRequestMapper mapper) {
+    public RegistrationController(final UserRegistrationUseCase registration,
+                                  final RegisterRequestMapper mapper) {
         this.registration = registration;
         this.mapper = mapper;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@Valid @RequestBody RegisterRequest request) {
-        UserRegistrationDto dto = mapper.toDto(request);
-        Result<ApiResponse> result = registration.registerUser(dto);
+    public ResponseEntity<Object> register(@Valid @RequestBody final RegisterRequest request) {
+        final UserRegistrationDto dto = mapper.toDto(request);
+        final Result<ApiResponse> result = registration.registerUser(dto);
 
         if (result.isFailure()) {
             return ResponseEntity.status(result.errorType().getHttpStatus())

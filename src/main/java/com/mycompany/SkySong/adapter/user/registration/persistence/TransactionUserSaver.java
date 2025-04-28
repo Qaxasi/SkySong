@@ -18,10 +18,10 @@ class TransactionUserSaver implements UserSaver {
     private final UserSaveMapper mapper;
     private final ApplicationLogger logger;
 
-    public TransactionUserSaver(UserDAO userDAO,
-                                TransactionTemplate transactionTemplate,
-                                UserSaveMapper mapper,
-                                ApplicationLogger logger) {
+    public TransactionUserSaver(final UserDAO userDAO,
+                                final TransactionTemplate transactionTemplate,
+                                final UserSaveMapper mapper,
+                                final ApplicationLogger logger) {
         this.userDAO = userDAO;
         this.transactionTemplate = transactionTemplate;
         this.mapper = mapper;
@@ -29,11 +29,12 @@ class TransactionUserSaver implements UserSaver {
     }
 
     @Override
-    public void saveUser(UserSaveDto userDto) {
-        User user = mapper.toEntity(userDto);
+    public void saveUser(final UserSaveDto userDto) {
+        final User user = mapper.toEntity(userDto);
+
         transactionTemplate.executeWithoutResult(status -> {
             try {
-                int userId = userDAO.save(user);
+                final int userId = userDAO.save(user);
 
                 for (Role roles : user.getRoles()) {
                     userDAO.assignRoleToUser(userId, roles.getId());
