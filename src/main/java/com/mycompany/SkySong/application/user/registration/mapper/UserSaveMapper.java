@@ -1,13 +1,13 @@
-package com.mycompany.SkySong.application.registration.mapper;
+package com.mycompany.SkySong.application.user.registration.mapper;
 
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.application.registration.dto.UserSaveDto;
+import com.mycompany.SkySong.application.user.registration.dto.UserSaveDto;
 
 import java.util.stream.Collectors;
 
-public class UserSaveMapper {
+public class UserPersistenceMapper {
     private final RoleMapper roleMapper;
-    public UserSaveMapper(RoleMapper roleMapper) {
+    public UserPersistenceMapper(RoleMapper roleMapper) {
         this.roleMapper = roleMapper;
     }
 
