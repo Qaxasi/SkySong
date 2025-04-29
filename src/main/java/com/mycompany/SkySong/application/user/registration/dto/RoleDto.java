@@ -1,5 +1,5 @@
-package com.mycompany.SkySong.application.registration.dto;
+package com.mycompany.SkySong.application.user.registration.dto;
 
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 
-public record RoleDTO(Integer id, UserRole name) {}
+public record RoleDto(Integer id, UserRole name) {}
