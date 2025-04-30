@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.domain.registration.ports;
+package com.mycompany.SkySong.domain.user.registration.ports;
 
 import com.mycompany.SkySong.domain.shared.entity.Role;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;

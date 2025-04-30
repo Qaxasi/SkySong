@@ -7,19 +7,19 @@ import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.domain.user.registration.ports.PasswordEncoder;
 import com.mycompany.SkySong.domain.user.registration.ports.RegistrationRoleRepository;
+import com.mycompany.SkySong.shared.error.ErrorType;
 
-public class UserCreator {
-
+public class UserFactory {
     private final PasswordEncoder passwordEncoder;
     private final RegistrationRoleRepository roleRepository;
 
-    public UserCreator(PasswordEncoder passwordEncoder,
-                       RegistrationRoleRepository roleRepository) {
+    public UserFactory(final PasswordEncoder passwordEncoder,
+                       final RegistrationRoleRepository roleRepository) {
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
     }
 
-    public User createUser(UserRegistrationData data) {
+    public User createUser(final UserRegistrationData data) {
         return new User.Builder()
                 .withUsername(data.username())
                 .withEmail(data.email())
@@ -30,6 +30,9 @@ public class UserCreator {
 
     private Role fetchDefaultUserRole() {
         return roleRepository.findByName(UserRole.ROLE_USER)
-                .orElseThrow(() -> new RoleNotFoundException("An error occurred during registration. Please try again later."));
+                .orElseThrow(() ->
+                        new RoleNotFoundException(
+                                "An error occurred during registration. Please try again later.",
+                                ErrorType.DEFAULT_ROLE_NOT_FOUND));
     }
 }

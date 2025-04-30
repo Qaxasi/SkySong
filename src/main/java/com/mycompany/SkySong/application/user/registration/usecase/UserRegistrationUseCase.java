@@ -7,7 +7,7 @@ import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.application.user.registration.ports.UserSaver;
 import com.mycompany.SkySong.domain.user.registration.model.UserRegistrationData;
 import com.mycompany.SkySong.domain.user.registration.service.UserRegistrationValidator;
-import com.mycompany.SkySong.domain.user.registration.service.UserCreator;
+import com.mycompany.SkySong.domain.user.registration.service.UserFactory;
 import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.result.Result;
@@ -15,18 +15,18 @@ import com.mycompany.SkySong.shared.result.Result;
 public class UserRegistrationUseCase {
 
     private final UserRegistrationValidator validation;
-    private final UserCreator userCreator;
+    private final UserFactory userFactory;
     private final UserSaver userSaver;
     private final UserSaveMapper mapper;
     private final ApplicationLogger logger;
 
     public UserRegistrationUseCase(final UserRegistrationValidator validation,
-                                   final UserCreator userCreator,
+                                   final UserFactory userFactory,
                                    final UserSaver userSaver,
                                    final UserSaveMapper mapper,
                                    final ApplicationLogger logger) {
         this.validation = validation;
-        this.userCreator = userCreator;
+        this.userFactory = userFactory;
         this.userSaver = userSaver;
         this.mapper = mapper;
         this.logger = logger;
@@ -38,7 +38,7 @@ public class UserRegistrationUseCase {
 
             validation.validate(data);
 
-            final User user = userCreator.createUser(data);
+            final User user = userFactory.createUser(data);
             userSaver.saveUser(mapper.toDto(user));
 
             logger.info("User registered successfully");
