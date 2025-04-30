@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.identity.deletion.controller;
+package com.mycompany.SkySong.adapter.user.deletion.controller;
 
 import com.mycompany.SkySong.application.shared.dto.ApiResponse;
 import com.mycompany.SkySong.application.user.delete.usecase.UserDeletionUseCase;
@@ -14,12 +14,12 @@ public class UserDeletionController {
 
     private final UserDeletionUseCase userDeletion;
 
-    public UserDeletionController(UserDeletionUseCase userDeletion) {
+    public UserDeletionController(final UserDeletionUseCase userDeletion) {
         this.userDeletion = userDeletion;
     }
 
     @DeleteMapping({"/","/{userId}"})
-    public ResponseEntity<Object> delete(@PathVariable(required = false) Integer userId) {
+    public ResponseEntity<Object> delete(@PathVariable(required = false) final Integer userId) {
         if (userId == null) {
             return ResponseEntity
                     .status(HttpStatus.UNPROCESSABLE_ENTITY)

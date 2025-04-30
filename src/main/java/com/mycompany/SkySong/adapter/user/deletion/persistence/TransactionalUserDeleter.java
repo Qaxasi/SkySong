@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.identity.deletion.persistence;
+package com.mycompany.SkySong.adapter.user.deletion.persistence;
 
 import com.mycompany.SkySong.infrastructure.persistence.sql.UserDAO;
 import com.mycompany.SkySong.domain.shared.entity.User;
@@ -15,16 +15,16 @@ class TransactionalUserDeleter implements UserDeletion {
     private final UserDAO userRepository;
     private final TransactionTemplate transactionTemplate;
 
-    TransactionalUserDeleter(UserDAO userDAO,
-                             TransactionTemplate transactionTemplate) {
+    TransactionalUserDeleter(final UserDAO userDAO,
+                             final TransactionTemplate transactionTemplate) {
         this.userRepository = userDAO;
         this.transactionTemplate = transactionTemplate;
     }
 
     @Override
-    public void deleteEverythingById(int id) {
+    public void deleteEverythingById(final int id) {
         transactionTemplate.executeWithoutResult(status -> {
-                    User user = userRepository.findById(id).orElseThrow(
+                   final User user = userRepository.findById(id).orElseThrow(
                             () -> {
                                 log.warn("Attempted to delete non-existent user with ID {}", id);
                                 return new UserNotFoundException(
