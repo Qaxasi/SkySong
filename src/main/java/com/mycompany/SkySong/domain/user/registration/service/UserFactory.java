@@ -32,7 +32,7 @@ public class UserFactory {
         return roleRepository.findByName(UserRole.ROLE_USER)
                 .orElseThrow(() ->
                         new RoleNotFoundException(
-                                "An error occurred during registration. Please try again later.",
+                                "Default user role not found in the system.",
                                 ErrorType.DEFAULT_ROLE_NOT_FOUND));
     }
 }
