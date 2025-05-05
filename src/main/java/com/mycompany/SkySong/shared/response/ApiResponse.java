@@ -1,4 +1,7 @@
-package com.mycompany.SkySong.application.shared.dto;
+package com.mycompany.SkySong.shared.response;
 
-public record ApiResponse(String message) {
+public class ApiResponse extends BaseResponse {
+    protected ApiResponse(String message) {
+        super(message);
+    }
 }
