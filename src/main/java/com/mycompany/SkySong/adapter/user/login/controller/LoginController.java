@@ -24,15 +24,15 @@ public class LoginController {
     private final UserAuthenticator authenticator;
     private final CookieUtils cookieUtils;
 
-    public LoginController(UserAuthenticator authenticator,
-                           CookieUtils cookieUtils) {
+    public LoginController(final UserAuthenticator authenticator,
+                           final CookieUtils cookieUtils) {
         this.authenticator = authenticator;
         this.cookieUtils = cookieUtils;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<BaseResponse> login(@Valid @RequestBody LoginRequest request) {
-        Result<AuthenticationTokens> result =
+    public ResponseEntity<BaseResponse> login(@Valid @RequestBody final LoginRequest request) {
+        final Result<AuthenticationTokens> result =
                 authenticator.login(new LoginDto(request.usernameOrEmail(), request.password()));
 
         if (result.isFailure()) {
@@ -41,17 +41,15 @@ public class LoginController {
                     .body(result.toErrorResponse());
         }
 
-        ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
+        final ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
                 "accessToken", result.data().accessToken(), "/api", 600);
 
-        ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
+        final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
                 "refreshToken", result.data().refreshToken(), "/api/v1/auth/refresh-token", 86400);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .body(new ApiResponse("Logged successfully."));
-
-
     }
 }

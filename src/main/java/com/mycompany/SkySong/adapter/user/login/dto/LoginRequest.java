@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.identity.login.dto;
+package com.mycompany.SkySong.adapter.user.login.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;

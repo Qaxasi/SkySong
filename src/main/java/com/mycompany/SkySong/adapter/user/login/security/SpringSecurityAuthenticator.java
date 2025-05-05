@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.adapter.user.login.service;
+package com.mycompany.SkySong.adapter.user.login.security;
 
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.user.login.exception.InvalidCredentialsException;
-import com.mycompany.SkySong.application.shared.logging.ApplicationLogger;
+import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.application.user.login.model.AuthenticatedUser;
 import com.mycompany.SkySong.application.user.login.port.Authenticator;
 import com.mycompany.SkySong.shared.error.ErrorType;
