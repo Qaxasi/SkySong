@@ -1,11 +1,13 @@
-package com.mycompany.SkySong.adapter.identity.login.controller;
+package com.mycompany.SkySong.adapter.user.login.controller;
 
-import com.mycompany.SkySong.adapter.identity.login.service.UserLoginService;
-import com.mycompany.SkySong.adapter.identity.login.dto.LoginDto;
-import com.mycompany.SkySong.adapter.identity.login.dto.LoginResponse;
-import com.mycompany.SkySong.adapter.shared.utils.CookieUtils;
-import com.mycompany.SkySong.application.shared.dto.ApiResponse;
-import com.mycompany.SkySong.adapter.identity.login.dto.LoginRequest;
+import com.mycompany.SkySong.adapter.user.login.dto.LoginDto;
+import com.mycompany.SkySong.adapter.shared.cookie.CookieUtils;
+import com.mycompany.SkySong.shared.response.ApiResponse;
+import com.mycompany.SkySong.adapter.user.login.dto.LoginRequest;
+import com.mycompany.SkySong.application.user.login.model.AuthenticationTokens;
+import com.mycompany.SkySong.application.user.login.usecase.UserAuthenticator;
+import com.mycompany.SkySong.shared.response.BaseResponse;
+import com.mycompany.SkySong.shared.result.Result;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -19,28 +21,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class LoginController {
 
-    private final UserLoginService login;
+    private final UserAuthenticator authenticator;
     private final CookieUtils cookieUtils;
 
-    public LoginController(UserLoginService login,
+    public LoginController(UserAuthenticator authenticator,
                            CookieUtils cookieUtils) {
-        this.login = login;
+        this.authenticator = authenticator;
         this.cookieUtils = cookieUtils;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
-        LoginResponse authResponse = login.login(new LoginDto(request.usernameOrEmail(), request.password()));
+    public ResponseEntity<BaseResponse> login(@Valid @RequestBody LoginRequest request) {
+        Result<AuthenticationTokens> result =
+                authenticator.login(new LoginDto(request.usernameOrEmail(), request.password()));
 
-        ResponseCookie jwtCookie = cookieUtils.generateCookie(
-                "jwtToken", authResponse.jwtToken(), "/api", 600);
+        if (result.isFailure()) {
+            return ResponseEntity
+                    .status(result.errorType().getHttpStatus())
+                    .body(result.toErrorResponse());
+        }
 
-        ResponseCookie refreshCookie = cookieUtils.generateCookie(
-                "refreshToken", authResponse.refreshToken(), "/api/v1/auth/refresh-token", 86400);
+        ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
+                "accessToken", result.data().accessToken(), "/api", 600);
+
+        ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
+                "refreshToken", result.data().refreshToken(), "/api/v1/auth/refresh-token", 86400);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .body(new ApiResponse("Logged successfully."));
+
+
     }
 }
