@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.exception.response;
+package com.mycompany.SkySong.shared.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
