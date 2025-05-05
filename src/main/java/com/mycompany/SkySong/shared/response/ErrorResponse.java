@@ -1,35 +1,28 @@
-package com.mycompany.SkySong.shared.error;
+package com.mycompany.SkySong.shared.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorResponse {
-
-    private final String message;
+public class ErrorResponse extends BaseResponse {
     private final String errorCode;
     private final int status;
     private final Map<String, String> errors;
 
     public ErrorResponse(String message, String errorCode, int status) {
-        this.message = message;
+        super(message);
         this.errorCode = errorCode;
         this.status = status;
         this.errors = null;
     }
 
     public ErrorResponse(Map<String, String> errors, String errorCode, int status) {
-        this.message = null;
+        super(null);
         this.errorCode = errorCode;
         this.status = status;
         this.errors = errors;
     }
-
-    public String getMessage() {
-        return message;
-    }
-
     public String getErrorCode() {
         return errorCode;
     }
