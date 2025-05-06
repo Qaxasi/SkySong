@@ -50,7 +50,7 @@ public class SpringSecurityAuthenticator implements Authenticator {
             )));
 
             return new AuthenticatedUser(userDetails.id(), userDetails.getUsername(), roles);
-        } catch (BadCredentialsException e) {
+        } catch (final BadCredentialsException e) {
             logger.warn("Failed login attempt for user/email",
                     context("usernameOrEmail", usernameOrEmail));
             throw new InvalidCredentialsException(
