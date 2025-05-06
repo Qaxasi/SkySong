@@ -3,7 +3,7 @@ package com.mycompany.SkySong.adapter.user.login.security;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.user.login.exception.InvalidCredentialsException;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
-import com.mycompany.SkySong.application.user.login.model.AuthenticatedUser;
+import com.mycompany.SkySong.application.user.login.dto.AuthenticatedUser;
 import com.mycompany.SkySong.application.user.login.port.Authenticator;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+
+import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
 @Component
 public class SpringSecurityAuthenticator implements Authenticator {
@@ -28,7 +30,7 @@ public class SpringSecurityAuthenticator implements Authenticator {
     }
 
     @Override
-    public AuthenticatedUser authenticate(String usernameOrEmail, String password) {
+    public AuthenticatedUser authenticate(final String usernameOrEmail, final String password) {
         try {
             final Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
@@ -41,7 +43,7 @@ public class SpringSecurityAuthenticator implements Authenticator {
                     .map(GrantedAuthority::getAuthority)
                     .toList();
 
-            logger.info("User authenticated successfully", ApplicationLogger.Context.of(Map.of(
+            logger.info("User authenticated successfully", context(Map.of(
                     "userId", userDetails.id(),
                     "username", userDetails.getUsername(),
                     "roles", roles
@@ -50,7 +52,7 @@ public class SpringSecurityAuthenticator implements Authenticator {
             return new AuthenticatedUser(userDetails.id(), userDetails.getUsername(), roles);
         } catch (BadCredentialsException e) {
             logger.warn("Failed login attempt for user/email",
-                    ApplicationLogger.Context.of("usernameOrEmail", usernameOrEmail));
+                    context("usernameOrEmail", usernameOrEmail));
             throw new InvalidCredentialsException(
                     "Invalid username or password.",
                     ErrorType.INVALID_LOGIN_CREDENTIALS);
