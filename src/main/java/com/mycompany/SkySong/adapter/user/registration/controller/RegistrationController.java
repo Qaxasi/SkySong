@@ -1,11 +1,10 @@
 package com.mycompany.SkySong.adapter.user.registration.controller;
 
-import com.mycompany.SkySong.adapter.user.registration.mapper.RegisterRequestMapper;
-import com.mycompany.SkySong.adapter.user.registration.dto.RegisterRequest;
+import com.mycompany.SkySong.adapter.user.registration.mapper.RegistrationRequestMapper;
+import com.mycompany.SkySong.adapter.user.registration.dto.RegistrationRequest;
 import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.application.user.registration.usecase.UserRegistration;
 import com.mycompany.SkySong.shared.response.ApiResponse;
-import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.result.Result;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -17,16 +16,16 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
 
     private final UserRegistration registration;
-    private final RegisterRequestMapper mapper;
+    private final RegistrationRequestMapper mapper;
 
     public RegistrationController(final UserRegistration registration,
-                                  final RegisterRequestMapper mapper) {
+                                  final RegistrationRequestMapper mapper) {
         this.registration = registration;
         this.mapper = mapper;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@Valid @RequestBody final RegisterRequest request) {
+    public ResponseEntity<Object> register(@Valid @RequestBody final RegistrationRequest request) {
         final UserRegistrationDto dto = mapper.toDto(request);
         final Result<ApiResponse> result = registration.registerUser(dto);
 
