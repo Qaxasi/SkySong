@@ -3,8 +3,9 @@ package com.mycompany.SkySong.adapter.user.registration.controller;
 import com.mycompany.SkySong.adapter.user.registration.mapper.RegisterRequestMapper;
 import com.mycompany.SkySong.adapter.user.registration.dto.RegisterRequest;
 import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationDto;
-import com.mycompany.SkySong.application.user.registration.usecase.UserRegistrationUseCase;
-import com.mycompany.SkySong.application.shared.dto.ApiResponse;
+import com.mycompany.SkySong.application.user.registration.usecase.UserRegistration;
+import com.mycompany.SkySong.shared.response.ApiResponse;
+import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.result.Result;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 public class RegistrationController {
 
-    private final UserRegistrationUseCase registration;
+    private final UserRegistration registration;
     private final RegisterRequestMapper mapper;
 
-    public RegistrationController(final UserRegistrationUseCase registration,
+    public RegistrationController(final UserRegistration registration,
                                   final RegisterRequestMapper mapper) {
         this.registration = registration;
         this.mapper = mapper;

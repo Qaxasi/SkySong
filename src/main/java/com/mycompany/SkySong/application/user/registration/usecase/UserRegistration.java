@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.application.user.registration.usecase;
 
-import com.mycompany.SkySong.application.shared.logging.ApplicationLogger;
+import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.application.user.registration.mapper.UserSaveMapper;
-import com.mycompany.SkySong.application.shared.dto.ApiResponse;
+import com.mycompany.SkySong.shared.response.ApiResponse;
 import com.mycompany.SkySong.application.user.registration.ports.UserSaver;
 import com.mycompany.SkySong.domain.user.registration.model.UserRegistrationData;
 import com.mycompany.SkySong.domain.user.registration.service.UserRegistrationValidator;
@@ -12,19 +12,21 @@ import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.result.Result;
 
-public class UserRegistrationUseCase {
+import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
+public class UserRegistration {
+    
     private final UserRegistrationValidator validation;
     private final UserFactory userFactory;
     private final UserSaver userSaver;
     private final UserSaveMapper mapper;
     private final ApplicationLogger logger;
 
-    public UserRegistrationUseCase(final UserRegistrationValidator validation,
-                                   final UserFactory userFactory,
-                                   final UserSaver userSaver,
-                                   final UserSaveMapper mapper,
-                                   final ApplicationLogger logger) {
+    public UserRegistration(final UserRegistrationValidator validation,
+                            final UserFactory userFactory,
+                            final UserSaver userSaver,
+                            final UserSaveMapper mapper,
+                            final ApplicationLogger logger) {
         this.validation = validation;
         this.userFactory = userFactory;
         this.userSaver = userSaver;
@@ -43,12 +45,11 @@ public class UserRegistrationUseCase {
 
             logger.info("User registered successfully");
             return Result.success(new ApiResponse("Your registration was successful!"));
-        } catch (BaseApiException ex) {
+        } catch (final BaseApiException ex) {
             logger.warn("User registration failed",
-                    ApplicationLogger.Context.of(
-                   "error", ex.getErrorType().name()));
+                    context("error", ex.getErrorType().name()));
             return Result.failure(ex.getMessage(), ex.getErrorType());
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             logger.error("Unexpected technical error during user registration", ex);
             throw ex;
         }
