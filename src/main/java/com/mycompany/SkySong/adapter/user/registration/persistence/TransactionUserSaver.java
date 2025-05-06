@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.user.registration.persistence;
 
-import com.mycompany.SkySong.application.shared.logging.ApplicationLogger;
+import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.application.user.registration.dto.UserSaveDto;
 import com.mycompany.SkySong.application.user.registration.mapper.UserSaveMapper;
 import com.mycompany.SkySong.domain.shared.entity.User;
@@ -39,7 +39,7 @@ class TransactionUserSaver implements UserSaver {
                 for (Role roles : user.getRoles()) {
                     userDAO.assignRoleToUser(userId, roles.getId());
                 }
-            } catch (RuntimeException ex) {
+            } catch (final RuntimeException ex) {
                 logger.error("Failed to save user", ex);
                 throw ex;
             }
