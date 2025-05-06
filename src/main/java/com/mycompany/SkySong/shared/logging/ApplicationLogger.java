@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.shared.logging;
+package com.mycompany.SkySong.shared.logging;
 
 import java.util.Collections;
 import java.util.Map;
@@ -45,6 +45,14 @@ public interface ApplicationLogger {
             return values.entrySet().stream()
                     .map(entry -> entry.getKey() + "=" + entry.getValue())
                     .collect(Collectors.joining(", ", "[", "]"));
+        }
+
+        public static Context context(String key, Object value) {
+            return of(key, value);
+        }
+
+        public static Context context(Map<String, Object> values) {
+            return of(values);
         }
     }
 }
