@@ -1,10 +1,10 @@
 package com.mycompany.SkySong.adapter.user.login.controller;
 
-import com.mycompany.SkySong.adapter.user.login.dto.LoginDto;
+import com.mycompany.SkySong.application.user.login.dto.LoginInput;
 import com.mycompany.SkySong.adapter.shared.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.ApiResponse;
 import com.mycompany.SkySong.adapter.user.login.dto.LoginRequest;
-import com.mycompany.SkySong.application.user.login.model.AuthenticationTokens;
+import com.mycompany.SkySong.application.user.login.dto.AuthenticationTokens;
 import com.mycompany.SkySong.application.user.login.usecase.UserAuthenticator;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.result.Result;
@@ -33,7 +33,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<BaseResponse> login(@Valid @RequestBody final LoginRequest request) {
         final Result<AuthenticationTokens> result =
-                authenticator.login(new LoginDto(request.usernameOrEmail(), request.password()));
+                authenticator.login(new LoginInput(request.usernameOrEmail(), request.password()));
 
         if (result.isFailure()) {
             return ResponseEntity

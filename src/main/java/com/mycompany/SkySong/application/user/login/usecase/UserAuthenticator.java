@@ -34,7 +34,7 @@ public class UserAuthenticator {
 
             logger.info("User logged in successfully", context("userId", user.id()));
 
-            return  Result.success(new AuthenticationTokens(tokens.accessToken(), tokens.refreshToken()));
+            return Result.success(new AuthenticationTokens(tokens.accessToken(), tokens.refreshToken()));
         } catch (final InvalidCredentialsException ex) {
             return Result.failure(ex.getMessage(), ex.getErrorType());
         }
