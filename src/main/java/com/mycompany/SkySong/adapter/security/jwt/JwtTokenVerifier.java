@@ -2,7 +2,7 @@ package com.mycompany.SkySong.adapter.security.jwt;
 
 import com.mycompany.SkySong.adapter.exception.security.ExpiredTokenException;
 import com.mycompany.SkySong.adapter.exception.security.InvalidTokenException;
-import com.mycompany.SkySong.application.shared.logging.ApplicationLogger;
+import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

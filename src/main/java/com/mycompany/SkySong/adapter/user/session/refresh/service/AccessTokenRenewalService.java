@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.adapter.identity.session.service;
+package com.mycompany.SkySong.adapter.user.session.service;
 
-import com.mycompany.SkySong.adapter.identity.session.exception.InvalidRefreshTokenException;
+import com.mycompany.SkySong.adapter.user.session.exception.InvalidRefreshTokenException;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetailsService;
-import com.mycompany.SkySong.adapter.security.jwt.JwtTokenManager;
+import com.mycompany.SkySong.adapter.security.jwt.JwtTokenGenerator;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class AccessTokenRenewalService {
-    private final JwtTokenManager jwtManager;
+    private final JwtTokenGenerator jwtManager;
     private final CustomUserDetailsService userDetailsService;
 
-    public AccessTokenRenewalService(JwtTokenManager jwtManager,
+    public AccessTokenRenewalService(JwtTokenGenerator jwtManager,
                                      CustomUserDetailsService userDetailsService) {
         this.jwtManager = jwtManager;
         this.userDetailsService = userDetailsService;
@@ -28,7 +28,7 @@ public class AccessTokenRenewalService {
 
         try {
             CustomUserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            return jwtManager.generateToken(userDetails);
+            return jwtManager.g(userDetails);
         } catch (UsernameNotFoundException ex) {
             log.warn("Refresh token valid, but user '{}' not found", username);
             throw new InvalidRefreshTokenException(
