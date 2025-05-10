@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.adapter.user.session.controller;
+package com.mycompany.SkySong.adapter.user.token.refresh.controller;
 
 import com.mycompany.SkySong.shared.response.ErrorResponse;
-import com.mycompany.SkySong.adapter.user.session.service.AccessTokenRenewalService;
+import com.mycompany.SkySong.adapter.user.session.refresh.service.AccessTokenRenewalService;
 import com.mycompany.SkySong.adapter.shared.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.ApiResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
