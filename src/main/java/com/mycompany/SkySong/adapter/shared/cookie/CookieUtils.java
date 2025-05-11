@@ -1,5 +1,6 @@
-package com.mycompany.SkySong.adapter.shared.utils;
+package com.mycompany.SkySong.adapter.shared.cookie;
 
+import com.mycompany.SkySong.shared.config.cookie.CookieProperties;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseCookie;
@@ -7,9 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 @Component
-public class CookieUtils {
+public class CookieFactory {
 
-    public String getJwtFromCookies(HttpServletRequest request, String cookieName) {
+    public String getCookieValue(HttpServletRequest request, String cookieName) {
         Cookie cookie = WebUtils.getCookie(request, cookieName);
         if (cookie != null) {
             return cookie.getValue();
@@ -18,7 +19,16 @@ public class CookieUtils {
         }
     }
 
-    public ResponseCookie generateCookie(String name, String value, String path, int maxAge) {
-        return ResponseCookie.from(name, value).path(path).maxAge(maxAge).httpOnly(true).build();
+    public ResponseCookie generateAccessTokenCookie(String value, )
+
+    private ResponseCookie generateCookie(String value, CookieProperties cookieProperties) {
+        return ResponseCookie.from(cookieProperties.getName(), value)
+                .path(cookieProperties.getPath())
+                .maxAge(cookieProperties.getMaxAge())
+                .httpOnly(cookieProperties.isHttpOnly())
+                .secure(cookieProperties.isSecure())
+                .sameSite(cookieProperties.getSameSite())
+                .build();
     }
 }
+// inna nazwa dla pakietu ?
