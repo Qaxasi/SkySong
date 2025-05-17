@@ -41,11 +41,9 @@ public class LoginController {
                     .body(result.toErrorResponse());
         }
 
-        final ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
-                "accessToken", result.data().accessToken(), "/api", 600);
+        final ResponseCookie accessTokenCookie = cookieUtils.generateAccessTokenCookie(result.data().accessToken());
 
-        final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
-                "refreshToken", result.data().refreshToken(), "/api/v1/auth/refresh-token", 86400);
+        final ResponseCookie refreshTokenCookie = cookieUtils.generateRefreshTokenCookie(result.data().refreshToken());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
