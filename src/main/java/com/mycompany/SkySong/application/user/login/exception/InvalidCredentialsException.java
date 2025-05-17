@@ -1,10 +1,9 @@
-package com.mycompany.SkySong.adapter.user.login.exception;
+package com.mycompany.SkySong.application.user.login.exception;
 
 import com.mycompany.SkySong.shared.error.BaseApiException;
-import com.mycompany.SkySong.shared.error.ErrorType;
 
 public class InvalidCredentialsException extends BaseApiException {
-    public InvalidCredentialsException(String message, ErrorType errorType) {
-        super(message, errorType);
+    public InvalidCredentialsException(String message) {
+        super(message);
     }
 }
