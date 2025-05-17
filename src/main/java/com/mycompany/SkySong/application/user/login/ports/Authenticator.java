@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.user.login.port;
+package com.mycompany.SkySong.application.user.login.ports;
 
 import com.mycompany.SkySong.application.user.login.dto.AuthenticatedUser;
 

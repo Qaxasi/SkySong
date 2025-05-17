@@ -5,7 +5,6 @@ import com.mycompany.SkySong.application.user.login.exception.InvalidCredentials
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.application.user.login.dto.AuthenticatedUser;
 import com.mycompany.SkySong.application.user.login.ports.Authenticator;
-import com.mycompany.SkySong.shared.error.ErrorType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,9 +52,7 @@ public class SpringSecurityAuthenticator implements Authenticator {
         } catch (final BadCredentialsException e) {
             logger.warn("Failed login attempt for user/email",
                     context("usernameOrEmail", usernameOrEmail));
-            throw new InvalidCredentialsException(
-                    "Invalid username or password.",
-                    ErrorType.INVALID_LOGIN_CREDENTIALS);
+            throw new InvalidCredentialsException("Invalid username or password.");
         }
     }
 }
