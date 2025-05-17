@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.user.login.controller;
 
 import com.mycompany.SkySong.application.user.login.dto.LoginInput;
-import com.mycompany.SkySong.adapter.shared.cookie.CookieUtils;
+import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.ApiResponse;
 import com.mycompany.SkySong.adapter.user.login.dto.LoginRequest;
 import com.mycompany.SkySong.application.user.login.dto.AuthenticationTokens;
