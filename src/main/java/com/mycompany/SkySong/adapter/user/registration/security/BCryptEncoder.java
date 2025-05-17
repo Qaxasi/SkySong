@@ -1,11 +1,10 @@
 package com.mycompany.SkySong.adapter.user.registration.security;
 
-
 import com.mycompany.SkySong.domain.user.registration.ports.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 class BCryptEncoder implements PasswordEncoder {
 
     private final BCryptPasswordEncoder bcrypt;
