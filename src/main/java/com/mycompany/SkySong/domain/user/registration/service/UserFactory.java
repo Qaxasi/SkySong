@@ -7,7 +7,6 @@ import com.mycompany.SkySong.domain.shared.entity.User;
 import com.mycompany.SkySong.domain.shared.enums.UserRole;
 import com.mycompany.SkySong.domain.user.registration.ports.PasswordEncoder;
 import com.mycompany.SkySong.domain.user.registration.ports.RegistrationRoleRepository;
-import com.mycompany.SkySong.shared.error.ErrorType;
 
 public class UserFactory {
     private final PasswordEncoder passwordEncoder;
@@ -30,9 +29,6 @@ public class UserFactory {
 
     private Role fetchDefaultUserRole() {
         return roleRepository.findByName(UserRole.ROLE_USER)
-                .orElseThrow(() ->
-                        new RoleNotFoundException(
-                                "Default user role not found in the system.",
-                                ErrorType.DEFAULT_ROLE_NOT_FOUND));
+                .orElseThrow(() -> new RoleNotFoundException("Default user role not found in the system."));
     }
 }
