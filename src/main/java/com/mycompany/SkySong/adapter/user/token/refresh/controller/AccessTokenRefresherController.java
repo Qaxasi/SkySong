@@ -1,10 +1,12 @@
 package com.mycompany.SkySong.adapter.user.token.refresh.controller;
 
+import com.mycompany.SkySong.application.user.token.refresh.usecase.AccessTokenRefresher;
+import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.response.ErrorResponse;
-import com.mycompany.SkySong.adapter.user.session.refresh.service.AccessTokenRenewalService;
 import com.mycompany.SkySong.adapter.shared.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.ApiResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
+import com.mycompany.SkySong.shared.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,20 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth/token")
-public class AccessTokenRenewalController {
+public class AccessTokenRefresherController {
 
     private final CookieUtils cookieUtils;
-    private final AccessTokenRenewalService renewalService;
+    private final AccessTokenRefresher accessTokenRefresher;
 
-    public AccessTokenRenewalController(CookieUtils cookieUtils,
-                                        AccessTokenRenewalService renewalService) {
+    public AccessTokenRefresherController(final CookieUtils cookieUtils,
+                                          final AccessTokenRefresher accessTokenRefresher) {
         this.cookieUtils = cookieUtils;
-        this.renewalService = renewalService;
+        this.accessTokenRefresher = accessTokenRefresher;
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<Object> refreshToken(HttpServletRequest request) {
-        String refreshToken = cookieUtils.getJwtFromCookies(request, "refreshToken");
+    public ResponseEntity<BaseResponse> refreshToken(final HttpServletRequest request) {
+        final String refreshToken = cookieUtils.getCookieValue(request, "refreshToken");
 
         if (refreshToken == null || refreshToken.isBlank()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -40,13 +42,15 @@ public class AccessTokenRenewalController {
                     ));
         }
 
-        String newAccessToken = renewalService.generateAccessTokenFromRefreshToken(refreshToken);
+        final Result<String> result = accessTokenRefresher.refreshAccessToken(refreshToken);
 
-        ResponseCookie cookie = cookieUtils.generateCookie(
-                "jwtToken",
-                newAccessToken,
-                "/api",
-                600);
+        if (result.isFailure()) {
+            return ResponseEntity
+                    .status(result.errorType().getHttpStatus())
+                    .body(result.toErrorResponse());
+        }
+
+        final ResponseCookie cookie = cookieUtils.generateAccessTokenCookie(result.data());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
