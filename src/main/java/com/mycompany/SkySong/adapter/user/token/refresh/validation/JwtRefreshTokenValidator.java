@@ -2,6 +2,7 @@ package com.mycompany.SkySong.adapter.user.token.refresh.validation;
 
 import com.mycompany.SkySong.application.user.token.refresh.exception.RefreshTokenValidationException;
 import com.mycompany.SkySong.application.user.token.refresh.port.RefreshTokenValidator;
+import com.mycompany.SkySong.shared.config.security.jwt.JwtProperties;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -9,7 +10,6 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -22,9 +22,9 @@ class JwtRefreshTokenValidator implements RefreshTokenValidator {
     private final SecretKey signKey;
     private final ApplicationLogger logger;
 
-    JwtRefreshTokenValidator(@Value("${application.security.jwt.secret-key}") final String secretKey,
+    JwtRefreshTokenValidator(final JwtProperties jwtProperties,
                              final ApplicationLogger logger) {
-        this.signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        this.signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecretKey()));
         this.logger = logger;
     }
 
