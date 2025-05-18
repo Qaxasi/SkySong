@@ -1,36 +1,34 @@
 package com.mycompany.SkySong.application.user.registration.usecase;
 
+import com.mycompany.SkySong.application.user.registration.error.RegistrationExceptionMapper;
+import com.mycompany.SkySong.domain.shared.exception.DomainException;
+import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationDto;
-import com.mycompany.SkySong.application.user.registration.mapper.UserSaveMapper;
 import com.mycompany.SkySong.shared.response.ApiResponse;
 import com.mycompany.SkySong.application.user.registration.ports.UserSaver;
 import com.mycompany.SkySong.domain.user.registration.model.UserRegistrationData;
-import com.mycompany.SkySong.domain.user.registration.service.UserRegistrationValidator;
+import com.mycompany.SkySong.domain.user.registration.service.RegistrationCredentialsValidator;
 import com.mycompany.SkySong.domain.user.registration.service.UserFactory;
 import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.result.Result;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
 public class UserRegistration {
     
-    private final UserRegistrationValidator validation;
+    private final RegistrationCredentialsValidator validation;
     private final UserFactory userFactory;
     private final UserSaver userSaver;
-    private final UserSaveMapper mapper;
     private final ApplicationLogger logger;
 
-    public UserRegistration(final UserRegistrationValidator validation,
+    public UserRegistration(final RegistrationCredentialsValidator validation,
                             final UserFactory userFactory,
                             final UserSaver userSaver,
-                            final UserSaveMapper mapper,
                             final ApplicationLogger logger) {
         this.validation = validation;
         this.userFactory = userFactory;
         this.userSaver = userSaver;
-        this.mapper = mapper;
         this.logger = logger;
     }
 
@@ -41,15 +39,17 @@ public class UserRegistration {
             validation.validate(data);
 
             final User user = userFactory.createUser(data);
-            userSaver.saveUser(mapper.toDto(user));
+            userSaver.saveUser(user);
 
             logger.info("User registered successfully");
             return Result.success(new ApiResponse("Your registration was successful!"));
-        } catch (final BaseApiException ex) {
-            logger.warn("User registration failed",
-                    context("error", ex.getErrorType().name()));
-            return Result.failure(ex.getMessage(), ex.getErrorType());
-        } catch (final RuntimeException ex) {
+
+        } catch (DomainException ex) {
+            final ErrorType errorType = RegistrationExceptionMapper.map(ex);
+            logger.warn("User registration failed", context("error", errorType.name()));
+            return Result.failure(ex.getMessage(), errorType);
+
+        } catch (RuntimeException ex) {
             logger.error("Unexpected technical error during user registration", ex);
             throw ex;
         }
