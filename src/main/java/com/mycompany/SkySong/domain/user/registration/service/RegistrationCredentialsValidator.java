@@ -5,13 +5,18 @@ import com.mycompany.SkySong.domain.user.registration.model.UserRegistrationData
 import com.mycompany.SkySong.domain.user.registration.ports.RegistrationUserRepository;
 
 public class RegistrationCredentialsValidator {
-    private final RegistrationUserRepository registrationUserRepository;
+    private final RegistrationUserRepository userRepository;
 
-    public RegistrationCredentialsValidator(final RegistrationUserRepository registrationUserRepository) {
-        this.registrationUserRepository = registrationUserRepository;
+    public RegistrationCredentialsValidator(final RegistrationUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public void validate(final UserRegistrationData data) {
+    public void validate(UserRegistrationData data) {
+        validateFormat(data);
+        validateUniqueness(data);
+    }
+
+    private void validateFormat(final UserRegistrationData data) {
         if (!data.username().matches("^[a-zA-Z0-9]{3,20}$")) {
             throw new InvalidUsernameFormat("Invalid username format. The username can contain only letters " +
                     "and numbers, and should be between 3 and 20 characters long.");
@@ -24,10 +29,13 @@ public class RegistrationCredentialsValidator {
             throw new InvalidPasswordFormat("Invalid password format. The password must contain an least " +
                     "8 characters, including uppercase letters, lowercase letters, numbers, and special characters.");
         }
-        if (registrationUserRepository.existsByUsername(data.username())) {
+    }
+
+    private void validateUniqueness(final UserRegistrationData data) {
+        if (userRepository.existsByUsername(data.username())) {
             throw new UsernameAlreadyExist("Username already exist!.");
         }
-        if (registrationUserRepository.existsByEmail(data.email())) {
+        if (userRepository.existsByEmail(data.email())) {
             throw new EmailAlreadyExist("Email already exist!.");
         }
     }
