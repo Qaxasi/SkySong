@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.domain.user.registration.exception;
 
-import com.mycompany.SkySong.shared.error.BaseApiException;
+import com.mycompany.SkySong.domain.shared.exception.DomainException;
 
-public class RoleNotFoundException extends BaseApiException {
+public class RoleNotFoundException extends DomainException {
     public RoleNotFoundException(String message) {
         super(message);
     }
