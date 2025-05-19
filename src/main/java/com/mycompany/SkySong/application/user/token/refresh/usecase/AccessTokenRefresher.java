@@ -1,10 +1,11 @@
 package com.mycompany.SkySong.application.user.token.refresh.usecase;
 
 import com.mycompany.SkySong.application.user.token.refresh.dto.SessionUser;
-import com.mycompany.SkySong.application.user.token.refresh.exception.RefreshTokenValidationException;
-import com.mycompany.SkySong.application.user.token.refresh.port.AccessTokenGenerator;
-import com.mycompany.SkySong.application.user.token.refresh.port.SessionUserStore;
-import com.mycompany.SkySong.application.user.token.refresh.port.RefreshTokenValidator;
+import com.mycompany.SkySong.application.user.token.refresh.exception.ExpiredRefreshTokenException;
+import com.mycompany.SkySong.application.user.token.refresh.exception.InvalidRefreshTokenException;
+import com.mycompany.SkySong.application.user.token.refresh.ports.AccessTokenGenerator;
+import com.mycompany.SkySong.application.user.token.refresh.ports.SessionUserStore;
+import com.mycompany.SkySong.application.user.token.refresh.ports.RefreshTokenValidator;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
@@ -44,9 +45,14 @@ public class AccessTokenRefresher {
             logger.info("Access token refreshed", context("userId", user.id()));
 
             return Result.success(newAccessToken);
-        } catch (RefreshTokenValidationException e) {
-            logger.warn("Refresh token validation failed", context("error", e.getErrorType().name()));
-            return Result.failure(e.getMessage(), e.getErrorType());
+
+        } catch (ExpiredRefreshTokenException e) {
+            logger.warn("Could not refresh access token - refresh token expired");
+            return Result.failure(e.getMessage(), ErrorType.EXPIRED_REFRESH_TOKEN);
+
+        } catch (InvalidRefreshTokenException e) {
+            logger.warn("Could not refresh access token - invalid refresh token");
+            return Result.failure(e.getMessage(), ErrorType.INVALID_REFRESH_TOKEN);
         }
     }
 }

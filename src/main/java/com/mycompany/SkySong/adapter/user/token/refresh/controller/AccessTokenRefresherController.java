@@ -3,7 +3,7 @@ package com.mycompany.SkySong.adapter.user.token.refresh.controller;
 import com.mycompany.SkySong.application.user.token.refresh.usecase.AccessTokenRefresher;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.response.ErrorResponse;
-import com.mycompany.SkySong.adapter.shared.cookie.CookieUtils;
+import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.ApiResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;

@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.user.token.refresh.redis;
 
 import com.mycompany.SkySong.application.user.token.refresh.dto.SessionUser;
-import com.mycompany.SkySong.application.user.token.refresh.port.SessionUserStore;
+import com.mycompany.SkySong.application.user.token.refresh.ports.SessionUserStore;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 

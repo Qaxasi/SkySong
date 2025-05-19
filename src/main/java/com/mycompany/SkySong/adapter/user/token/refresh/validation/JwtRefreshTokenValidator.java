@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.adapter.user.token.refresh.validation;
 
-import com.mycompany.SkySong.application.user.token.refresh.exception.RefreshTokenValidationException;
-import com.mycompany.SkySong.application.user.token.refresh.port.RefreshTokenValidator;
+import com.mycompany.SkySong.application.user.token.refresh.exception.ExpiredRefreshTokenException;
+import com.mycompany.SkySong.application.user.token.refresh.exception.InvalidRefreshTokenException;
+import com.mycompany.SkySong.application.user.token.refresh.ports.RefreshTokenValidator;
 import com.mycompany.SkySong.shared.config.security.jwt.JwtProperties;
-import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -35,16 +35,14 @@ class JwtRefreshTokenValidator implements RefreshTokenValidator {
                     .setSigningKey(signKey)
                     .build()
                     .parseClaimsJws(token);
+
         } catch (ExpiredJwtException e) {
             logger.warn("Refresh token expired", context("message", e.getMessage()));
-            throw new RefreshTokenValidationException(
-                    "Refresh token has expired",
-                    ErrorType.EXPIRED_REFRESH_TOKEN);
+            throw new ExpiredRefreshTokenException("Refresh token has expired");
+
         } catch (JwtException | IllegalArgumentException e) {
             logger.warn("Refresh token invalid", context("message", e.getMessage()));
-            throw new RefreshTokenValidationException(
-                    "Refresh token is invalid",
-                    ErrorType.INVALID_REFRESH_TOKEN);
+            throw new InvalidRefreshTokenException("Refresh token is invalid");
         }
     }
 }
