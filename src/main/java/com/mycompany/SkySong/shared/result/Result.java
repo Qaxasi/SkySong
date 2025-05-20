@@ -1,14 +1,22 @@
 package com.mycompany.SkySong.shared.result;
 
-import com.mycompany.SkySong.shared.error.ErrorResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
+import com.mycompany.SkySong.shared.response.ErrorResponse;
 
 import java.util.function.Function;
 
-public record Result<T>(T data, String errorMessage, boolean success, ErrorType errorType) {
+public record Result<T>(
+        T data,
+        String errorMessage,
+        boolean isSuccessful,
+        ErrorType errorType) {
 
     public static <T> Result<T> success(T data) {
         return new Result<>(data, null, true, null);
+    }
+
+    public static Result<Void> success() {
+        return new Result<>(null, null, true, null);
     }
 
     public static <T> Result<T> failure(String errorMessage, ErrorType errorType) {
@@ -16,15 +24,15 @@ public record Result<T>(T data, String errorMessage, boolean success, ErrorType 
     }
 
     public boolean isSuccess() {
-        return success;
+        return isSuccessful;
     }
 
     public boolean isFailure() {
-        return !success;
+        return !isSuccessful;
     }
 
     public <U> Result<U> flatMap(Function<T, Result<U>> mapper) {
-        if (this.success()) {
+        if (this.isSuccess()) {
             return mapper.apply(this.data);
         } else {
             return Result.failure(this.errorMessage(), this.errorType());
@@ -32,7 +40,7 @@ public record Result<T>(T data, String errorMessage, boolean success, ErrorType 
     }
 
     public <U> Result<U> map(Function<T, U> mapper) {
-        if (this.success()) {
+        if (this.isSuccess()) {
             return Result.success(mapper.apply(this.data));
         } else {
             return Result.failure(this.errorMessage(), this.errorType());
