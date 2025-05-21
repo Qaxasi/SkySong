@@ -4,6 +4,7 @@ import com.mycompany.SkySong.adapter.user.deletion.persistence.UserNotFoundExcep
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.application.user.delete.ports.UserDeletion;
+import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.shared.result.Result;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
@@ -18,7 +19,7 @@ public class UserDeletionUseCase {
         this.logger = logger;
     }
 
-    public Result<Void> delete(final Integer userId) {
+    public Result<SuccessResponse> delete(final Integer userId) {
         if (userId == null) {
             logger.warn("User deletion failed - missing user id");
             return Result.failure("User id is required and was not provided", ErrorType.MISSING_USER_ID);
@@ -32,6 +33,6 @@ public class UserDeletionUseCase {
         }
 
         logger.info("User deleted successfully", context("userId", userId));
-        return Result.success();
+        return Result.success(new SuccessResponse("User deleted successfully"));
     }
 }
