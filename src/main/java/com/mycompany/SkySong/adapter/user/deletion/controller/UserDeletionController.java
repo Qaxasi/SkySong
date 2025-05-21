@@ -1,7 +1,10 @@
 package com.mycompany.SkySong.adapter.user.deletion.controller;
 
 import com.mycompany.SkySong.application.user.delete.usecase.UserDeletionUseCase;
-import org.springframework.http.HttpStatus;
+import com.mycompany.SkySong.shared.response.BaseResponse;
+import com.mycompany.SkySong.shared.response.SuccessResponse;
+import com.mycompany.SkySong.shared.result.Result;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +19,14 @@ public class UserDeletionController {
     }
 
     @DeleteMapping({"/","/{userId}"})
-    public ResponseEntity<Object> delete(@PathVariable(required = false) final Integer userId) {
-        return new ResponseEntity<>(userDeletion.delete(userId), HttpStatus.OK);
+    public ResponseEntity<BaseResponse> delete(@PathVariable(required = false) final Integer userId) {
+        Result<SuccessResponse> result = userDeletion.delete(userId);
+
+        if (result.isFailure()) {
+            return ResponseEntity.status(result.errorType().getHttpStatus())
+                    .body(result.toErrorResponse());
+        }
+
+        return ResponseEntity.ok(result.data());
     }
 }
