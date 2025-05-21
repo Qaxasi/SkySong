@@ -12,6 +12,8 @@ import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
 
+import java.util.Map;
+
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
 public class UserAuthenticator {
@@ -40,10 +42,15 @@ public class UserAuthenticator {
 
             sessionUserStore.save(tokens.refreshToken(), new SessionUser(user.id(), user.usernameOrEmail(), user.roles()));
 
-            logger.info("User logged in successfully", context("userId", user.id()));
+            logger.info("User logged in successfully", context(Map.of(
+                    "userId", user.id(),
+                    "usernameOrEmail", user.usernameOrEmail(),
+                    "roles", user.roles()
+            )));
 
-            return Result.success(new AuthenticationTokens(tokens.accessToken(), tokens.refreshToken()));
+            return Result.success(tokens);
         } catch (final InvalidCredentialsException ex) {
+            logger.warn("Failed login attempt", context("usernameOrEmail", loginInput.usernameOrEmail()));
             return Result.failure(ex.getMessage(), ErrorType.INVALID_LOGIN_CREDENTIALS);
         }
     }

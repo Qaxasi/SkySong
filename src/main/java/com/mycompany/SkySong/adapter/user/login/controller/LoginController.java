@@ -2,7 +2,7 @@ package com.mycompany.SkySong.adapter.user.login.controller;
 
 import com.mycompany.SkySong.application.user.login.dto.LoginInput;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
-import com.mycompany.SkySong.shared.response.ApiResponse;
+import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.adapter.user.login.dto.LoginRequest;
 import com.mycompany.SkySong.application.user.login.dto.AuthenticationTokens;
 import com.mycompany.SkySong.application.user.login.usecase.UserAuthenticator;
@@ -48,6 +48,6 @@ public class LoginController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
-                .body(new ApiResponse("Logged successfully."));
+                .body(new SuccessResponse("Logged successfully."));
     }
 }
