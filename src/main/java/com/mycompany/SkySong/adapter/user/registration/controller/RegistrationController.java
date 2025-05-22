@@ -4,7 +4,7 @@ import com.mycompany.SkySong.adapter.user.registration.mapper.RegistrationReques
 import com.mycompany.SkySong.adapter.user.registration.dto.RegistrationRequest;
 import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationDto;
 import com.mycompany.SkySong.application.user.registration.usecase.UserRegistration;
-import com.mycompany.SkySong.shared.response.ApiResponse;
+import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.result.Result;
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ public class RegistrationController {
     @PostMapping("/register")
     public ResponseEntity<BaseResponse> register(@Valid @RequestBody final RegistrationRequest request) {
         final UserRegistrationDto dto = mapper.toDto(request);
-        final Result<ApiResponse> result = registration.registerUser(dto);
+        final Result<SuccessResponse> result = registration.registerUser(dto);
 
         if (result.isFailure()) {
             return ResponseEntity.status(result.errorType().getHttpStatus())

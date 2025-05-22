@@ -5,7 +5,7 @@ import com.mycompany.SkySong.domain.shared.exception.DomainException;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationDto;
-import com.mycompany.SkySong.shared.response.ApiResponse;
+import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.application.user.registration.ports.UserSaver;
 import com.mycompany.SkySong.domain.user.registration.model.UserRegistrationData;
 import com.mycompany.SkySong.domain.user.registration.service.RegistrationCredentialsValidator;
@@ -32,7 +32,7 @@ public class UserRegistration {
         this.logger = logger;
     }
 
-    public Result<ApiResponse> registerUser(final UserRegistrationDto userDto) {
+    public Result<SuccessResponse> registerUser(final UserRegistrationDto userDto) {
         try {
             final UserRegistrationData data = toDomain(userDto);
 
@@ -42,7 +42,7 @@ public class UserRegistration {
             userSaver.saveUser(user);
 
             logger.info("User registered successfully");
-            return Result.success(new ApiResponse("Your registration was successful!"));
+            return Result.success(new SuccessResponse("Your registration was successful!"));
 
         } catch (DomainException ex) {
             final ErrorType errorType = RegistrationExceptionMapper.map(ex);
@@ -50,7 +50,7 @@ public class UserRegistration {
             return Result.failure(ex.getMessage(), errorType);
 
         } catch (RuntimeException ex) {
-            logger.error("Unexpected technical error during user registration", ex);
+            logger.error("Failed to save user in registration process", ex);
             throw ex;
         }
     }
