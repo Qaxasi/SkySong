@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.user.token.refresh.dto;
+package com.mycompany.SkySong.application.user.authentication.session.refresh.dto;
 
 import java.io.Serializable;
 import java.time.Instant;

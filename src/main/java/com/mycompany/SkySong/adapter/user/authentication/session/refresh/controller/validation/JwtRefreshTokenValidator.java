@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.adapter.user.token.refresh.validation;
 
-import com.mycompany.SkySong.application.user.token.refresh.exception.ExpiredRefreshTokenException;
-import com.mycompany.SkySong.application.user.token.refresh.exception.InvalidRefreshTokenException;
-import com.mycompany.SkySong.application.user.token.refresh.ports.RefreshTokenValidator;
+import com.mycompany.SkySong.application.user.authentication.session.refresh.exception.ExpiredRefreshTokenException;
+import com.mycompany.SkySong.application.user.authentication.session.refresh.exception.InvalidRefreshTokenException;
+import com.mycompany.SkySong.application.user.authentication.session.refresh.ports.RefreshTokenValidator;
 import com.mycompany.SkySong.shared.config.security.jwt.JwtProperties;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import io.jsonwebtoken.ExpiredJwtException;

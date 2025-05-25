@@ -1,11 +1,11 @@
 package com.mycompany.SkySong.adapter.user.login.controller;
 
-import com.mycompany.SkySong.application.user.login.dto.LoginInput;
+import com.mycompany.SkySong.application.user.authentication.login.dto.LoginInput;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.adapter.user.login.dto.LoginRequest;
-import com.mycompany.SkySong.application.user.login.dto.AuthenticationTokens;
-import com.mycompany.SkySong.application.user.login.usecase.UserAuthenticator;
+import com.mycompany.SkySong.application.user.authentication.login.dto.AuthenticationTokens;
+import com.mycompany.SkySong.application.user.authentication.login.usecase.UserAuthenticator;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.result.Result;
 import jakarta.validation.Valid;

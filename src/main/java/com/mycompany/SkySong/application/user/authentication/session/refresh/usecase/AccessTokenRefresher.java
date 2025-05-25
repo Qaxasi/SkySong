@@ -1,9 +1,9 @@
 package com.mycompany.SkySong.application.user.token.refresh.usecase;
 
-import com.mycompany.SkySong.application.user.token.refresh.dto.SessionUser;
+import com.mycompany.SkySong.application.user.token.refresh.dto.SessionData;
 import com.mycompany.SkySong.application.user.token.refresh.exception.ExpiredRefreshTokenException;
 import com.mycompany.SkySong.application.user.token.refresh.exception.InvalidRefreshTokenException;
-import com.mycompany.SkySong.application.user.token.refresh.ports.AccessTokenGenerator;
+import com.mycompany.SkySong.application.user.token.refresh.ports.AccessTokenGeneratorOnRefresh;
 import com.mycompany.SkySong.application.user.token.refresh.ports.SessionUserStore;
 import com.mycompany.SkySong.application.user.token.refresh.ports.RefreshTokenValidator;
 import com.mycompany.SkySong.shared.error.ErrorType;
@@ -14,12 +14,12 @@ import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.con
 
 public class AccessTokenRefresher {
 
-    private final AccessTokenGenerator accessTokenGenerator;
+    private final AccessTokenGeneratorOnRefresh accessTokenGenerator;
     private final SessionUserStore sessionUserStore;
     private final RefreshTokenValidator validator;
     private final ApplicationLogger logger;
 
-    public AccessTokenRefresher(final AccessTokenGenerator accessTokenGenerator,
+    public AccessTokenRefresher(final AccessTokenGeneratorOnRefresh accessTokenGenerator,
                                 final SessionUserStore sessionUserStore,
                                 final RefreshTokenValidator validator,
                                 final ApplicationLogger logger) {
@@ -33,7 +33,7 @@ public class AccessTokenRefresher {
         try {
             validator.validateToken(refreshToken);
 
-            final SessionUser user = sessionUserStore.getUserByRefreshToken(refreshToken);
+            final SessionData user = sessionUserStore.getUserByRefreshToken(refreshToken);
             if (user == null) {
                 logger.warn("No user session data for refresh token");
                 return Result.failure(

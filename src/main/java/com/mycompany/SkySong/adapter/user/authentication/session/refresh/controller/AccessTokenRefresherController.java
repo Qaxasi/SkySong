@@ -1,10 +1,10 @@
 package com.mycompany.SkySong.adapter.user.token.refresh.controller;
 
-import com.mycompany.SkySong.application.user.token.refresh.usecase.AccessTokenRefresher;
+import com.mycompany.SkySong.application.user.authentication.session.refresh.usecase.AccessTokenRefresher;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.response.ErrorResponse;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
-import com.mycompany.SkySong.shared.response.ApiResponse;
+import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,6 +54,6 @@ public class AccessTokenRefresherController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new ApiResponse("Your session has been successfully extended."));
+                .body(new SuccessResponse("Your session has been successfully extended."));
     }
 }
