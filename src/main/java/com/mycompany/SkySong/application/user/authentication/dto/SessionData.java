@@ -9,5 +9,5 @@ public record SessionData(
         String usernameOrEmail,
         List<String> roles,
         Instant issueAt,
-        Instant expiresAt) implements Serializable {
+        Instant expiresAt) implements Serializable, AccessTokenPayload {
 }
