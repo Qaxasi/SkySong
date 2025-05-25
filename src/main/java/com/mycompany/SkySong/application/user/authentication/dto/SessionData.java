@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.user.authentication.session.refresh.dto;
+package com.mycompany.SkySong.application.user.authentication.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -8,7 +8,6 @@ public record SessionData(
         int id,
         String usernameOrEmail,
         List<String> roles,
-        String refreshToken,
         Instant issueAt,
         Instant expiresAt) implements Serializable {
 }
