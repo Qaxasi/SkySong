@@ -1,48 +1,41 @@
 package com.mycompany.SkySong.adapter.security.jwt;
 
-import com.mycompany.SkySong.application.user.login.model.AuthenticatedUser;
-import com.mycompany.SkySong.application.user.login.model.AuthenticationTokens;
-import com.mycompany.SkySong.application.user.login.port.LoginTokenGenerator;
-import com.mycompany.SkySong.application.user.session.port.AccessTokenGenerator;
+import com.mycompany.SkySong.application.user.authentication.dto.AccessToken;
+import com.mycompany.SkySong.application.user.authentication.dto.AccessTokenPayload;
+import com.mycompany.SkySong.application.user.authentication.ports.AccessTokenGenerator;
+import com.mycompany.SkySong.shared.config.security.jwt.JwtAccessTokenProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class JwtTokenGenerator implements LoginTokenGenerator, AccessTokenGenerator {
+public class JwtTokenGenerator implements AccessTokenGenerator {
     private final SecretKey signKey;
     private final long accessTokenExpiration;
-    private final long refreshTokenExpiration;
 
-    public JwtTokenGenerator(@Value("${application.security.jwt.secret-key}") String secretKey,
-                             @Value("${application.security.jwt.expiration}") long accessTokenExpiration,
-                             @Value("${application.security.jwt.refresh-token.expiration}") long refreshTokenExpiration) {
+    public JwtTokenGenerator(final String secretKey,
+                             final JwtAccessTokenProperties accessTokenProperties) {
         this.signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
-        this.accessTokenExpiration = accessTokenExpiration;
-        this.refreshTokenExpiration = refreshTokenExpiration;
+        this.accessTokenExpiration = accessTokenProperties.getExpiration();
     }
 
     @Override
-    public AuthenticationTokens generate(final AuthenticatedUser user) {
-        String accessToken = generateAccessToken(user);
-        String refreshToken = buildToken(new HashMap<>(), user.usernameOrEmail(), refreshTokenExpiration);
-        return new AuthenticationTokens(accessToken, refreshToken);
+    public AccessToken generate(AccessTokenPayload payload) {
+        return generateAccessToken(payload);
     }
 
-    @Override
-    public String generateAccessToken(final AuthenticatedUser user) {
+    private AccessToken generateAccessToken(final AccessTokenPayload payload) {
         Map<String, Object> claims = Map.of(
-                "userId", user.id(),
-                "roles", user.roles()
+                "userId", payload.id(),
+                "roles", payload.roles()
         );
-        return buildToken(claims, user.usernameOrEmail(), accessTokenExpiration);
+
+        return new AccessToken(buildToken(claims, payload.usernameOrEmail(), accessTokenExpiration));
     }
 
     private String buildToken(Map<String, Object> extraClaims,
