@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.adapter.redis.session;
 
+import com.mycompany.SkySong.adapter.redis.session.exception.SessionStoreException;
 import com.mycompany.SkySong.application.user.authentication.dto.RefreshToken;
 import com.mycompany.SkySong.application.user.authentication.dto.SessionData;
 import com.mycompany.SkySong.application.user.authentication.ports.SessionStore;
@@ -22,11 +23,19 @@ public class SessionStoreRedis implements SessionStore {
     public void save(RefreshToken token, SessionData sessionData) {
         final Instant now = Instant.now();
         final Duration ttl = Duration.between(now, sessionData.expiresAt());
-        redisTemplate.opsForValue().set(token.value(), sessionData, ttl);
+        try {
+            redisTemplate.opsForValue().set(token.value(), sessionData, ttl);
+        } catch (RuntimeException e) {
+            throw new SessionStoreException("Failed to save session", e);
+        }
     }
 
     @Override
     public Optional<SessionData> findByToken(RefreshToken token) {
-        return Optional.ofNullable(redisTemplate.opsForValue().get(token.value()));
+        try {
+            return Optional.ofNullable(redisTemplate.opsForValue().get(token.value()));
+        }  catch (RuntimeException e) {
+            throw new SessionStoreException("Failed to retrieve session", e);
+        }
     }
 }
