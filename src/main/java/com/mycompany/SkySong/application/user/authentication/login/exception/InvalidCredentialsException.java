@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.user.login.exception;
+package com.mycompany.SkySong.application.user.authentication.login.exception;
 
 import com.mycompany.SkySong.application.shared.exception.ApplicationException;
 

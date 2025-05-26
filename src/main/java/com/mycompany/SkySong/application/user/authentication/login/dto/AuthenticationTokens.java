@@ -1,4 +1,7 @@
-package com.mycompany.SkySong.application.user.login.dto;
+package com.mycompany.SkySong.application.user.authentication.login.dto;
 
-public record AuthenticationTokens(String accessToken, String refreshToken) {
+import com.mycompany.SkySong.application.user.authentication.dto.AccessToken;
+import com.mycompany.SkySong.application.user.authentication.dto.RefreshToken;
+
+public record AuthenticationTokens(AccessToken accessToken, RefreshToken refreshToken) {
 }
