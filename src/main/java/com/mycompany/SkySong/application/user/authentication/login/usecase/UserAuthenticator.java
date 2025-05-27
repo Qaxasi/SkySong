@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.application.user.authentication.login.usecase;
 
+import com.mycompany.SkySong.adapter.redis.session.exception.SessionStoreException;
 import com.mycompany.SkySong.application.user.authentication.dto.AccessToken;
 import com.mycompany.SkySong.application.user.authentication.dto.RefreshToken;
 import com.mycompany.SkySong.application.user.authentication.login.dto.AuthenticatedUser;
@@ -57,11 +58,10 @@ public class UserAuthenticator {
             final AccessToken accessToken = accessTokenGenerator.generate(user);
             final RefreshToken refreshToken = refreshTokenGenerator.generate();
 
-            final Instant now = Instant.now(clock);
-            final Instant refreshTokenExpiresAt = now.plus(expiresAfter);
-
-            sessionStore.save(refreshToken, new SessionData(
-                    user.id(), user.usernameOrEmail(), user.roles(), now, refreshTokenExpiresAt));
+            final Result<Void> saveSessionResult = saveSession(refreshToken, user);
+            if (saveSessionResult.isFailure()) {
+                return Result.failure(saveSessionResult.errorMessage(), saveSessionResult.errorType());
+            }
 
             logger.info("User logged in successfully", context(Map.of(
                     "userId", user.id(),
@@ -70,9 +70,25 @@ public class UserAuthenticator {
             )));
 
             return Result.success(new AuthenticationTokens(accessToken, refreshToken));
-        } catch (final InvalidCredentialsException ex) {
+        } catch (InvalidCredentialsException ex) {
             logger.warn("Failed login attempt", context("usernameOrEmail", loginInput.usernameOrEmail()));
             return Result.failure(ex.getMessage(), ErrorType.INVALID_LOGIN_CREDENTIALS);
+        }
+    }
+
+    private Result<Void> saveSession(RefreshToken refreshToken, AuthenticatedUser user) {
+        final Instant now = Instant.now(clock);
+        final Instant refreshTokenExpiresAt = now.plus(expiresAfter);
+
+        try {
+            sessionStore.save(refreshToken, new SessionData(
+                    user.id(), user.usernameOrEmail(), user.roles(), now, refreshTokenExpiresAt));
+            return Result.success();
+        } catch (SessionStoreException ex) {
+            logger.error("Failed to save session", ex, context(Map.of(
+                    "userId", user.id(),
+                    "usernameOrEmail", user.usernameOrEmail())));
+            return Result.failure("Unable to store session", ErrorType.SESSION_STORE_FAILURE);
         }
     }
 }
