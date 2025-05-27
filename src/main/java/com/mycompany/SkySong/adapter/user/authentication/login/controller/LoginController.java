@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.adapter.user.login.controller;
+package com.mycompany.SkySong.adapter.user.authentication.login.controller;
 
+import com.mycompany.SkySong.adapter.user.authentication.login.dto.LoginRequest;
 import com.mycompany.SkySong.application.user.authentication.login.dto.LoginInput;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
-import com.mycompany.SkySong.adapter.user.login.dto.LoginRequest;
 import com.mycompany.SkySong.application.user.authentication.login.dto.AuthenticationTokens;
 import com.mycompany.SkySong.application.user.authentication.login.usecase.UserAuthenticator;
 import com.mycompany.SkySong.shared.response.BaseResponse;
@@ -41,9 +41,11 @@ public class LoginController {
                     .body(result.toErrorResponse());
         }
 
-        final ResponseCookie accessTokenCookie = cookieUtils.generateAccessTokenCookie(result.data().accessToken());
+        final ResponseCookie accessTokenCookie =
+                cookieUtils.generateAccessTokenCookie(result.data().accessToken().value());
 
-        final ResponseCookie refreshTokenCookie = cookieUtils.generateRefreshTokenCookie(result.data().refreshToken());
+        final ResponseCookie refreshTokenCookie =
+                cookieUtils.generateRefreshTokenCookie(result.data().refreshToken().value());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())

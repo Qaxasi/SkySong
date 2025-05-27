@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.user.login.security;
+package com.mycompany.SkySong.adapter.user.authentication.login.security;
 
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.application.user.authentication.login.exception.InvalidCredentialsException;
@@ -36,7 +36,7 @@ public class SpringSecurityAuthenticator implements Authenticator {
                     .toList();
 
             return new AuthenticatedUser(userDetails.id(), userDetails.getUsername(), roles);
-        } catch (final BadCredentialsException e) {
+        } catch (BadCredentialsException e) {
             throw new InvalidCredentialsException("Invalid username or password.");
         }
     }
