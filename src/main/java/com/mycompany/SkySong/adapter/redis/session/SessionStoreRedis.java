@@ -20,7 +20,7 @@ public class SessionStoreRedis implements SessionStore {
     }
 
     @Override
-    public void save(RefreshToken token, SessionData sessionData) {
+    public void save(final RefreshToken token, final SessionData sessionData) {
         final Instant now = Instant.now();
         final Duration ttl = Duration.between(now, sessionData.expiresAt());
         try {
@@ -31,11 +31,20 @@ public class SessionStoreRedis implements SessionStore {
     }
 
     @Override
-    public Optional<SessionData> findByToken(RefreshToken token) {
+    public Optional<SessionData> findByToken(final RefreshToken token) {
         try {
             return Optional.ofNullable(redisTemplate.opsForValue().get(token.value()));
         }  catch (RuntimeException e) {
             throw new SessionStoreException("Failed to retrieve session", e);
+        }
+    }
+
+    @Override
+    public void delete(RefreshToken token) {
+        try {
+            redisTemplate.delete(token.value());
+        } catch (RuntimeException e) {
+            throw new SessionStoreException("Failed to delete session", e);
         }
     }
 }
