@@ -22,10 +22,10 @@ public class SpringSecurityAuthenticator implements Authenticator {
     }
 
     @Override
-    public AuthenticatedUser authenticate(final String usernameOrEmail, final String password) {
+    public AuthenticatedUser authenticate(final String username, final String password) {
         try {
             final Authentication authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
+                    new UsernamePasswordAuthenticationToken(username, password));
 
             final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
