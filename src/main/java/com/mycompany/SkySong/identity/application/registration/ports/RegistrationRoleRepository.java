@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.domain.user.registration.ports;
 
-import com.mycompany.SkySong.domain.shared.entity.Role;
-import com.mycompany.SkySong.domain.shared.enums.UserRole;
+import com.mycompany.SkySong.identity.domain.Role;
+import com.mycompany.SkySong.identity.domain.UserRole;
 
 import java.util.Optional;
 

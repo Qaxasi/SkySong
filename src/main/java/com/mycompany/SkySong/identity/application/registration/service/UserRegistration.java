@@ -8,9 +8,9 @@ import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationD
 import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.application.user.registration.ports.UserSaver;
 import com.mycompany.SkySong.domain.user.registration.model.UserRegistrationData;
-import com.mycompany.SkySong.domain.user.registration.service.RegistrationCredentialsValidator;
-import com.mycompany.SkySong.domain.user.registration.service.UserFactory;
-import com.mycompany.SkySong.domain.shared.entity.User;
+import com.mycompany.SkySong.application.user.registration.validator.RegistrationCredentialsValidator;
+import com.mycompany.SkySong.identity.application.registration.service.UserFactory;
+import com.mycompany.SkySong.identity.domain.User;
 import com.mycompany.SkySong.shared.result.Result;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;

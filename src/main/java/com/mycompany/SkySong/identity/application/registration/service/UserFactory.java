@@ -2,11 +2,11 @@ package com.mycompany.SkySong.domain.user.registration.service;
 
 import com.mycompany.SkySong.domain.user.registration.exception.RoleNotFoundException;
 import com.mycompany.SkySong.domain.user.registration.model.UserRegistrationData;
-import com.mycompany.SkySong.domain.shared.entity.Role;
-import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.domain.shared.enums.UserRole;
-import com.mycompany.SkySong.domain.user.registration.ports.PasswordEncoder;
-import com.mycompany.SkySong.domain.user.registration.ports.RegistrationRoleRepository;
+import com.mycompany.SkySong.identity.domain.Role;
+import com.mycompany.SkySong.identity.domain.User;
+import com.mycompany.SkySong.identity.domain.UserRole;
+import com.mycompany.SkySong.identity.application.registration.ports.PasswordEncoder;
+import com.mycompany.SkySong.identity.application.registration.ports.RegistrationRoleRepository;
 
 public class UserFactory {
     private final PasswordEncoder passwordEncoder;
