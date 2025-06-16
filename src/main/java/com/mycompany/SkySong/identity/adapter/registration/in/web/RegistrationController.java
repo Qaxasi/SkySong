@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.adapter.user.registration.controller;
+package com.mycompany.SkySong.identity.adapter.registration.in.web;
 
-import com.mycompany.SkySong.adapter.user.registration.mapper.RegistrationRequestMapper;
-import com.mycompany.SkySong.adapter.user.registration.dto.RegistrationRequest;
-import com.mycompany.SkySong.application.user.registration.dto.UserRegistrationDto;
-import com.mycompany.SkySong.application.user.registration.usecase.UserRegistration;
+import com.mycompany.SkySong.identity.adapter.registration.in.web.mapper.RegistrationRequestMapper;
+import com.mycompany.SkySong.identity.adapter.registration.in.web.dto.RegistrationRequest;
+import com.mycompany.SkySong.identity.application.registration.dto.UserRegistrationInput;
+import com.mycompany.SkySong.identity.application.registration.service.UserRegistration;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.result.Result;
@@ -27,7 +27,7 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public ResponseEntity<BaseResponse> register(@Valid @RequestBody final RegistrationRequest request) {
-        final UserRegistrationDto dto = mapper.toDto(request);
+        final UserRegistrationInput dto = mapper.toDto(request);
         final Result<SuccessResponse> result = registration.registerUser(dto);
 
         if (result.isFailure()) {

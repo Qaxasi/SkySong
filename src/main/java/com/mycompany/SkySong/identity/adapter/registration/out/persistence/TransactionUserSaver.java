@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.adapter.registration.persistence;
+package com.mycompany.SkySong.identity.adapter.registration.out.persistence;
 
 import com.mycompany.SkySong.identity.application.exception.IdentityApplicationException;
 import com.mycompany.SkySong.identity.domain.User;
@@ -7,6 +7,7 @@ import com.mycompany.SkySong.identity.domain.Role;
 import com.mycompany.SkySong.identity.application.registration.ports.UserSaver;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -34,11 +35,11 @@ class TransactionUserSaver implements UserSaver {
                     userDAO.assignRoleToUser(userId, roles.getId());
                 }
             });
-        } catch (RuntimeException ex) {
-            logger.error("Failed to save user", ex);
+        } catch (DataAccessException ex) {
+            logger.error("Unexpected error while saving user to database", ex);
             throw new IdentityApplicationException(
-                    "Unexpected error during saving user",
-                    ErrorType.INTERNAL_ERROR);
+                    "Error occurred while saving user",
+                    ErrorType.PERSISTENCE_ERROR);
         }
     }
 }
