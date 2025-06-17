@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.user.registration.ports;
+package com.mycompany.SkySong.identity.application.registration.ports;
 
 import com.mycompany.SkySong.identity.domain.User;
 
