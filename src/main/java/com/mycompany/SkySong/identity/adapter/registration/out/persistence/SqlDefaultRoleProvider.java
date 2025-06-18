@@ -9,29 +9,21 @@ import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
 @Component
 public class SqlDefaultRoleProvider implements DefaultRoleProvider {
     private final RoleDAO roleDAO;
-    private final ApplicationLogger logger;
 
-    public SqlDefaultRoleProvider(final RoleDAO roleDAO,
-                                  final ApplicationLogger logger) {
+    public SqlDefaultRoleProvider(final RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
-        this.logger = logger;
     }
 
     @Override
-    public Role provideDefaultRole() {
-        return roleDAO.findByName(UserRole.ROLE_USER)
-                .orElseThrow(() -> {
-                    logger.error("Default user role missing in database configuration",
-                            context("role", UserRole.ROLE_USER.name()));
-                    return new UserRoleConfigurationException(
-                            "Default user role not found in the system.",
-                            ErrorType.IDENTITY_CONFIGURATION_ERROR);
-                });
+    public Optional<Role> provideDefaultRole() {
+        return roleDAO.findByName(UserRole.ROLE_USER);
     }
 }
 
