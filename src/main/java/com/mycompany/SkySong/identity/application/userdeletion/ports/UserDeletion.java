@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.user.delete.ports;
+package com.mycompany.SkySong.identity.application.userdeletion.ports;
 
 public interface UserDeletion {
     void deleteEverythingById(int id);
