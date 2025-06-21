@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class RegistrationController {
+public class UserRegistrationController {
 
-    private final UserRegistration registration;
+    private final UserRegistration userRegistration;
     private final RegistrationRequestMapper mapper;
 
-    public RegistrationController(final UserRegistration registration,
-                                  final RegistrationRequestMapper mapper) {
-        this.registration = registration;
+    public UserRegistrationController(final UserRegistration userRegistration,
+                                      final RegistrationRequestMapper mapper) {
+        this.userRegistration = userRegistration;
         this.mapper = mapper;
     }
 
     @PostMapping("/register")
     public ResponseEntity<BaseResponse> register(@Valid @RequestBody final RegistrationRequest request) {
         final UserRegistrationInput dto = mapper.toDto(request);
-        final Result<SuccessResponse> result = registration.registerUser(dto);
+        final Result<SuccessResponse> result = userRegistration.execute(dto);
 
         if (result.isFailure()) {
             return ResponseEntity.status(result.errorType().getHttpStatus())

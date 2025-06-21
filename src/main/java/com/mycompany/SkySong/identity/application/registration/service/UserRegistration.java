@@ -27,7 +27,7 @@ public class UserRegistration {
         this.logger = logger;
     }
 
-    public Result<SuccessResponse> registerUser(final UserRegistrationInput input) {
+    public Result<SuccessResponse> execute(final UserRegistrationInput input) {
         try {
             validation.validate(input);
 
