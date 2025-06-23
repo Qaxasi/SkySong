@@ -1,17 +1,17 @@
 package com.mycompany.SkySong.application.user.authentication.login.usecase;
 
 import com.mycompany.SkySong.adapter.redis.session.exception.SessionStoreException;
-import com.mycompany.SkySong.application.user.authentication.dto.AccessToken;
-import com.mycompany.SkySong.application.user.authentication.dto.RefreshToken;
+import com.mycompany.SkySong.identity.application.authentication.dto.AccessToken;
+import com.mycompany.SkySong.identity.application.authentication.dto.RefreshToken;
 import com.mycompany.SkySong.application.user.authentication.login.dto.AuthenticatedUser;
-import com.mycompany.SkySong.application.user.authentication.dto.AuthenticationTokens;
+import com.mycompany.SkySong.identity.application.authentication.dto.AuthenticationTokens;
 import com.mycompany.SkySong.application.user.authentication.login.dto.LoginInput;
 import com.mycompany.SkySong.application.user.authentication.login.exception.InvalidCredentialsException;
 import com.mycompany.SkySong.application.user.authentication.login.ports.Authenticator;
-import com.mycompany.SkySong.application.user.authentication.dto.SessionData;
-import com.mycompany.SkySong.application.user.authentication.ports.AccessTokenGenerator;
-import com.mycompany.SkySong.application.user.authentication.ports.RefreshTokenGenerator;
-import com.mycompany.SkySong.application.user.authentication.ports.SessionStore;
+import com.mycompany.SkySong.identity.application.authentication.dto.SessionData;
+import com.mycompany.SkySong.identity.application.authentication.ports.AccessTokenGenerator;
+import com.mycompany.SkySong.identity.application.authentication.ports.RefreshTokenGenerator;
+import com.mycompany.SkySong.identity.application.authentication.ports.SessionStore;
 import com.mycompany.SkySong.shared.config.security.jwt.RefreshTokenProperties;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;

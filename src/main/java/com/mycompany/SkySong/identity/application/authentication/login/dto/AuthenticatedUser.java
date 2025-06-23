@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.application.user.authentication.login.dto;
 
-import com.mycompany.SkySong.application.user.authentication.dto.AccessTokenPayload;
+import com.mycompany.SkySong.identity.application.authentication.dto.AccessTokenPayload;
 
 import java.util.List;
 
