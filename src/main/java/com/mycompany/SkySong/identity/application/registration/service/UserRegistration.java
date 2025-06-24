@@ -1,7 +1,9 @@
 package com.mycompany.SkySong.identity.application.registration.service;
 
+import com.mycompany.SkySong.infrastructure.persistence.exception.PersistenceException;
 import com.mycompany.SkySong.identity.application.exception.IdentityApplicationException;
 import com.mycompany.SkySong.identity.application.registration.dto.UserRegistrationInput;
+import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.identity.application.registration.ports.UserSaver;
@@ -40,6 +42,9 @@ public class UserRegistration {
         } catch (IdentityApplicationException ex) {
             logger.warn("User registration failed", context("error", ex.getErrorType().name()));
             return Result.failure(ex.getMessage(), ex.getErrorType());
+        } catch (PersistenceException ex) {
+            logger.error("Unexpected database error during user registration", ex);
+            return Result.failure(ex.getMessage(), ErrorType.PERSISTENCE_ERROR);
         }
     }
 }
