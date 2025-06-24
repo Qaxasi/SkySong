@@ -11,6 +11,8 @@ import com.mycompany.SkySong.identity.application.registration.validator.UserReg
 import com.mycompany.SkySong.identity.domain.User;
 import com.mycompany.SkySong.shared.result.Result;
 
+import java.util.Map;
+
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
 public class UserRegistration {
@@ -36,7 +38,9 @@ public class UserRegistration {
             final User user = userFactory.createUser(input);
             userSaver.saveUser(user);
 
-            logger.info("User registered successfully");
+            logger.info("User registered successfully", context(Map.of(
+                    "userId", user.getId(),
+                    "username", user.getUsername())));
             return Result.success(new SuccessResponse("Your registration was successful!"));
 
         } catch (IdentityApplicationException ex) {
