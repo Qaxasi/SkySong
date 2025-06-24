@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.adapter.user.authentication.login.security;
+package com.mycompany.SkySong.identity.adapter.authentication.login.out;
 
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
-import com.mycompany.SkySong.application.user.authentication.login.exception.InvalidCredentialsException;
-import com.mycompany.SkySong.application.user.authentication.login.dto.AuthenticatedUser;
-import com.mycompany.SkySong.application.user.authentication.login.ports.Authenticator;
+import com.mycompany.SkySong.identity.application.authentication.login.exception.InvalidCredentialsException;
+import com.mycompany.SkySong.identity.application.authentication.login.dto.AuthenticatedUser;
+import com.mycompany.SkySong.identity.application.authentication.login.ports.Authenticator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.adapter.redis.session;
+package com.mycompany.SkySong.identity.adapter.out.redis;
 
-import com.mycompany.SkySong.adapter.redis.session.exception.SessionStoreException;
-import com.mycompany.SkySong.application.user.authentication.dto.RefreshToken;
-import com.mycompany.SkySong.application.user.authentication.dto.SessionData;
-import com.mycompany.SkySong.application.user.authentication.ports.SessionStore;
+import com.mycompany.SkySong.identity.adapter.out.redis.exception.SessionStoreException;
+import com.mycompany.SkySong.identity.application.authentication.dto.RefreshToken;
+import com.mycompany.SkySong.identity.application.authentication.dto.SessionData;
+import com.mycompany.SkySong.identity.application.authentication.ports.SessionStore;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +26,10 @@ public class SessionStoreRedis implements SessionStore {
         try {
             redisTemplate.opsForValue().set(token.value(), sessionData, ttl);
         } catch (RuntimeException e) {
+            if (e instanceof NullPointerException
+                    || e instanceof IllegalArgumentException) {
+                throw e;
+            }
             throw new SessionStoreException("Failed to save session", e);
         }
     }
@@ -35,15 +39,23 @@ public class SessionStoreRedis implements SessionStore {
         try {
             return Optional.ofNullable(redisTemplate.opsForValue().get(token.value()));
         }  catch (RuntimeException e) {
+            if (e instanceof NullPointerException
+                    || e instanceof IllegalArgumentException) {
+                throw e;
+            }
             throw new SessionStoreException("Failed to retrieve session", e);
         }
     }
 
     @Override
-    public void delete(RefreshToken token) {
+    public void delete(final RefreshToken token) {
         try {
             redisTemplate.delete(token.value());
         } catch (RuntimeException e) {
+            if (e instanceof NullPointerException
+                    || e instanceof IllegalArgumentException) {
+                throw e;
+            }
             throw new SessionStoreException("Failed to delete session", e);
         }
     }

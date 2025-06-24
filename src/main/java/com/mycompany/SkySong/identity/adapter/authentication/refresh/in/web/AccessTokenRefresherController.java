@@ -1,12 +1,11 @@
-package com.mycompany.SkySong.adapter.user.token.refresh.controller;
+package com.mycompany.SkySong.adapter.user.authentication.session.refresh.controller;
 
-import com.mycompany.SkySong.application.user.authentication.session.refresh.usecase.AccessTokenRefresher;
+import com.mycompany.SkySong.identity.application.authentication.refresh.service.AccessTokenRefresher;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.response.ErrorResponse;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,7 +41,7 @@ public class AccessTokenRefresherController {
                     ));
         }
 
-        final Result<String> result = accessTokenRefresher.refreshAccessToken(refreshToken);
+//        final Result<String> result = accessTokenRefresher.refreshAccessToken(refreshToken);
 
         if (result.isFailure()) {
             return ResponseEntity
