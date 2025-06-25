@@ -1,5 +1,6 @@
-package com.mycompany.SkySong.identity.adapter.userdeletion.out.persistence;
+package com.mycompany.SkySong.identity.adapter.out.db;
 
+import com.mycompany.SkySong.identity.adapter.out.db.exception.UserDeletionPersistenceException;
 import com.mycompany.SkySong.infrastructure.persistence.sql.UserDAO;
 import com.mycompany.SkySong.identity.application.userdeletion.ports.UserDeletion;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
@@ -24,12 +25,19 @@ class TransactionalUserDeleter implements UserDeletion {
 
     @Override
     public void deleteEverythingById(final int id) {
-        transactionTemplate.executeWithoutResult(status -> {
-            logger.debug("Deleting roles for user", context("userId", id));
-            userDAO.deleteUserRoles(id);
+        try {
+            transactionTemplate.executeWithoutResult(status -> {
+                logger.debug("Deleting roles for user", context("userId", id));
+                userDAO.deleteUserRoles(id);
 
-            logger.debug("Deleting user", context("userId", id));
-            userDAO.delete(id);
-        });
+                logger.debug("Deleting user", context("userId", id));
+                userDAO.delete(id);
+            });
+        } catch (RuntimeException ex) {
+            if (ex instanceof NullPointerException || ex instanceof IllegalArgumentException) {
+                throw ex;
+            }
+            throw new UserDeletionPersistenceException("Error occurred while deleting user", ex);
+        }
     }
 }

@@ -1,11 +1,10 @@
-package com.mycompany.SkySong.identity.adapter.registration.out.persistence;
+package com.mycompany.SkySong.identity.adapter.out.db;
 
+import com.mycompany.SkySong.identity.adapter.out.db.exception.RoleProviderPersistenceException;
 import com.mycompany.SkySong.identity.application.registration.ports.RoleProvider;
 import com.mycompany.SkySong.identity.domain.Role;
 import com.mycompany.SkySong.identity.domain.UserRole;
-import com.mycompany.SkySong.infrastructure.persistence.exception.PersistenceException;
 import com.mycompany.SkySong.infrastructure.persistence.sql.RoleDAO;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -22,8 +21,11 @@ public class SqlRoleProvider implements RoleProvider {
     public Optional<Role> provideRole(final UserRole role) {
         try {
             return roleDAO.findByName(role);
-        } catch (DataAccessException ex) {
-            throw new PersistenceException("Error occurred while loading role", ex);
+        } catch (RuntimeException ex) {
+            if (ex instanceof NullPointerException || ex instanceof IllegalArgumentException) {
+                throw ex;
+            }
+            throw new RoleProviderPersistenceException("Error occurred while loading role", ex);
         }
     }
 }
