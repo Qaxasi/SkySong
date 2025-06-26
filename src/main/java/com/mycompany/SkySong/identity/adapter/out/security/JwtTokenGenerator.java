@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.adapter.security.jwt;
 
-import com.mycompany.SkySong.application.user.authentication.dto.AccessToken;
-import com.mycompany.SkySong.application.user.authentication.dto.AccessTokenPayload;
-import com.mycompany.SkySong.application.user.authentication.ports.AccessTokenGenerator;
+import com.mycompany.SkySong.identity.application.authentication.dto.AccessTokenPayload;
+import com.mycompany.SkySong.identity.application.authentication.ports.AccessTokenGenerator;
+import com.mycompany.SkySong.identity.domain.AccessToken;
 import com.mycompany.SkySong.shared.config.security.jwt.JwtAccessTokenProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -25,22 +25,22 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
     }
 
     @Override
-    public AccessToken generate(AccessTokenPayload payload) {
+    public AccessToken generate(final AccessTokenPayload payload) {
         return generateAccessToken(payload);
     }
 
     private AccessToken generateAccessToken(final AccessTokenPayload payload) {
-        Map<String, Object> claims = Map.of(
+        final Map<String, Object> claims = Map.of(
                 "userId", payload.id(),
                 "roles", payload.roles()
         );
 
-        return new AccessToken(buildToken(claims, payload.usernameOrEmail(), accessTokenExpiration));
+        return new AccessToken(buildToken(claims, payload.username(), accessTokenExpiration));
     }
 
-    private String buildToken(Map<String, Object> extraClaims,
-                              String subject,
-                              long expiration) {
+    private String buildToken(final Map<String, Object> extraClaims,
+                              final String subject,
+                              final long expiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

@@ -1,17 +1,17 @@
-package com.mycompany.SkySong.application.user.authentication.login.usecase;
+package com.mycompany.SkySong.identity.application.authentication.login.service;
 
-import com.mycompany.SkySong.adapter.redis.session.exception.SessionStoreException;
-import com.mycompany.SkySong.identity.application.authentication.dto.AccessToken;
-import com.mycompany.SkySong.identity.application.authentication.dto.RefreshToken;
-import com.mycompany.SkySong.application.user.authentication.login.dto.AuthenticatedUser;
-import com.mycompany.SkySong.identity.application.authentication.dto.AuthenticationTokens;
-import com.mycompany.SkySong.application.user.authentication.login.dto.LoginInput;
-import com.mycompany.SkySong.application.user.authentication.login.exception.InvalidCredentialsException;
-import com.mycompany.SkySong.application.user.authentication.login.ports.Authenticator;
-import com.mycompany.SkySong.identity.application.authentication.dto.SessionData;
-import com.mycompany.SkySong.identity.application.authentication.ports.AccessTokenGenerator;
-import com.mycompany.SkySong.identity.application.authentication.ports.RefreshTokenGenerator;
-import com.mycompany.SkySong.identity.application.authentication.ports.SessionStore;
+import com.mycompany.SkySong.identity.adapter.out.redis.exception.SessionStoreException;
+import com.mycompany.SkySong.identity.application.authentication.login.dto.AuthenticatedUser;
+import com.mycompany.SkySong.identity.application.authentication.shared.dto.AuthenticationTokens;
+import com.mycompany.SkySong.identity.application.authentication.login.dto.LoginInput;
+import com.mycompany.SkySong.identity.application.authentication.login.exception.InvalidCredentialsException;
+import com.mycompany.SkySong.identity.application.authentication.login.ports.Authenticator;
+import com.mycompany.SkySong.identity.application.authentication.shared.dto.SessionData;
+import com.mycompany.SkySong.identity.application.authentication.shared.ports.AccessTokenGenerator;
+import com.mycompany.SkySong.identity.application.authentication.shared.ports.RefreshTokenGenerator;
+import com.mycompany.SkySong.identity.application.authentication.shared.ports.SessionStore;
+import com.mycompany.SkySong.identity.domain.AccessToken;
+import com.mycompany.SkySong.identity.domain.RefreshToken;
 import com.mycompany.SkySong.shared.config.security.jwt.RefreshTokenProperties;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
@@ -50,30 +50,28 @@ public class UserAuthenticator {
     }
 
     public Result<AuthenticationTokens> login(final LoginInput loginInput) {
+        final AuthenticatedUser user;
+
         try {
-            final AuthenticatedUser user = authenticator.authenticate(
-                            loginInput.username(),
-                            loginInput.password());
-
-            final AccessToken accessToken = accessTokenGenerator.generate(user);
-            final RefreshToken refreshToken = refreshTokenGenerator.generate();
-
-            final Result<Void> saveSessionResult = saveSession(refreshToken, user);
-            if (saveSessionResult.isFailure()) {
-                return Result.failure(saveSessionResult.errorMessage(), saveSessionResult.errorType());
-            }
-
-            logger.info("User logged in successfully", context(Map.of(
-                    "userId", user.id(),
-                    "username", user.username(),
-                    "roles", user.roles()
-            )));
-
-            return Result.success(new AuthenticationTokens(accessToken, refreshToken));
+            user = authenticator.authenticate(
+                    loginInput.username(),
+                    loginInput.password());
         } catch (InvalidCredentialsException ex) {
             logger.warn("Failed login attempt", context("username", loginInput.username()));
             return Result.failure(ex.getMessage(), ErrorType.INVALID_LOGIN_CREDENTIALS);
         }
+
+        final AccessToken accessToken = accessTokenGenerator.generate(user);
+        final RefreshToken refreshToken = refreshTokenGenerator.generate();
+
+        final Result<Void> result = saveSession(refreshToken, user);
+        if (result.isFailure()) {
+            return Result.failure(result.errorMessage(), result.errorType());
+        }
+
+        logger.info("User logged in successfully", context("userId", user.id()));
+
+        return Result.success(new AuthenticationTokens(accessToken, refreshToken));
     }
 
     private Result<Void> saveSession(final RefreshToken refreshToken, final AuthenticatedUser user) {

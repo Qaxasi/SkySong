@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.user.authentication.dto;
+package com.mycompany.SkySong.identity.application.authentication.dto;
 
 import java.util.List;
 

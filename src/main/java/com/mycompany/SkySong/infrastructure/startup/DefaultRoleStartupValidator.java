@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.application.registration.startup;
+package com.mycompany.SkySong.identity.application.startup;
 
 import com.mycompany.SkySong.identity.application.registration.exception.ApplicationStartupException;
 import com.mycompany.SkySong.identity.application.registration.ports.RoleProvider;

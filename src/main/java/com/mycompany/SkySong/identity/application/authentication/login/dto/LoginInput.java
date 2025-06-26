@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.application.user.authentication.login.dto;
+package com.mycompany.SkySong.identity.application.authentication.login.dto;
 
 public record LoginInput(String username, String password) {
 }
