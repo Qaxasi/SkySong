@@ -22,6 +22,10 @@ public record Result<T>(
     public static <T> Result<T> failure(String errorMessage, ErrorType errorType) {
         return new Result<>(null, errorMessage, false, errorType);
     }
+    public <U> Result<U> mapFailure() {
+        if (isSuccess()) throw new IllegalStateException("Cannot map success as failure");
+        return Result.failure(this.errorMessage(), this.errorType());
+    }
 
     public boolean isSuccess() {
         return isSuccessful;
