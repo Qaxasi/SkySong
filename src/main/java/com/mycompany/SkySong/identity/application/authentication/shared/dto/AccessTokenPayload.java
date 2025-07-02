@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.identity.application.authentication.dto;
+package com.mycompany.SkySong.identity.application.authentication.shared.dto;
 
 import java.util.List;
 
 public interface AccessTokenPayload {
-    int id();
+    int userId();
     String username();
     List<String> roles();
 }

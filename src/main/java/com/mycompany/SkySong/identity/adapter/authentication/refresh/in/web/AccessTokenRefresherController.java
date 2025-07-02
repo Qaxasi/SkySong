@@ -1,11 +1,14 @@
-package com.mycompany.SkySong.adapter.user.authentication.session.refresh.controller;
+package com.mycompany.SkySong.identity.adapter.authentication.refresh.in.web;
 
 import com.mycompany.SkySong.identity.application.authentication.refresh.service.AccessTokenRefresher;
+import com.mycompany.SkySong.identity.application.authentication.shared.dto.AuthenticationTokens;
+import com.mycompany.SkySong.identity.domain.RefreshToken;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.response.ErrorResponse;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
+import com.mycompany.SkySong.shared.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,7 +44,8 @@ public class AccessTokenRefresherController {
                     ));
         }
 
-//        final Result<String> result = accessTokenRefresher.refreshAccessToken(refreshToken);
+        final Result<AuthenticationTokens> result =
+                accessTokenRefresher.refreshAccessToken(new RefreshToken(refreshToken));
 
         if (result.isFailure()) {
             return ResponseEntity
@@ -49,10 +53,13 @@ public class AccessTokenRefresherController {
                     .body(result.toErrorResponse());
         }
 
-        final ResponseCookie cookie = cookieUtils.generateAccessTokenCookie(result.data());
+        final ResponseCookie accessTokenCookie = cookieUtils.generateAccessTokenCookie(result.data().accessToken().value());
+
+        final ResponseCookie refreshTokenCookie = cookieUtils.generateRefreshTokenCookie(result.data().refreshToken().value());
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .body(new SuccessResponse("Your session has been successfully extended."));
     }
 }

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.adapter.registration.out.security;
+package com.mycompany.SkySong.identity.adapter.out.security;
 
 import com.mycompany.SkySong.identity.application.registration.ports.PasswordHasher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

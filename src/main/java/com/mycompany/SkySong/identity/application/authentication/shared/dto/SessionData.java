@@ -1,11 +1,11 @@
-package com.mycompany.SkySong.identity.application.authentication.dto;
+package com.mycompany.SkySong.identity.application.authentication.shared.dto;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
 public record SessionData(
-        int id,
+        int userId,
         String username,
         List<String> roles,
         Instant issueAt,

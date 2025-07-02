@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.adapter.authentication.login.out;
+package com.mycompany.SkySong.identity.adapter.out.security;
 
 import com.mycompany.SkySong.adapter.security.user.CustomUserDetails;
 import com.mycompany.SkySong.identity.application.authentication.login.exception.InvalidCredentialsException;

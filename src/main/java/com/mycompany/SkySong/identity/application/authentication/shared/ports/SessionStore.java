@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.identity.application.authentication.ports;
+package com.mycompany.SkySong.identity.application.authentication.shared.ports;
 
-import com.mycompany.SkySong.identity.application.authentication.dto.SessionData;
+import com.mycompany.SkySong.identity.application.authentication.shared.dto.SessionData;
 import com.mycompany.SkySong.identity.domain.RefreshToken;
 
 import java.util.Optional;

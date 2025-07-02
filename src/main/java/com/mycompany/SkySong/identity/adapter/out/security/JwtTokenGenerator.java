@@ -1,19 +1,19 @@
-package com.mycompany.SkySong.adapter.security.jwt;
+package com.mycompany.SkySong.identity.adapter.out.security;
 
-import com.mycompany.SkySong.identity.application.authentication.dto.AccessTokenPayload;
-import com.mycompany.SkySong.identity.application.authentication.ports.AccessTokenGenerator;
+import com.mycompany.SkySong.identity.application.authentication.shared.dto.AccessTokenPayload;
+import com.mycompany.SkySong.identity.application.authentication.shared.ports.AccessTokenGenerator;
 import com.mycompany.SkySong.identity.domain.AccessToken;
 import com.mycompany.SkySong.shared.config.security.jwt.JwtAccessTokenProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
 
-@Service
+@Component
 public class JwtTokenGenerator implements AccessTokenGenerator {
     private final SecretKey signKey;
     private final long accessTokenExpiration;
@@ -31,7 +31,7 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
 
     private AccessToken generateAccessToken(final AccessTokenPayload payload) {
         final Map<String, Object> claims = Map.of(
-                "userId", payload.id(),
+                "userId", payload.userId(),
                 "roles", payload.roles()
         );
 
