@@ -4,14 +4,11 @@ import com.mycompany.SkySong.identity.application.authentication.refresh.service
 import com.mycompany.SkySong.identity.application.authentication.shared.dto.AuthenticationTokens;
 import com.mycompany.SkySong.identity.domain.RefreshToken;
 import com.mycompany.SkySong.shared.response.BaseResponse;
-import com.mycompany.SkySong.shared.response.ErrorResponse;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
-import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,15 +31,6 @@ public class AccessTokenRefresherController {
     @PostMapping("/refresh")
     public ResponseEntity<BaseResponse> refreshToken(final HttpServletRequest request) {
         final String refreshToken = cookieUtils.getCookieValue(request, "refreshToken");
-
-        if (refreshToken == null || refreshToken.isBlank()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ErrorResponse(
-                            "Session renewal failed: please log in again.",
-                            ErrorType.UNAUTHORIZED.name(),
-                            ErrorType.UNAUTHORIZED.getHttpStatus().value()
-                    ));
-        }
 
         final Result<AuthenticationTokens> result =
                 accessTokenRefresher.refreshAccessToken(new RefreshToken(refreshToken));

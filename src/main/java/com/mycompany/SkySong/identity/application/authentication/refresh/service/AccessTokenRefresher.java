@@ -46,7 +46,7 @@ public class AccessTokenRefresher {
     }
 
     public Result<AuthenticationTokens> refreshAccessToken(final RefreshToken refreshToken) {
-        if (refreshToken == null || refreshToken.value().isBlank()) {
+        if (refreshToken == null || refreshToken.value() == null || refreshToken.value().isBlank()) {
             return Result.failure("Refresh token is missing", ErrorType.INVALID_REFRESH_TOKEN);
         }
 
