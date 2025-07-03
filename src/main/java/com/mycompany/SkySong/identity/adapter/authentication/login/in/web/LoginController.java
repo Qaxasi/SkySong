@@ -1,10 +1,9 @@
-package com.mycompany.SkySong.adapter.user.authentication.login.controller;
+package com.mycompany.SkySong.identity.adapter.authentication.login.in.web;
 
-import com.mycompany.SkySong.adapter.user.authentication.login.dto.LoginRequest;
 import com.mycompany.SkySong.identity.application.authentication.login.dto.LoginInput;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
-import com.mycompany.SkySong.identity.application.authentication.dto.AuthenticationTokens;
+import com.mycompany.SkySong.identity.application.authentication.shared.dto.AuthenticationTokens;
 import com.mycompany.SkySong.identity.application.authentication.login.service.UserAuthenticator;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.result.Result;

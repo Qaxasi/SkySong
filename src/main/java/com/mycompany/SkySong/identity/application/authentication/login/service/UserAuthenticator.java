@@ -50,8 +50,29 @@ public class UserAuthenticator {
     }
 
     public Result<AuthenticationTokens> login(final LoginInput loginInput) {
-        final AuthenticatedUser user;
+        return validateInput(loginInput)
+                .flatMap(ignored -> authenticate(loginInput))
+                .flatMap(user -> {
+                    final AccessToken accessToken = accessTokenGenerator.generate(user);
+                    final RefreshToken refreshToken = refreshTokenGenerator.generate();
+                    return saveSession(refreshToken, user)
+                            .map(ignored -> {
+                                        logger.info("User logged in successfully", context("userId", user.userId()));
+                                        return new AuthenticationTokens(accessToken, refreshToken);
+                                    });
+                });
+    }
 
+    private Result<Void> validateInput(final LoginInput loginInput) {
+        if (loginInput.username() == null || loginInput.username().isBlank() ||
+                loginInput.password() == null || loginInput.password().isBlank()) {
+            return Result.failure("Missing username or password", ErrorType.INVALID_LOGIN_CREDENTIALS);
+        }
+        return Result.success();
+    }
+
+    private Result<AuthenticatedUser> authenticate(final LoginInput loginInput) {
+        final AuthenticatedUser user;
         try {
             user = authenticator.authenticate(
                     loginInput.username(),
@@ -60,18 +81,8 @@ public class UserAuthenticator {
             logger.warn("Failed login attempt", context("username", loginInput.username()));
             return Result.failure(ex.getMessage(), ErrorType.INVALID_LOGIN_CREDENTIALS);
         }
+        return Result.success(user);
 
-        final AccessToken accessToken = accessTokenGenerator.generate(user);
-        final RefreshToken refreshToken = refreshTokenGenerator.generate();
-
-        final Result<Void> result = saveSession(refreshToken, user);
-        if (result.isFailure()) {
-            return Result.failure(result.errorMessage(), result.errorType());
-        }
-
-        logger.info("User logged in successfully", context("userId", user.id()));
-
-        return Result.success(new AuthenticationTokens(accessToken, refreshToken));
     }
 
     private Result<Void> saveSession(final RefreshToken refreshToken, final AuthenticatedUser user) {
@@ -80,11 +91,11 @@ public class UserAuthenticator {
 
         try {
             sessionStore.save(refreshToken, new SessionData(
-                    user.id(), user.username(), user.roles(), now, refreshTokenExpiresAt));
+                    user.userId(), user.username(), user.roles(), now, refreshTokenExpiresAt));
             return Result.success();
         } catch (SessionStoreException ex) {
             logger.error("Failed to save session", ex, context(Map.of(
-                    "userId", user.id(),
+                    "userId", user.userId(),
                     "username", user.username())));
             return Result.failure("Unable to store session", ErrorType.SESSION_STORE_FAILURE);
         }
