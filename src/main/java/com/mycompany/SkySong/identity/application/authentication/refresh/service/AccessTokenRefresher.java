@@ -46,11 +46,8 @@ public class AccessTokenRefresher {
     }
 
     public Result<AuthenticationTokens> refreshAccessToken(final RefreshToken refreshToken) {
-        if (refreshToken == null || refreshToken.value() == null || refreshToken.value().isBlank()) {
-            return Result.failure("Refresh token is missing", ErrorType.INVALID_REFRESH_TOKEN);
-        }
-
-        return fetchAndValidateSession(refreshToken)
+        return validateInput(refreshToken)
+                .flatMap(ignored -> fetchAndValidateSession(refreshToken))
                 .flatMap(session -> {
                     final AccessToken newAccessToken = accessTokenGenerator.generate(session);
                     final RefreshToken newRefreshToken = refreshTokenGenerator.generate();
@@ -58,6 +55,13 @@ public class AccessTokenRefresher {
                     return rotateRefreshTokenInSession(refreshToken, session, newRefreshToken)
                             .map(ignored -> new AuthenticationTokens(newAccessToken, newRefreshToken));
                 });
+    }
+
+    private Result<Void> validateInput(final RefreshToken refreshToken) {
+        if (refreshToken == null || refreshToken.value() == null || refreshToken.value().isBlank()) {
+            return Result.failure("Refresh token is missing", ErrorType.INVALID_REFRESH_TOKEN);
+        }
+        return Result.success();
     }
 
     private Result<SessionData> fetchAndValidateSession(final RefreshToken refreshToken) {
