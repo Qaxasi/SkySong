@@ -9,6 +9,11 @@ public class IdentityApplicationException extends RuntimeException {
         this.errorType = errorType;
     }
 
+    public IdentityApplicationException(String message) {
+        super(message);
+        this.errorType = null;
+    }
+
     public ErrorType getErrorType() {
         return errorType;
     }

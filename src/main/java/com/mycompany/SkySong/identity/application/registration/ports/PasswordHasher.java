@@ -1,5 +1,5 @@
 package com.mycompany.SkySong.identity.application.registration.ports;
 
 public interface PasswordHasher {
-    String hash(CharSequence  password);
+    String hash(CharSequence password);
 }
