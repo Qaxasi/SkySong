@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.domain.shared.enums;
+package com.mycompany.SkySong.identity.domain;
 
 public enum UserRole {
     ROLE_USER,

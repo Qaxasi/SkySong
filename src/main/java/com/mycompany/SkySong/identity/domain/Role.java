@@ -1,8 +1,6 @@
-package com.mycompany.SkySong.domain.shared.entity;
+package com.mycompany.SkySong.identity.domain;
 
-import com.mycompany.SkySong.domain.shared.enums.UserRole;
-
-public class    Role {
+public class Role {
 
     private Integer id;
     private UserRole name;

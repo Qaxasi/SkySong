@@ -1,6 +1,7 @@
-package com.mycompany.SkySong.domain.shared.entity;
+package com.mycompany.SkySong.identity.domain;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class User {
@@ -10,92 +11,35 @@ public class User {
     private final String password;
     private final Set<Role> roles;
 
-    private User(Builder builder) {
-        this.id = builder.id;
-        this.username = builder.username;
-        this.email = builder.email;
-        this.password = builder.password;
-        this.roles = builder.roles;
-    }
+    public User(String username, String email, String password, Set<Role> roles) {
+        this.id = null;
+        this.username = Objects.requireNonNull(username, "Username cannot be null");
+        this.email = Objects.requireNonNull(email, "Email cannot be null");
+        this.password = Objects.requireNonNull(password, "Password cannot be null");
+        this.roles = new HashSet<>(Objects.requireNonNull(roles, "Roles cannot be null"));
 
-    public static class Builder {
-
-        private Integer id;
-        private String username;
-        private String email;
-        private String password;
-        private final Set<Role> roles = new HashSet<>();
-        private boolean validateRoles = true;
-
-        public Builder withId(Integer id) {
-           this.id = id;
-           return this;
+        if (roles.isEmpty()) {
+            throw new IllegalArgumentException("User must have at least one role");
         }
-
-        public Builder withUsername(String username) {
-           this.username = username;
-           return this;
-        }
-
-        public Builder withEmail(String email) {
-           this.email = email;
-           return this;
-        }
-
-        public Builder withPassword(String password) {
-           this.password = password;
-           return this;
-        }
-
-        public Builder withRole(Role role) {
-            this.roles.add(role);
-            return this;
-       }
-
-       public Builder withRoles(Set<Role> roles) {
-            this.roles.addAll(roles);
-            return this;
-       }
-
-        public Builder withoutRoleValidation() {
-            this.validateRoles = false;
-            return this;
-        }
-
-       public User build() {
-            validate();
-            return new User(this);
-       }
-
-       private void validate() {
-            if (username == null || username.isEmpty()) {
-                throw new IllegalArgumentException("Username cannot be null or empty");
-            }
-            if (email == null || email.isEmpty()) {
-                throw new IllegalArgumentException("Email cannot be null or empty");
-            }
-            if (password == null || password.isEmpty()) {
-                throw new IllegalArgumentException("Password cannot be null or empty");
-            }
-            if (validateRoles && roles.isEmpty()) {
-                throw new IllegalArgumentException("User must have at least one role");
-            }
-       }
     }
 
     public Integer getId() {
         return id;
     }
+
     public String getUsername() {
         return username;
     }
+
     public String getEmail() {
         return email;
     }
+
     public String getPassword() {
         return password;
     }
+
     public Set<Role> getRoles() {
-        return roles;
+        return Set.copyOf(roles);
     }
 }
