@@ -1,5 +1,7 @@
 package com.mycompany.SkySong.identity.domain;
 
+import java.util.Objects;
+
 public class Role {
 
     private Integer id;
@@ -9,29 +11,18 @@ public class Role {
 
     public Role(Integer id, UserRole name) {
         this.id = id;
-        this.name = name;
+        this.name = Objects.requireNonNull(name);
     }
 
     public Role(UserRole name) {
-        this.name = name;
+        this(null, name);
     }
-
     public Integer getId() {
         return id;
     }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public UserRole getName() {
         return name;
     }
-
-    public void setName(UserRole name) {
-        this.name = name;
-    }
-
     @Override
     public String toString() {
         return name.name();
