@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.identity.application.registration.service;
 
-import com.mycompany.SkySong.infrastructure.persistence.exception.PersistenceException;
-import com.mycompany.SkySong.identity.application.exception.IdentityApplicationException;
+import com.mycompany.SkySong.identity.adapter.out.db.exception.UserSaverPersistenceException;
 import com.mycompany.SkySong.identity.application.registration.dto.UserRegistrationInput;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
@@ -10,8 +9,6 @@ import com.mycompany.SkySong.identity.application.registration.ports.UserSaver;
 import com.mycompany.SkySong.identity.application.registration.validator.UserRegistrationValidator;
 import com.mycompany.SkySong.identity.domain.User;
 import com.mycompany.SkySong.shared.result.Result;
-
-import java.util.Map;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
@@ -26,29 +23,37 @@ public class UserRegistration {
                             final UserSaver userSaver,
                             final ApplicationLogger logger) {
         this.validation = validation;
-        this.userFactory = userFactory;
         this.userSaver = userSaver;
+        this.userFactory = userFactory;
         this.logger = logger;
     }
 
     public Result<SuccessResponse> execute(final UserRegistrationInput input) {
+        return validateRequiredFieldsPresent(input)
+                .flatMap(ignored -> validation.validateFormatAndUniqueness(input))
+                .flatMap(ignored -> userFactory.createUser(input))
+                .flatMap(user -> saveUser(user))
+                .map(ignored -> new SuccessResponse("Your registration was successful!"));
+    }
+
+    private Result<Void> saveUser(final User user) {
         try {
-            validation.validate(input);
-
-            final User user = userFactory.createUser(input);
             userSaver.saveUser(user);
-
-            logger.info("User registered successfully", context(Map.of(
-                    "userId", user.getId(),
-                    "username", user.getUsername())));
-            return Result.success(new SuccessResponse("Your registration was successful!"));
-
-        } catch (IdentityApplicationException ex) {
-            logger.warn("User registration failed", context("error", ex.getErrorType().name()));
-            return Result.failure(ex.getMessage(), ex.getErrorType());
-        } catch (PersistenceException ex) {
-            logger.error("Unexpected database error during user registration", ex);
-            return Result.failure(ex.getMessage(), ErrorType.PERSISTENCE_ERROR);
+        } catch (UserSaverPersistenceException e) {
+            logger.error("Persistence error while saving user", e, context("userId", user.getId()));
+            return Result.failure("Failed to register user due to persistence error", ErrorType.PERSISTENCE_ERROR);
         }
+        return Result.success();
+    }
+
+    private Result<Void> validateRequiredFieldsPresent(final UserRegistrationInput input) {
+        if (input.username() == null || input.username().isBlank()
+                || input.email() == null || input.email().isBlank()
+                || input.password() == null || input.password().isBlank()) {
+            return Result.failure(
+                    "Missing required registration fields",
+                    ErrorType.INVALID_REGISTRATION_INPUT);
+        }
+        return Result.success();
     }
 }
