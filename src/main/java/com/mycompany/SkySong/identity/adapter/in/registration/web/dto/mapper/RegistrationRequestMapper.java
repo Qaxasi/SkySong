@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.identity.adapter.registration.in.web.mapper;
+package com.mycompany.SkySong.identity.adapter.in.registration.web.dto.mapper;
 
-import com.mycompany.SkySong.identity.adapter.registration.in.web.dto.RegistrationRequest;
+import com.mycompany.SkySong.identity.adapter.in.registration.web.dto.RegistrationRequest;
 import com.mycompany.SkySong.identity.application.registration.dto.UserRegistrationInput;
 
 public class RegistrationRequestMapper {

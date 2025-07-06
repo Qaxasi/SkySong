@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.adapter.authentication.refresh.in.web;
+package com.mycompany.SkySong.identity.adapter.in.authentication.refresh.web;
 
 import com.mycompany.SkySong.identity.application.authentication.refresh.service.AccessTokenRefresher;
 import com.mycompany.SkySong.identity.application.authentication.shared.dto.AuthenticationTokens;

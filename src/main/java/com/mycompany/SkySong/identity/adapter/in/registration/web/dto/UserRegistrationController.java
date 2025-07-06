@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.identity.adapter.registration.in.web;
+package com.mycompany.SkySong.identity.adapter.in.registration.web.dto;
 
-import com.mycompany.SkySong.identity.adapter.registration.in.web.mapper.RegistrationRequestMapper;
-import com.mycompany.SkySong.identity.adapter.registration.in.web.dto.RegistrationRequest;
+import com.mycompany.SkySong.identity.adapter.in.registration.web.dto.mapper.RegistrationRequestMapper;
+import com.mycompany.SkySong.identity.adapter.in.registration.web.dto.RegistrationRequest;
 import com.mycompany.SkySong.identity.application.registration.dto.UserRegistrationInput;
 import com.mycompany.SkySong.identity.application.registration.service.UserRegistration;
 import com.mycompany.SkySong.shared.response.SuccessResponse;

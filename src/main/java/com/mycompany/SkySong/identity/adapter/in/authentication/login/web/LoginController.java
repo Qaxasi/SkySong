@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.adapter.authentication.login.in.web;
+package com.mycompany.SkySong.identity.adapter.in.authentication.login.web;
 
 import com.mycompany.SkySong.identity.application.authentication.login.dto.LoginInput;
 import com.mycompany.SkySong.shared.config.cookie.CookieUtils;

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.adapter.userdeletion.in.web;
+package com.mycompany.SkySong.identity.adapter.in.userdeletion.web;
 
 import com.mycompany.SkySong.identity.application.userdeletion.service.DeleteUser;
 import com.mycompany.SkySong.shared.response.BaseResponse;
