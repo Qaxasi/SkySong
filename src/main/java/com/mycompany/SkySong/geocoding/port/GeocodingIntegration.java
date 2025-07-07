@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.domain.geocoding.port;
+package com.mycompany.SkySong.geocoding.port;
 
-import com.mycompany.SkySong.domain.geocoding.model.Location;
+import com.mycompany.SkySong.geocoding.model.Coordinates;
 
 public interface GeocodingIntegration {
-    Location fetchCoordinates(String address);
+    Coordinates fetchCoordinates(String address);
 }
