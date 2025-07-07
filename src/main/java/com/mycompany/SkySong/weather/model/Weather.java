@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.domain.weather.model;
+package com.mycompany.SkySong.weather.model;
 
 public record Weather (
         double temperature,

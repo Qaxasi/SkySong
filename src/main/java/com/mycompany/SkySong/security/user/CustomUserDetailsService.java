@@ -1,9 +1,10 @@
 package com.mycompany.SkySong.adapter.security.user;
 
-import com.mycompany.SkySong.domain.shared.entity.Role;
-import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.infrastructure.persistence.dao.RoleDAO;
-import com.mycompany.SkySong.infrastructure.persistence.dao.UserDAO;
+import com.mycompany.SkySong.identity.domain.Role;
+import com.mycompany.SkySong.identity.domain.User;
+import com.mycompany.SkySong.infrastructure.persistence.sql.RoleDAO;
+import com.mycompany.SkySong.infrastructure.persistence.sql.UserDAO;
+import com.mycompany.SkySong.security.user.CustomUserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;

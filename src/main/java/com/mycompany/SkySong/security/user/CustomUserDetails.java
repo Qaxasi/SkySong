@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.adapter.security.user;
 
-import com.mycompany.SkySong.domain.shared.entity.User;
+import com.mycompany.SkySong.identity.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.function.Function;
 
 @Component
-public class JwtTokenInspector {
+public class JwtTokenVerifier  {
     private final Key signKey;
     private final ApplicationLogger logger;
 
-    public JwtTokenInspector(@Value("${application.security.jwt.secret-key}") String secretKey,
-                             ApplicationLogger logger) {
+    public JwtTokenVerifier(@Value("${application.security.jwt.secret-key}") String secretKey,
+                            ApplicationLogger logger) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.signKey = Keys.hmacShaKeyFor(keyBytes);
         this.logger = logger;
