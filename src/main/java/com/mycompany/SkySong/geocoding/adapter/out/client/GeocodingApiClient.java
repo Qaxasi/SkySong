@@ -2,9 +2,8 @@ package com.mycompany.SkySong.adapter.geocoding.client;
 
 import com.mycompany.SkySong.adapter.exception.external.*;
 import com.mycompany.SkySong.adapter.geocoding.dto.GeocodingResponse;
-import com.mycompany.SkySong.adapter.geocoding.dto.Coordinates;
-import com.mycompany.SkySong.domain.geocoding.model.Location;
-import com.mycompany.SkySong.domain.geocoding.port.GeocodingIntegration;
+import com.mycompany.SkySong.geocoding.domain.model.Coordinates;
+import com.mycompany.SkySong.geocoding.application.port.GeocodingIntegration;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,7 +31,7 @@ public class GeocodingApiClient implements GeocodingIntegration {
     }
 
     @Override
-    public Location fetchCoordinates(String address) {
+    public Coordinates fetchCoordinates(String address) {
         log.debug("[Geocoding API] Requesting geocoding data for address = {}", address);
 
         GeocodingResponse response = fetchFromApi(address);
@@ -118,8 +117,8 @@ public class GeocodingApiClient implements GeocodingIntegration {
         }
     }
     
-    private Location mapToLocation(GeocodingResponse response) {
-        Coordinates coordinates = response.results().get(0);
-        return new Location(coordinates.lat(), coordinates.lon());
+    private Coordinates mapToLocation(GeocodingResponse response) {
+        com.mycompany.SkySong.adapter.geocoding.dto.Coordinates coordinates = response.results().get(0);
+        return new Coordinates(coordinates.lat(), coordinates.lon());
     }
 }
