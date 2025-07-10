@@ -130,12 +130,47 @@ public class WeatherApiClient implements WeatherIntegration {
                     ErrorType.WEATHER_NO_RESULTS);
         }
 
-        if (response.isIncomplete()) {
+        if (!isComplete(response)) {
             logger.warn("[Weather API] Incomplete response received",
                     context("response", response));
             throw new ApiResponseException(
                     "The weather data is incomplete and cannot be processed",
                     ErrorType.WEATHER_INCOMPLETE_RESPONSE);
         }
+
+        if (!hasInvalidValue(response)) {
+            logger.warn("[Weather API] Invalid value detected in response", context("response", response));
+            throw new ApiResponseException(
+                    "The weather data contains invalid values and cannot be processed",
+                    ErrorType.WEATHER_INVALID_VALUES);
+        }
+    }
+
+    private boolean isComplete(final WeatherApiResponse response) {
+        return response != null &&
+                response.atmosphericConditions() != null &&
+                response.clouds() != null &&
+                response.wind() != null &&
+                response.daytime() != null &&
+                response.atmosphericConditions().temperature() != null &&
+                response.atmosphericConditions().humidity() != null &&
+                response.clouds().cloudCoverage() != null &&
+                response.wind().speed() != null &&
+                response.daytime().sunrise() != null &&
+                response.daytime().sunset() != null;
+    }
+
+    private boolean hasInvalidValue(final WeatherApiResponse response) {
+        return response.atmosphericConditions().temperature() < -90
+                || response.atmosphericConditions().temperature() > 60
+                || response.atmosphericConditions().humidity() < 0
+                || response.atmosphericConditions().humidity() > 100
+                || response.clouds().cloudCoverage() < 0
+                || response.clouds().cloudCoverage() > 100
+                || response.wind().speed() < 0
+                || response.wind().speed() > 150
+                || response.daytime().sunset()  <= 0
+                || response.daytime().sunrise() <= 0
+                || response.daytime().sunset() <= response.daytime().sunrise();
     }
 }

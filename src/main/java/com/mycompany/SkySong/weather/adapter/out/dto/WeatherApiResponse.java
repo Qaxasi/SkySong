@@ -9,11 +9,4 @@ public record WeatherApiResponse(@JsonProperty("main") AtmosphericConditions atm
                                  @JsonProperty("rain") Rain rain,
                                  @JsonProperty("snow") Snow snow) {
 
-    public boolean isIncomplete() {
-        return daytime == null || daytime().isIncomplete()
-                || wind == null || wind().isIncomplete()
-                || clouds == null || clouds.isIncomplete()
-                || atmosphericConditions == null || atmosphericConditions.isIncomplete();
-
-    }
 }
