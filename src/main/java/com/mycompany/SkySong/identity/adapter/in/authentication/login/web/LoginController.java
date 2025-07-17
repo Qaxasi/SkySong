@@ -1,7 +1,9 @@
 package com.mycompany.SkySong.identity.adapter.in.authentication.login.web;
 
+import com.mycompany.SkySong.config.jwt.JwtAccessTokenProperties;
+import com.mycompany.SkySong.config.refreshToken.RefreshTokenProperties;
 import com.mycompany.SkySong.identity.application.authentication.login.dto.LoginInput;
-import com.mycompany.SkySong.shared.config.cookie.CookieUtils;
+import com.mycompany.SkySong.shared.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.identity.application.authentication.shared.dto.AuthenticationTokens;
 import com.mycompany.SkySong.identity.application.authentication.login.service.UserAuthenticator;
@@ -22,11 +24,17 @@ public class LoginController {
 
     private final UserAuthenticator authenticator;
     private final CookieUtils cookieUtils;
+    private final JwtAccessTokenProperties accessTokenProperties;
+    private final RefreshTokenProperties refreshTokenProperties;
 
     public LoginController(final UserAuthenticator authenticator,
-                           final CookieUtils cookieUtils) {
+                           final CookieUtils cookieUtils,
+                           final JwtAccessTokenProperties accessTokenProperties,
+                           final RefreshTokenProperties refreshTokenProperties) {
         this.authenticator = authenticator;
         this.cookieUtils = cookieUtils;
+        this.accessTokenProperties = accessTokenProperties;
+        this.refreshTokenProperties = refreshTokenProperties;
     }
 
     @PostMapping("/login")
@@ -40,11 +48,11 @@ public class LoginController {
                     .body(result.toErrorResponse());
         }
 
-        final ResponseCookie accessTokenCookie =
-                cookieUtils.generateAccessTokenCookie(result.data().accessToken().value());
+        final ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
+                accessTokenProperties.cookie(), result.data().accessToken().value());
 
-        final ResponseCookie refreshTokenCookie =
-                cookieUtils.generateRefreshTokenCookie(result.data().refreshToken().value());
+        final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
+                refreshTokenProperties.cookie(), result.data().refreshToken().value());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())

@@ -9,7 +9,7 @@ import com.mycompany.SkySong.identity.application.authentication.shared.ports.Re
 import com.mycompany.SkySong.identity.application.authentication.shared.ports.SessionStore;
 import com.mycompany.SkySong.identity.domain.AccessToken;
 import com.mycompany.SkySong.identity.domain.RefreshToken;
-import com.mycompany.SkySong.shared.config.security.jwt.RefreshTokenProperties;
+import com.mycompany.SkySong.config.refreshToken.RefreshTokenProperties;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
@@ -38,7 +38,7 @@ public class AccessTokenRefresher {
                                 final Clock clock) {
         this.accessTokenGenerator = accessTokenGenerator;
         this.refreshTokenGenerator = refreshTokenGenerator;
-        this.refreshTokenTtl = refreshTokenProperties.getDuration();
+        this.refreshTokenTtl = refreshTokenProperties.duration();
         this.sessionStore = sessionStore;
         this.refreshTokenRotator = refreshTokenRotator;
         this.logger = logger;

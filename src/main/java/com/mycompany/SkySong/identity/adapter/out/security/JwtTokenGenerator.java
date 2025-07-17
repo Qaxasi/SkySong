@@ -3,7 +3,7 @@ package com.mycompany.SkySong.identity.adapter.out.security;
 import com.mycompany.SkySong.identity.application.authentication.shared.dto.AccessTokenPayload;
 import com.mycompany.SkySong.identity.application.authentication.shared.ports.AccessTokenGenerator;
 import com.mycompany.SkySong.identity.domain.AccessToken;
-import com.mycompany.SkySong.shared.config.security.jwt.JwtAccessTokenProperties;
+import com.mycompany.SkySong.config.jwt.JwtAccessTokenProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -21,7 +21,7 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
     public JwtTokenGenerator(final String secretKey,
                              final JwtAccessTokenProperties accessTokenProperties) {
         this.signKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
-        this.accessTokenExpiration = accessTokenProperties.getExpiration();
+        this.accessTokenExpiration = accessTokenProperties.expiration();
     }
 
     @Override

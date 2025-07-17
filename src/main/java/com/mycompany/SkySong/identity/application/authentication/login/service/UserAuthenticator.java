@@ -12,7 +12,7 @@ import com.mycompany.SkySong.identity.application.authentication.shared.ports.Re
 import com.mycompany.SkySong.identity.application.authentication.shared.ports.SessionStore;
 import com.mycompany.SkySong.identity.domain.AccessToken;
 import com.mycompany.SkySong.identity.domain.RefreshToken;
-import com.mycompany.SkySong.shared.config.security.jwt.RefreshTokenProperties;
+import com.mycompany.SkySong.config.refreshToken.RefreshTokenProperties;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
@@ -45,7 +45,7 @@ public class UserAuthenticator {
         this.refreshTokenGenerator = refreshTokenGenerator;
         this.sessionStore = sessionStore;
         this.logger = logger;
-        this.expiresAfter = refreshTokenProperties.getDuration();
+        this.expiresAfter = refreshTokenProperties.duration();
         this.clock = clock;
     }
 
