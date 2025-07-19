@@ -1,5 +1,6 @@
-package com.mycompany.SkySong.adapter.music.spotify.authentication.in.access;
+package com.mycompany.SkySong.spotify.adapter.authentication.in.access;
 
+import com.mycompany.SkySong.spotify.adapter.authentication.in.access.SpotifyAuthUrlGenerator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,7 @@ public class SpotifyLoginController {
 
     private final SpotifyAuthUrlGenerator authUrlHandler;
 
-    public SpotifyLoginController(SpotifyAuthUrlGenerator authUrlHandler) {
+    public SpotifyLoginController(final SpotifyAuthUrlGenerator authUrlHandler) {
         this.authUrlHandler = authUrlHandler;
     }
 

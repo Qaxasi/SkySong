@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis;
+package com.mycompany.SkySong.spotify.authentication;
 
 import com.mycompany.SkySong.adapter.exception.external.RedisUnavailableException;
 import com.mycompany.SkySong.shared.error.ErrorType;

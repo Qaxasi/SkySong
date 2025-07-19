@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.adapter.music.spotify.authentication.out.refresh;
 
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.client.SpotifyTokenClient;
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyAccessTokenRefreshRequest;
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.client.SpotifyTokenClient;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.dto.SpotifyAccessTokenRefreshRequest;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.adapter.music.spotify.authentication.out.persistence.redis.RedisTokenStore;
 import com.mycompany.SkySong.shared.error.BaseApiException;
 import com.mycompany.SkySong.shared.result.Result;
@@ -24,7 +24,7 @@ public class SpotifyAccessTokenRefresher {
         this.tokenStore = tokenStore;
     }
 
-    public Result<String> refreshAccessToken(int userId) {
+    public Result<String> refresh(int userId) {
        return tokenStore.getRefreshToken(userId)
                .map(token -> new SpotifyAccessTokenRefreshRequest("refresh_token", token))
                .flatMap(this::validateRequestAndCallSpotify)

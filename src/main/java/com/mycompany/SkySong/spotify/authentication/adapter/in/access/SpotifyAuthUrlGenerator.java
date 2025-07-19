@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.adapter.music.spotify.authentication.in.access;
+package com.mycompany.SkySong.spotify.adapter.authentication.in.access;
 
 import com.mycompany.SkySong.config.spotify.SpotifyProperties;
 import org.springframework.stereotype.Component;
@@ -13,11 +13,11 @@ public class SpotifyAuthUrlGenerator {
     }
 
     public String getAuthorizationCodeUrl() {
-        return UriComponentsBuilder.fromUriString(properties.getAuthUri())
-                .queryParam("client_id", properties.getClientId())
+        return UriComponentsBuilder.fromUriString(properties.authUri())
+                .queryParam("client_id", properties.clientId())
                 .queryParam("response_type", "code")
-                .queryParam("redirect_uri", properties.getRedirectUri())
-                .queryParam("scope", properties.getScope())
+                .queryParam("redirect_uri", properties.redirectUri())
+                .queryParam("scope", properties.scope())
                 .build()
                 .toUriString();
     }

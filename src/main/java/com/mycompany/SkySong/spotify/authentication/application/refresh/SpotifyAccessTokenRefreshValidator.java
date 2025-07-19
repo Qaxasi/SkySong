@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.adapter.music.spotify.authentication.out.refresh;
 
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyAccessTokenRefreshRequest;
-import com.mycompany.SkySong.adapter.music.spotify.authentication.out.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.dto.SpotifyAccessTokenRefreshRequest;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.dto.SpotifyTokenResponse;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 import lombok.extern.slf4j.Slf4j;
