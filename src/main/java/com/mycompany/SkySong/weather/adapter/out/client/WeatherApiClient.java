@@ -2,6 +2,7 @@ package com.mycompany.SkySong.weather.adapter.out.client;
 
 import com.mycompany.SkySong.adapter.exception.external.*;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
+import com.mycompany.SkySong.shared.result.Result;
 import com.mycompany.SkySong.weather.adapter.out.dto.WeatherApiResponse;
 import com.mycompany.SkySong.weather.adapter.out.mapper.WeatherMapper;
 import com.mycompany.SkySong.weather.domain.model.Weather;
@@ -39,20 +40,17 @@ public class WeatherApiClient implements WeatherIntegration {
     }
 
     @Override
-    public Weather fetchWeatherData(final double lat, final double lon) {
+    public Result<Weather> fetchWeatherData(final double lat, final double lon) {
         logger.debug("[Weather API] Requesting weather data for",
                 context(Map.of("lat", lat, "lon", lon)));
 
-        final WeatherApiResponse response = fetchFromApi(lat, lon);
-        logger.debug("[Weather API] Response received for",
-                context(Map.of("lat", lat, "lon", lon)));
-
-        return validateAndMapToDomain(response);
-    }
-
-    private Weather validateAndMapToDomain(final WeatherApiResponse response) {
-        validateWeatherResponse(response);
-        return mapper.mapToModel(response);
+        try {
+            final WeatherApiResponse response = fetchFromApi(lat, lon);
+            validateWeatherResponse(response);
+            return Result.success(mapper.mapToDomain(response));
+        } catch (ExternalApiException e) {
+            return Result.failure(e.getMessage(), e.getErrorType());
+        }
     }
 
     private WeatherApiResponse fetchFromApi(final double lat, final double lon) {
@@ -124,15 +122,14 @@ public class WeatherApiClient implements WeatherIntegration {
 
     private void validateWeatherResponse(final WeatherApiResponse response) {
         if (response == null) {
-            logger.warn("[Weather API] Null response received from API.");
+            logger.warn("[Weather API] Null response received from API.", context("response", response));
             throw new ApiResponseException(
                     "No response was received from the weather provider.",
                     ErrorType.WEATHER_NO_RESULTS);
         }
 
         if (!isComplete(response)) {
-            logger.warn("[Weather API] Incomplete response received",
-                    context("response", response));
+            logger.warn("[Weather API] Incomplete response received", context("response", response));
             throw new ApiResponseException(
                     "The weather data is incomplete and cannot be processed",
                     ErrorType.WEATHER_INCOMPLETE_RESPONSE);
