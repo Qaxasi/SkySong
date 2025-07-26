@@ -17,7 +17,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
@@ -33,10 +32,10 @@ public class WeatherApiClient implements WeatherIntegration {
                             @Qualifier("weatherWebClient") final WebClient webClient,
                             final WeatherMapper mapper,
                             final ApplicationLogger logger) {
-        this.apiKey = Objects.requireNonNull(apiKey, "Api key cannot be null");
-        this.webClient = Objects.requireNonNull(webClient, "WebClient cannot be null");
-        this.mapper = Objects.requireNonNull(mapper, "WeatherMapper cannot be null");
-        this.logger = Objects.requireNonNull(logger, "ApplicationLogger cannot be null");
+        this.apiKey = apiKey;
+        this.webClient = webClient;
+        this.mapper = mapper;
+        this.logger = logger;
     }
 
     @Override
@@ -48,6 +47,13 @@ public class WeatherApiClient implements WeatherIntegration {
             final WeatherApiResponse response = fetchFromApi(lat, lon);
             validateWeatherResponse(response);
             return Result.success(mapper.mapToDomain(response));
+        } catch (ExternalApiResponseException e) {
+            logger.warn("[Weather API] Invalid response data", context(
+                    Map.of(
+                            "lat", lat,
+                            "lon", lon,
+                            "message", e.getMessage())));
+            return Result.failure(e.getMessage(), e.getErrorType());
         } catch (ExternalApiException e) {
             return Result.failure(e.getMessage(), e.getErrorType());
         }
@@ -64,56 +70,56 @@ public class WeatherApiClient implements WeatherIntegration {
                 .onStatus(HttpStatus.BAD_REQUEST::equals, res -> {
                     logger.warn("[Weather API] Received Bad request",
                             context(Map.of("lat", lat, "lon", lon, "statusCode", res.statusCode())));
-                    return Mono.error(new ApiBadRequestException(
+                    return Mono.error(new ExternalApiHttpException(
                             "The provided coordinates could not be processed. Please check and try again.",
                             ErrorType.EXTERNAL_API_BAD_REQUEST));
                 })
                 .onStatus(HttpStatus.FORBIDDEN::equals, res -> {
                     logger.error("[Weather API] Access forbidden",
                             context("status", res.statusCode()));
-                    return Mono.error(new ApiForbiddenException(
+                    return Mono.error(new ExternalApiHttpException(
                             "You are not authorized to access weather data.",
                             ErrorType.EXTERNAL_API_FORBIDDEN));
                 })
                 .onStatus(HttpStatus.TOO_MANY_REQUESTS::equals, res -> {
                     logger.error("[Weather API] Rate limit exceeded",
                             context("status", res.statusCode()));
-                    return Mono.error(new ApiTooManyRequestsException(
+                    return Mono.error(new ExternalApiHttpException(
                             "Exceeded number of allowed calls to Weather API. Please try again later.",
                             ErrorType.EXTERNAL_API_RATE_LIMIT));
                 })
                 .onStatus(HttpStatus.UNAUTHORIZED::equals, res -> {
                     logger.error("[Weather API] Unauthorized access - invalid API key",
                             context("status", res.statusCode()));
-                    return Mono.error(new ApiAuthenticationException(
+                    return Mono.error(new ExternalApiHttpException(
                             "Weather API authentication failed. Please verify your API key.",
                             ErrorType.EXTERNAL_API_UNAUTHORIZED));
                 })
                 .onStatus(HttpStatus.SERVICE_UNAVAILABLE::equals, res -> {
                     logger.error("[Weather API] Service unavailable",
                             context("status", res.statusCode()));
-                    return Mono.error(new ApiServerErrorException(
+                    return Mono.error(new ExternalApiHttpException(
                             "Weather service is temporarily unavailable. Please try again shortly.",
-                            ErrorType.EXTERNAL_API_SERVER_ERROR));
+                            ErrorType.EXTERNAL_API_SERVICE_UNAVAILABLE));
                 })
                 .onStatus(HttpStatusCode::is5xxServerError, res -> {
                     logger.error("[Weather API] Unexpected server error",
                             context("status",res.statusCode()));
-                    return Mono.error(new ApiServerErrorException(
+                    return Mono.error(new ExternalApiHttpException(
                             "A server error occurred while retrieving weather data. Please try again soon.",
                             ErrorType.EXTERNAL_API_SERVER_ERROR));
                 })
                 .onStatus(HttpStatusCode::is4xxClientError, res -> {
                     logger.error("[Weather API] Unexpected client error",
                             context("status", res.statusCode()));
-                    return Mono.error(new ApiClientErrorException(
+                    return Mono.error(new ExternalApiHttpException(
                             "The request could not be processed due to a client-side error. Please verify request parameters.",
                             ErrorType.EXTERNAL_API_CLIENT_ERROR));
                 })
                 .bodyToMono(WeatherApiResponse.class)
                 .onErrorMap(TimeoutException.class, ex -> {
                     logger.error("[Weather API] Request timed out", ex);
-                    return new ApiRequestTimeoutException(
+                    return new ExternalApiTimeoutException(
                             "The request timed out. Please check your connection and try again.",
                             ErrorType.EXTERNAL_API_TIMEOUT);
                 })
@@ -122,24 +128,13 @@ public class WeatherApiClient implements WeatherIntegration {
 
     private void validateWeatherResponse(final WeatherApiResponse response) {
         if (response == null) {
-            logger.warn("[Weather API] Null response received from API.", context("response", response));
-            throw new ApiResponseException(
-                    "No response was received from the weather provider.",
-                    ErrorType.WEATHER_NO_RESULTS);
+            throw new ExternalApiResponseException("No response was received from the weather provider.", ErrorType.WEATHER_NO_RESULTS);
         }
-
         if (!isComplete(response)) {
-            logger.warn("[Weather API] Incomplete response received", context("response", response));
-            throw new ApiResponseException(
-                    "The weather data is incomplete and cannot be processed",
-                    ErrorType.WEATHER_INCOMPLETE_RESPONSE);
+            throw new ExternalApiResponseException("The weather data is incomplete and cannot be processed", ErrorType.WEATHER_INCOMPLETE_RESPONSE);
         }
-
         if (!hasInvalidValue(response)) {
-            logger.warn("[Weather API] Invalid value detected in response", context("response", response));
-            throw new ApiResponseException(
-                    "The weather data contains invalid values and cannot be processed",
-                    ErrorType.WEATHER_INVALID_VALUES);
+            throw new ExternalApiResponseException("The weather data contains invalid values and cannot be processed", ErrorType.WEATHER_INVALID_VALUES);
         }
     }
 
