@@ -52,7 +52,7 @@ public class WeatherApiClient implements WeatherIntegration {
                     Map.of(
                             "lat", lat,
                             "lon", lon,
-                            "message", e.getMessage())));
+                            "errorType", e.getErrorType())));
             return Result.failure(e.getMessage(), e.getErrorType());
         } catch (ExternalApiException e) {
             return Result.failure(e.getMessage(), e.getErrorType());
