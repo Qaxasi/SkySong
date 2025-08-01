@@ -3,6 +3,7 @@ package com.mycompany.SkySong.shared.result;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.response.ErrorResponse;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public record Result<T>(
@@ -49,6 +50,12 @@ public record Result<T>(
         } else {
             return Result.failure(this.errorMessage(), this.errorType());
         }
+    }
+    public Result<T> onFailure(Consumer<Result<T>> consumer) {
+        if (isFailure()) {
+            consumer.accept(this);
+        }
+        return this;
     }
 
     public ErrorResponse toErrorResponse() {
