@@ -57,6 +57,13 @@ public record Result<T>(
         }
         return this;
     }
+    public <R> R fold(Function<Result<T>, R> onFailure, Function<T, R> onSuccess) {
+        if (isSuccess()) {
+            return onSuccess.apply(this.data);
+        } else {
+            return onFailure.apply(this);
+        }
+    }
 
     public ErrorResponse toErrorResponse() {
         return new ErrorResponse(errorMessage, errorType.name(), errorType.getHttpStatus().value());
