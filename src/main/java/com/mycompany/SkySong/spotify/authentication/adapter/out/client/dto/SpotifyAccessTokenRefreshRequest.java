@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.spotify.authentication.adapter.out.dto;
+package com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.util.LinkedMultiValueMap;

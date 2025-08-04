@@ -18,10 +18,11 @@ public interface ApplicationLogger {
     void info(String message, Context context);
 
     void warn(String message, Context context);
+    void warn(String message, Throwable throwable);
 
     void error(String message, Throwable throwable, Context context);
-
-
+    void error(String message, Context context);
+    void error(String message);
     record Context(Map<String, Object> values) {
 
         public static Context of(String key, Object value) {

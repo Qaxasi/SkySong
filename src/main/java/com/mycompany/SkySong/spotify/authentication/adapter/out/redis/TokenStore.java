@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.spotify.authentication.adapter.out.redis;
 
-import com.mycompany.SkySong.adapter.exception.external.RedisUnavailableException;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
@@ -12,12 +11,12 @@ import org.springframework.stereotype.Component;
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
 @Component
-public class RedisTokenStore {
+public class TokenStore {
     private final RedisTemplate<String, String> redisTemplate;
     private final ApplicationLogger logger;
 
-    public RedisTokenStore(final RedisTemplate<String, String> redisTemplate,
-                           final ApplicationLogger logger) {
+    public TokenStore(final RedisTemplate<String, String> redisTemplate,
+                      final ApplicationLogger logger) {
         this.logger = logger;
         this.redisTemplate = redisTemplate;
     }
@@ -27,13 +26,14 @@ public class RedisTokenStore {
 
         try {
             redisTemplate.opsForValue().set(redisKey, refreshToken);
+            return Result.success();
         } catch (DataAccessException ex) {
             if (ex instanceof RedisConnectionFailureException) {
                 logger.error("Redis connection failed while saving token", ex, context("userId", userId));
-                throw new RedisUnavailableException("Redis is currently unavailable", ErrorType.REDIS_UNAVAILABLE);
+                return Result.failure("Token storage temporarily unavailable", ErrorType.REDIS_UNAVAILABLE);
             }
-            logger.error("Unexpected Redis error while saving token", ex, context("userId", userId));
-            throw new RedisUnavailableException("Unexpected Redis error occurred while saving refresh token", ErrorType.REDIS_INTERNAL_ERROR);
+            logger.error("Unexpected Redis error during token persistence", ex, context("userId", userId));
+            return Result.failure("Unexpected error occurred while saving token", ErrorType.REDIS_INTERNAL_ERROR);
         }
     }
 
@@ -44,20 +44,20 @@ public class RedisTokenStore {
             final String token = redisTemplate.opsForValue().get(redisKey);
 
             if (token == null || token.isBlank()) {
-                logger.info("No refresh token found in Redis", context("userId", userId));
+                logger.info("No refresh token found for user", context("userId", userId));
                 return Result.failure("Refresh token not found", ErrorType.TOKEN_NOT_FOUND);
             }
             return Result.success(token);
         } catch (DataAccessException ex) {
             if (ex instanceof RedisConnectionFailureException) {
-                logger.error("Redis connection failure while fetching token", ex, context("userId", userId));
-                return Result.failure("Redis is currently unavailable", ErrorType.REDIS_UNAVAILABLE);
+                logger.error("Redis connection failed while fetching token", ex, context("userId", userId));
+                return Result.failure("Token storage temporarily unavailable", ErrorType.REDIS_UNAVAILABLE);
             }
             logger.error("Unexpected Redis error while fetching token", ex, context("userId", userId));
-            return Result.failure("Unexpected Redis error occurred", ErrorType.REDIS_INTERNAL_ERROR);
+            return Result.failure("Unexpected error occurred while fetching token", ErrorType.REDIS_INTERNAL_ERROR);
         }
     }
     private String generateRefreshTokenKey(final int userId) {
-        return "music:refresh_token:" + userId;
+        return String.format("refresh_token:spotify:user:%d", userId);
     }
 }

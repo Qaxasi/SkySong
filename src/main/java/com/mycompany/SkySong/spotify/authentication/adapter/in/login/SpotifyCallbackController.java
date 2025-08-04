@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.spotify.authentication.adapter.in.refresh;
+package com.mycompany.SkySong.spotify.authentication.adapter.in.login;
 
-import com.mycompany.SkySong.spotify.authentication.application.refresh.SpotifyAccessTokenRefresher;
+import com.mycompany.SkySong.spotify.authentication.application.login.SpotifyAuthorization;
 import com.mycompany.SkySong.spotify.config.SpotifyAccessTokenCookieProperties;
 import com.mycompany.SkySong.shared.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.BaseResponse;
@@ -12,24 +12,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/spotify/token")
-public class SpotifyAccessTokenRefreshController {
-    private final SpotifyAccessTokenRefresher refresher;
+@RequestMapping("/api/v1/music/auth")
+public class SpotifyCallbackController {
+    private final SpotifyAuthorization spotifyAuth;
     private final CookieUtils cookieUtils;
     private final SpotifyAccessTokenCookieProperties properties;
 
-    public SpotifyAccessTokenRefreshController(final SpotifyAccessTokenRefresher accessTokenRefresher,
-                                               final CookieUtils cookieUtils,
-                                               final SpotifyAccessTokenCookieProperties properties) {
-        this.refresher = accessTokenRefresher;
+    public SpotifyCallbackController(final SpotifyAuthorization spotifyAuth,
+                                     final CookieUtils cookieUtils,
+                                     final SpotifyAccessTokenCookieProperties properties) {
+        this.spotifyAuth = spotifyAuth;
         this.cookieUtils = cookieUtils;
         this.properties = properties;
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<BaseResponse> refreshAccessToken() {
+
+    @GetMapping("/callback")
+    public ResponseEntity<BaseResponse> handleCallback(@RequestParam("code") final String authCode) {
         final Integer userId = UserContext.getUserId();
-        return refresher.refreshAccessToken(userId)
+
+        return spotifyAuth.authenticateAndReturnToken(userId, authCode)
                 .fold(
                         error -> ResponseEntity
                                 .status(error.errorType().getHttpStatus())
@@ -38,10 +40,8 @@ public class SpotifyAccessTokenRefreshController {
                             final ResponseCookie cookie = cookieUtils.generateCookie(properties.cookie(), accessToken);
                             return ResponseEntity.ok()
                                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                                    .body(new SuccessResponse("Spotify access token refreshed successfully"));
+                                    .body(new SuccessResponse("Spotify authorization successful."));
                         }
                 );
-
     }
 }
-

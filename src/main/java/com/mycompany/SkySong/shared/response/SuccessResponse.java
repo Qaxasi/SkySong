@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.shared.response;
 
-public class ApiResponse extends BaseResponse {
-    public ApiResponse(String message) {
+public class SuccessResponse extends BaseResponse {
+    public SuccessResponse(String message) {
         super(message);
     }
 }

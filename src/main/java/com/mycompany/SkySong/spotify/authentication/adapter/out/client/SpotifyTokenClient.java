@@ -2,12 +2,13 @@ package com.mycompany.SkySong.spotify.authentication.adapter.out.client;
 
 import com.mycompany.SkySong.adapter.exception.external.*;
 import com.mycompany.SkySong.shared.result.Result;
-import com.mycompany.SkySong.spotify.authentication.adapter.out.access.dto.SpotifyAccessTokenRefreshRequest;
-import com.mycompany.SkySong.spotify.authentication.adapter.out.access.dto.SpotifyAuthorizationRequest;
-import com.mycompany.SkySong.spotify.authentication.adapter.out.access.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.config.spotify.SpotifyProperties;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyAccessTokenRefreshRequest;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyAuthorizationRequest;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyTokenResponse;
+import com.mycompany.SkySong.spotify.config.SpotifyProperties;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
+import com.mycompany.SkySong.spotify.authentication.adapter.out.client.validator.SpotifyTokenExchangeValidator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,8 +18,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Consumer;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
@@ -27,43 +28,56 @@ public class SpotifyTokenClient {
     private final WebClient webClient;
     private final SpotifyProperties properties;
     private final ApplicationLogger logger;
+    private final SpotifyTokenExchangeValidator validator;
 
     public SpotifyTokenClient(@Qualifier("spotifyTokenClient") final WebClient webClient,
                               final SpotifyProperties properties,
-                              final ApplicationLogger logger) {
+                              final ApplicationLogger logger,
+                              final SpotifyTokenExchangeValidator validator) {
         this.properties = properties;
         this.webClient = webClient;
         this.logger = logger;
+        this.validator = validator;
     }
 
     public Result<SpotifyTokenResponse> exchangeAuthorizationCode(final String authCode) {
         final SpotifyAuthorizationRequest request =
                 new SpotifyAuthorizationRequest("authorization_code", authCode, properties.redirectUri());
 
-        return validateRequest(request)
-                .flatMap(ignored -> executeTokenRequest(request.toMultiValueMap(), this::validateAccessTokenResponse));
+        return validator.validateAuthorizationRequest(request)
+                .onFailure(error -> logger.warn("Spotify authorization request validation failed",
+                        context(Map.of("error", error.errorMessage(), "errorType", error.errorType()))))
+                .flatMap(ignored -> {
+                    try {
+                        final SpotifyTokenResponse response = sendTokenRequest(request.toMultiValueMap());
+                        return validator.validateAuthorizationResponse(response)
+                                .onFailure(error2 -> logger.warn("Spotify response validation failed",
+                                        context(Map.of("error", error2.errorMessage(), "errorType", error2.errorType()))))
+                                .map(ignored2 -> response);
+                    } catch (ExternalApiException e) {
+                        return Result.failure(e.getMessage(), e.getErrorType());
+                    }
+                });
     }
 
     public Result<SpotifyTokenResponse> exchangeRefreshToken(final String refreshToken) {
         final SpotifyAccessTokenRefreshRequest request =
                 new SpotifyAccessTokenRefreshRequest("refresh_token", refreshToken);
 
-        return validateRequest(request)
-                .flatMap(ignored -> executeTokenRequest(request.toMultiValueMap(), this::validateAccessTokenRefreshResponse));
-    }
-
-    private Result<SpotifyTokenResponse> executeTokenRequest(final MultiValueMap<String, String> bodyData,
-                                                             final Consumer<SpotifyTokenResponse> responseValidator) {
-        try {
-            final SpotifyTokenResponse response = sendTokenRequest(bodyData);
-            responseValidator.accept(response);
-            return Result.success(response);
-        } catch (ExternalApiResponseException e) {
-            logger.warn("[Spotify API] Invalid spotify response", context("errorType", e.getErrorType()));
-            return Result.failure(e.getMessage(), e.getErrorType());
-        } catch (ExternalApiException e) {
-            return Result.failure(e.getMessage(), e.getErrorType());
-        }
+        return validator.validateAccessTokenRefreshRequest(request)
+                .onFailure(error -> logger.warn("Spotify access token refresh request validation failed",
+                        context(Map.of("error", error.errorMessage(), "errorType", error.errorType()))))
+                .flatMap(ignored -> {
+                    try {
+                        final SpotifyTokenResponse response = sendTokenRequest(request.toMultiValueMap());
+                        return validator.validateAccessTokenRefreshResponse(response)
+                                .onFailure(error2 -> logger.warn("Spotify response validation failed",
+                                        context(Map.of("error", error2.errorMessage(), "errorType", error2.errorType()))))
+                                .map(ignored2 -> response);
+                    } catch (ExternalApiException e) {
+                        return Result.failure(e.getMessage(), e.getErrorType());
+                    }
+                });
     }
 
     private SpotifyTokenResponse sendTokenRequest(final MultiValueMap<String, String> bodyData) {
@@ -132,43 +146,5 @@ public class SpotifyTokenClient {
                             ErrorType.EXTERNAL_API_REQUEST_TIMEOUT);
                 })
                 .block();
-    }
-
-    private Result<Void> validateAccessTokenResponse(final SpotifyTokenResponse response) {
-        if (response.accessToken() == null || response.accessToken().isBlank()) {
-            throw new ExternalApiResponseException("Access token cannot be null or empty", ErrorType.SPOTIFY_INVALID_RESPONSE);
-        }
-        if (response.refreshToken() == null || response.refreshToken().isBlank()) {
-            throw new ExternalApiResponseException("Refresh token cannot be null or empty", ErrorType.SPOTIFY_INVALID_RESPONSE);
-        }
-    }
-
-    private Result<Void> validateAccessTokenRefreshResponse(final SpotifyTokenResponse response) {
-        if (response.accessToken() == null || response.accessToken().isBlank()) {
-            throw new ExternalApiResponseException("Access token cannot be null or empty", ErrorType.SPOTIFY_INVALID_RESPONSE);
-        }
-    }
-
-    private Result<Void> validateRequest(final SpotifyAccessTokenRefreshRequest request) {
-        if (request.grantType() == null || request.grantType().isBlank()) {
-            return Result.failure("Grant type cannot be null or empty", ErrorType.SPOTIFY_INVALID_REQUEST);
-        }
-        if (request.refreshToken() == null || request.refreshToken().isBlank()) {
-            return Result.failure("Refresh token cannot be null or empty", ErrorType.SPOTIFY_INVALID_REQUEST);
-        }
-        return Result.success();
-    }
-
-    private Result<Void> validateRequest(final SpotifyAuthorizationRequest request) {
-        if (request.grantType() == null || request.grantType().isBlank()) {
-            return Result.failure("Grant type cannot be null or empty", ErrorType.SPOTIFY_INVALID_REQUEST);
-        }
-        if (request.authCode() == null || request.authCode().isBlank()) {
-            return Result.failure("Authorization code cannot be null or empty", ErrorType.SPOTIFY_INVALID_REQUEST);
-        }
-        if (request.redirectUri() == null || request.redirectUri().isBlank()) {
-            return Result.failure("Redirect uri cannot be null or empty", ErrorType.SPOTIFY_INVALID_REQUEST);
-        }
-        return Result.success();
     }
 }

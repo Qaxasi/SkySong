@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.spotify.adapter.authentication.in.access;
+package com.mycompany.SkySong.spotify.authentication.adapter.in.login;
 
-import com.mycompany.SkySong.config.spotify.SpotifyProperties;
+import com.mycompany.SkySong.spotify.config.SpotifyProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 

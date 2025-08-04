@@ -1,0 +1,16 @@
+package com.mycompany.SkySong.spotify.config;
+
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
+
+@Validated
+@ConfigurationProperties(prefix = "spotify")
+public record SpotifyProperties(
+        @NotBlank String clientId,
+        @NotBlank String clientSecret,
+        @NotBlank String scope,
+        @NotBlank String redirectUri,
+        @NotBlank String authUri,
+        @NotBlank String apiTokenBaseUrl
+) {}
