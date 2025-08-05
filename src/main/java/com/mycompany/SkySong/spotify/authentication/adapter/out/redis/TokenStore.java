@@ -27,11 +27,10 @@ public class TokenStore {
         try {
             redisTemplate.opsForValue().set(redisKey, refreshToken);
             return Result.success();
+        } catch (RedisConnectionFailureException ex) {
+            logger.error("Redis connection failed while saving token", ex, context("userId", userId));
+            return Result.failure("Token storage temporarily unavailable", ErrorType.REDIS_UNAVAILABLE);
         } catch (DataAccessException ex) {
-            if (ex instanceof RedisConnectionFailureException) {
-                logger.error("Redis connection failed while saving token", ex, context("userId", userId));
-                return Result.failure("Token storage temporarily unavailable", ErrorType.REDIS_UNAVAILABLE);
-            }
             logger.error("Unexpected Redis error during token persistence", ex, context("userId", userId));
             return Result.failure("Unexpected error occurred while saving token", ErrorType.REDIS_INTERNAL_ERROR);
         }
@@ -48,11 +47,10 @@ public class TokenStore {
                 return Result.failure("Refresh token not found", ErrorType.TOKEN_NOT_FOUND);
             }
             return Result.success(token);
+        } catch (RedisConnectionFailureException ex) {
+            logger.error("Redis connection failed while fetching token", ex, context("userId", userId));
+            return Result.failure("Token storage temporarily unavailable", ErrorType.REDIS_UNAVAILABLE);
         } catch (DataAccessException ex) {
-            if (ex instanceof RedisConnectionFailureException) {
-                logger.error("Redis connection failed while fetching token", ex, context("userId", userId));
-                return Result.failure("Token storage temporarily unavailable", ErrorType.REDIS_UNAVAILABLE);
-            }
             logger.error("Unexpected Redis error while fetching token", ex, context("userId", userId));
             return Result.failure("Unexpected error occurred while fetching token", ErrorType.REDIS_INTERNAL_ERROR);
         }
