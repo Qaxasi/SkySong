@@ -48,7 +48,8 @@ public class SpotifyAccessTokenRefresher {
                 logger.warn("Failed to save Spotify refresh token",
                         context(Map.of(
                                 "userId", userId,
-                                "error", saveResult.errorMessage())));
+                                "error", saveResult.errorMessage(),
+                                "errorType", saveResult.errorType())));
             } else {
                 logger.info("New Spotify refresh token stored for user", context("userId", userId));
             }

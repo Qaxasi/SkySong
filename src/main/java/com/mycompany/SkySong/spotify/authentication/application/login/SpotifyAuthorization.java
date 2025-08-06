@@ -37,7 +37,7 @@ public class SpotifyAuthorization {
         final Result<Void> saveResult = tokenStore.saveRefreshToken(userId, refreshToken);
         if (saveResult.isFailure()) {
             logger.warn("Failed to persist Spotify refresh token",
-                    context(Map.of("userId", userId, "error", saveResult.errorMessage())));
+                    context(Map.of("userId", userId, "error", saveResult.errorMessage(), "errorType", saveResult.errorType())));
             return Result.failure("Could not store Spotify refresh token", ErrorType.SPOTIFY_SESSION_PERSISTENCE_FAILED);
         }
         logger.info("New Spotify refresh token successfully stored", context("userId", userId));
