@@ -37,8 +37,11 @@ public class SpotifyAuthorization {
         final Result<Void> saveResult = tokenStore.saveRefreshToken(userId, refreshToken);
         if (saveResult.isFailure()) {
             logger.warn("Failed to persist Spotify refresh token",
-                    context(Map.of("userId", userId, "error", saveResult.errorMessage(), "errorType", saveResult.errorType())));
-            return Result.failure("Could not store Spotify refresh token", ErrorType.SPOTIFY_SESSION_PERSISTENCE_FAILED);
+                    context(Map.of(
+                            "userId", userId,
+                            "error", saveResult.errorMessage(),
+                            "errorType", saveResult.errorType())));
+            return Result.failure("Unable to save Spotify session", ErrorType.SPOTIFY_SESSION_PERSISTENCE_FAILED);
         }
         logger.info("New Spotify refresh token successfully stored", context("userId", userId));
         return Result.success();
@@ -46,10 +49,10 @@ public class SpotifyAuthorization {
 
     private Result<Void> validateInputs(final Integer userId, final String authCode) {
         if (authCode == null || authCode.isBlank()) {
-            return Result.failure("Authorization code is missing or blank", ErrorType.VALIDATION_ERROR);
+            return Result.failure("Invalid or missing authorization code", ErrorType.VALIDATION_ERROR);
         }
         if (userId == null || userId <= 0) {
-            return Result.failure("Missing or invalid user ID", ErrorType.VALIDATION_ERROR);
+            return Result.failure("Invalid or missing user ID", ErrorType.VALIDATION_ERROR);
         }
         return Result.success();
     }
