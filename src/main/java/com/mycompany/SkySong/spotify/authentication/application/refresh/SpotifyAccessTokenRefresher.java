@@ -34,12 +34,18 @@ public class SpotifyAccessTokenRefresher {
         }
 
         return tokenStore.getRefreshToken(userId)
-                .flatMap(token -> spotifyClient.exchangeRefreshToken(token)
-                        .flatMap(response -> {
-                            saveRefreshTokenIfPresent(response, userId);
-                            return Result.success(response.accessToken());
-                        })
-                );
+                .flatMap(token -> {
+                        if (token == null || token.isBlank()) {
+                            logger.warn("No spotify refresh token found for user", context("userId", userId));
+                            return Result.failure("Spotify session not found", ErrorType.SPOTIFY_SESSION_NOT_FOUND);
+                        }
+
+                        return spotifyClient.exchangeRefreshToken(token)
+                                .flatMap(response -> {
+                                    saveRefreshTokenIfPresent(response, userId);
+                                    return Result.success(response.accessToken());
+                                });
+                });
     }
     private void saveRefreshTokenIfPresent(final SpotifyTokenResponse response, final int userId) {
         if (response.refreshToken() != null && !response.refreshToken().isBlank()) {
