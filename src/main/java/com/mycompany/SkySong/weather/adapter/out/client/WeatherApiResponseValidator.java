@@ -12,7 +12,7 @@ public class WeatherApiResponseValidator {
         if (!isComplete(response)) {
             return Result.failure("The weather data is incomplete and cannot be processed", ErrorType.WEATHER_INCOMPLETE_RESPONSE);
         }
-        if (!hasInvalidValue(response)) {
+        if (hasInvalidValue(response)) {
             return Result.failure("The weather data contains invalid values and cannot be processed", ErrorType.WEATHER_INVALID_VALUES);
         }
         return Result.success();
