@@ -5,7 +5,7 @@ import com.mycompany.SkySong.shared.result.Result;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyAccessTokenRefreshRequest;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyAuthorizationRequest;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.spotify.config.SpotifyProperties;
+import com.mycompany.SkySong.spotify.config.SpotifyIntegrationProperties;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.validator.SpotifyTokenExchangeValidator;
@@ -26,12 +26,12 @@ import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.con
 @Component
 public class SpotifyTokenClient {
     private final WebClient webClient;
-    private final SpotifyProperties properties;
+    private final SpotifyIntegrationProperties properties;
     private final ApplicationLogger logger;
     private final SpotifyTokenExchangeValidator validator;
 
     public SpotifyTokenClient(@Qualifier("spotifyTokenClient") final WebClient webClient,
-                              final SpotifyProperties properties,
+                              final SpotifyIntegrationProperties properties,
                               final ApplicationLogger logger,
                               final SpotifyTokenExchangeValidator validator) {
         this.properties = properties;

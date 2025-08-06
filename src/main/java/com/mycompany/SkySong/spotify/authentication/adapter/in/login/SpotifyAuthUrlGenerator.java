@@ -1,14 +1,14 @@
 package com.mycompany.SkySong.spotify.authentication.adapter.in.login;
 
-import com.mycompany.SkySong.spotify.config.SpotifyProperties;
+import com.mycompany.SkySong.spotify.config.SpotifyIntegrationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class SpotifyAuthUrlGenerator {
-    private final SpotifyProperties properties;
+    private final SpotifyIntegrationProperties properties;
 
-    public SpotifyAuthUrlGenerator(final SpotifyProperties properties) {
+    public SpotifyAuthUrlGenerator(final SpotifyIntegrationProperties properties) {
         this.properties = properties;
     }
 
