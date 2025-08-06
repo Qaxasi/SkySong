@@ -3,10 +3,13 @@ package com.mycompany.SkySong.spotify.authentication.adapter.out.redis;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.SkySong.spotify.config.SpotifyRefreshTokenProperties;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
@@ -14,18 +17,21 @@ import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.con
 public class TokenStore {
     private final RedisTemplate<String, String> redisTemplate;
     private final ApplicationLogger logger;
+    private final Duration refreshTokenTtl;
 
     public TokenStore(final RedisTemplate<String, String> redisTemplate,
+                      final SpotifyRefreshTokenProperties properties,
                       final ApplicationLogger logger) {
         this.logger = logger;
         this.redisTemplate = redisTemplate;
+        this.refreshTokenTtl = properties.ttlAsDuration();
     }
 
     public Result<Void> saveRefreshToken(final int userId, final String refreshToken) {
         final String redisKey = generateRefreshTokenKey(userId);
 
         try {
-            redisTemplate.opsForValue().set(redisKey, refreshToken);
+            redisTemplate.opsForValue().set(redisKey, refreshToken, refreshTokenTtl);
             return Result.success();
         } catch (RedisConnectionFailureException ex) {
             logger.error("Redis connection failed while saving token", ex, context("userId", userId));

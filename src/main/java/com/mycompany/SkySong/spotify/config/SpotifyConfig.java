@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties({
         SpotifyAccessTokenCookieProperties.class,
-        SpotifyProperties.class})
+        SpotifyIntegrationProperties.class,
+        SpotifyRefreshTokenProperties.class})
 public class SpotifyConfig {
 }
