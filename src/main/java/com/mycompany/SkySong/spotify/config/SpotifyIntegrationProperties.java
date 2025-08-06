@@ -6,7 +6,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "spotify")
-public record SpotifyProperties(
+public record SpotifyIntegrationProperties(
         @NotBlank String clientId,
         @NotBlank String clientSecret,
         @NotBlank String scope,
