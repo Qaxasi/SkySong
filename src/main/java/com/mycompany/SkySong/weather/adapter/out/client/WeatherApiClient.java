@@ -25,15 +25,18 @@ import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.con
 public class WeatherApiClient implements WeatherIntegration {
     private final String apiKey;
     private final WebClient webClient;
+    private final WeatherApiResponseValidator validator;
     private final WeatherMapper mapper;
     private final ApplicationLogger logger;
 
     public WeatherApiClient(@Value("${weather.api.key}") final String apiKey,
                             @Qualifier("weatherWebClient") final WebClient webClient,
+                            final WeatherApiResponseValidator validator,
                             final WeatherMapper mapper,
                             final ApplicationLogger logger) {
         this.apiKey = apiKey;
         this.webClient = webClient;
+        this.validator = validator;
         this.mapper = mapper;
         this.logger = logger;
     }
@@ -45,15 +48,11 @@ public class WeatherApiClient implements WeatherIntegration {
 
         try {
             final WeatherApiResponse response = fetchFromApi(lat, lon);
-            validateWeatherResponse(response);
-            return Result.success(mapper.mapToDomain(response));
-        } catch (ExternalApiResponseException e) {
-            logger.warn("[Weather API] Invalid response data", context(
-                    Map.of(
-                            "lat", lat,
-                            "lon", lon,
-                            "errorType", e.getErrorType())));
-            return Result.failure(e.getMessage(), e.getErrorType());
+
+            return validator.validateWeatherResponse(response)
+                    .onFailure(error -> logger.warn("[Weather API] Weather data validation failed",
+                            context(Map.of("lat", lat, "lon", lon, "errorType", error.errorType()))))
+                    .map(ignored -> mapper.mapToDomain(response));
         } catch (ExternalApiException e) {
             return Result.failure(e.getMessage(), e.getErrorType());
         }
@@ -124,45 +123,5 @@ public class WeatherApiClient implements WeatherIntegration {
                             ErrorType.EXTERNAL_API_TIMEOUT);
                 })
                 .block();
-    }
-
-    private void validateWeatherResponse(final WeatherApiResponse response) {
-        if (response == null) {
-            throw new ExternalApiResponseException("No response was received from the weather provider.", ErrorType.WEATHER_NO_RESULTS);
-        }
-        if (!isComplete(response)) {
-            throw new ExternalApiResponseException("The weather data is incomplete and cannot be processed", ErrorType.WEATHER_INCOMPLETE_RESPONSE);
-        }
-        if (!hasInvalidValue(response)) {
-            throw new ExternalApiResponseException("The weather data contains invalid values and cannot be processed", ErrorType.WEATHER_INVALID_VALUES);
-        }
-    }
-
-    private boolean isComplete(final WeatherApiResponse response) {
-        return response != null &&
-                response.atmosphericConditions() != null &&
-                response.clouds() != null &&
-                response.wind() != null &&
-                response.daytime() != null &&
-                response.atmosphericConditions().temperature() != null &&
-                response.atmosphericConditions().humidity() != null &&
-                response.clouds().cloudCoverage() != null &&
-                response.wind().speed() != null &&
-                response.daytime().sunrise() != null &&
-                response.daytime().sunset() != null;
-    }
-
-    private boolean hasInvalidValue(final WeatherApiResponse response) {
-        return response.atmosphericConditions().temperature() < -90
-                || response.atmosphericConditions().temperature() > 60
-                || response.atmosphericConditions().humidity() < 0
-                || response.atmosphericConditions().humidity() > 100
-                || response.clouds().cloudCoverage() < 0
-                || response.clouds().cloudCoverage() > 100
-                || response.wind().speed() < 0
-                || response.wind().speed() > 150
-                || response.daytime().sunset()  <= 0
-                || response.daytime().sunrise() <= 0
-                || response.daytime().sunset() <= response.daytime().sunrise();
     }
 }
