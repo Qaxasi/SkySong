@@ -1,6 +1,8 @@
 package com.mycompany.SkySong.spotify.authentication.adapter.out.client;
 
-import com.mycompany.SkySong.adapter.exception.external.*;
+import com.mycompany.SkySong.shared.exception.external.ExternalApiException;
+import com.mycompany.SkySong.shared.exception.external.ExternalApiHttpException;
+import com.mycompany.SkySong.shared.exception.external.ExternalApiTimeoutException;
 import com.mycompany.SkySong.shared.result.Result;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyAccessTokenRefreshRequest;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyAuthorizationRequest;
