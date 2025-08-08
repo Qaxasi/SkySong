@@ -34,10 +34,10 @@ public class TokenStore {
             redisTemplate.opsForValue().set(redisKey, refreshToken, refreshTokenTtl);
             return Result.success();
         } catch (RedisConnectionFailureException ex) {
-            logger.error("Failed to save refresh token - Redis connection failed", ex, context("userId", userId));
+            logger.error("Failed to save refresh token - Redis connection failed", context("userId", userId), ex);
             return Result.failure("Token storage temporarily unavailable", ErrorType.REDIS_UNAVAILABLE);
         } catch (DataAccessException ex) {
-            logger.error("Failed to save refresh token - unexpected Redis error", ex, context("userId", userId));
+            logger.error("Failed to save refresh token - unexpected Redis error", context("userId", userId), ex);
             return Result.failure("Unexpected error occurred while saving token", ErrorType.REDIS_INTERNAL_ERROR);
         }
     }
@@ -49,10 +49,10 @@ public class TokenStore {
             final String token = redisTemplate.opsForValue().get(redisKey);
             return Result.success(token);
         } catch (RedisConnectionFailureException ex) {
-            logger.error("Failed to fetch refresh token - Redis connection failed", ex, context("userId", userId));
+            logger.error("Failed to fetch refresh token - Redis connection failed", context("userId", userId), ex);
             return Result.failure("Token storage temporarily unavailable", ErrorType.REDIS_UNAVAILABLE);
         } catch (DataAccessException ex) {
-            logger.error("Failed to fetch refresh token - unexpected Redis error", ex, context("userId", userId));
+            logger.error("Failed to fetch refresh token - unexpected Redis error", context("userId", userId), ex);
             return Result.failure("Unexpected error occurred while fetching token", ErrorType.REDIS_INTERNAL_ERROR);
         }
     }
