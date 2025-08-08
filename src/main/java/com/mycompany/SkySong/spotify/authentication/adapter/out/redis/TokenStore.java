@@ -3,7 +3,7 @@ package com.mycompany.SkySong.spotify.authentication.adapter.out.redis;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
-import com.mycompany.SkySong.spotify.config.SpotifyRefreshTokenProperties;
+import com.mycompany.SkySong.infrastructure.spotify.config.SpotifyRefreshTokenProperties;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;

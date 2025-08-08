@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.spotify.config;
+package com.mycompany.SkySong.infrastructure.spotify.config;
 
 import com.mycompany.SkySong.shared.cookie.CookieProperties;
 import jakarta.validation.Valid;

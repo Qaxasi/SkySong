@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.spotify.authentication.adapter.in.web.refresh;
 
 import com.mycompany.SkySong.spotify.authentication.application.refresh.SpotifyAccessTokenRefresher;
-import com.mycompany.SkySong.spotify.config.SpotifyAccessTokenCookieProperties;
+import com.mycompany.SkySong.infrastructure.spotify.config.SpotifyAccessTokenCookieProperties;
 import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.BaseResponse;
 import com.mycompany.SkySong.shared.response.SuccessResponse;

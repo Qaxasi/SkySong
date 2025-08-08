@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.spotify.config;
+package com.mycompany.SkySong.infrastructure.spotify.config;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;

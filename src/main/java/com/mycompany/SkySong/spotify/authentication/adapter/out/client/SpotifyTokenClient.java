@@ -7,7 +7,7 @@ import com.mycompany.SkySong.shared.result.Result;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyAccessTokenRefreshRequest;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyAuthorizationRequest;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.dto.SpotifyTokenResponse;
-import com.mycompany.SkySong.spotify.config.SpotifyIntegrationProperties;
+import com.mycompany.SkySong.infrastructure.spotify.config.SpotifyIntegrationProperties;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.spotify.authentication.adapter.out.client.validator.SpotifyTokenExchangeValidator;

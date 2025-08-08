@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.spotify.config;
+package com.mycompany.SkySong.infrastructure.spotify.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
