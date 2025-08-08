@@ -7,6 +7,7 @@ import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
@@ -37,7 +38,7 @@ class TransactionalUserDeleter implements UserDeletion {
 
             });
             return Result.success();
-        } catch (DataAccessException ex) {
+        } catch (DataAccessException | TransactionException ex) {
             logger.error("Database error while deleting user", context("userId", id), ex);
             return Result.failure("An unexpected error occurred while deleting user", ErrorType.DATABASE_ERROR);
         }
