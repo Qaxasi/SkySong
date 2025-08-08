@@ -1,9 +1,11 @@
-package com.mycompany.SkySong.identity.userdeletion.adapter.out;
+package com.mycompany.SkySong.identity.userdeletion.adapter.out.db;
 
-import com.mycompany.SkySong.identity.adapter.out.db.exception.UserDeletionPersistenceException;
 import com.mycompany.SkySong.infrastructure.persistence.sql.UserDAO;
 import com.mycompany.SkySong.identity.userdeletion.application.port.UserDeletion;
+import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
+import com.mycompany.SkySong.shared.result.Result;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -24,7 +26,7 @@ class TransactionalUserDeleter implements UserDeletion {
     }
 
     @Override
-    public void deleteEverythingById(final int id) {
+    public Result<Void> deleteEverythingById(final int id) {
         try {
             transactionTemplate.executeWithoutResult(status -> {
                 logger.debug("Deleting roles for user", context("userId", id));
@@ -32,12 +34,12 @@ class TransactionalUserDeleter implements UserDeletion {
 
                 logger.debug("Deleting user", context("userId", id));
                 userDAO.delete(id);
+
             });
-        } catch (RuntimeException ex) {
-            if (ex instanceof NullPointerException || ex instanceof IllegalArgumentException) {
-                throw ex;
-            }
-            throw new UserDeletionPersistenceException("Error occurred while deleting user", ex);
+            return Result.success();
+        } catch (DataAccessException ex) {
+            logger.error("Database error while deleting user", context("userId", id), ex);
+            return Result.failure("An unexpected error occurred while deleting user", ErrorType.DATABASE_ERROR);
         }
     }
 }

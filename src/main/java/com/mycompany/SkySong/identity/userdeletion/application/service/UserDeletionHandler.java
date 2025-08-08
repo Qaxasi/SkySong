@@ -7,17 +7,17 @@ import com.mycompany.SkySong.shared.result.Result;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
-public class DeleteUser {
+public class UserDeletionHandler {
     private final UserDeletion userDeletion;
     private final ApplicationLogger logger;
 
-    public DeleteUser(final UserDeletion userDeletion,
-                      final ApplicationLogger logger) {
+    public UserDeletionHandler(final UserDeletion userDeletion,
+                               final ApplicationLogger logger) {
         this.userDeletion = userDeletion;
         this.logger = logger;
     }
 
-    public Result<Void> execute(final Integer userId) {
+    public Result<Void> deleteUserById(final Integer userId) {
         return validateInput(userId)
                 .flatMap(ignored -> userDeletion.deleteEverythingById(userId))
                 .flatMap(ignored -> {
@@ -30,7 +30,7 @@ public class DeleteUser {
     private Result<Void> validateInput(final Integer userId) {
         if (userId == null || userId <= 0) {
             logger.warn("User deletion failed - missing or invalid user ID", context("userId", userId));
-            return Result.failure("User id is required and was not provided", ErrorType.MISSING_USER_ID);
+            return Result.failure("User id is missing or invalid", ErrorType.MISSING_USER_ID);
         }
         return Result.success();
     }

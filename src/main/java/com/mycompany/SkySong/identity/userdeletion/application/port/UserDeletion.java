@@ -1,5 +1,7 @@
-package com.mycompany.SkySong.identity.application.userdeletion.ports;
+package com.mycompany.SkySong.identity.userdeletion.application.port;
+
+import com.mycompany.SkySong.shared.result.Result;
 
 public interface UserDeletion {
-    void deleteEverythingById(int id);
+    Result<Void> deleteEverythingById(int id);
 }
