@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.infrastructure.persistence.sql;
 
-import com.mycompany.SkySong.domain.shared.entity.User;
-import com.mycompany.SkySong.domain.registration.ports.RegistrationUserRepository;
+import com.mycompany.SkySong.identity.domain.User;
+import com.mycompany.SkySong.identity.registration.application.port.RegistrationUserRepository;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
@@ -34,7 +34,7 @@ public interface UserDAO extends RegistrationUserRepository {
     boolean existsByEmail(@Bind("email") String email);
 
     @SqlUpdate("DELETE FROM users WHERE id = :id")
-    void delete(@BindBean User user);
+    void delete(@Bind("id") int id);
 
     @SqlUpdate("DELETE FROM user_roles WHERE user_id = :userId")
     void deleteUserRoles(@Bind("userId") int userId);
