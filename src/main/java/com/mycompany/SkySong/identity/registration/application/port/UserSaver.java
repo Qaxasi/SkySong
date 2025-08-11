@@ -1,7 +1,8 @@
-package com.mycompany.SkySong.identity.application.registration.ports;
+package com.mycompany.SkySong.identity.registration.application.port;
 
-import com.mycompany.SkySong.identity.domain.User;
+import com.mycompany.SkySong.identity.registration.domain.User;
+import com.mycompany.SkySong.shared.result.Result;
 
 public interface UserSaver {
-    void saveUser(User user);
+    Result<Void> saveUser(User user);
 }

@@ -1,10 +1,9 @@
-package com.mycompany.SkySong.identity.application.registration.ports;
+package com.mycompany.SkySong.identity.registration.application.port;
 
-import com.mycompany.SkySong.identity.domain.Role;
-import com.mycompany.SkySong.identity.domain.UserRole;
-
-import java.util.Optional;
+import com.mycompany.SkySong.identity.registration.domain.Role;
+import com.mycompany.SkySong.identity.registration.domain.UserRole;
+import com.mycompany.SkySong.shared.result.Result;
 
 public interface RoleProvider {
-    Optional<Role> provideRole(UserRole role);
+    Result<Role> provideRole(UserRole role);
 }

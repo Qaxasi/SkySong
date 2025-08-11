@@ -1,12 +1,8 @@
-package com.mycompany.SkySong.identity.adapter.in.registration.web.dto;
+package com.mycompany.SkySong.identity.registration.adapter.in;
 
-import com.mycompany.SkySong.identity.adapter.in.registration.web.dto.mapper.RegistrationRequestMapper;
-import com.mycompany.SkySong.identity.adapter.in.registration.web.dto.RegistrationRequest;
-import com.mycompany.SkySong.identity.application.registration.dto.UserRegistrationInput;
-import com.mycompany.SkySong.identity.application.registration.service.UserRegistration;
-import com.mycompany.SkySong.shared.response.SuccessResponse;
+import com.mycompany.SkySong.identity.registration.application.dto.UserRegistrationInput;
+import com.mycompany.SkySong.identity.registration.application.service.UserRegistration;
 import com.mycompany.SkySong.shared.response.BaseResponse;
-import com.mycompany.SkySong.shared.result.Result;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +24,16 @@ public class UserRegistrationController {
     @PostMapping("/register")
     public ResponseEntity<BaseResponse> register(@Valid @RequestBody final RegistrationRequest request) {
         final UserRegistrationInput dto = mapper.toDto(request);
-        final Result<SuccessResponse> result = userRegistration.execute(dto);
 
-        if (result.isFailure()) {
-            return ResponseEntity.status(result.errorType().getHttpStatus())
-                    .body(result.toErrorResponse());
-        }
+        return userRegistration.execute(dto)
+                .fold(
+                        error -> ResponseEntity
+                                .status(error.errorType().getHttpStatus())
+                                .body(error.toErrorResponse()),
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(result.data());
+                        success -> ResponseEntity
+                                .status(HttpStatus.CREATED)
+                                .body(success)
+                );
     }
 }

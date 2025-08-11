@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.identity.application.registration.validator;
+package com.mycompany.SkySong.identity.registration.application.validator;
 
-import com.mycompany.SkySong.identity.application.registration.dto.UserRegistrationInput;
-import com.mycompany.SkySong.identity.application.registration.ports.RegistrationUserRepository;
+import com.mycompany.SkySong.identity.registration.application.dto.UserRegistrationInput;
+import com.mycompany.SkySong.identity.registration.application.port.RegistrationUserRepository;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 

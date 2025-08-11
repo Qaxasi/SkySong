@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.application.registration.ports;
+package com.mycompany.SkySong.identity.registration.application.port;
 
 public interface RegistrationUserRepository {
     boolean existsByUsername(String username);

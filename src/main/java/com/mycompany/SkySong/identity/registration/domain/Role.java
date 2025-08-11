@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.domain;
+package com.mycompany.SkySong.identity.registration.domain;
 
 import java.util.Objects;
 

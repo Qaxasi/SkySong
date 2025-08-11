@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.application.registration.dto;
+package com.mycompany.SkySong.identity.registration.application.dto;
 
 public record UserRegistrationInput(String username, String email, String password) {
 }

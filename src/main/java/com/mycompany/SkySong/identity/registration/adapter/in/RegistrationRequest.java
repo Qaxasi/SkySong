@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.adapter.in.registration.web.dto;
+package com.mycompany.SkySong.identity.registration.adapter.in;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
