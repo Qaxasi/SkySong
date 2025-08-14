@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.identity.adapter.out.security;
+package com.mycompany.SkySong.identity.authentication.adapter.out.x;
 
-import com.mycompany.SkySong.identity.application.authentication.shared.ports.RefreshTokenGenerator;
-import com.mycompany.SkySong.identity.domain.RefreshToken;
+import com.mycompany.SkySong.identity.authentication.application.shared.port.RefreshTokenGenerator;
+import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;

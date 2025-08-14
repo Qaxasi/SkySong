@@ -1,9 +1,11 @@
-package com.mycompany.SkySong.identity.adapter.out.security;
+package com.mycompany.SkySong.identity.authentication.adapter.out.x;
 
 import com.mycompany.SkySong.infrastructure.security.user.CustomUserDetails;
-import com.mycompany.SkySong.identity.application.authentication.login.exception.InvalidCredentialsException;
-import com.mycompany.SkySong.identity.application.authentication.login.dto.AuthenticatedUser;
-import com.mycompany.SkySong.identity.application.authentication.login.ports.Authenticator;
+import com.mycompany.SkySong.identity.authentication.application.login.dto.AuthenticatedUser;
+import com.mycompany.SkySong.identity.authentication.application.login.port.Authenticator;
+import com.mycompany.SkySong.shared.error.ErrorType;
+import com.mycompany.SkySong.shared.logging.ApplicationLogger;
+import com.mycompany.SkySong.shared.result.Result;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,13 +18,16 @@ import java.util.List;
 @Component
 public class SpringSecurityAuthenticator implements Authenticator {
     private final AuthenticationManager authManager;
+    private final ApplicationLogger logger;
 
-    public SpringSecurityAuthenticator(final AuthenticationManager authManager) {
+    public SpringSecurityAuthenticator(final AuthenticationManager authManager,
+                                       final ApplicationLogger logger) {
         this.authManager = authManager;
+        this.logger = logger;
     }
 
     @Override
-    public AuthenticatedUser authenticate(final String username, final String password) {
+    public Result<AuthenticatedUser> authenticate(final String username, final String password) {
         try {
             final Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password));
@@ -35,9 +40,10 @@ public class SpringSecurityAuthenticator implements Authenticator {
                     .map(GrantedAuthority::getAuthority)
                     .toList();
 
-            return new AuthenticatedUser(userDetails.id(), userDetails.getUsername(), roles);
+            return Result.success(new AuthenticatedUser(userDetails.id(), userDetails.getUsername(), roles));
         } catch (BadCredentialsException e) {
-            throw new InvalidCredentialsException("Invalid username or password.");
+            logger.warn("Invalid login attempt");
+            return Result.failure("Invalid username or password", ErrorType.INVALID_LOGIN_CREDENTIALS);
         }
     }
 }

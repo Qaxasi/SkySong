@@ -1,6 +1,6 @@
 package com.mycompany.SkySong.infrastructure.persistence.mapper;
 
-import com.mycompany.SkySong.identity.domain.User;
+import com.mycompany.SkySong.identity.registration.domain.User;
 import org.jdbi.v3.core.mapper.RowMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 

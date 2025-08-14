@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.identity.adapter.out.security;
+package com.mycompany.SkySong.identity.authentication.adapter.out.x;
 
-import com.mycompany.SkySong.identity.application.authentication.shared.dto.AccessTokenPayload;
-import com.mycompany.SkySong.identity.application.authentication.shared.ports.AccessTokenGenerator;
-import com.mycompany.SkySong.identity.domain.AccessToken;
+import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessTokenPayload;
+import com.mycompany.SkySong.identity.authentication.application.shared.port.AccessTokenGenerator;
+import com.mycompany.SkySong.identity.authentication.domain.AccessToken;
 import com.mycompany.SkySong.infrastructure.security.jwt.JwtAccessTokenProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
