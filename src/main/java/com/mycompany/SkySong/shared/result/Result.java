@@ -3,6 +3,7 @@ package com.mycompany.SkySong.shared.result;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.response.ErrorResponse;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -63,6 +64,11 @@ public record Result<T>(
         } else {
             return onFailure.apply(this);
         }
+    }
+
+    public Result<T> mapError(BiFunction<ErrorType, String, Result<T>> fn) {
+        if (isSuccess()) return this;
+        return fn.apply(this.errorType, this.errorMessage);
     }
 
     public ErrorResponse toErrorResponse() {
