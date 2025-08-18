@@ -68,7 +68,7 @@ public class SessionStoreRedis implements SessionStore, RefreshTokenRotator {
         try {
             final String json = redisTemplate.opsForValue().get(token);
             if (json == null) {
-                return Result.failure("Refresh token not found", ErrorType.REFRESH_TOKEN_NOT_FOUND);
+                return Result.failure("Session not found", ErrorType.SESSION_NOT_FOUND);
             }
             return deserialize(json);
         } catch (DataAccessException ex) {
@@ -115,7 +115,7 @@ public class SessionStoreRedis implements SessionStore, RefreshTokenRotator {
                                 json, String.valueOf(ttl));
 
                         if (res == null || res != 1) {
-                            return Result.failure("Refresh token not found", ErrorType.REFRESH_TOKEN_NOT_FOUND);
+                            return Result.failure("Session not found", ErrorType.SESSION_NOT_FOUND);
                         }
                         return Result.success();
                     } catch (DataAccessException ex) {

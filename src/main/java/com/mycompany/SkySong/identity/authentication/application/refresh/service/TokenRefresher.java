@@ -69,7 +69,7 @@ public class TokenRefresher {
     private Result<Session> fetchAndValidateSession(final String refreshToken, final Instant now) {
         return sessionStore.findByToken(refreshToken)
                 .mapError((type, message) -> {
-                    if (type == ErrorType.REFRESH_TOKEN_NOT_FOUND) {
+                    if (type == ErrorType.SESSION_NOT_FOUND) {
                         return Result.failure("Refresh token is invalid", ErrorType.INVALID_REFRESH_TOKEN);
                     } else {
                         return Result.failure(message, type);
@@ -93,7 +93,7 @@ public class TokenRefresher {
                 .flatMap(updatedSession -> refreshTokenRotator.rotate(
                         oldRefreshToken, newRefreshToken.value(), updatedSession))
                 .mapError((type, message) -> {
-                    if (type == ErrorType.REFRESH_TOKEN_NOT_FOUND) {
+                    if (type == ErrorType.SESSION_NOT_FOUND) {
                         return Result.failure("Refresh token is invalid", ErrorType.INVALID_REFRESH_TOKEN);
                     } else {
                         return Result.failure(message, type);
@@ -102,7 +102,7 @@ public class TokenRefresher {
 
                 .onFailure(r ->  {
                     if (r.errorType() == ErrorType.INVALID_REFRESH_TOKEN) {
-                        logger.warn("Refresh token rotation failed - old refresh token not found", context("userId", session.userId()));
+                        logger.warn("Refresh token rotation failed - session not found for provided token", context("userId", session.userId()));
                     } else {
                         logger.error("Failed to rotate refresh token", context(Map.of(
                                 "userId", session.userId(),
