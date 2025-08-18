@@ -1,7 +1,8 @@
-package com.mycompany.SkySong.identity.authentication.login.application.port;
+package com.mycompany.SkySong.identity.authentication.application.login.port;
 
-import com.mycompany.SkySong.identity.authentication.login.application.dto.AuthenticatedUser;
+import com.mycompany.SkySong.identity.authentication.application.login.dto.AuthenticatedUser;
+import com.mycompany.SkySong.shared.result.Result;
 
 public interface Authenticator {
-    AuthenticatedUser authenticate(String username, String password);
+    Result<AuthenticatedUser> authenticate(String username, String password);
 }

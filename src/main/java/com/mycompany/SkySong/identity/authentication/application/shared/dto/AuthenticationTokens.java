@@ -1,7 +1,6 @@
-package com.mycompany.SkySong.identity.authentication.shared.dto;
+package com.mycompany.SkySong.identity.authentication.application.shared.dto;
 
-import com.mycompany.SkySong.identity.domain.AccessToken;
-import com.mycompany.SkySong.identity.domain.RefreshToken;
+import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;
 
 public record AuthenticationTokens(AccessToken accessToken, RefreshToken refreshToken) {
 }

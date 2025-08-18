@@ -1,8 +1,6 @@
-package com.mycompany.SkySong.identity.authentication.login.application.dto;
-
-import com.mycompany.SkySong.identity.authentication.shared.dto.AccessTokenPayload;
+package com.mycompany.SkySong.identity.authentication.application.login.dto;
 
 import java.util.List;
 
-public record AuthenticatedUser(int userId, String username, List<String> roles) implements AccessTokenPayload {
+public record AuthenticatedUser(int id, String username, List<String> roles) {
 }

@@ -1,12 +1,10 @@
-package com.mycompany.SkySong.identity.authentication.shared.port;
+package com.mycompany.SkySong.identity.authentication.application.shared.port;
 
-import com.mycompany.SkySong.identity.authentication.shared.dto.SessionData;
-import com.mycompany.SkySong.identity.domain.RefreshToken;
-
-import java.util.Optional;
+import com.mycompany.SkySong.identity.authentication.domain.Session;
+import com.mycompany.SkySong.shared.result.Result;
 
 public interface SessionStore {
-    void save(RefreshToken token, SessionData sessionData);
-    Optional<SessionData> findByToken(RefreshToken token);
-    void delete(RefreshToken token);
+    Result<Void> save(String token, Session session);
+    Result<Session> findByToken(String token);
+    Result<Void> delete(String token);
 }

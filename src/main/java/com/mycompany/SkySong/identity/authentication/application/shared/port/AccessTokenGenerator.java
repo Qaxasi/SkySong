@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.identity.authentication.shared.port;
+package com.mycompany.SkySong.identity.authentication.application.shared.port;
 
-import com.mycompany.SkySong.identity.authentication.shared.dto.AccessTokenPayload;
-import com.mycompany.SkySong.identity.domain.AccessToken;
+import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessToken;
+import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessTokenClaims;
 
 public interface AccessTokenGenerator {
-    AccessToken generate(AccessTokenPayload payload);
+    AccessToken generate(AccessTokenClaims claims);
 }

@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.identity.application.authentication.refresh.ports;
+package com.mycompany.SkySong.identity.authentication.application.refresh.port;
 
-import com.mycompany.SkySong.identity.authentication.application.shared.dto.SessionData;
-import com.mycompany.SkySong.identity.domain.RefreshToken;
+import com.mycompany.SkySong.identity.authentication.domain.Session;
+import com.mycompany.SkySong.shared.result.Result;
 
 public interface RefreshTokenRotator {
-    void rotate(RefreshToken oldToken, RefreshToken newToken, SessionData sessionData);
+    Result<Void> rotate(String oldToken, String newToken, Session sessionData);
 }

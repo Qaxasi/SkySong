@@ -1,14 +1,12 @@
-package com.mycompany.SkySong.identity.authentication.adapter.in.web;
+package com.mycompany.SkySong.identity.authentication.adapter.in.web.login;
 
 import com.mycompany.SkySong.infrastructure.security.jwt.JwtAccessTokenProperties;
 import com.mycompany.SkySong.infrastructure.security.refreshToken.RefreshTokenProperties;
-import com.mycompany.SkySong.identity.authentication.login.application.dto.LoginInput;
+import com.mycompany.SkySong.identity.authentication.application.login.dto.LoginCredentials;
 import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.response.SuccessResponse;
-import com.mycompany.SkySong.identity.authentication.shared.dto.AuthenticationTokens;
-import com.mycompany.SkySong.identity.authentication.login.application.service.UserAuthenticator;
+import com.mycompany.SkySong.identity.authentication.application.login.service.UserAuthenticator;
 import com.mycompany.SkySong.shared.response.BaseResponse;
-import com.mycompany.SkySong.shared.result.Result;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -39,24 +37,23 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<BaseResponse> login(@Valid @RequestBody final LoginRequest request) {
-        final Result<AuthenticationTokens> result =
-                authenticator.login(new LoginInput(request.username(), request.password()));
+        return authenticator.login(new LoginCredentials(request.username(), request.password()))
+                .fold(
+                        error -> ResponseEntity
+                                .status(error.errorType().getHttpStatus())
+                                .body(error.toErrorResponse()),
 
-        if (result.isFailure()) {
-            return ResponseEntity
-                    .status(result.errorType().getHttpStatus())
-                    .body(result.toErrorResponse());
-        }
+                        authenticationTokens -> {
+                            final ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
+                                    accessTokenProperties.cookie(), authenticationTokens.accessToken().value());
 
-        final ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
-                accessTokenProperties.cookie(), result.data().accessToken().value());
+                            final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
+                                    refreshTokenProperties.cookie(), authenticationTokens.refreshToken().value());
 
-        final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
-                refreshTokenProperties.cookie(), result.data().refreshToken().value());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
-                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
-                .body(new SuccessResponse("Logged successfully."));
+                            return ResponseEntity.ok()
+                                    .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                                    .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                                    .body(new SuccessResponse("Logged successfully."));
+                        });
     }
 }

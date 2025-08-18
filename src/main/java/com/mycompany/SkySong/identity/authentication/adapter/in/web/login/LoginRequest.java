@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.authentication.adapter.in.web;
+package com.mycompany.SkySong.identity.authentication.adapter.in.web.login;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
