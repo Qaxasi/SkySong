@@ -27,4 +27,13 @@ public class Role {
     public String toString() {
         return name.name();
     }
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Role r)) return false;
+        return Objects.equals(id, r.id) && name == r.name;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
 }
