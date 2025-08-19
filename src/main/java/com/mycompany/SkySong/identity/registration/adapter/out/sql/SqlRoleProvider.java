@@ -7,6 +7,7 @@ import com.mycompany.SkySong.infrastructure.persistence.sql.RoleDAO;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
@@ -26,15 +27,12 @@ public class SqlRoleProvider implements RoleProvider {
     }
 
     @Override
+    @Cacheable(cacheNames = "roles", key = "#role.name()", unless = "#result == null || #result.isFailure()")
     public Result<Role> provideRole(final UserRole role) {
         try {
             final Optional<Role> optionalRole = roleDAO.findByName(role);
-            if (optionalRole.isPresent()) {
-                return Result.success(optionalRole.get());
-            } else {
-                logger.warn("Role not found in database", context("role", role));
-                return Result.failure("Role not found", ErrorType.ROLE_NOT_FOUND);
-            }
+            return optionalRole.map(Result::success).orElseGet(
+                    () -> Result.failure("Role not found", ErrorType.ROLE_NOT_FOUND));
         } catch (DataAccessException ex) {
             logger.error("Database error while fetching role", context("role", role), ex);
             return Result.failure("Unexpected error occurred while fetching role", ErrorType.DATABASE_ERROR);

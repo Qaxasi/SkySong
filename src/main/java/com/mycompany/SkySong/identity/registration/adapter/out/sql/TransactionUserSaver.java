@@ -32,8 +32,8 @@ class TransactionUserSaver implements UserSaver {
             transactionTemplate.executeWithoutResult(status -> {
                 final int userId = userDAO.save(user);
 
-                for (Role roles : user.getRoles()) {
-                    userDAO.assignRoleToUser(userId, roles.getId());
+                for (Role role : user.getRoles()) {
+                    userDAO.assignRoleToUser(userId, role.getId());
                 }
             });
             return Result.success();

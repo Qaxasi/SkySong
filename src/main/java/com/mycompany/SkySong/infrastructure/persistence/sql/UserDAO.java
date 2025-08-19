@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.infrastructure.persistence.sql;
 
-import com.mycompany.SkySong.identity.domain.User;
+import com.mycompany.SkySong.identity.registration.application.dto.UniquenessStatus;
+import com.mycompany.SkySong.identity.registration.domain.User;
 import com.mycompany.SkySong.identity.registration.application.port.RegistrationUserRepository;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
@@ -27,12 +28,13 @@ public interface UserDAO extends RegistrationUserRepository {
     @SqlQuery("SELECT * FROM users WHERE username = :username")
     Optional<User> findByUsername(@Bind("username") String username);
 
-    @SqlQuery("SELECT EXISTS (SELECT 1 FROM users WHERE username = :username)")
-    boolean existsByUsername(@Bind("username") String username);
-
-    @SqlQuery("SELECT EXISTS (SELECT 1 FROM users WHERE email = :email)")
-    boolean existsByEmail(@Bind("email") String email);
-
+    @SqlQuery("""
+            SELECT
+                EXISTS(SELECT 1 FROM users WHERE username = :username) AS usernameExists,
+                EXISTS(SELECT 1 FROM users WHERE email = :email) AS emailExists
+                   """)
+    UniquenessStatus checkUniqueness(@Bind("username") String username,
+                                     @Bind("email") String email);
     @SqlUpdate("DELETE FROM users WHERE id = :id")
     void delete(@Bind("id") int id);
 
