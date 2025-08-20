@@ -29,6 +29,16 @@ public interface UserDAO extends RegistrationUserRepository {
     Optional<User> findByUsername(@Bind("username") String username);
 
     @SqlQuery("""
+            INSERT INTO user_roles (user_id, role_id)
+            SELECT :userId, r.id
+            FROM roles r
+            WHERE r.name = :roleName
+            ON DUPLICATE KEY UPDATE role_id = role_id 
+            """)
+    int assignRoleToUserByName(@Bind("userId") int userId,
+                               @Bind("roleName") String roleName);
+
+    @SqlQuery("""
             SELECT
                 EXISTS(SELECT 1 FROM users WHERE username = :username) AS usernameExists,
                 EXISTS(SELECT 1 FROM users WHERE email = :email) AS emailExists
