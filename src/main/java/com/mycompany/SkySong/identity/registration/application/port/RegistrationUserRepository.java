@@ -1,6 +1,7 @@
 package com.mycompany.SkySong.identity.registration.application.port;
 
+import com.mycompany.SkySong.identity.registration.application.dto.UniquenessStatus;
+
 public interface RegistrationUserRepository {
-    boolean existsByUsername(String username);
-    boolean existsByEmail(String email);
+    UniquenessStatus checkUniqueness(String username, String email);
 }
