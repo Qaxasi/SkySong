@@ -1,7 +1,10 @@
 package com.mycompany.SkySong.identity.registration.domain;
+
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,14 +13,18 @@ public class User {
     private final String username;
     private final String email;
     private final String password;
-    private final Set<Role> roles;
+    private final Set<UserRole> roles;
+    private final boolean enabled;
+    private final boolean locked;
 
     private User(Builder builder) {
         this.id = builder.id;
         this.username = builder.username;
         this.email = builder.email;
         this.password = builder.password;
-        this.roles = builder.roles;
+        this.roles = Collections.unmodifiableSet(EnumSet.copyOf(builder.roles));
+        this.enabled = builder.enabled;
+        this.locked = builder.locked;
     }
 
     public static class Builder {
@@ -26,7 +33,9 @@ public class User {
         private String username;
         private String email;
         private String password;
-        private final Set<Role> roles = new HashSet<>();
+        private boolean enabled = true;
+        private boolean locked = false;
+        private final Set<UserRole> roles = new HashSet<>();
 
         public Builder withId(Integer id) {
             this.id = id;
@@ -48,13 +57,23 @@ public class User {
             return this;
         }
 
-        public Builder withRole(Role role) {
+        public Builder withRole(UserRole role) {
             this.roles.add(role);
             return this;
         }
 
-        public Builder withRoles(Set<Role> roles) {
+        public Builder withRoles(Set<UserRole> roles) {
             this.roles.addAll(roles);
+            return this;
+        }
+
+        public Builder withEnabled(boolean enabled) {
+            this.enabled = enabled;
+            return this;
+        }
+
+        public Builder withLocked(boolean locked) {
+            this.locked = locked;
             return this;
         }
 
@@ -92,7 +111,13 @@ public class User {
     public String getPassword() {
         return password;
     }
-    public Set<Role> getRoles() {
+    public Set<UserRole> getRoles() {
         return Set.copyOf(roles);
+    }
+    public boolean isEnabled() {
+        return enabled;
+    }
+    public boolean isLocked() {
+        return locked;
     }
 }

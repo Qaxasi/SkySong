@@ -1,51 +1,51 @@
 package com.mycompany.SkySong.identity.registration.application.service;
 
-import com.mycompany.SkySong.identity.registration.application.dto.UserRegistrationInput;
+import com.mycompany.SkySong.identity.registration.application.dto.UserRegistrationData;
+import com.mycompany.SkySong.identity.registration.application.port.PasswordHasher;
+import com.mycompany.SkySong.identity.registration.domain.User;
+import com.mycompany.SkySong.identity.registration.domain.UserRole;
 import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.logging.ApplicationLogger;
-import com.mycompany.SkySong.shared.response.SuccessResponse;
 import com.mycompany.SkySong.identity.registration.application.port.UserSaver;
 import com.mycompany.SkySong.identity.registration.application.validator.UserRegistrationValidator;
 import com.mycompany.SkySong.shared.result.Result;
 
-import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
+import java.util.Set;
 
 public class UserRegistration {
     private final UserRegistrationValidator validation;
-    private final UserFactory userFactory;
+    private final PasswordHasher passwordHasher;
     private final UserSaver userSaver;
-    private final ApplicationLogger logger;
 
     public UserRegistration(final UserRegistrationValidator validation,
-                            final UserFactory userFactory,
-                            final UserSaver userSaver,
-                            final ApplicationLogger logger) {
+                            final PasswordHasher passwordHasher,
+                            final UserSaver userSaver) {
         this.validation = validation;
+        this.passwordHasher = passwordHasher;
         this.userSaver = userSaver;
-        this.userFactory = userFactory;
-        this.logger = logger;
     }
 
-    public Result<SuccessResponse> execute(final UserRegistrationInput input) {
-        return validateRequiredFieldsPresent(input)
-                .flatMap(ignored -> validation.validateFormatAndUniqueness(input)
-                        .onFailure(error -> logger.warn("Registration data validation failed", context("errorType", error.errorType()))))
-                .flatMap(ignored -> userFactory.createUser(input)
-                        .onFailure(error -> logger.warn("User creation failed", context("errorType", error.errorType()))))
-                .flatMap(user -> userSaver.saveUser(user))
-                .map(ignored -> new SuccessResponse("Your registration was successful!"));
+    public Result<Void> register(final UserRegistrationData data) {
+        return validatePresent(data)
+                .flatMap(ignored -> validation.validateFormatAndUniqueness(data))
+                .flatMap(ignored2 -> createUser(data))
+                .flatMap(userSaver::saveUser);
     }
 
+    private Result<User> createUser(final UserRegistrationData data) {
+        final String hashedPassword = passwordHasher.hash(data.password());
+        return new User.Builder()
+                .withUsername(data.username())
+                .withEmail(data.email())
+                .withPassword(hashedPassword)
+                .withRoles(Set.of(UserRole.ROLE_USER))
+                .build();
+    }
 
-
-    private Result<Void> validateRequiredFieldsPresent(final UserRegistrationInput input) {
-        if (input.username() == null || input.username().isBlank()
-                || input.email() == null || input.email().isBlank()
-                || input.password() == null || input.password().isBlank()) {
-            logger.warn("Registration failed - missing required fields");
-            return Result.failure(
-                    "Missing required registration fields",
-                    ErrorType.MISSING_REQUIRED_FIELD);
+    private Result<Void> validatePresent(final UserRegistrationData data) {
+        if (data.username() == null || data.username().isBlank()
+                || data.email() == null || data.email().isBlank()
+                || data.password() == null || data.password().isBlank()) {
+            return Result.failure("Missing registration data", ErrorType.VALIDATION_ERROR);
         }
         return Result.success();
     }

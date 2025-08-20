@@ -1,8 +1,9 @@
 package com.mycompany.SkySong.identity.registration.adapter.in;
 
-import com.mycompany.SkySong.identity.registration.application.dto.UserRegistrationInput;
+import com.mycompany.SkySong.identity.registration.application.dto.UserRegistrationData;
 import com.mycompany.SkySong.identity.registration.application.service.UserRegistration;
 import com.mycompany.SkySong.shared.response.BaseResponse;
+import com.mycompany.SkySong.shared.response.SuccessResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class UserRegistrationController {
 
     @PostMapping("/register")
     public ResponseEntity<BaseResponse> register(@Valid @RequestBody final RegistrationRequest request) {
-        final UserRegistrationInput dto = mapper.toDto(request);
+        final UserRegistrationData dto = mapper.toDto(request);
 
-        return userRegistration.execute(dto)
+        return userRegistration.register(dto)
                 .fold(
                         error -> ResponseEntity
                                 .status(error.errorType().getHttpStatus())
@@ -33,7 +34,7 @@ public class UserRegistrationController {
 
                         success -> ResponseEntity
                                 .status(HttpStatus.CREATED)
-                                .body(success)
+                                .body(new SuccessResponse("Your registration was successful!"))
                 );
     }
 }
