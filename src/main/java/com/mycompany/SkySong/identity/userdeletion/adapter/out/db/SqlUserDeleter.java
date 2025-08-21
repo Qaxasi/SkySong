@@ -29,16 +29,11 @@ class TransactionalUserDeleter implements UserDeletion {
     @Override
     public Result<Void> deleteEverythingById(final int id) {
         try {
-            transactionTemplate.executeWithoutResult(status -> {
-                logger.debug("Deleting roles for user", context("userId", id));
-                userDAO.deleteUserRoles(id);
+        userDAO.delete(id);
 
-                logger.debug("Deleting user", context("userId", id));
-                userDAO.delete(id);
+        return Result.success();
 
-            });
-            return Result.success();
-        } catch (DataAccessException | TransactionException ex) {
+    } catch (DataAccessException ex) {
             logger.error("Database error while deleting user", context("userId", id), ex);
             return Result.failure("An unexpected error occurred while deleting user", ErrorType.DATABASE_ERROR);
         }

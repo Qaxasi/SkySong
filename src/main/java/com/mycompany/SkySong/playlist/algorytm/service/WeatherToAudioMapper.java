@@ -1,10 +1,31 @@
 package com.mycompany.SkySong.domain.music.playlist.algorytm.service;
 
 import com.mycompany.SkySong.domain.music.playlist.algorytm.model.AudioFeatures;
+import com.mycompany.SkySong.weather.domain.model.Weather;
+
+import java.time.Instant;
 
 class WeatherToAudioMapper {
 
-    public AudioFeatures calculateAudioFeatures(double temperature, double humidity, double windSpeed, double cloudiness,
+    public AudioFeatures convertWeatherToFeatures(Weather weather) {
+        boolean isSnowing = weather.snowVolume() > 0.0;
+        boolean isNight = isNight(weather);
+
+        return calculateAudioFeatures(weather.temperature(),
+                weather.humidity(),
+                weather.windSpeed(),
+                weather.cloudCoverage(),
+                weather.rainVolume(),
+                isNight,
+                isSnowing);
+    }
+
+    private boolean isNight(Weather weather) {
+        int now = (int) Instant.now().getEpochSecond();
+        return now < weather.sunrise() || now > weather.sunset();
+    }
+
+    private AudioFeatures calculateAudioFeatures(double temperature, double humidity, double windSpeed, double cloudiness,
                                                 double rainVolume, boolean isNight, boolean isSnowing) {
 
         double tempo = calculateTempo(temperature, humidity, windSpeed, isSnowing);
