@@ -6,7 +6,7 @@ import com.mycompany.SkySong.shared.result.Result;
 import com.mycompany.SkySong.infrastructure.spotify.config.SpotifyRefreshTokenProperties;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -14,20 +14,24 @@ import java.time.Duration;
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
 @Component
-public class TokenStore {
-    private final RedisTemplate<String, String> redisTemplate;
+public class SpotifyTokenStoreRedis {
+
+    private final StringRedisTemplate redisTemplate;
     private final ApplicationLogger logger;
     private final Duration refreshTokenTtl;
 
-    public TokenStore(final RedisTemplate<String, String> redisTemplate,
-                      final SpotifyRefreshTokenProperties properties,
-                      final ApplicationLogger logger) {
-        this.logger = logger;
+    public SpotifyTokenStoreRedis(final StringRedisTemplate redisTemplate,
+                           final SpotifyRefreshTokenProperties properties,
+                           final ApplicationLogger logger) {
         this.redisTemplate = redisTemplate;
+        this.logger = logger;
         this.refreshTokenTtl = properties.ttlAsDuration();
     }
 
     public Result<Void> saveRefreshToken(final int userId, final String refreshToken) {
+        if (userId <= 0) {
+            return Result.failure("Invalid user id", ErrorType.VALIDATION_ERROR)
+        }
         final String redisKey = generateRefreshTokenKey(userId);
 
         try {
@@ -54,6 +58,16 @@ public class TokenStore {
         } catch (DataAccessException ex) {
             logger.error("Failed to fetch refresh token - unexpected Redis error", context("userId", userId), ex);
             return Result.failure("Unexpected error occurred while fetching token", ErrorType.REDIS_INTERNAL_ERROR);
+        }
+    }
+
+    public Result<Void> deleteForUser(final int userId) {
+        if (userId <= 0) {
+            return Result.failure("x", ErrorType.VALIDATION_ERROR); // check
+        }
+
+        try {
+            redisTemplate.delete()
         }
     }
     private String generateRefreshTokenKey(final int userId) {
