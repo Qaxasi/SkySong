@@ -14,17 +14,14 @@ import java.util.Base64;
 
 @Component
 public class SecureOpaqueRefreshTokenGenerator implements RefreshTokenGenerator {
+    private static final Base64.Encoder encoder = Base64.getUrlEncoder().withoutPadding();
     private final SecureRandom random;
-    private final Base64.Encoder encoder;
     private final Clock clock;
     private final Duration refreshTokenTtl;
 
-    public SecureOpaqueRefreshTokenGenerator(final SecureRandom random,
-                                             final Base64.Encoder encoder,
-                                             final Clock clock,
+    public SecureOpaqueRefreshTokenGenerator(final Clock clock,
                                              final RefreshTokenProperties properties) {
-        this.random = random;
-        this.encoder = encoder;
+        this.random = new SecureRandom();
         this.clock = clock;
         this.refreshTokenTtl = properties.duration();
     }
