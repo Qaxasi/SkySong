@@ -6,5 +6,6 @@ import com.mycompany.SkySong.shared.result.Result;
 public interface SessionStore {
     Result<Void> save(String token, Session session);
     Result<Session> findByToken(String token);
-    Result<Void> delete(String token);
+    Result<Void> rotate(String oldToken, String newToken, Session session);
+    Result<Void> deleteAllForUser(int userId);
 }

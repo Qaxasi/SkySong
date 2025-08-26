@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.identity.authentication.application.refresh.service;
 
-import com.mycompany.SkySong.identity.authentication.application.refresh.port.RefreshTokenRotator;
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessTokenClaims;
 import com.mycompany.SkySong.identity.authentication.domain.Session;
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AuthenticationTokens;
@@ -23,20 +22,17 @@ public class TokenRefresher {
     private final AccessTokenGenerator accessTokenGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
     private final SessionStore sessionStore;
-    private final RefreshTokenRotator refreshTokenRotator;
     private final ApplicationLogger logger;
     private final Clock clock;
 
     public TokenRefresher(final AccessTokenGenerator accessTokenGenerator,
                           final RefreshTokenGenerator refreshTokenGenerator,
                           final SessionStore sessionStore,
-                          final RefreshTokenRotator refreshTokenRotator,
                           final ApplicationLogger logger,
                           final Clock clock) {
         this.accessTokenGenerator = accessTokenGenerator;
         this.refreshTokenGenerator = refreshTokenGenerator;
         this.sessionStore = sessionStore;
-        this.refreshTokenRotator = refreshTokenRotator;
         this.logger = logger;
         this.clock = clock;
     }
@@ -90,7 +86,7 @@ public class TokenRefresher {
                                                      final Instant now) {
 
         return Session.create(session.userId(), session.username(), session.roles(), now, newRefreshToken.expiresAt())
-                .flatMap(updatedSession -> refreshTokenRotator.rotate(
+                .flatMap(updatedSession -> sessionStore.rotate(
                         oldRefreshToken, newRefreshToken.value(), updatedSession))
                 .mapError((type, message) -> {
                     if (type == ErrorType.SESSION_NOT_FOUND) {
