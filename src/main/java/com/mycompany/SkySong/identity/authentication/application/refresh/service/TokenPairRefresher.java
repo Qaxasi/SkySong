@@ -14,16 +14,16 @@ import com.mycompany.SkySong.shared.result.Result;
 import java.time.Clock;
 import java.time.Instant;
 
-public class TokenRefresher {
+public class TokenPairRefresher {
     private final AccessTokenGenerator accessTokenGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
     private final SessionStore sessionStore;
     private final Clock clock;
 
-    public TokenRefresher(final AccessTokenGenerator accessTokenGenerator,
-                          final RefreshTokenGenerator refreshTokenGenerator,
-                          final SessionStore sessionStore,
-                          final Clock clock) {
+    public TokenPairRefresher(final AccessTokenGenerator accessTokenGenerator,
+                              final RefreshTokenGenerator refreshTokenGenerator,
+                              final SessionStore sessionStore,
+                              final Clock clock) {
         this.accessTokenGenerator = accessTokenGenerator;
         this.refreshTokenGenerator = refreshTokenGenerator;
         this.sessionStore = sessionStore;

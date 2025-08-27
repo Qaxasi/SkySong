@@ -4,7 +4,7 @@ import com.mycompany.SkySong.infrastructure.http.ErrorView;
 import com.mycompany.SkySong.infrastructure.http.HttpErrorMapper;
 import com.mycompany.SkySong.infrastructure.security.jwt.JwtAccessTokenProperties;
 import com.mycompany.SkySong.infrastructure.security.refreshToken.RefreshTokenProperties;
-import com.mycompany.SkySong.identity.authentication.application.refresh.service.TokenRefresher;
+import com.mycompany.SkySong.identity.authentication.application.refresh.service.TokenPairRefresher;
 import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.infrastructure.http.response.BaseResponse;
@@ -20,21 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth/token")
-public class TokenRefresherController {
+public class TokenPairRefresherController {
 
     private final CookieUtils cookieUtils;
-    private final TokenRefresher tokenRefresher;
+    private final TokenPairRefresher tokenPairRefresher;
     private final JwtAccessTokenProperties accessTokenProperties;
     private final RefreshTokenProperties refreshTokenProperties;
     private final HttpErrorMapper errorMapper;
 
-    public TokenRefresherController(final CookieUtils cookieUtils,
-                                    final TokenRefresher tokenRefresher,
-                                    final JwtAccessTokenProperties accessTokenProperties,
-                                    final RefreshTokenProperties refreshTokenProperties,
-                                    final HttpErrorMapper errorMapper) {
+    public TokenPairRefresherController(final CookieUtils cookieUtils,
+                                        final TokenPairRefresher tokenPairRefresher,
+                                        final JwtAccessTokenProperties accessTokenProperties,
+                                        final RefreshTokenProperties refreshTokenProperties,
+                                        final HttpErrorMapper errorMapper) {
         this.cookieUtils = cookieUtils;
-        this.tokenRefresher = tokenRefresher;
+        this.tokenPairRefresher = tokenPairRefresher;
         this.accessTokenProperties = accessTokenProperties;
         this.refreshTokenProperties = refreshTokenProperties;
         this.errorMapper = errorMapper;
@@ -47,7 +47,7 @@ public class TokenRefresherController {
                         type == ErrorType.COOKIE_NOT_FOUND
                                 ? Result.failure("Invalid refresh token", ErrorType.INVALID_REFRESH_TOKEN)
                                 : Result.failure(message, type))
-                .flatMap(refreshToken -> tokenRefresher.refresh(refreshToken))
+                .flatMap(refreshToken -> tokenPairRefresher.refresh(refreshToken))
                 .fold(
                         error -> errorMapper.from(ErrorView.fromResult(error)),
 
