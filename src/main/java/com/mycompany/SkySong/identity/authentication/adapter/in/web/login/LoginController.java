@@ -1,12 +1,14 @@
 package com.mycompany.SkySong.identity.authentication.adapter.in.web.login;
 
+import com.mycompany.SkySong.infrastructure.http.ErrorView;
+import com.mycompany.SkySong.infrastructure.http.HttpErrorMapper;
 import com.mycompany.SkySong.infrastructure.security.jwt.JwtAccessTokenProperties;
 import com.mycompany.SkySong.infrastructure.security.refreshToken.RefreshTokenProperties;
 import com.mycompany.SkySong.identity.authentication.application.login.dto.LoginCredentials;
 import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
-import com.mycompany.SkySong.shared.response.SuccessResponse;
+import com.mycompany.SkySong.infrastructure.http.response.SuccessResponse;
 import com.mycompany.SkySong.identity.authentication.application.login.service.UserAuthenticator;
-import com.mycompany.SkySong.shared.response.BaseResponse;
+import com.mycompany.SkySong.infrastructure.http.response.BaseResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -19,29 +21,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class LoginController {
-
     private final UserAuthenticator authenticator;
     private final CookieUtils cookieUtils;
     private final JwtAccessTokenProperties accessTokenProperties;
     private final RefreshTokenProperties refreshTokenProperties;
+    private final HttpErrorMapper errorMapper;
 
     public LoginController(final UserAuthenticator authenticator,
                            final CookieUtils cookieUtils,
                            final JwtAccessTokenProperties accessTokenProperties,
-                           final RefreshTokenProperties refreshTokenProperties) {
+                           final RefreshTokenProperties refreshTokenProperties,
+                           final HttpErrorMapper errorMapper) {
         this.authenticator = authenticator;
         this.cookieUtils = cookieUtils;
         this.accessTokenProperties = accessTokenProperties;
         this.refreshTokenProperties = refreshTokenProperties;
+        this.errorMapper = errorMapper;
     }
 
     @PostMapping("/login")
     public ResponseEntity<BaseResponse> login(@Valid @RequestBody final LoginRequest request) {
         return authenticator.login(new LoginCredentials(request.username(), request.password()))
                 .fold(
-                        error -> ResponseEntity
-                                .status(error.errorType().getHttpStatus())
-                                .body(error.toErrorResponse()),
+                        error -> errorMapper.from(ErrorView.fromResult(error)),
 
                         authenticationTokens -> {
                             final ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
