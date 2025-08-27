@@ -60,7 +60,7 @@ public class SessionStoreRedis implements SessionStore {
 
                 if (res == null || res != 1L) {
                     logger.error("Save script returned unexpected result", context("userId", userId));
-                    return Result.failure("Unexpected error occurred while saving session", ErrorType.PERSISTENCE_ERROR);
+                    return Result.failure("Unexpected error occurred while saving session", ErrorType.INTERNAL_SERVER_ERROR);
                 }
 
                 redis.opsForValue().set(tk2uidKey(token), String.valueOf(userId), Duration.ofSeconds(ttl));
@@ -114,7 +114,7 @@ public class SessionStoreRedis implements SessionStore {
 
                         if (res == null) {
                             logger.error("Rotate script returned unexpected error", context("userId", userId));
-                            return Result.failure("Unexpected error occurred while updating session", ErrorType.PERSISTENCE_ERROR);
+                            return Result.failure("Unexpected error occurred while updating session", ErrorType.INTERNAL_SERVER_ERROR);
                         } else if (res == 0L) {
                             logger.warn("Rotation failed - old refresh token not found", context("userId", userId));
                             return Result.failure("Session not found", ErrorType.SESSION_NOT_FOUND);
