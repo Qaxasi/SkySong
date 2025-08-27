@@ -21,7 +21,7 @@ public class ErrorResponse extends BaseResponse {
         super(null);
         this.errorCode = errorCode;
         this.status = status;
-        this.errors = errors;
+        this.errors = errors == null || errors.isEmpty() ? null : Map.copyOf(errors);
     }
     public String getErrorCode() {
         return errorCode;
