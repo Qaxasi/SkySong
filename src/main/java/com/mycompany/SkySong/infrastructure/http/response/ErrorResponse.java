@@ -8,6 +8,7 @@ import java.util.Map;
 public class ErrorResponse extends BaseResponse {
     private final String errorCode;
     private final int status;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private final Map<String, String> errors;
 
     public ErrorResponse(String message, String errorCode, int status) {
