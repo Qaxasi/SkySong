@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.shared.response;
+package com.mycompany.SkySong.infrastructure.http.response;
 
 public abstract class BaseResponse {
     private final String message;

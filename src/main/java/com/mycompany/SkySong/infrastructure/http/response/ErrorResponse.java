@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.shared.response;
+package com.mycompany.SkySong.infrastructure.http.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
