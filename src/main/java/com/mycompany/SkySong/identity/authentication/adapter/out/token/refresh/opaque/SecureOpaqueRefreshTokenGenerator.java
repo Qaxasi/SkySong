@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.authentication.adapter.out.token;
+package com.mycompany.SkySong.identity.authentication.adapter.out.token.refresh.opaque;
 
 import com.mycompany.SkySong.identity.authentication.application.shared.port.RefreshTokenGenerator;
 import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;

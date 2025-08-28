@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.authentication.adapter.out.jwt;
+package com.mycompany.SkySong.identity.authentication.adapter.out.token.access.jwt;
 
 import com.mycompany.SkySong.identity.authentication.application.shared.port.AccessTokenGenerator;
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessToken;

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.authentication.adapter.out.security;
+package com.mycompany.SkySong.identity.authentication.adapter.out.auth.springsecurity;
 
 import com.mycompany.SkySong.infrastructure.security.user.CustomUserDetails;
 import com.mycompany.SkySong.identity.authentication.application.login.dto.AuthenticatedUser;
