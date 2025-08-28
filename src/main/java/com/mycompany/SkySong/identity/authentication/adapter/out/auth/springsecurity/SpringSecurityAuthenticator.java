@@ -12,7 +12,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class SpringSecurityAuthenticator implements Authenticator {
@@ -33,11 +35,11 @@ public class SpringSecurityAuthenticator implements Authenticator {
 
             final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            final List<String> roles = userDetails
+            final Set<String> roles = userDetails
                     .getAuthorities()
                     .stream()
                     .map(GrantedAuthority::getAuthority)
-                    .toList();
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
 
             return Result.success(new AuthenticatedUser(userDetails.id(), userDetails.getUsername(), roles));
         } catch (BadCredentialsException ex) {
