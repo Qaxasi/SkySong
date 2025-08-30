@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.shared.result;
 
 import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.response.ErrorResponse;
 
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -58,6 +58,27 @@ public record Result<T>(
         }
         return this;
     }
+    public Result<T> onFailure(BiConsumer<ErrorType, String> consumer) {
+        if (isFailure()) {
+            consumer.accept(this.errorType, this.errorMessage);
+        }
+        return this;
+    }
+
+    public Result<T> onSuccess(Consumer<T> action) {
+        if (isSuccess()) {
+            action.accept(data());
+        }
+        return this;
+    }
+
+    public Result<T> onSuccess(Runnable action) {
+        if (isSuccess()) {
+            action.run();
+        }
+        return this;
+    }
+
     public <R> R fold(Function<Result<T>, R> onFailure, Function<T, R> onSuccess) {
         if (isSuccess()) {
             return onSuccess.apply(this.data);
@@ -69,9 +90,5 @@ public record Result<T>(
     public Result<T> mapError(BiFunction<ErrorType, String, Result<T>> fn) {
         if (isSuccess()) return this;
         return fn.apply(this.errorType, this.errorMessage);
-    }
-
-    public ErrorResponse toErrorResponse() {
-        return new ErrorResponse(errorMessage, errorType.name(), errorType.getHttpStatus().value());
     }
 }
