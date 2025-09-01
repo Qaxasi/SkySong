@@ -28,6 +28,14 @@ public class RedisScriptsConfig {
     }
 
     @Bean
+    public DefaultRedisScript<Long> deleteUserSessions(final RedisScriptProperties scriptProperties) {
+        final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        script.setLocation(scriptProperties.deleteUserSessions());
+        script.setResultType(Long.class);
+        return script;
+    }
+
+    @Bean
     public StringRedisTemplate stringRedisTemplate(final RedisConnectionFactory cf) {
         return new StringRedisTemplate(cf);
     }
