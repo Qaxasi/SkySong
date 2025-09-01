@@ -14,7 +14,7 @@ public class RedisScriptsConfig {
     @Bean
     public DefaultRedisScript<Long> rotateRefreshTokenScript(final RedisScriptProperties scriptProperties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
-        script.setLocation(scriptProperties.rotate());
+        script.setLocation(scriptProperties.rotateAndUpdate());
         script.setResultType(Long.class);
         return script;
     }
