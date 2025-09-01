@@ -20,8 +20,9 @@ public class SecureOpaqueRefreshTokenGenerator implements RefreshTokenGenerator 
     private final Duration refreshTokenTtl;
 
     public SecureOpaqueRefreshTokenGenerator(final Clock clock,
+                                             final SecureRandom secureRandom,
                                              final RefreshTokenProperties properties) {
-        this.random = new SecureRandom();
+        this.random = secureRandom;
         this.clock = clock;
         this.refreshTokenTtl = properties.duration();
     }
