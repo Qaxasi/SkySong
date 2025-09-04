@@ -19,6 +19,9 @@ public interface UserDAO extends RegistrationUserRepository {
     @GetGeneratedKeys
     int save(@BindBean User user);
 
+    @SqlQuery("SELECT user_key from users WHERE id = :id")
+    Optional<byte[]> getForUser(@Bind("id") int userId);
+
     @SqlQuery("SELECT * FROM users WHERE id = :id")
     Optional<User> findById(@Bind("id") int id);
 
