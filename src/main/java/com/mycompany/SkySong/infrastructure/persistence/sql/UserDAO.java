@@ -16,7 +16,10 @@ import java.util.Optional;
 @Repository
 public interface UserDAO extends RegistrationUserRepository, UserKeyStore {
 
-    @SqlUpdate("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
+    @SqlUpdate("""
+                  INSERT INTO users (username, email, password, enabled, locked, user_key) 
+                  VALUES (:username, :email, :password, :enabled, :locked, :userKey)
+                  """)
     @GetGeneratedKeys
     int save(@BindBean User user);
 
