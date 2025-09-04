@@ -31,7 +31,7 @@ public interface UserDAO extends RegistrationUserRepository {
     @SqlQuery("SELECT * FROM users WHERE username = :username")
     Optional<User> findByUsername(@Bind("username") String username);
 
-    @SqlQuery("""
+    @SqlUpdate("""
             INSERT INTO user_roles (user_id, role_id)
             SELECT :userId, r.id
             FROM roles r
