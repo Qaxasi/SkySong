@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.infrastructure.persistence.sql;
 
+import com.mycompany.SkySong.identity.authentication.application.shared.port.UserKeyStore;
 import com.mycompany.SkySong.identity.registration.application.dto.UniquenessStatus;
 import com.mycompany.SkySong.identity.registration.domain.User;
 import com.mycompany.SkySong.identity.registration.application.port.RegistrationUserRepository;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserDAO extends RegistrationUserRepository {
+public interface UserDAO extends RegistrationUserRepository, UserKeyStore {
 
     @SqlUpdate("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)")
     @GetGeneratedKeys
