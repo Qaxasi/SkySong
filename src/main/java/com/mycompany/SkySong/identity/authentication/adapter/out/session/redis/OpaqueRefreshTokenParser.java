@@ -10,6 +10,9 @@ import java.util.Base64;
 final class OpaqueRefreshTokenParser {
     private OpaqueRefreshTokenParser() {}
     static Result<String> extractUserKeyTag(final String token) {
+        if (token == null || token.isBlank()) {
+            return Result.failure("Invalid refresh token", ErrorType.INVALID_REFRESH_TOKEN);
+        }
         try {
             final byte[] raw = Base64.getUrlDecoder().decode(token);
             if (raw.length != OpaqueRefreshTokenFormat.RAW_TOKEN_LENGTH) {
