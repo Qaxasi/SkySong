@@ -2,6 +2,7 @@ package com.mycompany.SkySong.shared.result;
 
 import com.mycompany.SkySong.shared.error.ErrorType;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -90,5 +91,9 @@ public record Result<T>(
     public Result<T> mapError(BiFunction<ErrorType, String, Result<T>> fn) {
         if (isSuccess()) return this;
         return fn.apply(this.errorType, this.errorMessage);
+    }
+
+    public Optional<T> toOptional() {
+        return isFailure() ? Optional.empty() : Optional.ofNullable(data);
     }
 }
