@@ -96,4 +96,11 @@ public record Result<T>(
     public Optional<T> toOptional() {
         return isFailure() ? Optional.empty() : Optional.ofNullable(data);
     }
+
+    public T getOrThrow() {
+        if (isFailure()) {
+            throw new IllegalStateException("Result is failure");
+        }
+        return data;
+    }
 }
