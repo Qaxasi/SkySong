@@ -103,4 +103,8 @@ public record Result<T>(
         }
         return data;
     }
+
+    public T get() {
+        return data;
+    }
 }
