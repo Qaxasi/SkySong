@@ -7,8 +7,9 @@ import com.mycompany.SkySong.shared.result.Result;
 import java.util.Arrays;
 import java.util.Base64;
 
-class OpaqueRefreshTokenParser {
-    Result<String> extractUserKey(final String token) {
+final class OpaqueRefreshTokenParser {
+    private OpaqueRefreshTokenParser() {}
+    static Result<String> extractUserKeyTag(final String token) {
         try {
             final byte[] raw = Base64.getUrlDecoder().decode(token);
             if (raw.length != OpaqueRefreshTokenFormat.RAW_TOKEN_LENGTH) {
