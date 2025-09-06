@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.identity.registration.domain;
 
+import com.mycompany.SkySong.identity.shared.domain.UserKey;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
@@ -16,6 +17,7 @@ public class User {
     private final Set<UserRole> roles;
     private final boolean enabled;
     private final boolean locked;
+    private final UserKey userKey;
 
     private User(Builder builder) {
         this.id = builder.id;
@@ -25,10 +27,10 @@ public class User {
         this.roles = Collections.unmodifiableSet(EnumSet.copyOf(builder.roles));
         this.enabled = builder.enabled;
         this.locked = builder.locked;
+        this.userKey = builder.userKey;
     }
 
     public static class Builder {
-
         private Integer id;
         private String username;
         private String email;
@@ -36,6 +38,7 @@ public class User {
         private boolean enabled = true;
         private boolean locked = false;
         private final Set<UserRole> roles = new HashSet<>();
+        private UserKey userKey;
 
         public Builder withId(Integer id) {
             this.id = id;
@@ -76,6 +79,10 @@ public class User {
             this.locked = locked;
             return this;
         }
+        public Builder withUserKey(UserKey userKey) {
+            this.userKey = userKey;
+            return this;
+        }
 
         public Result<User> build() {
             return validate()
@@ -84,16 +91,19 @@ public class User {
 
         private Result<Void> validate() {
             if (username == null || username.isBlank()) {
-                return Result.failure("Username cannot be null or empty", ErrorType.VALIDATION_ERROR);
+                return Result.failure("Username cannot be null or empty", ErrorType.INVARIANT_VIOLATION);
             }
             if (email == null || email.isBlank()) {
-                return Result.failure("Email cannot be null or empty", ErrorType.VALIDATION_ERROR);
+                return Result.failure("Email cannot be null or empty", ErrorType.INVARIANT_VIOLATION);
             }
             if (password == null || password.isBlank()) {
-                return Result.failure("Password cannot be null or empty", ErrorType.VALIDATION_ERROR);
+                return Result.failure("Password cannot be null or empty", ErrorType.INVARIANT_VIOLATION);
             }
             if (roles.isEmpty()) {
-                return Result.failure("User must have at least one role", ErrorType.VALIDATION_ERROR);
+                return Result.failure("User must have at least one role", ErrorType.INVARIANT_VIOLATION);
+            }
+            if (userKey == null) {
+                return Result.failure("user key null", ErrorType.INVARIANT_VIOLATION);
             }
             return Result.success();
         }
@@ -119,5 +129,9 @@ public class User {
     }
     public boolean isLocked() {
         return locked;
+    }
+
+    public UserKey getUserKey() {
+        return userKey;
     }
 }
