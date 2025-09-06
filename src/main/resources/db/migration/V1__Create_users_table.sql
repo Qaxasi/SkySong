@@ -4,5 +4,6 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     enabled TINYINT(1) NOT NULL DEFAULT 1,
-    locked TINYINT(1) NOT NULL DEFAULT 0
+    locked TINYINT(1) NOT NULL DEFAULT 0,
+    user_key BINARY(16) NOT NULL
  );
