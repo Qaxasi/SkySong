@@ -1,9 +1,9 @@
 
--- KEYS[1] = tokenSetKey (user set key)
--- KEYS[2] = mainKeyPrefix (user main key prefix)
+-- KEYS[1] = tokenSetKey
+-- KEYS[2] = mainKeyPrefix
 
 if (#KEYS ~= 2) then
-    return redis.error_reply("delete_user_session script: wrong arity")
+    return redis.error_reply("delete_user_sessions: wrong arity")
 end
 
 local tokenSetKey = KEYS[1]
