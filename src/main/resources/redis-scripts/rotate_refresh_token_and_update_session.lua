@@ -2,10 +2,10 @@
 -- KEYS[1] = oldMainKey
 -- KEYS[2] = newMainKey
 -- KEYS[3] = tokensSetKey
--- ARGV[1] = json payload (String)
--- ARGV[2] = ttlSeconds (String/number)
--- ARGV[3] = oldToken (String)
--- ARGV[4] = newToken (String)
+-- ARGV[1] = json payload
+-- ARGV[2] = ttlSeconds
+-- ARGV[3] = oldToken
+-- ARGV[4] = newToken
 
 if (#KEYS ~= 3 or #ARGV ~= 4) then
     return redis.error_reply("rotateRefreshTokenScript: wrong arity")
