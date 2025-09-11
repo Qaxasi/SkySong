@@ -35,7 +35,8 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
 
         final Map<String, Object> extraClaims = Map.of(
                 "username", claims.username(),
-                "roles", claims.roles()
+                "roles", claims.roles(),
+                "session_version", claims.sessionVersion()
         );
 
         final String subject = String.valueOf(claims.userId());
