@@ -17,6 +17,15 @@ public final class VerifiedJwt {
         return claims;
     }
 
+    public String username() {
+        final Object u = claims.get("username");
+        if (u == null) {
+            return "";
+        }
+        final String s = u.toString().trim();
+        return s.trim().isEmpty() ? "" : s;
+    }
+
     public List<String> roles() {
         final Object v = claims.get("roles");
         if (v instanceof List<?> l) {
