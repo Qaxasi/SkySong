@@ -3,8 +3,8 @@ package com.mycompany.SkySong.identity.shared.domain;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
+import java.security.MessageDigest;
 import java.util.Arrays;
-import java.util.Base64;
 
 public final class UserKey {
     public static final int LENGTH = 16;
@@ -22,10 +22,6 @@ public final class UserKey {
     public byte[] bytes() {
         return bytes.clone();
     }
-    public String toBase64Url() {
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
-    }
-
     public static boolean isValid(byte[] b) {
         return b != null && b.length == LENGTH;
     }
@@ -35,7 +31,7 @@ public final class UserKey {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserKey userKey = (UserKey) o;
-        return Arrays.equals(bytes, userKey.bytes);
+        return MessageDigest.isEqual(this.bytes, userKey.bytes);
     }
 
     @Override
