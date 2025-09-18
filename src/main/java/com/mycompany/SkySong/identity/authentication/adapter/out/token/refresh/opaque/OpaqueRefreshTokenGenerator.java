@@ -6,7 +6,6 @@ import com.mycompany.SkySong.infrastructure.security.refreshToken.RefreshTokenPr
 import com.mycompany.SkySong.shared.result.Result;
 import org.springframework.stereotype.Component;
 import java.security.SecureRandom;
-import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
@@ -16,25 +15,20 @@ public class OpaqueRefreshTokenGenerator implements RefreshTokenGenerator {
     private static final int RAW_LENGTH = 32;
     private static final Base64.Encoder encoder = Base64.getUrlEncoder().withoutPadding();
     private final SecureRandom random;
-    private final Clock clock;
     private final Duration refreshTokenTtl;
 
-    public OpaqueRefreshTokenGenerator(final Clock clock,
-                                       final SecureRandom secureRandom,
+    public OpaqueRefreshTokenGenerator(final SecureRandom secureRandom,
                                        final RefreshTokenProperties properties) {
         this.random = secureRandom;
-        this.clock = clock;
         this.refreshTokenTtl = properties.duration();
     }
 
     @Override
-    public Result<RefreshToken> generate() {
+    public Result<RefreshToken> generate(final Instant now) {
         final byte[] rnd = new byte[RAW_LENGTH];
         random.nextBytes(rnd);
 
         final String token = encoder.encodeToString(rnd);
-        final Instant expiresAt = Instant.now(clock).plus(refreshTokenTtl);
-
-        return RefreshToken.build(token, expiresAt);
+        return RefreshToken.createWithTtl(token, refreshTokenTtl, now);
     }
 }
