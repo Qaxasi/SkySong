@@ -13,18 +13,18 @@ public final class RefreshToken {
         this.value =  value;
         this.expiresAt = expiresAt;
     }
-    public static Result<RefreshToken> createWithTtl(final String value, final Duration ttl, final Instant now) {
+    public static Result<RefreshToken> createWithTtl(final String value, final Duration ttl, final Instant issueAt) {
         if (value == null || value.isBlank()) {
-            return Result.failure("refresh token value is null or blank", ErrorType.INVARIANT_VIOLATION);
+            return Result.failure("refresh token value must not be blank", ErrorType.INVARIANT_VIOLATION);
         }
         if (ttl == null || ttl.isZero() || ttl.isNegative()) {
-            return Result.failure("invalid refresh token ttl", ErrorType.INVARIANT_VIOLATION);
+            return Result.failure("refresh token TTL must be positive", ErrorType.INVARIANT_VIOLATION);
         }
-        if (now == null) {
-            return Result.failure("now is null", ErrorType.INVARIANT_VIOLATION);
+        if (issueAt == null) {
+            return Result.failure("issueAt must not be null", ErrorType.INVARIANT_VIOLATION);
         }
 
-        final Instant exp = now.plus(ttl);
+        final Instant exp = issueAt.plus(ttl);
         return Result.success(new RefreshToken(value, exp));
     }
 
