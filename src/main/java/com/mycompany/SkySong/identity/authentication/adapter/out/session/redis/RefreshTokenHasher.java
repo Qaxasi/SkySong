@@ -1,0 +1,34 @@
+package com.mycompany.SkySong.identity.authentication.adapter.out.session.redis;
+
+import com.mycompany.SkySong.shared.error.ErrorType;
+import com.mycompany.SkySong.shared.result.Result;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
+public final class RefreshTokenHasher {
+    private static final Base64.Decoder B64_DEC = Base64.getUrlDecoder();
+    private static final Base64.Encoder B64_ENC = Base64.getUrlEncoder().withoutPadding();
+
+    public Result<String> hash(final String refreshToken) {
+        if (refreshToken == null || refreshToken.isBlank()) {
+            return Result.failure("Refresh token must not be blank", ErrorType.INVALID_REFRESH_TOKEN);
+        }
+
+        final byte[] raw;
+        try {
+            raw = B64_DEC.decode(refreshToken);
+        } catch (IllegalArgumentException ex) {
+            return Result.failure("Invalid refresh token", ErrorType.INVALID_REFRESH_TOKEN);
+        }
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] digest = md.digest(raw);
+            return Result.success(B64_ENC.encodeToString(digest));
+        } catch (NoSuchAlgorithmException ex) {
+            return Result.failure("Internal hashing error", ErrorType.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
