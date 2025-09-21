@@ -13,7 +13,7 @@ public final class RefreshTokenHasher {
 
     public Result<String> hash(final String refreshToken) {
         if (refreshToken == null || refreshToken.isBlank()) {
-            return Result.failure("Refresh token must not be blank", ErrorType.INVALID_REFRESH_TOKEN);
+            return Result.failure("Invalid refresh token", ErrorType.INVALID_REFRESH_TOKEN);
         }
 
         final byte[] raw;
@@ -24,11 +24,11 @@ public final class RefreshTokenHasher {
         }
 
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] digest = md.digest(raw);
+            final MessageDigest md = MessageDigest.getInstance("SHA-256");
+            final byte[] digest = md.digest(raw);
             return Result.success(B64_ENC.encodeToString(digest));
         } catch (NoSuchAlgorithmException ex) {
-            return Result.failure("Internal hashing error", ErrorType.INTERNAL_SERVER_ERROR);
+            return Result.failure("Internal hashing error", ErrorType.INTERNAL_ERROR);
         }
     }
 }
