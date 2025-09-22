@@ -2,6 +2,9 @@ package com.mycompany.SkySong.shared.result;
 
 import com.mycompany.SkySong.shared.error.ErrorType;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -102,6 +105,13 @@ public record Result<T>(
             throw new IllegalStateException("Result is failure");
         }
         return data;
+    }
+
+    public <U> Result<U> propagateFailure() {
+        if (isFailure()) {
+            return Result.failure(errorMessage(), errorType());
+        }
+        throw new IllegalStateException("Cannot propagate success");
     }
 
     public T get() {
