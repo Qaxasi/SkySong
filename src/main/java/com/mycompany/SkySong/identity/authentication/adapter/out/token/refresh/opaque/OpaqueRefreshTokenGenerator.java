@@ -24,11 +24,11 @@ public class OpaqueRefreshTokenGenerator implements RefreshTokenGenerator {
     }
 
     @Override
-    public Result<RefreshToken> generate(final Instant now) {
+    public Result<RefreshToken> generate(final Instant issuedAt) {
         final byte[] rnd = new byte[RAW_LENGTH];
         random.nextBytes(rnd);
 
         final String token = encoder.encodeToString(rnd);
-        return RefreshToken.createWithTtl(token, refreshTokenTtl, now);
+        return RefreshToken.createWithTtl(token, refreshTokenTtl, issuedAt);
     }
 }
