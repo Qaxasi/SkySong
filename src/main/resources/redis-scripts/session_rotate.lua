@@ -12,7 +12,7 @@ local RES_NOT_FOUND = 0
 local RES_CONFLICT = 2
 
 if (#KEYS ~= 3 or #ARGV ~= 4) then
-    return redis.error_reply("rotate_refresh_token_and_update_session: wrong arity")
+    return redis.error_reply("wrong arity")
 end
 
 local oldKey = KEYS[1]
@@ -25,7 +25,7 @@ local newHash = ARGV[4]
 
 ttl = math.floor(ttl)
 if ttl <= 0 then
-    return redis.error_reply("rotateRefreshTokenScript: bad ttl")
+    return redis.error_reply("bad ttl")
 end
 
 if oldKey == newKey then
