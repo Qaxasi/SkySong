@@ -3,7 +3,7 @@
 -- ARGV[1] = keyPrefix
 
 if (#KEYS ~= 1 or #ARGV ~= 1) then
-    return redis.error_reply("delete_user_sessions_script: wrong arity")
+    return redis.error_reply("wrong arity")
 end
 
 local setKey = KEYS[1]
