@@ -5,8 +5,10 @@
 -- ARGV[2] = ttlSeconds
 -- ARGV[3] = hash (Base64URL(SHA-256))
 
+local RES_OK = 1
+
 if (#KEYS ~= 2 or #ARGV ~= 3) then
-    return redis.error_reply("save_session_script: wrong arity")
+    return redis.error_reply("wrong arity")
 end
 
 local mainKey = KEYS[1]
@@ -17,8 +19,8 @@ local ttl = tonumber(ARGV[2]) or 0
 local hash = ARGV[3]
 
 ttl = math.floor(ttl)
-if (ttl <= 0) then
-    return redis.error_reply("save_session_script: invalid ttl")
+if ttl <= 0 then
+    return redis.error_reply("bad ttl")
 end
 
 redis.call('SET', mainKey, payload, 'EX', ttl)
@@ -29,4 +31,4 @@ if (curTtl == -1 or curTtl < ttl) then
     redis.call('EXPIRE', setKey, ttl)
 end
 
-return 1
+return RES_OK
