@@ -4,8 +4,9 @@ import com.mycompany.SkySong.identity.authentication.domain.Session;
 import com.mycompany.SkySong.shared.result.Result;
 
 public interface SessionStore {
-    Result<Void> save(String token, Session session);
-    Result<Session> findByToken(String token);
-    Result<Void> rotate(String oldToken, String newToken, Session session);
-    Result<Void> deleteAllForUser(int userId);
+    Result<Void> save(String userTag, String refreshToken, Session session, long ttlSeconds);
+    Result<Session> findByRefreshToken(String userTag, String token);
+    Result<Void> rotateRefreshToken(String userTag, String oldToken, String newToken,
+                                    Session session, long ttlSeconds);
+    Result<Void> deleteUserSessions(String userTag);
 }
