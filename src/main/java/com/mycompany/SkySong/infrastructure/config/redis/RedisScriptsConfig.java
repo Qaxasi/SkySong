@@ -12,25 +12,25 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 public class RedisScriptsConfig {
 
     @Bean
-    public DefaultRedisScript<Long> rotateRefreshTokenScript(final RedisScriptProperties scriptProperties) {
+    public DefaultRedisScript<Long> rotateRefreshTokenScript(final RedisScriptProperties properties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
-        script.setLocation(scriptProperties.rotateAndUpdate());
+        script.setLocation(properties.rotateRefreshToken());
         script.setResultType(Long.class);
         return script;
     }
 
     @Bean
-    public DefaultRedisScript<Long> saveRefreshTokenScript(final RedisScriptProperties scriptProperties) {
+    public DefaultRedisScript<Long> saveScript(final RedisScriptProperties properties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
-        script.setLocation(scriptProperties.save());
+        script.setLocation(properties.save());
         script.setResultType(Long.class);
         return script;
     }
 
     @Bean
-    public DefaultRedisScript<Long> deleteUserSessions(final RedisScriptProperties scriptProperties) {
+    public DefaultRedisScript<Long> deleteUserSessions(final RedisScriptProperties properties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
-        script.setLocation(scriptProperties.deleteUserSessions());
+        script.setLocation(properties.deleteUserSessions());
         script.setResultType(Long.class);
         return script;
     }

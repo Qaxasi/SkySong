@@ -5,6 +5,6 @@ import org.springframework.core.io.Resource;
 
 @ConfigurationProperties(prefix = "redis.script.session")
 public record RedisScriptProperties(Resource save,
-                                    Resource rotateAndUpdate,
+                                    Resource rotateRefreshToken,
                                     Resource deleteUserSessions) {
 }
