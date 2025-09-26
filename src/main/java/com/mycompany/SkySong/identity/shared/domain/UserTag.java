@@ -6,18 +6,18 @@ import com.mycompany.SkySong.shared.result.Result;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
-public final class UserKey {
+public final class UserTag {
     public static final int LENGTH = 16;
     private final byte[] bytes;
 
-    private UserKey(byte[] b) {
-        this.bytes = b;
+    private UserTag(byte[] b) {
+        this.bytes = b.clone();
     }
-    public static Result<UserKey> of(byte[] b) {
+    public static Result<UserTag> of(byte[] b) {
         if (b == null || b.length != LENGTH) {
-            return Result.failure("invalid user key length", ErrorType.INVARIANT_VIOLATION);
+            return Result.failure("invalid user tag length", ErrorType.INVARIANT_VIOLATION);
         }
-        return Result.success(new UserKey(b.clone()));
+        return Result.success(new UserTag(b));
     }
     public byte[] bytes() {
         return bytes.clone();
@@ -30,8 +30,8 @@ public final class UserKey {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserKey userKey = (UserKey) o;
-        return MessageDigest.isEqual(this.bytes, userKey.bytes);
+        final UserTag other = (UserTag) o;
+        return MessageDigest.isEqual(this.bytes, other.bytes);
     }
 
     @Override
