@@ -16,6 +16,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
+
 @Component
 public class SpringSecurityAuthenticator implements Authenticator {
     private final AuthenticationManager authManager;
@@ -45,12 +47,12 @@ public class SpringSecurityAuthenticator implements Authenticator {
         } catch (BadCredentialsException ex) {
             return Result.failure("Invalid username or password", ErrorType.AUTHENTICATION_FAILED);
         } catch (AuthenticationServiceException ex) {
-            logger.error("Authentication service unavailable", ex);
+            logger.error("Authentication service unavailable", context("op", "spring.authentication"), ex);
             return Result.failure("Authentication service unavailable", ErrorType.PERSISTENCE_ERROR);
         } catch (LockedException | DisabledException ex) {
             return Result.failure("Account is not allowed to sign in", ErrorType.ACCOUNT_RESTRICTED);
         } catch (AuthenticationException ex) {
-            logger.error("Unexpected authentication error", ex);
+            logger.error("Unexpected authentication error", context("op", "spring.authentication"), ex);
             return Result.failure("Authentication failed", ErrorType.AUTHENTICATION_FAILED);
         }
     }
