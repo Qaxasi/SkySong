@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.SkySong.identity.authentication.domain.Session;
 import com.mycompany.SkySong.identity.authentication.application.shared.port.SessionStore;
+import com.mycompany.SkySong.identity.shared.domain.UserTag;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
@@ -13,6 +14,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.con
 
 @Component
 public class RedisSessionStore implements SessionStore {
+    private static final Base64.Encoder B64 = Base64.getUrlEncoder().withoutPadding();
     private final StringRedisTemplate redis;
     private final DefaultRedisScript<Long> saveScript;
     private final DefaultRedisScript<Long> rotateRefreshTokenScript;
@@ -48,7 +51,7 @@ public class RedisSessionStore implements SessionStore {
     }
 
     @Override
-    public Result<Void> save(final String userTag, final String refreshToken, final Session session, final long ttlSeconds) {
+    public Result<Void> save(final UserTag userTag, final String refreshToken, final Session session, final long ttlSeconds) {
         final Result<String> hashRes = refreshTokenHasher.hash(refreshToken);
         if (hashRes.isFailure()) {
             return hashRes.propagateFailure();
@@ -88,7 +91,7 @@ public class RedisSessionStore implements SessionStore {
     }
 
     @Override
-    public Result<Session> findByRefreshToken(final String userTag, final String refreshToken) {
+    public Result<Session> findByRefreshToken(final UserTag userTag, final String refreshToken) {
         final Result<String> hashRes = refreshTokenHasher.hash(refreshToken);
         if (hashRes.isFailure()) {
             return hashRes.propagateFailure();
@@ -109,7 +112,7 @@ public class RedisSessionStore implements SessionStore {
     }
 
     @Override
-    public Result<Void> rotateRefreshToken(final String userTag,
+    public Result<Void> rotateRefreshToken(final UserTag userTag,
                                            final String oldToken,
                                            final String newToken,
                                            final Session session,
@@ -169,7 +172,7 @@ public class RedisSessionStore implements SessionStore {
     }
 
     @Override
-    public Result<Void> deleteUserSessions(final String userTag) {
+    public Result<Void> deleteUserSessions(final UserTag userTag) {
         try {
             final Long deleted = redis.execute(
                     deleteUserSessionsScript,
@@ -188,16 +191,19 @@ public class RedisSessionStore implements SessionStore {
         }
     }
 
-
-    private String sessionKeyPrefix(final String userTag) {
-        return String.format("auth:rt:{%s}:", userTag);
+    private static String tagB64(final UserTag userTag) {
+        return B64.encodeToString(userTag.bytes());
     }
 
-    private String sessionKeyByHash(final String userTag, final String hash) {
+    private String sessionKeyPrefix(final UserTag userTag) {
+        return String.format("auth:rt:{%s}:", tagB64(userTag));
+    }
+
+    private String sessionKeyByHash(final UserTag userTag, final String hash) {
         return sessionKeyPrefix(userTag) + hash;
     }
 
-    private String sessionHashIndexKey(final String userTag) {
+    private String sessionHashIndexKey(final UserTag userTag) {
         return sessionKeyPrefix(userTag) + "hashes";
     }
 
