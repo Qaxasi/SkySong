@@ -5,5 +5,5 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     enabled TINYINT(1) NOT NULL DEFAULT 1,
     locked TINYINT(1) NOT NULL DEFAULT 0,
-    user_key BINARY(16) NOT NULL
+    user_tag BINARY(16) NOT NULL UNIQUE
  );
