@@ -14,7 +14,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,6 @@ import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.con
 
 @Component
 public class RedisSessionStore implements SessionStore {
-    private static final Base64.Encoder B64 = Base64.getUrlEncoder().withoutPadding();
     private final StringRedisTemplate redis;
     private final DefaultRedisScript<Long> saveScript;
     private final DefaultRedisScript<Long> rotateRefreshTokenScript;
@@ -190,13 +188,8 @@ public class RedisSessionStore implements SessionStore {
             return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
         }
     }
-
-    private static String tagB64(final UserTag userTag) {
-        return B64.encodeToString(userTag.bytes());
-    }
-
     private String sessionKeyPrefix(final UserTag userTag) {
-        return String.format("auth:rt:{%s}:", tagB64(userTag));
+        return String.format("auth:rt:{%s}:", userTag.asBase64Url());
     }
 
     private String sessionKeyByHash(final UserTag userTag, final String hash) {
