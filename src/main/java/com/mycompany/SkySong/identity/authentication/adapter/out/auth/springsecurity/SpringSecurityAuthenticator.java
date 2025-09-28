@@ -43,7 +43,7 @@ public class SpringSecurityAuthenticator implements Authenticator {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toCollection(LinkedHashSet::new));
 
-            return Result.success(new AuthenticatedUser(userDetails.id(), userDetails.getUsername(), roles));
+            return Result.success(new AuthenticatedUser(userDetails.getId(), userDetails.getUsername(), roles));
         } catch (BadCredentialsException ex) {
             return Result.failure("Invalid username or password", ErrorType.AUTHENTICATION_FAILED);
         } catch (AuthenticationServiceException ex) {
