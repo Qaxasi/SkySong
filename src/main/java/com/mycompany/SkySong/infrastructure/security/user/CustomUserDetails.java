@@ -1,6 +1,7 @@
-package com.mycompany.SkySong.security.user;
+package com.mycompany.SkySong.infrastructure.security.user;
 
-import com.mycompany.SkySong.identity.domain.User;
+import com.mycompany.SkySong.identity.registration.domain.User;
+import com.mycompany.SkySong.identity.shared.domain.UserId;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,14 +9,13 @@ import java.util.Collection;
 import java.util.Set;
 
 public class CustomUserDetails implements UserDetails {
-
-    private final Integer id;
+    private final UserId id;
     private final String username;
     private final String email;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(Integer id, String username, String email, String password,
+    public CustomUserDetails(UserId id, String username, String email, String password,
                              Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -33,7 +33,7 @@ public class CustomUserDetails implements UserDetails {
                 authorities);
     }
 
-    public Integer id() {
+    public UserId getId() {
         return id;
     }
 
@@ -60,17 +60,14 @@ public class CustomUserDetails implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
     @Override
     public boolean isEnabled() {
         return true;
