@@ -16,7 +16,7 @@ public record UserId(int value) {
 
     public static Result<UserId> of(int value) {
         return (value <= 0) ?
-                Result.failure("UserId must be positive", ErrorType.DATA_INTEGRITY_ERROR)
+                Result.failure("UserId must be positive", ErrorType.INVARIANT_VIOLATION)
                 : Result.success(new UserId(value));
     }
 }
