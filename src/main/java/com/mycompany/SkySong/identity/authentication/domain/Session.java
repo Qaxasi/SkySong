@@ -1,70 +1,66 @@
 package com.mycompany.SkySong.identity.authentication.domain;
 
+import com.mycompany.SkySong.identity.shared.domain.UserId;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
-import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public record Session(
-        int userId,
+        UserId userId,
         String username,
-        List<String> roles,
-        Instant issueAt,
-        Instant refreshTokenExpiresAt) {
+        Set<String> roles,
+        Instant issuedAt,
+        Instant expiresAt,
+        long sessionVersionAtIssue) {
 
-    public static Result<Session> create(final int userId, final String username, final List<String> roles,
-                                         final Instant issueAt, final Instant refreshTokenExpiresAt) {
-        if (userId <= 0) {
-            return Result.failure("user id must be positive", ErrorType.INVARIANT_VIOLATION);
+    public Session {
+        if (userId == null) {
+            throw new IllegalArgumentException("userId must not be blank");
+        }
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException("username must not be null");
+        }
+        if (issuedAt == null) {
+            throw new IllegalArgumentException("issuedAt must not be null");
+        }
+        if (expiresAt == null) {
+            throw new IllegalArgumentException("expiresAt must not be null");
+        }
+        if (!expiresAt.isAfter(issuedAt)) {
+            throw new IllegalArgumentException("expiresAt must be after issuedAt");
+        }
+        if (sessionVersionAtIssue < 0) {
+            throw new IllegalArgumentException("session version must be non-negative");
         }
 
-        if (issueAt == null || refreshTokenExpiresAt == null) {
-            return Result.failure("issueAt/refreshTokenExpiresAt cannot be null", ErrorType.INVARIANT_VIOLATION);
-        }
-
-        if (!refreshTokenExpiresAt.isAfter(issueAt)) {
-            return Result.failure("non-positive TTL", ErrorType.INVARIANT_VIOLATION);
-        }
-
-        if (username == null) {
-            return Result.failure("username cannot be null", ErrorType.INVARIANT_VIOLATION);
-        }
-
-        final String u = username.strip();
-        if (u.isEmpty()) {
-            return Result.failure("username cannot be blank", ErrorType.INVARIANT_VIOLATION);
-        }
-
-        final List<String> safeRoles = (roles == null)
-                ? List.of()
+        username = username.strip();
+        roles = (roles == null)
+                ? Set.of()
                 : roles.stream()
                 .filter(Objects::nonNull)
                 .map(String::strip)
                 .filter(s -> !s.isEmpty())
-                .distinct()
-                .toList();
-
-        return Result.success(new Session(userId, u, List.copyOf(safeRoles), issueAt, refreshTokenExpiresAt));
-
+                .collect(Collectors.toUnmodifiableSet());
     }
-
-    public boolean isRefreshTokenExpired(final Instant now) {
-        return !refreshTokenExpiresAt.isAfter(now);
-    }
-
-    public Duration remainingTtl(final Clock clock) {
-        final Instant now = Instant.now(clock);
-        if (!refreshTokenExpiresAt.isAfter(now)) {
-            return Duration.ZERO;
+    public static Result<Session> create(final UserId userId, final String username, final Set<String> roles,
+                                         final Instant issuedAt, final Instant expiresAt, final long sessionVersionAtIssue) {
+        try {
+            return Result.success(new Session(userId, username, roles, issuedAt, expiresAt, sessionVersionAtIssue));
+        } catch (IllegalArgumentException ex) {
+            return Result.failure(ex.getMessage(), ErrorType.INVARIANT_VIOLATION);
         }
-        return Duration.between(now, refreshTokenExpiresAt);
     }
 
-    public long remainingTtlSeconds(final Clock clock) {
-        return Math.max(remainingTtl(clock).getSeconds(), 0L);
+    public boolean isExpired(final Instant now) {
+        return !expiresAt.isAfter(now);
+    }
+    public long remainingTtlSeconds(final Instant now) {
+        final long s = Duration.between(now, expiresAt).getSeconds();
+        return Math.max(s, 0L);
     }
 }
