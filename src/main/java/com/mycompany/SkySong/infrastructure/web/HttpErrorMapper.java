@@ -30,3 +30,5 @@ public class HttpErrorMapper {
         return (message == null || message.isBlank()) ? "Request could not be processed" : message;
     }
 }
+
+// mapować 4xx ???
