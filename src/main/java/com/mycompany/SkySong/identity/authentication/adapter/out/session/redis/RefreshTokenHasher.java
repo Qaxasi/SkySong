@@ -7,11 +7,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public final class RefreshTokenHasher {
+final class RefreshTokenHasher {
     private static final Base64.Decoder B64_DEC = Base64.getUrlDecoder();
     private static final Base64.Encoder B64_ENC = Base64.getUrlEncoder().withoutPadding();
 
-    public Result<String> hash(final String refreshToken) {
+    Result<String> hash(final String refreshToken) {
         if (refreshToken == null || refreshToken.isBlank()) {
             return Result.failure("Invalid refresh token", ErrorType.INVALID_REFRESH_TOKEN);
         }
