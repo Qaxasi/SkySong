@@ -19,6 +19,8 @@ import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.con
 
 @Component
 public class RedisSessionStore implements SessionStore {
+    private static final int KEY_PREFIX_VERSION = 1;
+
     private final StringRedisTemplate redis;
     private final DefaultRedisScript<Long> saveScript;
     private final DefaultRedisScript<Long> rotateRefreshTokenScript;
@@ -187,7 +189,7 @@ public class RedisSessionStore implements SessionStore {
         }
     }
     private String sessionKeyPrefix(final UserTag userTag) {
-        return String.format("auth:rt:{%s}:", userTag.asBase64Url());
+        return String.format("auth:rt:v%d:{%s}:", KEY_PREFIX_VERSION, userTag.asBase64Url());
     }
 
     private String sessionKeyByHash(final UserTag userTag, final String hash) {
