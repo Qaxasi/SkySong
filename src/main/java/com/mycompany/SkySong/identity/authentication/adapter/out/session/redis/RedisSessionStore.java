@@ -1,7 +1,5 @@
 package com.mycompany.SkySong.identity.authentication.adapter.out.session.redis;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.SkySong.identity.authentication.domain.Session;
 import com.mycompany.SkySong.identity.authentication.application.shared.port.SessionStore;
 import com.mycompany.SkySong.identity.shared.domain.UserTag;
@@ -27,7 +25,7 @@ public class RedisSessionStore implements SessionStore {
     private final DefaultRedisScript<Long> deleteUserSessionsScript;
     private final RefreshTokenHasher refreshTokenHasher;
     private final ApplicationLogger logger;
-    private final ObjectMapper objectMapper;
+    private final SessionJsonSerde serde;
 
     public RedisSessionStore(final StringRedisTemplate redis,
                              @Qualifier("saveScript")
@@ -38,14 +36,14 @@ public class RedisSessionStore implements SessionStore {
                              final DefaultRedisScript<Long> deleteUserSessionsScript,
                              final RefreshTokenHasher refreshTokenHasher,
                              final ApplicationLogger logger,
-                             final ObjectMapper objectMapper) {
+                             final SessionJsonSerde serde) {
         this.redis = redis;
         this.saveScript = saveScript;
         this.rotateRefreshTokenScript = rotateRefreshTokenScript;
         this.deleteUserSessionsScript = deleteUserSessionsScript;
         this.refreshTokenHasher = refreshTokenHasher;
         this.logger = logger;
-        this.objectMapper = objectMapper;
+        this.serde = serde;
     }
 
     @Override
@@ -57,7 +55,7 @@ public class RedisSessionStore implements SessionStore {
 
         final String hash = hashRes.get();
 
-        return serialize(session)
+        return serde.serialize(session)
                 .flatMap(json -> {
             try {
                 final Long res = redis.execute(
@@ -102,7 +100,7 @@ public class RedisSessionStore implements SessionStore {
                 return Result.failure("Invalid refresh token", ErrorType.REFRESH_TOKEN_NOT_FOUND);
             }
 
-            return deserialize(json);
+            return serde.deserialize(json);
         } catch (DataAccessException ex) {
             logger.error("unexpected redis error", context("op", "session.find_by_refresh_token"), ex);
             return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
@@ -128,7 +126,7 @@ public class RedisSessionStore implements SessionStore {
         final String oldTokenHash = oldTokenHashResult.get();
         final String newTokenHash = newTokenHashResult.get();
 
-        return serialize(session)
+        return serde.serialize(session)
                 .flatMap(json -> {
                     try {
                         final Long res = redis.execute(
@@ -198,33 +196,5 @@ public class RedisSessionStore implements SessionStore {
 
     private String sessionHashIndexKey(final UserTag userTag) {
         return sessionKeyPrefix(userTag) + "hashes";
-    }
-
-    private Result<String> serialize(final Session data) {
-        try {
-            return Result.success(objectMapper.writeValueAsString(data));
-        } catch (JsonProcessingException ex) {
-            logger.error("json processing error", context("op", "session.serialize"), ex);
-            return Result.failure("Internal serialization error", ErrorType.SERIALIZATION_ERROR);
-        }
-    }
-
-    private Result<Session> deserialize(final String json) {
-        try {
-            final Session raw = objectMapper.readValue(json, Session.class);
-
-            final Result<Session> rebuilt = Session.create(raw.userId(), raw.username(), raw.roles(), raw.issueAt(), raw.refreshTokenExpiresAt());
-            if (rebuilt.isFailure()) {
-                logger.error("invalid payload in store", context(
-                        Map.of("op", "session.deserialize",
-                                "error", rebuilt.errorMessage())));
-                return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
-            }
-
-            return rebuilt;
-        } catch (JsonProcessingException ex) {
-            logger.error("json processing error", context("op", "session.deserialize"), ex);
-            return Result.failure("Internal deserialization error", ErrorType.DESERIALIZATION_ERROR);
-        }
     }
 }
