@@ -1,7 +1,6 @@
 package com.mycompany.SkySong.identity.authentication.application.shared.dto;
 
+import java.util.Set;
 
-import java.util.List;
-
-public record AccessTokenClaims(int userId, String username, List<String> roles, long sessionVersion) {
+public record AccessTokenClaims(int userId, String username, Set<String> roles, long sessionVersion) {
 }
