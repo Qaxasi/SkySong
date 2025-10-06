@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.identity.authentication.adapter.out.session.redis;
 
+import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
@@ -11,14 +12,10 @@ final class RefreshTokenHasher {
     private static final Base64.Decoder B64_DEC = Base64.getUrlDecoder();
     private static final Base64.Encoder B64_ENC = Base64.getUrlEncoder().withoutPadding();
 
-    Result<String> hash(final String refreshToken) {
-        if (refreshToken == null || refreshToken.isBlank()) {
-            return Result.failure("Invalid refresh token", ErrorType.INVALID_REFRESH_TOKEN);
-        }
-
+    Result<String> hash(final RefreshToken refreshToken) {
         final byte[] raw;
         try {
-            raw = B64_DEC.decode(refreshToken);
+            raw = B64_DEC.decode(refreshToken.value());
         } catch (IllegalArgumentException ex) {
             return Result.failure("Invalid refresh token", ErrorType.INVALID_REFRESH_TOKEN);
         }

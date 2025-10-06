@@ -1,5 +1,6 @@
 package com.mycompany.SkySong.identity.authentication.adapter.out.session.redis;
 
+import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;
 import com.mycompany.SkySong.identity.authentication.domain.Session;
 import com.mycompany.SkySong.identity.authentication.application.shared.port.SessionStore;
 import com.mycompany.SkySong.identity.shared.domain.UserTag;
@@ -49,8 +50,8 @@ public class RedisSessionStore implements SessionStore {
     }
 
     @Override
-    public Result<Void> save(final UserTag userTag, final String refreshToken, final Session session, final long ttlSeconds) {
-        final Result<String> hashRes = refreshTokenHasher.hash(refreshToken);
+    public Result<Void> save(final UserTag userTag, final RefreshToken token, final Session session, final long ttlSeconds) {
+        final Result<String> hashRes = refreshTokenHasher.hash(token);
         if (hashRes.isFailure()) {
             return hashRes.propagateFailure();
         }
@@ -89,7 +90,7 @@ public class RedisSessionStore implements SessionStore {
     }
 
     @Override
-    public Result<Session> findByRefreshToken(final UserTag userTag, final String refreshToken) {
+    public Result<Session> findByRefreshToken(final UserTag userTag, final RefreshToken refreshToken) {
         final Result<String> hashRes = refreshTokenHasher.hash(refreshToken);
         if (hashRes.isFailure()) {
             return hashRes.propagateFailure();
@@ -111,8 +112,8 @@ public class RedisSessionStore implements SessionStore {
 
     @Override
     public Result<Void> rotateRefreshToken(final UserTag userTag,
-                                           final String oldToken,
-                                           final String newToken,
+                                           final RefreshToken oldToken,
+                                           final RefreshToken newToken,
                                            final Session session,
                                            final long ttlSeconds) {
         final Result<String> oldTokenHashResult = refreshTokenHasher.hash(oldToken);
