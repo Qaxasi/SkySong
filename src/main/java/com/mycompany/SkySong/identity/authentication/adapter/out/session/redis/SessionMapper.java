@@ -17,7 +17,7 @@ class SessionMapper {
     static SessionEntry toDto(final Session session) {
         final Set<String> roles = session.roles()
                 .stream()
-                .map(UserRole::name)
+                .map(UserRole::code)
                 .collect(Collectors.toUnmodifiableSet());
 
         return new SessionEntry(
