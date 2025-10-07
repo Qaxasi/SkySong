@@ -3,6 +3,7 @@ package com.mycompany.SkySong.identity.authentication.adapter.out.token.access.j
 import com.mycompany.SkySong.identity.authentication.application.shared.port.AccessTokenGenerator;
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessToken;
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessTokenClaims;
+import com.mycompany.SkySong.identity.shared.domain.UserRole;
 import com.mycompany.SkySong.infrastructure.security.jwt.JwtAccessTokenProperties;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 import java.time.Clock;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenGenerator implements AccessTokenGenerator {
@@ -33,13 +36,16 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
         final Instant now = clock.instant();
         final Instant exp = now.plus(accessTokenExpiration);
 
-        final Map<String, Object> extraClaims = Map.of(
-                "username", claims.username(),
-                "roles", claims.roles(),
-                "session_version", claims.sessionVersion()
-        );
+        final String subject = String.valueOf(claims.userId().asInt());
 
-        final String subject = String.valueOf(claims.userId());
+        final Set<String> roles = claims.roles().stream()
+                .map(UserRole::code)
+                .collect(Collectors.toUnmodifiableSet());
+
+        final Map<String, Object> extraClaims = Map.of(
+                "roles", roles,
+                "authz_version", claims.authzVersion()
+        );
 
         final String jwt = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
