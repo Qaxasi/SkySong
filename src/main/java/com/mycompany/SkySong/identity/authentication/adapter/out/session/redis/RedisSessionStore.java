@@ -21,8 +21,6 @@ import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.con
 
 @Component
 public class RedisSessionStore implements SessionStore {
-    private static final int KEY_PREFIX_VERSION = 1;
-
     private final StringRedisTemplate redis;
     private final DefaultRedisScript<Long> saveScript;
     private final DefaultRedisScript<Long> rotateRefreshTokenScript;
@@ -30,6 +28,7 @@ public class RedisSessionStore implements SessionStore {
     private final RefreshTokenHasher refreshTokenHasher;
     private final ApplicationLogger logger;
     private final SessionJsonSerde serde;
+    private final RedisSessionKeyBuilder key;
 
     public RedisSessionStore(final StringRedisTemplate redis,
                              @Qualifier("saveScript")
@@ -40,7 +39,7 @@ public class RedisSessionStore implements SessionStore {
                              final DefaultRedisScript<Long> deleteUserSessionsScript,
                              final RefreshTokenHasher refreshTokenHasher,
                              final ApplicationLogger logger,
-                             final SessionJsonSerde serde) {
+                             final SessionJsonSerde serde, RedisSessionKeyBuilder key) {
         this.redis = redis;
         this.saveScript = saveScript;
         this.rotateRefreshTokenScript = rotateRefreshTokenScript;
@@ -48,6 +47,7 @@ public class RedisSessionStore implements SessionStore {
         this.refreshTokenHasher = refreshTokenHasher;
         this.logger = logger;
         this.serde = serde;
+        this.key = key;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class RedisSessionStore implements SessionStore {
                 final Long res = redis.execute(
                         saveScript,
                         List.of(
-                                sessionKeyByHash(userTag, hash),
-                                sessionHashIndexKey(userTag)),
+                                key.refreshTokenSessionKey(userTag, hash),
+                                key.refreshTokenHashesKey(userTag)),
                         json,
                         convertToTtlSecondsAsString(ttl),
                         hash);
@@ -100,7 +100,7 @@ public class RedisSessionStore implements SessionStore {
 
         final String hash = hashRes.get();
         try {
-            final String json = redis.opsForValue().get(sessionKeyByHash(userTag, hash));
+            final String json = redis.opsForValue().get(key.refreshTokenSessionKey(userTag, hash));
             if (json == null) {
                 return Result.failure("Invalid refresh token", ErrorType.REFRESH_TOKEN_NOT_FOUND);
             }
@@ -137,9 +137,9 @@ public class RedisSessionStore implements SessionStore {
                         final Long res = redis.execute(
                                 rotateRefreshTokenScript,
                                 List.of(
-                                        sessionKeyByHash(userTag, oldTokenHash),
-                                        sessionKeyByHash(userTag, newTokenHash),
-                                        sessionHashIndexKey(userTag)),
+                                        key.refreshTokenSessionKey(userTag, oldTokenHash),
+                                        key.refreshTokenSessionKey(userTag, newTokenHash),
+                                        key.refreshTokenHashesKey(userTag)),
                                 json,
                                 convertToTtlSecondsAsString(ttl),
                                 oldTokenHash,
@@ -177,8 +177,8 @@ public class RedisSessionStore implements SessionStore {
         try {
             final Long deleted = redis.execute(
                     deleteUserSessionsScript,
-                    List.of(sessionHashIndexKey(userTag)),
-                            sessionKeyPrefix(userTag));
+                    List.of(key.refreshTokenHashesKey(userTag)),
+                            key.prefix(userTag));
 
             if (deleted == null) {
                 logger.error("lua script returned null", context("op", "session.delete_user_sessions"));
@@ -191,18 +191,6 @@ public class RedisSessionStore implements SessionStore {
             return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
         }
     }
-    private String sessionKeyPrefix(final UserTag userTag) {
-        return String.format("auth:rt:v%d:{%s}:", KEY_PREFIX_VERSION, userTag.asBase64Url());
-    }
-
-    private String sessionKeyByHash(final UserTag userTag, final String hash) {
-        return sessionKeyPrefix(userTag) + hash;
-    }
-
-    private String sessionHashIndexKey(final UserTag userTag) {
-        return sessionKeyPrefix(userTag) + "hashes";
-    }
-
     private static String convertToTtlSecondsAsString(final Duration ttl) {
         if (ttl.isNegative() || ttl.isZero()) {
             return "1";
