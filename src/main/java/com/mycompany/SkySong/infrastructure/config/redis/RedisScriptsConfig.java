@@ -20,7 +20,7 @@ public class RedisScriptsConfig {
     }
 
     @Bean
-    public DefaultRedisScript<Long> saveScript(final RedisScriptProperties properties) {
+    public DefaultRedisScript<Long> saveSessionScript(final RedisScriptProperties properties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
         script.setLocation(properties.save());
         script.setResultType(Long.class);

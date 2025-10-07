@@ -31,7 +31,7 @@ public class RedisSessionStore implements SessionStore {
     private final RedisSessionKeyBuilder key;
 
     public RedisSessionStore(final StringRedisTemplate redis,
-                             @Qualifier("saveScript")
+                             @Qualifier("saveSessionScript")
                              final DefaultRedisScript<Long> saveScript,
                              @Qualifier("rotateRefreshTokenScript")
                              final DefaultRedisScript<Long> rotateRefreshTokenScript,
