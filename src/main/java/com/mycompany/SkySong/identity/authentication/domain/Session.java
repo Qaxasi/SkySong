@@ -64,4 +64,14 @@ public final class Session {
     public long authzVersionAtIssue() {
         return authzVersionAtIssue;
     }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "userId=" + userId +
+                ", issuedAt=" + issuedAt +
+                ", expiresAt=" + expiresAt +
+                ", authzVersionAtIssue=" + authzVersionAtIssue +
+                '}';
+    }
 }
