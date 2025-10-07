@@ -5,10 +5,12 @@ import com.mycompany.SkySong.identity.authentication.domain.Session;
 import com.mycompany.SkySong.identity.shared.domain.UserTag;
 import com.mycompany.SkySong.shared.result.Result;
 
+import java.time.Duration;
+
 public interface SessionStore {
-    Result<Void> save(UserTag userTag, RefreshToken token, Session session, long ttlSeconds);
+    Result<Void> save(UserTag userTag, RefreshToken token, Session session, Duration ttlSeconds);
     Result<Session> findByRefreshToken(UserTag userTag, RefreshToken token);
     Result<Void> rotateRefreshToken(UserTag userTag, RefreshToken oldToken, RefreshToken newToken,
-                                    Session session, long ttlSeconds);
+                                    Session session, Duration ttlSeconds);
     Result<Void> deleteUserSessions(UserTag userTag);
 }

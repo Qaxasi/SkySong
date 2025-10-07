@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class RedisSessionStore implements SessionStore {
     }
 
     @Override
-    public Result<Void> save(final UserTag userTag, final RefreshToken token, final Session session, final long ttlSeconds) {
+    public Result<Void> save(final UserTag userTag, final RefreshToken token, final Session session, final Duration ttl) {
         final Result<String> hashRes = refreshTokenHasher.hash(token);
         if (hashRes.isFailure()) {
             return hashRes.propagateFailure();
@@ -67,7 +68,8 @@ public class RedisSessionStore implements SessionStore {
                                 sessionKeyByHash(userTag, hash),
                                 sessionHashIndexKey(userTag)),
                         json,
-                        String.valueOf(ttlSeconds), hash);
+                        convertToTtlSecondsAsString(ttl),
+                        hash);
 
                 if (res == null) {
                     logger.error("lua result is null", context("op", "session.save"));
@@ -115,7 +117,7 @@ public class RedisSessionStore implements SessionStore {
                                            final RefreshToken oldToken,
                                            final RefreshToken newToken,
                                            final Session session,
-                                           final long ttlSeconds) {
+                                           final Duration ttl) {
         final Result<String> oldTokenHashResult = refreshTokenHasher.hash(oldToken);
         if (oldTokenHashResult.isFailure()) {
             return oldTokenHashResult.propagateFailure();
@@ -139,7 +141,7 @@ public class RedisSessionStore implements SessionStore {
                                         sessionKeyByHash(userTag, newTokenHash),
                                         sessionHashIndexKey(userTag)),
                                 json,
-                                String.valueOf(ttlSeconds),
+                                convertToTtlSecondsAsString(ttl),
                                 oldTokenHash,
                                 newTokenHash);
 
@@ -199,5 +201,12 @@ public class RedisSessionStore implements SessionStore {
 
     private String sessionHashIndexKey(final UserTag userTag) {
         return sessionKeyPrefix(userTag) + "hashes";
+    }
+
+    private static String convertToTtlSecondsAsString(final Duration ttl) {
+        if (ttl.isNegative() || ttl.isZero()) {
+            return "1";
+        }
+        return Long.toString(ttl.toSeconds());
     }
 }
