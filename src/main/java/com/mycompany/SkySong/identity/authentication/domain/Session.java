@@ -50,6 +50,10 @@ public final class Session {
         return Math.max(s, 0L);
     }
 
+    public boolean isAuthzVersionOutdated(final long currentAuthzVersion) {
+        return this.authzVersionAtIssue == currentAuthzVersion;
+    }
+
     public UserId userId() {
         return userId;
     }
