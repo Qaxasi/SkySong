@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.infrastructure.persistence.dao.auth;
+package com.mycompany.SkySong.identity.infrastructure.persistence.dao.auth;
 
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
