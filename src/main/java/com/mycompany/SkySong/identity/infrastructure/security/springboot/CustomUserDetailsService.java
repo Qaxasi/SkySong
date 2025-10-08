@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.infrastructure.security.user;
+package com.mycompany.SkySong.identity.infrastructure.security.springboot;
 
 import com.mycompany.SkySong.identity.infrastructure.persistence.dao.auth.UserAuthDAO;
 
