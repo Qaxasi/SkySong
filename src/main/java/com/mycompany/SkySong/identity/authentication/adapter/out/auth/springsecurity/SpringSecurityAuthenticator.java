@@ -1,7 +1,8 @@
 package com.mycompany.SkySong.identity.authentication.adapter.out.auth.springsecurity;
 
-import com.mycompany.SkySong.infrastructure.security.user.CustomUserDetails;
-import com.mycompany.SkySong.identity.authentication.application.login.dto.AuthenticatedUser;
+import com.mycompany.SkySong.identity.shared.domain.UserId;
+import com.mycompany.SkySong.identity.infrastructure.authentication.security.springboot.CustomUserDetails;
+import com.mycompany.SkySong.identity.authentication.application.login.dto.AuthenticatedIdentity;
 import com.mycompany.SkySong.identity.authentication.application.login.port.Authenticator;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.logging.ApplicationLogger;
@@ -9,12 +10,8 @@ import com.mycompany.SkySong.shared.result.Result;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
 
@@ -30,29 +27,27 @@ public class SpringSecurityAuthenticator implements Authenticator {
     }
 
     @Override
-    public Result<AuthenticatedUser> authenticate(final String username, final String password) {
+    public Result<AuthenticatedIdentity> authenticate(final String username, final String password) {
         try {
             final Authentication authentication = authManager.authenticate(
                     UsernamePasswordAuthenticationToken.unauthenticated(username, password));
 
             final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            final Set<String> roles = userDetails
-                    .getAuthorities()
-                    .stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toCollection(LinkedHashSet::new));
+            return UserId.of(userDetails.getId())
+                    .map(AuthenticatedIdentity::new);
 
-            return Result.success(new AuthenticatedUser(userDetails.getId(), userDetails.getUsername(), roles));
-        } catch (BadCredentialsException ex) {
-            return Result.failure("Invalid username or password", ErrorType.AUTHENTICATION_FAILED);
+        } catch (BadCredentialsException | UsernameNotFoundException ex) {
+            return Result.failure("Invalid login credentials", ErrorType.INVALID_LOGIN_CREDENTIALS);
+        } catch (LockedException ex ) {
+            return Result.failure("Account is locked", ErrorType.ACCOUNT_LOCKED);
+        } catch (DisabledException ex) {
+            return Result.failure("Account is disabled", ErrorType.ACCOUNT_DISABLED);
         } catch (AuthenticationServiceException ex) {
-            logger.error("Authentication service unavailable", context("op", "spring.authentication"), ex);
-            return Result.failure("Authentication service unavailable", ErrorType.PERSISTENCE_ERROR);
-        } catch (LockedException | DisabledException ex) {
-            return Result.failure("Account is not allowed to sign in", ErrorType.ACCOUNT_RESTRICTED);
+            logger.error("authentication service error", context("op", "user.authentication"), ex);
+            return Result.failure("Authentication failed", ErrorType.AUTH_SERVICE_ERROR);
         } catch (AuthenticationException ex) {
-            logger.error("Unexpected authentication error", context("op", "spring.authentication"), ex);
+            logger.warn("unexpected authentication error", context("op", "user.authentication"), ex);
             return Result.failure("Authentication failed", ErrorType.AUTHENTICATION_FAILED);
         }
     }
