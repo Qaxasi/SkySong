@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.config.jwt;
+package com.mycompany.SkySong.identity.infrastructure.config;
 
-import com.mycompany.SkySong.config.cookie.CookieProperties;
+import com.mycompany.SkySong.shared.cookie.CookieProperties;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 

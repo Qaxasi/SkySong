@@ -1,12 +1,11 @@
-package com.mycompany.SkySong.config.refreshToken;
+package com.mycompany.SkySong.identity.infrastructure.config;
 
-import com.mycompany.SkySong.config.cookie.CookieProperties;
+import com.mycompany.SkySong.shared.cookie.CookieProperties;
 import jakarta.validation.Valid;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
-
 import java.time.Duration;
 
 @Validated
