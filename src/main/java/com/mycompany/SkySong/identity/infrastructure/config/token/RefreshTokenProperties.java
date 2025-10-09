@@ -4,13 +4,18 @@ import com.mycompany.SkySong.shared.cookie.CookieProperties;
 import jakarta.validation.Valid;
 
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.time.DurationMin;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+
 import java.time.Duration;
 
 @Validated
-@ConfigurationProperties(prefix = "application.security.refresh-token")
+@ConfigurationProperties(prefix = "identity.authentication.refresh-token")
 public record RefreshTokenProperties(
-        @NotNull Duration duration,
-        @Valid CookieProperties cookie) {
+        @NotNull
+        @DurationMin(seconds = 1)
+        Duration duration,
+        @Valid
+        CookieProperties cookie) {
 }
