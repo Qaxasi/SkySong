@@ -1,14 +1,13 @@
 package com.mycompany.SkySong.identity.authentication.adapter.in.web.login;
 
-import com.mycompany.SkySong.infrastructure.http.ErrorView;
-import com.mycompany.SkySong.infrastructure.http.HttpErrorMapper;
-import com.mycompany.SkySong.infrastructure.security.jwt.JwtAccessTokenProperties;
-import com.mycompany.SkySong.infrastructure.security.refreshToken.RefreshTokenProperties;
+import com.mycompany.SkySong.infrastructure.web.ErrorView;
+import com.mycompany.SkySong.infrastructure.web.HttpErrorMapper;
+import com.mycompany.SkySong.identity.infrastructure.config.token.RefreshTokenProperties;
 import com.mycompany.SkySong.identity.authentication.application.login.dto.LoginCredentials;
 import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
-import com.mycompany.SkySong.infrastructure.http.response.SuccessResponse;
+import com.mycompany.SkySong.infrastructure.web.SuccessResponse;
 import com.mycompany.SkySong.identity.authentication.application.login.service.UserAuthenticator;
-import com.mycompany.SkySong.infrastructure.http.response.BaseResponse;
+import com.mycompany.SkySong.infrastructure.web.BaseResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -23,18 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     private final UserAuthenticator authenticator;
     private final CookieUtils cookieUtils;
-    private final JwtAccessTokenProperties accessTokenProperties;
     private final RefreshTokenProperties refreshTokenProperties;
     private final HttpErrorMapper errorMapper;
 
     public LoginController(final UserAuthenticator authenticator,
                            final CookieUtils cookieUtils,
-                           final JwtAccessTokenProperties accessTokenProperties,
                            final RefreshTokenProperties refreshTokenProperties,
                            final HttpErrorMapper errorMapper) {
         this.authenticator = authenticator;
         this.cookieUtils = cookieUtils;
-        this.accessTokenProperties = accessTokenProperties;
         this.refreshTokenProperties = refreshTokenProperties;
         this.errorMapper = errorMapper;
     }
@@ -46,15 +42,13 @@ public class LoginController {
                         error -> errorMapper.from(ErrorView.fromResult(error)),
 
                         authenticationTokens -> {
-                            final ResponseCookie accessTokenCookie = cookieUtils.generateCookie(
-                                    accessTokenProperties.cookie(), authenticationTokens.accessToken().value());
-
                             final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
                                     refreshTokenProperties.cookie(), authenticationTokens.refreshToken().value());
 
                             return ResponseEntity.ok()
-                                    .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
                                     .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                                    .headers(h -> h.setBearerAuth(authenticationTokens.accessToken().value()))
+                                    .header(HttpHeaders.CACHE_CONTROL, "no-store")
                                     .body(new SuccessResponse("Logged successfully."));
                         });
     }
