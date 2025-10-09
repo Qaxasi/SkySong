@@ -1,11 +1,10 @@
 package com.mycompany.SkySong.identity.authentication.adapter.in.web.login;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
 public record LoginRequest(
-        @NotEmpty(message = "The username field cannot be empty")
-        @JsonProperty String username,
-        @NotEmpty(message = "The password field cannot be empty")
-        @JsonProperty String password) {
+        @NotBlank(message = "The username field cannot be blank")
+        String username,
+        @NotBlank(message = "The password field cannot be blank")
+        String password) {
 }
