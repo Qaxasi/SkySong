@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.infrastructure.config.token;
+package com.mycompany.SkySong.identity.infrastructure.authentication.token;
 
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.time.DurationMin;

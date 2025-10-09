@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.identity.infrastructure.config.token;
+package com.mycompany.SkySong.identity.infrastructure.authentication.token;
 
-import com.mycompany.SkySong.shared.cookie.CookieProperties;
+import com.mycompany.SkySong.shared.web.cookie.CookieProperties;
 import jakarta.validation.Valid;
 
 import jakarta.validation.constraints.NotNull;
