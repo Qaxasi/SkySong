@@ -4,7 +4,7 @@ import com.mycompany.SkySong.identity.authentication.application.shared.port.Acc
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessToken;
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessTokenClaims;
 import com.mycompany.SkySong.identity.shared.domain.UserRole;
-import com.mycompany.SkySong.infrastructure.security.jwt.JwtAccessTokenProperties;
+import com.mycompany.SkySong.identity.infrastructure.authentication.config.token.AccessTokenProperties;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
     private final Clock clock;
 
     public JwtTokenGenerator(final SecretKey signKey,
-                             final JwtAccessTokenProperties accessTokenProperties,
+                             final AccessTokenProperties accessTokenProperties,
                              final Clock clock) {
         this.signKey = signKey;
         this.accessTokenExpiration = accessTokenProperties.expiration();
@@ -44,7 +44,7 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
 
         final Map<String, Object> extraClaims = Map.of(
                 "roles", roles,
-                "authz_version", claims.authzVersion()
+                "access_version", claims.accessVersion()
         );
 
         final String jwt = Jwts.builder()
