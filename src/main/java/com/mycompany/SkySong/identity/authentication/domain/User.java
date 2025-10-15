@@ -1,6 +1,8 @@
 package com.mycompany.SkySong.identity.registration.domain;
 
-import com.mycompany.SkySong.identity.shared.domain.UserKey;
+import com.mycompany.SkySong.identity.authentication.domain.UserId;
+import com.mycompany.SkySong.identity.authentication.domain.UserRole;
+import com.mycompany.SkySong.identity.authentication.domain.UserTag;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
@@ -10,14 +12,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User {
-    private final Integer id;
+    private final UserId id;
     private final String username;
     private final String email;
     private final String password;
     private final Set<UserRole> roles;
     private final boolean enabled;
     private final boolean locked;
-    private final UserKey userKey;
+    private final UserTag userTag;
 
     private User(Builder builder) {
         this.id = builder.id;
@@ -27,20 +29,20 @@ public class User {
         this.roles = Collections.unmodifiableSet(EnumSet.copyOf(builder.roles));
         this.enabled = builder.enabled;
         this.locked = builder.locked;
-        this.userKey = builder.userKey;
+        this.userTag = builder.userTag;
     }
 
     public static class Builder {
-        private Integer id;
+        private UserId id;
         private String username;
         private String email;
         private String password;
         private boolean enabled = true;
         private boolean locked = false;
         private final Set<UserRole> roles = new HashSet<>();
-        private UserKey userKey;
+        private UserTag userTag;
 
-        public Builder withId(Integer id) {
+        public Builder withId(UserId id) {
             this.id = id;
             return this;
         }
@@ -79,8 +81,8 @@ public class User {
             this.locked = locked;
             return this;
         }
-        public Builder withUserKey(UserKey userKey) {
-            this.userKey = userKey;
+        public Builder withUserTag(UserTag userTag) {
+            this.userTag = userTag;
             return this;
         }
 
@@ -102,14 +104,14 @@ public class User {
             if (roles.isEmpty()) {
                 return Result.failure("User must have at least one role", ErrorType.INVARIANT_VIOLATION);
             }
-            if (userKey == null) {
-                return Result.failure("user key null", ErrorType.INVARIANT_VIOLATION);
+            if (userTag == null) {
+                return Result.failure("user tag cannot be null", ErrorType.INVARIANT_VIOLATION);
             }
             return Result.success();
         }
     }
 
-    public Integer getId() {
+    public UserId getId() {
         return id;
     }
     public String getUsername() {
@@ -130,8 +132,7 @@ public class User {
     public boolean isLocked() {
         return locked;
     }
-
-    public UserKey getUserKey() {
-        return userKey;
+    public UserTag getUserTag() {
+        return userTag;
     }
 }

@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     enabled TINYINT(1) NOT NULL DEFAULT 1,
     locked TINYINT(1) NOT NULL DEFAULT 0,
-    user_tag CHAR(22) NOT NULL UNIQUE,
+    user_tag VARCHAR(22) NOT NULL UNIQUE,
     access_version INT NOT NULL DEFAULT 1,
 );
