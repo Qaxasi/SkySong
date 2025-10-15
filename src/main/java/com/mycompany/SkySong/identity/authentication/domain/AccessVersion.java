@@ -29,9 +29,8 @@ public final class AccessVersion {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AccessVersion that = (AccessVersion) o;
-        return value == that.value;
+        if (!(o instanceof AccessVersion av)) return false;
+        return value == av.value;
     }
 
     @Override
