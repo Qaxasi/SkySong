@@ -1,40 +1,32 @@
-package com.mycompany.SkySong.identity.shared.domain;
+package com.mycompany.SkySong.identity.authentication.domain;
 
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
-import java.util.Arrays;
 import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public enum UserRole {
-    USER("USER", "ROLE_USER"),
-    ADMIN("ADMIN", "ROLE_ADMIN");
+    USER, ADMIN;
 
-    private static final Map<String, UserRole> BY_CODE =
-            Arrays.stream(values()).collect(Collectors.toUnmodifiableMap(UserRole::code, r -> r));
-
-    private final String code;
-    private final String authority;
-
-    UserRole(String code, String authority) {
-        this.code = code;
-        this.authority = authority;
-    }
-    public static Result<UserRole> fromCode(String code) {
-        if (code == null || code.isBlank() || code.trim().isBlank()) {
-            return Result.failure("Role code must not be null or blank", ErrorType.INVARIANT_VIOLATION);
+    public static Result<UserRole> fromCode(final String rawCode) {
+        if (rawCode == null || rawCode.isBlank()) {
+            return Result.failure("Role code must not be null or blank", ErrorType.VALIDATION_ERROR);
         }
-        final UserRole role = BY_CODE.get(code.trim().toUpperCase(Locale.ROOT));
-        return Result.success(role);
+
+        final String normalizedCode = rawCode.trim().toUpperCase(Locale.ROOT);
+
+        try {
+            return Result.success(UserRole.valueOf(normalizedCode));
+        } catch (IllegalArgumentException ex) {
+            return Result.failure("Unknown role code", ErrorType.VALIDATION_ERROR);
+        }
     }
 
     public String code() {
-        return code;
+        return name();
     }
 
-    public String authority() {
-        return authority;
+    public String toAuthority() {
+        return "ROLE_" + name();
     }
 }
