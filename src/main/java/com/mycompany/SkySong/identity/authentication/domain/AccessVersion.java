@@ -17,6 +17,10 @@ public final class AccessVersion {
         return Result.success(new AccessVersion(value));
     }
 
+    public static AccessVersion initial() {
+        return new AccessVersion(INITIAL_VALUE);
+    }
+
     public int value() {
         return value;
     }
