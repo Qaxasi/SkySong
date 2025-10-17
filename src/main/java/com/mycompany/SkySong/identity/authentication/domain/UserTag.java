@@ -13,7 +13,7 @@ public final class UserTag {
 
     private final String value;
     private UserTag(final String value) {
-        this.value = value;
+        this.value = Objects.requireNonNull(value, "UserTag.value must not be null");
     }
 
     public static Result<UserTag> of(final String rawUserTag) {
@@ -31,10 +31,12 @@ public final class UserTag {
     }
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserTag other)) return false;
-        return Objects.equals(this.value, other.value);
+        return o instanceof UserTag other && value.equals(other.value);
     }
-    @Override public int hashCode() { return value.hashCode(); }
-    @Override public String toString() { return value; }
+    @Override public int hashCode() {
+        return value.hashCode();
+    }
+    @Override public String toString() {
+        return value;
+    }
 }
