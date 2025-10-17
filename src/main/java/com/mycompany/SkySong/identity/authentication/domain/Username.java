@@ -43,7 +43,7 @@ public final class Username {
     }
     @Override
     public boolean equals(final Object o) {
-        return o instanceof Username u && value.equals(u.value);
+        return this == o || (o instanceof Username other && value.equals(other.value));
     }
     @Override
     public int hashCode() {

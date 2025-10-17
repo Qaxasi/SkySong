@@ -31,7 +31,7 @@ public final class UserTag {
     }
     @Override
     public boolean equals(final Object o) {
-        return o instanceof UserTag other && value.equals(other.value);
+        return this == o || (o instanceof UserTag other && value.equals(other.value));
     }
     @Override public int hashCode() {
         return value.hashCode();
