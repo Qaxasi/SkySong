@@ -4,6 +4,7 @@ import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public final class Username {
@@ -15,7 +16,7 @@ public final class Username {
 
     private final String value;
     private Username(final String value) {
-        this.value = value;
+        this.value = Objects.requireNonNull(value, "Username.value must not be null");
     }
 
     public static Result<Username> of(final String rawUsername) {
