@@ -33,9 +33,7 @@ public final class AccessVersion {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AccessVersion av)) return false;
-        return value == av.value;
+        return this == o || (o instanceof AccessVersion other && value == other.value);
     }
 
     @Override
@@ -45,8 +43,6 @@ public final class AccessVersion {
 
     @Override
     public String toString() {
-        return "AccessVersion{" +
-                "value=" + value +
-                '}';
+        return String.valueOf(value);
     }
 }
