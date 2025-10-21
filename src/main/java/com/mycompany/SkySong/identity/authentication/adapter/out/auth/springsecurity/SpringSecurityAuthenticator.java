@@ -43,7 +43,7 @@ public class SpringSecurityAuthenticator implements Authenticator {
             return Result.failure("Account is disabled", ErrorType.ACCOUNT_DISABLED);
         } catch (AuthenticationServiceException ex) {
             log.error("authentication service error {}", kv("op", "user.authentication"), ex);
-            return Result.failure("Authentication failed", ErrorType.AUTH_SERVICE_ERROR);
+            return Result.failure("Authentication failed", ErrorType.AUTHENTICATION_SERVICE_ERROR);
         } catch (AuthenticationException ex) {
             log.warn("unexpected authentication error {}", kv("op", "user.authentication"), ex);
             return Result.failure("Authentication failed", ErrorType.AUTHENTICATION_FAILED);
