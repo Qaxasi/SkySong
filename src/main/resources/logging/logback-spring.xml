@@ -1,0 +1,6 @@
+<appender name="CONSOLE_TEXT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+        <pattern>%d %-5level %logger{36} reqId=%X{requestId} - %msg%n</pattern>
+    </encoder>
+</appender>
+<root level="INFO"><appender-ref ref="CONSOLE_TEXT"/></root>
