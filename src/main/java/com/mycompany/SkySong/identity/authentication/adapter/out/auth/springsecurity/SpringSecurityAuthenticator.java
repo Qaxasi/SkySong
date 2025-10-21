@@ -1,29 +1,27 @@
 package com.mycompany.SkySong.identity.authentication.adapter.out.auth.springsecurity;
 
-import com.mycompany.SkySong.identity.shared.domain.UserId;
+import com.mycompany.SkySong.identity.authentication.domain.UserId;
 import com.mycompany.SkySong.identity.infrastructure.authentication.security.springboot.CustomUserDetails;
 import com.mycompany.SkySong.identity.authentication.application.login.dto.AuthenticatedIdentity;
 import com.mycompany.SkySong.identity.authentication.application.login.port.Authenticator;
 import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
+import static net.logstash.logback.argument.StructuredArguments.*;
 
 @Component
+@Slf4j
 public class SpringSecurityAuthenticator implements Authenticator {
     private final AuthenticationManager authManager;
-    private final ApplicationLogger logger;
 
-    public SpringSecurityAuthenticator(final AuthenticationManager authManager,
-                                       final ApplicationLogger logger) {
+    public SpringSecurityAuthenticator(final AuthenticationManager authManager) {
         this.authManager = authManager;
-        this.logger = logger;
     }
 
     @Override
@@ -44,10 +42,10 @@ public class SpringSecurityAuthenticator implements Authenticator {
         } catch (DisabledException ex) {
             return Result.failure("Account is disabled", ErrorType.ACCOUNT_DISABLED);
         } catch (AuthenticationServiceException ex) {
-            logger.error("authentication service error", context("op", "user.authentication"), ex);
+            log.error("authentication service error {}", kv("op", "user.authentication"), ex);
             return Result.failure("Authentication failed", ErrorType.AUTH_SERVICE_ERROR);
         } catch (AuthenticationException ex) {
-            logger.warn("unexpected authentication error", context("op", "user.authentication"), ex);
+            log.warn("unexpected authentication error {}", kv("op", "user.authentication"), ex);
             return Result.failure("Authentication failed", ErrorType.AUTHENTICATION_FAILED);
         }
     }
