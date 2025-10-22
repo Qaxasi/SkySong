@@ -45,7 +45,16 @@ public final class RefreshToken {
     }
 
     @Override
+    public boolean equals(final Object o) {
+        return this == o || (o instanceof RefreshToken rt && value.equals(rt.value));
+    }
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+    @Override
     public String toString() {
         return "Refresh token(*****)";
     }
 }
+
