@@ -39,11 +39,9 @@ public final class RefreshToken {
         return !expiresAt.isAfter(now);
     }
 
-    public long ttlSeconds(final Instant now) {
-        long s = Duration.between(now, expiresAt).getSeconds();
-        return Math.max(s, 0L);
+    public long secondsUntilExpiration(final Instant now) {
+        return Duration.between(now, expiresAt).getSeconds();
     }
-
     @Override
     public boolean equals(final Object o) {
         return this == o || (o instanceof RefreshToken rt && value.equals(rt.value));
