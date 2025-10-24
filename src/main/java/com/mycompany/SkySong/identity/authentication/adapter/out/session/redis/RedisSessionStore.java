@@ -3,10 +3,11 @@ package com.mycompany.SkySong.identity.authentication.adapter.out.session.redis;
 import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;
 import com.mycompany.SkySong.identity.authentication.domain.Session;
 import com.mycompany.SkySong.identity.authentication.application.shared.port.SessionStore;
-import com.mycompany.SkySong.identity.shared.domain.UserTag;
+import com.mycompany.SkySong.identity.authentication.domain.UserTag;
 import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -15,18 +16,17 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 
-import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
+import static net.logstash.logback.argument.StructuredArguments.kv;
 
 @Component
 public class RedisSessionStore implements SessionStore {
+    private static final Logger log = LoggerFactory.getLogger(RedisSessionStore.class);
     private final StringRedisTemplate redis;
     private final DefaultRedisScript<Long> saveScript;
     private final DefaultRedisScript<Long> rotateRefreshTokenScript;
     private final DefaultRedisScript<Long> deleteUserSessionsScript;
     private final RefreshTokenHasher refreshTokenHasher;
-    private final ApplicationLogger logger;
     private final SessionJsonSerde serde;
     private final RedisSessionKeyBuilder key;
 
@@ -38,14 +38,12 @@ public class RedisSessionStore implements SessionStore {
                              @Qualifier("deleteUserSessionsScript")
                              final DefaultRedisScript<Long> deleteUserSessionsScript,
                              final RefreshTokenHasher refreshTokenHasher,
-                             final ApplicationLogger logger,
                              final SessionJsonSerde serde, RedisSessionKeyBuilder key) {
         this.redis = redis;
         this.saveScript = saveScript;
         this.rotateRefreshTokenScript = rotateRefreshTokenScript;
         this.deleteUserSessionsScript = deleteUserSessionsScript;
         this.refreshTokenHasher = refreshTokenHasher;
-        this.logger = logger;
         this.serde = serde;
         this.key = key;
     }
@@ -72,20 +70,20 @@ public class RedisSessionStore implements SessionStore {
                         hash);
 
                 if (res == null) {
-                    logger.error("lua result is null", context("op", "session.save"));
+                    log.error("lua result is null {}", kv("op", "session.save"));
                     return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
                 }
                 if (res == 1L) {
                     return Result.success();
                 }
 
-                logger.error("unexpected lua result", context(
-                        Map.of("op", "session.save",
-                                "response", res)));
+                log.error("unexpected lua result {} {}",
+                      kv("op", "session.save"),
+                      kv("response", res));
                 return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
 
             } catch (DataAccessException ex) {
-                logger.error("unexpected redis error", context("op", "session.save"), ex);
+                log.error("unexpected redis error {}", kv("op", "session.save"));
                 return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
             }
         });
@@ -107,7 +105,7 @@ public class RedisSessionStore implements SessionStore {
 
             return serde.deserialize(json);
         } catch (DataAccessException ex) {
-            logger.error("unexpected redis error", context("op", "session.find_by_refresh_token"), ex);
+            log.error("unexpected redis error {}", kv("op", "session.find_by_refresh_token"), ex);
             return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
         }
     }
@@ -146,7 +144,7 @@ public class RedisSessionStore implements SessionStore {
                                 newTokenHash);
 
                         if (res == null) {
-                            logger.error("lua result is null", context("op", "session.rotate_refresh_token"));
+                            log.error("lua result is null {}", kv("op", "session.rotate_refresh_token"));
                             return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
                         }
                         if (res == 1L) {
@@ -159,14 +157,14 @@ public class RedisSessionStore implements SessionStore {
                             return Result.failure("Refresh token rotation conflict", ErrorType.CONFLICT);
                         }
 
-                        logger.error("unexpected lua result",
-                                context(Map.of("op", "session.rotate_refresh_token",
-                                        "response", res)));
+                        log.error("unexpected lua result {} {}",
+                                kv("op", "session.rotate_refresh_token"),
+                                kv("response", res));
 
                         return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
 
                     } catch (DataAccessException ex) {
-                        logger.error("unexpected redis error", context("op", "session.rotate_refresh_token"), ex);
+                        log.error("unexpected redis error {}", kv("op", "session.rotate_refresh_token"), ex);
                         return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
                     }
                 });
@@ -181,13 +179,13 @@ public class RedisSessionStore implements SessionStore {
                             key.prefix(userTag));
 
             if (deleted == null) {
-                logger.error("lua script returned null", context("op", "session.delete_user_sessions"));
+                log.error("lua script returned null {}", kv("op", "session.delete_user_sessions"));
                 return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
             }
 
             return Result.success();
         } catch (DataAccessException ex) {
-            logger.error("unexpected redis error", context("op", "session.delete_user_sessions"), ex);
+            log.error("unexpected redis error {}", kv("op", "session.delete_user_sessions"), ex);
             return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
         }
     }
