@@ -4,3 +4,6 @@ import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;
 
 public record AuthenticationTokens(AccessToken accessToken, RefreshToken refreshToken) {
 }
+
+// to String ?
+
