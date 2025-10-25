@@ -31,5 +31,17 @@ public class CookieUtils {
                 .sameSite(cookieProperties.sameSite())
                 .build();
     }
+    public ResponseCookie generateCookie(final CookieProperties properties, final String value, final Duration ttl) {
+        final long seconds = (ttl == null) ? 0 : ttl.getSeconds();
+        final int maxAge = Math.toIntExact(seconds);
+
+        return ResponseCookie.from(properties.name(), value)
+                .path(properties.path())
+                .maxAge(maxAge)
+                .httpOnly(properties.httpOnly())
+                .secure(properties.secure())
+                .sameSite(properties.sameSite())
+                .build();
+    }
 }
 
