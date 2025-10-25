@@ -1,19 +1,24 @@
-package com.mycompany.SkySong.shared.cookie;
+package com.mycompany.SkySong.infrastructure.cookie;
 
+import com.mycompany.SkySong.shared.web.cookie.CookieProperties;
+import com.mycompany.SkySong.shared.error.ErrorType;
+import com.mycompany.SkySong.shared.result.Result;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
+import java.time.Duration;
+
 @Component
 public class CookieUtils {
-    public String getCookieValue(HttpServletRequest request, String cookieName) {
-        Cookie cookie = WebUtils.getCookie(request, cookieName);
-        if (cookie != null) {
-            return cookie.getValue();
+    public Result<String> getCookieValue(final HttpServletRequest request, final String cookieName) {
+        final Cookie cookie = WebUtils.getCookie(request, cookieName);
+        if (cookie == null || cookie.getValue() == null || cookie.getValue().isBlank()) {
+            return Result.failure("Cookie is missing or empty", ErrorType.COOKIE_NOT_FOUND);
         } else {
-            return null;
+            return Result.success(cookie.getValue());
         }
     }
 
