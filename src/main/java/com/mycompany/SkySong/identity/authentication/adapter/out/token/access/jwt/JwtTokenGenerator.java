@@ -3,7 +3,7 @@ package com.mycompany.SkySong.identity.authentication.adapter.out.token.access.j
 import com.mycompany.SkySong.identity.authentication.application.shared.port.AccessTokenGenerator;
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessToken;
 import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessTokenClaims;
-import com.mycompany.SkySong.identity.shared.domain.UserRole;
+import com.mycompany.SkySong.identity.authentication.domain.UserRole;
 import com.mycompany.SkySong.identity.infrastructure.authentication.config.token.AccessTokenProperties;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
@@ -56,6 +56,6 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
                 .signWith(signKey, SignatureAlgorithm.HS256)
                 .compact();
 
-        return new AccessToken(jwt);
+        return new AccessToken(jwt, exp);
     }
 }
