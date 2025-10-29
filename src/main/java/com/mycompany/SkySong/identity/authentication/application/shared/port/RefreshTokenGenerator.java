@@ -6,5 +6,5 @@ import com.mycompany.SkySong.shared.result.Result;
 import java.time.Instant;
 
 public interface RefreshTokenGenerator {
-    Result<RefreshToken> generate(Instant now);
+    Result<RefreshToken> generate(Instant issuedAt);
 }
