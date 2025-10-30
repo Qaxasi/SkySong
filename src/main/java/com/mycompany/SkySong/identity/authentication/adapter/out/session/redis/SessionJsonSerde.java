@@ -4,21 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.SkySong.identity.authentication.domain.Session;
 import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.logging.ApplicationLogger;
 import com.mycompany.SkySong.shared.result.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
-import static com.mycompany.SkySong.shared.logging.ApplicationLogger.Context.context;
+import static net.logstash.logback.argument.StructuredArguments.kv;
 
 class SessionJsonSerde {
+    private static final Logger log = LoggerFactory.getLogger(SessionJsonSerde.class);
     private final ObjectMapper objectMapper;
-    private final ApplicationLogger logger;
 
-    SessionJsonSerde(final ObjectMapper objectMapper,
-                     final ApplicationLogger logger) {
+    SessionJsonSerde(final ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        this.logger = logger;
     }
 
     Result<String> serialize(final Session session) {
@@ -26,7 +23,8 @@ class SessionJsonSerde {
             final SessionEntry entry = SessionMapper.toDto(session);
             return Result.success(objectMapper.writeValueAsString(entry));
         } catch (JsonProcessingException ex) {
-            logger.error("session serialization failed", context("op", "session.serialize"), ex);
+            log.error("session serialization failed {}",
+                    kv("op", "session.serialize"), ex);
             return Result.failure("Internal serialization error", ErrorType.SERIALIZATION_ERROR);
         }
     }
@@ -36,14 +34,15 @@ class SessionJsonSerde {
             final SessionEntry entry = objectMapper.readValue(json, SessionEntry.class);
             final Result<Session> mapperResult = SessionMapper.toDomain(entry);
             if (mapperResult.isFailure()) {
-                logger.error("failed to map session entry", context(
-                        Map.of("op", "session.deserialize",
-                                "error", mapperResult.errorMessage())));
-                return Result.failure("Internal storage error", ErrorType.PERSISTENCE_ERROR);
+                log.error("failed to map session entry {} {}",
+                        kv("op", "session.deserialize"),
+                        kv("error", mapperResult.errorMessage()));
+                return Result.failure("Storage session is invalid", ErrorType.DATA_INTEGRITY_ERROR);
             }
             return mapperResult;
         } catch (JsonProcessingException ex) {
-            logger.error("session deserialization failed", context("op", "session.deserialize"), ex);
+            log.error("session deserialization failed {}",
+                    kv("op", "session.deserialize"), ex);
             return Result.failure("Internal deserialization error", ErrorType.DESERIALIZATION_ERROR);
         }
     }
