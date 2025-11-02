@@ -1,6 +1,5 @@
 package com.mycompany.SkySong.identity.authentication.adapter.in.web.login;
 
-import com.mycompany.SkySong.infrastructure.web.contract.ErrorResponse;
 import com.mycompany.SkySong.infrastructure.web.HttpErrorMapper;
 import com.mycompany.SkySong.infrastructure.web.contract.ResponsePayload;
 import com.mycompany.SkySong.shared.error.ErrorType;
@@ -22,7 +21,7 @@ public class LoginControllerAdvice {
             MethodArgumentNotValidException.class,
             HttpMessageNotReadableException.class
     })
-    public ResponseEntity<ResponsePayload<ErrorResponse>> maskLoginInputErrors() {
+    public ResponseEntity<ResponsePayload<AuthResponse>> maskLoginInputErrors() {
         return mapper.failure("Invalid login credentials", ErrorType.INVALID_LOGIN_CREDENTIALS);
     }
 }
