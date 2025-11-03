@@ -35,4 +35,12 @@ public record Failure<T>(ErrorType errorType, String message,
         map.putAll(extra);
         return new Failure<>(errorType, message, Map.copyOf(map));
     }
+
+    public Failure<T> withType(ErrorType newType) {
+        return new Failure<>(newType, message, details);
+    }
+
+    public Failure<T> withMessage(String newMessage) {
+        return new Failure<>(errorType, newMessage, details);
+    }
 }
