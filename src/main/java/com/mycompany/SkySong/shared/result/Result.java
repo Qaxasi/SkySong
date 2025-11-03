@@ -2,119 +2,79 @@ package com.mycompany.SkySong.shared.result;
 
 import com.mycompany.SkySong.shared.error.ErrorType;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.*;
 
-public record Result<T>(
-        T data,
-        String errorMessage,
-        boolean isSuccessful,
-        ErrorType errorType) {
+public sealed interface Result<T> permits Success, Failure {
 
-    public static <T> Result<T> success(T data) {
-        return new Result<>(data, null, true, null);
+    static <T> Result<T> success(T data) { return new Success<>(data); }
+    static <T> Result<T> failure(String message, ErrorType errorType) {
+        return new Failure<>(errorType, message, Map.of());
     }
 
-    public static Result<Void> success() {
-        return new Result<>(null, null, true, null);
-    }
+    boolean isSuccess();
+    default boolean isFailure() { return !isSuccess(); }
 
-    public static <T> Result<T> failure(String errorMessage, ErrorType errorType) {
-        return new Result<>(null, errorMessage, false, errorType);
-    }
-    public <U> Result<U> mapFailure() {
-        if (isSuccess()) throw new IllegalStateException("Cannot map success as failure");
-        return Result.failure(this.errorMessage(), this.errorType());
-    }
+    <R> R fold(Function<? super Failure<T>, ? extends R> onFailure,
+               Function<? super T, ? extends R> onSuccess);
 
-    public boolean isSuccess() {
-        return isSuccessful;
-    }
-
-    public boolean isFailure() {
-        return !isSuccessful;
-    }
-
-    public <U> Result<U> flatMap(Function<T, Result<U>> mapper) {
-        if (this.isSuccess()) {
-            return mapper.apply(this.data);
-        } else {
-            return Result.failure(this.errorMessage(), this.errorType());
+    default <U> Result<U> map(Function<? super T, ? extends U> mapper) {
+        if (this instanceof Success<T> s) {
+            return Result.success(mapper.apply(s.data()));
         }
+        Failure<?> f = (Failure<?>) this;
+        return new Failure<>(f.errorType(), f.message(), f.details());
     }
 
-    public <U> Result<U> map(Function<T, U> mapper) {
-        if (this.isSuccess()) {
-            return Result.success(mapper.apply(this.data));
-        } else {
-            return Result.failure(this.errorMessage(), this.errorType());
+    default <U> Result<U> flatMap(Function<? super T, ? extends Result<U>> mapper) {
+        if (this instanceof Success<T> s) {
+            return mapper.apply(s.data());
         }
-    }
-    public Result<T> onFailure(Consumer<Result<T>> consumer) {
-        if (isFailure()) {
-            consumer.accept(this);
-        }
-        return this;
-    }
-    public Result<T> onFailure(BiConsumer<ErrorType, String> consumer) {
-        if (isFailure()) {
-            consumer.accept(this.errorType, this.errorMessage);
-        }
-        return this;
+        Failure<?> f = (Failure<?>) this;
+        return new Failure<>(f.errorType(), f.message(), f.details());
     }
 
-    public Result<T> onSuccess(Consumer<T> action) {
-        if (isSuccess()) {
-            action.accept(data());
-        }
-        return this;
+    default Result<T> mapError(Function<? super Failure<T>, ? extends Failure<T>> fn) {
+        return this.fold(fn, Result::success);
     }
 
-    public Result<T> onSuccess(Runnable action) {
-        if (isSuccess()) {
-            action.run();
-        }
-        return this;
+    default Result<T> mapError(String message, ErrorType type) {
+        return mapError(f -> f.withMessage(message).withType(type));
     }
 
-    public <R> R fold(Function<Result<T>, R> onFailure, Function<T, R> onSuccess) {
-        if (isSuccess()) {
-            return onSuccess.apply(this.data);
-        } else {
-            return onFailure.apply(this);
-        }
+    default Optional<T> toOptional() {
+        return fold(f -> Optional.empty(), Optional::ofNullable);
     }
 
-    public Result<T> mapError(BiFunction<ErrorType, String, Result<T>> fn) {
-        if (isSuccess()) return this;
-        return fn.apply(this.errorType, this.errorMessage);
+    default T orElse(T other) {
+        return fold(f -> other, v -> v);
     }
 
-    public Optional<T> toOptional() {
-        return isFailure() ? Optional.empty() : Optional.ofNullable(data);
+    default T orElseGet(Supplier<T> sup) {
+        return fold(f -> sup.get(), v -> v);
     }
 
-    public T getOrThrow() {
-        if (isFailure()) {
-            throw new IllegalStateException("Result is failure");
-        }
-        return data;
+    default Result<T> peekFailure(Consumer<? super Failure<T>> c) {
+        return fold(f -> {
+            c.accept(f); return this;
+            },
+                s -> this);
     }
 
-    public <U> Result<U> propagateFailure() {
-        if (isFailure()) {
-            return Result.failure(errorMessage(), errorType());
-        }
-        throw new IllegalStateException("Cannot propagate success");
+    static <A, B, R> Result<R> combine(
+            Result<? extends A> ra,
+            Result<? extends B> rb,
+            java.util.function.BiFunction<? super A, ? super B, ? extends R> f
+    ) {
+        return ra.flatMap(a -> rb.map(b -> f.apply(a, b)));
     }
 
-    public T get() {
-        return data;
+    static <A, B, C, R> Result<R> combine(
+            Result<? extends A> ra,
+            Result<? extends B> rb,
+            Result<? extends C> rc,
+            TriFunction<? super A, ? super B, ? super C, ? extends R> f) {
+        return ra.flatMap(a -> rb.flatMap(b -> rc.map(c -> f.apply(a, b, c))));
     }
 }
