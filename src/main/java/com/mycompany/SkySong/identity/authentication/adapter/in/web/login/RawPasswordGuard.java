@@ -8,18 +8,17 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 @Component
-public class RawPasswordScope {
-
+public class RawPasswordGuard {
     public <R> Result<R> useAndZeroize(final char[] source,
                                        final Function<RawPassword, Result<R>> function) {
-        final Result<RawPassword> passwordRes = RawPassword.of(source);
         try {
-            if (passwordRes.isFailure()) {
-                return passwordRes.propagateFailure();
-            }
-            try(final RawPassword password = passwordRes.get()) {
-                return function.apply(password);
-            }
+            return RawPassword.of(source)
+                    .flatMap(pwd -> {
+                        try(pwd) {
+                            return function.apply(pwd);
+                        }
+                    });
+
         } finally {
             Arrays.fill(source, '\0');
         }
