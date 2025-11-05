@@ -2,7 +2,7 @@ package com.mycompany.SkySong.identity.authentication.application.shared.port;
 
 import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;
 import com.mycompany.SkySong.identity.authentication.domain.Session;
-import com.mycompany.SkySong.identity.shared.domain.UserTag;
+import com.mycompany.SkySong.identity.authentication.domain.UserTag;
 import com.mycompany.SkySong.shared.result.Result;
 
 import java.time.Duration;

@@ -13,15 +13,23 @@ public final class UserTag {
 
     private final String value;
     private UserTag(final String value) {
-        this.value = Objects.requireNonNull(value, "UserTag.value must not be null");
+        this.value = Objects.requireNonNull(value, "UserTag value must not be null");
     }
 
     public static Result<UserTag> of(final String rawUserTag) {
+        return validate(rawUserTag, ErrorType.INVARIANT_VIOLATION);
+    }
+
+    public static Result<UserTag> fromPersistence(final String rawUserTag) {
+        return validate(rawUserTag, ErrorType.DATA_INTEGRITY_ERROR);
+    }
+
+    private static Result<UserTag> validate(final String rawUserTag, final ErrorType errorType) {
         if (rawUserTag == null) {
-            return Result.failure("User tag must not be null", ErrorType.VALIDATION_ERROR);
+            return Result.failure("User tag must not be null", errorType);
         }
         if (!FORMAT.matcher(rawUserTag).matches()) {
-            return Result.failure("Invalid user tag format", ErrorType.VALIDATION_ERROR);
+            return Result.failure("Invalid user tag format", errorType);
         }
         return Result.success(new UserTag(rawUserTag));
     }
