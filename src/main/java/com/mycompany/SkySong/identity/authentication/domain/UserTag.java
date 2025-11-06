@@ -20,8 +20,8 @@ public final class UserTag {
         return validate(userTag, ErrorType.INVARIANT_VIOLATION);
     }
 
-    public static Result<UserTag> restore(final String storedUserTag) {
-        return validate(storedUserTag, ErrorType.DATA_INTEGRITY_ERROR);
+    public static Result<UserTag> restore(final String userTag) {
+        return validate(userTag, ErrorType.DATA_INTEGRITY_ERROR);
     }
 
     private static Result<UserTag> validate(final String userTag, final ErrorType errorType) {

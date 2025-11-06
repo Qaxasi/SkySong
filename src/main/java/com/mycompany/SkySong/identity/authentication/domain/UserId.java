@@ -11,11 +11,11 @@ public final class UserId {
         this.value = value;
     }
 
-    public static Result<UserId> restore(final int rawUserId) {
-        if (rawUserId < LOWEST_VALID) {
+    public static Result<UserId> restore(final int userId) {
+        if (userId < LOWEST_VALID) {
             return Result.failure("User id must be positive", ErrorType.DATA_INTEGRITY_ERROR);
         }
-        return Result.success(new UserId(rawUserId));
+        return Result.success(new UserId(userId));
     }
 
     public int asInt() {
