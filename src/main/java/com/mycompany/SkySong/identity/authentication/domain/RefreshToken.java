@@ -5,13 +5,14 @@ import com.mycompany.SkySong.shared.result.Result;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 
 public final class RefreshToken {
     private final String value;
     private final Instant expiresAt;
     private RefreshToken(final String value, final Instant expiresAt) {
-        this.value =  value;
-        this.expiresAt = expiresAt;
+        this.value = Objects.requireNonNull(value, "refresh token value must not be null");
+        this.expiresAt = Objects.requireNonNull(expiresAt, "expires at must not be null");
     }
     public static Result<RefreshToken> of(final String value, final Instant expiresAt) {
         if (value == null || value.isBlank()) {
