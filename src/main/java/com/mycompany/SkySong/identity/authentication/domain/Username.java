@@ -16,7 +16,7 @@ public final class Username {
 
     private final String value;
     private Username(final String value) {
-        this.value = Objects.requireNonNull(value, "Username.value must not be null");
+        this.value = Objects.requireNonNull(value, "Username value must not be null");
     }
 
     public static Result<Username> of(final String rawUsername) {
