@@ -23,19 +23,42 @@ public final class Username {
         if (rawUsername == null) {
             return Result.failure("Username must not be null", ErrorType.VALIDATION_ERROR);
         }
-        final String normalizedUsername = rawUsername.strip().toLowerCase(Locale.ROOT);
-        final int length = normalizedUsername.length();
+        final String normalizedUsername = normalize(rawUsername);
+        return validate(normalizedUsername, ErrorType.VALIDATION_ERROR);
+    }
 
+    public static Result<Username> fromPersistence(final String username) {
+        if (username == null) {
+            return Result.failure("Username must not be null", ErrorType.DATA_INTEGRITY_ERROR);
+        }
+
+        if (!isNormalized(username)) {
+            return Result.failure("Username must be already normalized", ErrorType.DATA_INTEGRITY_ERROR);
+        }
+
+        return validate(username, ErrorType.DATA_INTEGRITY_ERROR);
+    }
+
+    private static Result<Username> validate(final String username,
+                                             final ErrorType errorType) {
+        final int length = username.length();
         if (length < MIN_LENGTH || length > MAX_LENGTH) {
             return Result.failure(
-                    String.format("Username length must be between %d and %d", MIN_LENGTH, MAX_LENGTH),
-                    ErrorType.VALIDATION_ERROR);
+                    String.format("Username length must be between %d and %d", MIN_LENGTH, MAX_LENGTH), errorType);
         }
 
-        if (!USERNAME_PATTERN.matcher(normalizedUsername).matches()) {
-            return Result.failure("Username must start with a letter and contain only a–z and 0–9", ErrorType.VALIDATION_ERROR);
+        if (!USERNAME_PATTERN.matcher(username).matches()) {
+            return Result.failure("Username must start with a letter and contain only a–z and 0–9", errorType);
         }
-        return Result.success(new Username(normalizedUsername));
+        return Result.success(new Username(username));
+    }
+
+    private static String normalize(final String s) {
+        return s.strip().toLowerCase(Locale.ROOT);
+    }
+
+    private static boolean isNormalized(final String s) {
+        return s.equals(normalize(s));
     }
 
     public String asString() {
