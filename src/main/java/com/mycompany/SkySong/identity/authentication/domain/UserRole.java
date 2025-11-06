@@ -19,14 +19,14 @@ public enum UserRole {
         this.code = Objects.requireNonNull(code, "Role code must not be null");
     }
 
-    public static Result<UserRole> fromPersistence(final String persistedCode) {
-        if (persistedCode == null || persistedCode.isBlank()) {
+    public static Result<UserRole> restore(final String storedCode) {
+        if (storedCode == null || storedCode.isBlank()) {
             return Result.failure("Role code must not be null or blank", ErrorType.DATA_INTEGRITY_ERROR);
         }
 
-        final UserRole role = BY_CODE.get(persistedCode);
+        final UserRole role = BY_CODE.get(storedCode);
         if (role == null) {
-            return Result.failure("Unknown role code: " + persistedCode, ErrorType.DATA_INTEGRITY_ERROR);
+            return Result.failure("Unknown role code: " + storedCode, ErrorType.DATA_INTEGRITY_ERROR);
         }
         return Result.success(role);
     }
