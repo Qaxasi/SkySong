@@ -16,7 +16,7 @@ public final class UserTag {
         this.value = Objects.requireNonNull(value, "UserTag value must not be null");
     }
 
-    public static Result<UserTag> of(final String rawUserTag) {
+    public static Result<UserTag> ofGenerated(final String rawUserTag) {
         return validate(rawUserTag, ErrorType.INVARIANT_VIOLATION);
     }
 
