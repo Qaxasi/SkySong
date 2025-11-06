@@ -27,7 +27,7 @@ public final class Username {
         return validate(normalizedUsername, ErrorType.VALIDATION_ERROR);
     }
 
-    public static Result<Username> fromPersistence(final String username) {
+    public static Result<Username> restore(final String username) {
         if (username == null) {
             return Result.failure("Username must not be null", ErrorType.DATA_INTEGRITY_ERROR);
         }
