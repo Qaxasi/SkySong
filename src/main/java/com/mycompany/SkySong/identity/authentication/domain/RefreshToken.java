@@ -30,12 +30,12 @@ public final class RefreshToken {
     public Instant expiresAt() {
         return expiresAt;
     }
-    public boolean isExpired(final Instant now) {
-        return !expiresAt.isAfter(now);
+    public boolean isExpired(final Instant referenceTime) {
+        return !expiresAt.isAfter(referenceTime);
     }
 
-    public long secondsUntilExpiration(final Instant now) {
-        return Duration.between(now, expiresAt).getSeconds();
+    public Duration remainingTtl(final Instant referenceTime) {
+        return Duration.between(referenceTime, expiresAt);
     }
     @Override
     public boolean equals(final Object o) {
@@ -50,4 +50,3 @@ public final class RefreshToken {
         return "Refresh token(*****)";
     }
 }
-
