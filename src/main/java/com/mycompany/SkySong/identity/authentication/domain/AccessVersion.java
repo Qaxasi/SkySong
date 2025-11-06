@@ -10,9 +10,9 @@ public final class AccessVersion {
         this.value = value;
     }
 
-    public static Result<AccessVersion> of(final int value) {
+    public static Result<AccessVersion> restore(final int value) {
         if (value < INITIAL_VALUE) {
-            return Result.failure("Access version must be positive", ErrorType.VALIDATION_ERROR);
+            return Result.failure("Access version must be positive", ErrorType.DATA_INTEGRITY_ERROR);
         }
         return Result.success(new AccessVersion(value));
     }
