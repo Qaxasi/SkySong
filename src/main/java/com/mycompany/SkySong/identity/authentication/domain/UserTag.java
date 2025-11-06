@@ -16,22 +16,22 @@ public final class UserTag {
         this.value = Objects.requireNonNull(value, "UserTag value must not be null");
     }
 
-    public static Result<UserTag> ofGenerated(final String rawUserTag) {
-        return validate(rawUserTag, ErrorType.INVARIANT_VIOLATION);
+    public static Result<UserTag> ofGenerated(final String userTag) {
+        return validate(userTag, ErrorType.INVARIANT_VIOLATION);
     }
 
-    public static Result<UserTag> fromPersistence(final String rawUserTag) {
-        return validate(rawUserTag, ErrorType.DATA_INTEGRITY_ERROR);
+    public static Result<UserTag> restore(final String storedUserTag) {
+        return validate(storedUserTag, ErrorType.DATA_INTEGRITY_ERROR);
     }
 
-    private static Result<UserTag> validate(final String rawUserTag, final ErrorType errorType) {
-        if (rawUserTag == null) {
+    private static Result<UserTag> validate(final String userTag, final ErrorType errorType) {
+        if (userTag == null) {
             return Result.failure("User tag must not be null", errorType);
         }
-        if (!FORMAT.matcher(rawUserTag).matches()) {
+        if (!FORMAT.matcher(userTag).matches()) {
             return Result.failure("Invalid user tag format", errorType);
         }
-        return Result.success(new UserTag(rawUserTag));
+        return Result.success(new UserTag(userTag));
     }
 
     public String asString() {
