@@ -4,6 +4,7 @@ import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
 import java.util.Map;
+import java.util.Objects;
 
 public enum UserRole {
     USER("USER"),
@@ -15,7 +16,7 @@ public enum UserRole {
     private final String code;
 
     UserRole(final String code) {
-        this.code = code;
+        this.code = Objects.requireNonNull(code, "Role code must not be null");
     }
 
     public static Result<UserRole> fromPersistence(final String persistedCode) {
