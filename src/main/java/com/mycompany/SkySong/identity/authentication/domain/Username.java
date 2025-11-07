@@ -19,7 +19,7 @@ public final class Username {
         this.value = Objects.requireNonNull(value, "Username value must not be null");
     }
 
-    public static Result<Username> of(final String rawUsername) {
+    public static Result<Username> fromInput(final String rawUsername) {
         if (rawUsername == null) {
             return Result.failure("Username must not be null", ErrorType.VALIDATION_ERROR);
         }

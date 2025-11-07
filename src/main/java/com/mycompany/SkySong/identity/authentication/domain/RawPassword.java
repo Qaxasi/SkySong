@@ -12,7 +12,7 @@ public final class RawPassword implements AutoCloseable {
         this.value = Arrays.copyOf(value, value.length);
     }
 
-    public static Result<RawPassword> of(final char[] rawValue) {
+    public static Result<RawPassword> fromInput(final char[] rawValue) {
         if (rawValue == null || rawValue.length == 0) {
             return Result.failure("Password must not be null or empty", ErrorType.VALIDATION_ERROR);
         }
