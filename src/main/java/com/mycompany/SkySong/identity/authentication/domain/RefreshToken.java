@@ -3,40 +3,32 @@ package com.mycompany.SkySong.identity.authentication.domain;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Objects;
 
 public final class RefreshToken {
     private final String value;
-    private final Instant expiresAt;
-    private RefreshToken(final String value, final Instant expiresAt) {
+
+    private RefreshToken(final String value) {
         this.value = Objects.requireNonNull(value, "refresh token value must not be null");
-        this.expiresAt = Objects.requireNonNull(expiresAt, "expires at must not be null");
     }
-    public static Result<RefreshToken> of(final String value, final Instant expiresAt) {
+
+    public static Result<RefreshToken> fromInput(final String value) {
+        return validate(value, ErrorType.VALIDATION_ERROR);
+    }
+
+    public static Result<RefreshToken> ofGenerated(final String value) {
+        return validate(value, ErrorType.INVARIANT_VIOLATION);
+    }
+
+    private static Result<RefreshToken> validate(final String value, final ErrorType errorType) {
         if (value == null || value.isBlank()) {
-            return Result.failure("refresh token value must not be blank", ErrorType.INVARIANT_VIOLATION);
+            return Result.failure("refresh token value must not be blank", errorType);
         }
-        if (expiresAt == null) {
-            return Result.failure("expires at must not be null", ErrorType.INVARIANT_VIOLATION);
-        }
-        return Result.success(new RefreshToken(value, expiresAt));
+        return Result.success(new RefreshToken(value));
     }
 
     public String value() {
         return value;
-    }
-
-    public Instant expiresAt() {
-        return expiresAt;
-    }
-    public boolean isExpired(final Instant referenceTime) {
-        return !expiresAt.isAfter(referenceTime);
-    }
-
-    public Duration remainingTtl(final Instant referenceTime) {
-        return Duration.between(referenceTime, expiresAt);
     }
     @Override
     public boolean equals(final Object o) {
