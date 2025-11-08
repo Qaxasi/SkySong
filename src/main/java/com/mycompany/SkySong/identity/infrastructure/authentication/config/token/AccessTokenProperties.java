@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.infrastructure.authentication.token;
+package com.mycompany.SkySong.identity.infrastructure.authentication.config.token;
 
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.time.DurationMin;
@@ -11,5 +11,5 @@ import java.time.Duration;
 @ConfigurationProperties(prefix = "identity.authentication.access-token")
 public record AccessTokenProperties(
         @DurationMin(seconds = 1)
-        @NotNull Duration expiration) {
+        @NotNull Duration ttl) {
 }

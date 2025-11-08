@@ -1,8 +1,8 @@
 package com.mycompany.SkySong.identity.authentication.adapter.out.token.access.jwt;
 
-import com.mycompany.SkySong.identity.authentication.application.shared.port.AccessTokenGenerator;
-import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessToken;
-import com.mycompany.SkySong.identity.authentication.application.shared.dto.AccessTokenClaims;
+import com.mycompany.SkySong.identity.authentication.application.port.AccessTokenGenerator;
+import com.mycompany.SkySong.identity.authentication.application.dto.AccessToken;
+import com.mycompany.SkySong.identity.authentication.application.dto.AccessTokenClaims;
 import com.mycompany.SkySong.identity.authentication.domain.UserRole;
 import com.mycompany.SkySong.identity.infrastructure.authentication.config.token.AccessTokenProperties;
 import io.jsonwebtoken.*;
@@ -20,21 +20,24 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenGenerator implements AccessTokenGenerator {
     private final SecretKey signKey;
-    private final Duration accessTokenExpiration;
+    private final Duration ttl;
     private final Clock clock;
 
     public JwtTokenGenerator(final SecretKey signKey,
                              final AccessTokenProperties accessTokenProperties,
                              final Clock clock) {
         this.signKey = signKey;
-        this.accessTokenExpiration = accessTokenProperties.expiration();
+        this.ttl = accessTokenProperties.ttl();
+        if (ttl.isZero() || ttl.isNegative()) {
+            throw new IllegalStateException("access token TTL must be positive");
+        }
         this.clock = clock;
     }
 
     @Override
     public AccessToken generate(final AccessTokenClaims claims) {
         final Instant now = clock.instant();
-        final Instant exp = now.plus(accessTokenExpiration);
+        final Instant exp = now.plus(ttl);
 
         final String subject = String.valueOf(claims.userId().asInt());
 
