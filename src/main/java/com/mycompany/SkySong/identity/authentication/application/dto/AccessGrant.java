@@ -4,5 +4,6 @@ import com.mycompany.SkySong.identity.authentication.domain.RefreshToken;
 
 import java.time.Duration;
 
-public record AccessGrant(AccessToken accessToken, Duration accessTokenTtl, RefreshToken refreshToken) {
+public record AccessGrant(AccessToken accessToken, long accessTokenExpiresInSec,
+                          RefreshToken refreshToken, Duration sessionTtl) {
 }
