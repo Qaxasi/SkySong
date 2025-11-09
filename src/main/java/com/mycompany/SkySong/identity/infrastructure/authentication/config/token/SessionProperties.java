@@ -11,11 +11,11 @@ import org.springframework.validation.annotation.Validated;
 import java.time.Duration;
 
 @Validated
-@ConfigurationProperties(prefix = "identity.authentication.refresh-token")
-public record RefreshTokenProperties(
+@ConfigurationProperties(prefix = "identity.authentication.session")
+public record SessionProperties(
         @NotNull
         @DurationMin(seconds = 1)
-        Duration duration,
+        Duration ttl,
         @Valid
         CookieProperties cookie) {
 }
