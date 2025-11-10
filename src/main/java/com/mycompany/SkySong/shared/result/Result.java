@@ -8,13 +8,20 @@ import java.util.function.*;
 
 public sealed interface Result<T> permits Success, Failure {
 
-    static <T> Result<T> success(T data) { return new Success<>(data); }
+    static <T> Result<T> success(T data) {
+        return new Success<>(data);
+    }
+    static Result<Unit> success() {
+        return new Success<>(Unit.INSTANCE);
+    }
     static <T> Result<T> failure(String message, ErrorType errorType) {
         return new Failure<>(errorType, message, Map.of());
     }
 
     boolean isSuccess();
-    default boolean isFailure() { return !isSuccess(); }
+    default boolean isFailure() {
+        return !isSuccess();
+    }
 
     <R> R fold(Function<? super Failure<T>, ? extends R> onFailure,
                Function<? super T, ? extends R> onSuccess);
