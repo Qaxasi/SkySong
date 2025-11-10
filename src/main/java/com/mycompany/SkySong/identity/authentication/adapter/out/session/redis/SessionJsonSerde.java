@@ -21,7 +21,8 @@ class SessionJsonSerde {
     Result<String> serialize(final Session session) {
         try {
             final SessionEntry entry = SessionMapper.toDto(session);
-            return Result.success(objectMapper.writeValueAsString(entry));
+            final String json = objectMapper.writeValueAsString(entry);
+            return Result.success(json);
         } catch (JsonProcessingException ex) {
             log.error("session serialization failed {}",
                     kv("op", "session.serialize"),
@@ -40,8 +41,7 @@ class SessionJsonSerde {
                             log.error("failed to map session entry {} {} {}",
                                     kv("op", "session deserialize"),
                                     kv("errorType", f.errorType()),
-                                    kv("message", f.message())))
-                    .mapError("Storage session is invalid", ErrorType.DATA_INTEGRITY_ERROR);
+                                    kv("message", f.message())));
         } catch (JsonProcessingException ex) {
             log.error("session deserialization failed {}",
                     kv("op", "session.deserialize"),
