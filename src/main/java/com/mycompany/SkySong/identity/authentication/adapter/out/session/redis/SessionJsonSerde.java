@@ -24,7 +24,8 @@ class SessionJsonSerde {
             return Result.success(objectMapper.writeValueAsString(entry));
         } catch (JsonProcessingException ex) {
             log.error("session serialization failed {}",
-                    kv("op", "session.serialize"), ex);
+                    kv("op", "session.serialize"),
+                    ex);
             return Result.failure("Internal serialization error", ErrorType.SERIALIZATION_ERROR);
         }
     }
@@ -33,16 +34,18 @@ class SessionJsonSerde {
         try {
             final SessionEntry entry = objectMapper.readValue(json, SessionEntry.class);
             final Result<Session> mapperResult = SessionMapper.toDomain(entry);
-            if (mapperResult.isFailure()) {
-                log.error("failed to map session entry {} {}",
-                        kv("op", "session.deserialize"),
-                        kv("error", mapperResult.errorMessage()));
-                return Result.failure("Storage session is invalid", ErrorType.DATA_INTEGRITY_ERROR);
-            }
-            return mapperResult;
+
+            return mapperResult
+                    .peekFailure(f ->
+                            log.error("failed to map session entry {} {} {}",
+                                    kv("op", "session deserialize"),
+                                    kv("errorType", f.errorType()),
+                                    kv("message", f.message())))
+                    .mapError("Storage session is invalid", ErrorType.DATA_INTEGRITY_ERROR);
         } catch (JsonProcessingException ex) {
             log.error("session deserialization failed {}",
-                    kv("op", "session.deserialize"), ex);
+                    kv("op", "session.deserialize"),
+                    ex);
             return Result.failure("Internal deserialization error", ErrorType.DESERIALIZATION_ERROR);
         }
     }
