@@ -1,7 +1,7 @@
 package com.mycompany.SkySong.identity.authentication.adapter.out.session.redis;
 
-import com.mycompany.SkySong.identity.shared.domain.UserTag;
-import com.mycompany.SkySong.infrastructure.config.redis.RedisSessionKeyProperties;
+import com.mycompany.SkySong.identity.authentication.domain.UserTag;
+import com.mycompany.SkySong.identity.infrastructure.config.redis.RedisSessionKeyProperties;
 
 class RedisSessionKeyBuilder {
     private final RedisSessionKeyProperties properties;
@@ -10,7 +10,7 @@ class RedisSessionKeyBuilder {
     }
 
     String prefix(final UserTag userTag) {
-        return properties.namespace() + ":v" + properties.version() + ":{" + userTag.asBase64Url() + "}:";
+        return properties.namespace() + ":v" + properties.version() + ":{" + userTag.asString() + "}:";
     }
     String refreshTokenSessionKey(final UserTag userTag, final String tokenHash) {
         return prefix(userTag) + tokenHash;
