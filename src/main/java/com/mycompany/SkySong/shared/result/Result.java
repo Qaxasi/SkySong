@@ -89,7 +89,13 @@ public sealed interface Result<T> permits Success, Failure {
         return ra.flatMap(a -> rb.flatMap(b -> fn.apply(a, b)));
     }
 
-    static <A, B, C, R> Result<R> combineM(Result<A> ra, Result<B> rb, Result<C> rc, TriFnM<A, B, C, R> fn) {
+    static <A, B, C, R> Result<R> combineM(Result<A> ra, Result<B> rb,
+                                           Result<C> rc, TriFnM<A, B, C, R> fn) {
         return ra.flatMap(a -> rb.flatMap(b -> rc.flatMap(c -> fn.apply(a, b, c))));
+    }
+
+    static <A, B, C, D, R> Result<R> combineM(Result<A> ra, Result<B> rb, Result<C> rc,
+                                              Result<D> rd, QuadFnM<A,B, C, D, R> fn) {
+        return ra.flatMap(a -> rb.flatMap(b -> rc.flatMap(c -> rd.flatMap(d -> fn.apply(a, b, c, d)))));
     }
 }
