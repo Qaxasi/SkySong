@@ -19,7 +19,7 @@ public enum UserRole {
         this.code = Objects.requireNonNull(code, "Role code must not be null");
     }
 
-    public static Result<UserRole> restore(final String storedCode) {
+    public static Result<UserRole> fromStored(final String storedCode) {
         if (storedCode == null || storedCode.isBlank()) {
             return Result.failure("Role code must not be null or blank", ErrorType.DATA_INTEGRITY_ERROR);
         }

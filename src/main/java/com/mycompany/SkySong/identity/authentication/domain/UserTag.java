@@ -20,7 +20,7 @@ public final class UserTag {
         return validate(userTag, ErrorType.INVARIANT_VIOLATION);
     }
 
-    public static Result<UserTag> restore(final String userTag) {
+    public static Result<UserTag> fromStored(final String userTag) {
         return validate(userTag, ErrorType.DATA_INTEGRITY_ERROR);
     }
 

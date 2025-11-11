@@ -21,7 +21,7 @@ class SessionMapper {
 
     static Result<Session> toDomain(final SessionEntry entry) {
         return Result.combineM(
-                UserId.restore(entry.userId()),
+                UserId.fromStored(entry.userId()),
                 epochToInstant(entry.issuedAt()),
                 epochToInstant(entry.expiresAt()),
                 AccessVersion.fromStored(entry.accessVersionAtIssue()),
