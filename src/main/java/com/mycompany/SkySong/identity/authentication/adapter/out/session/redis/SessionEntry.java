@@ -4,6 +4,6 @@ record SessionEntry(
         int userId,
         long issuedAt,
         long expiresAt,
-        long authzVersionAtIssue
+        int accessVersionAtIssue
 ) {
 }

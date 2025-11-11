@@ -1,7 +1,8 @@
 package com.mycompany.SkySong.identity.authentication.adapter.out.session.redis;
 
+import com.mycompany.SkySong.identity.authentication.domain.AccessVersion;
 import com.mycompany.SkySong.identity.authentication.domain.Session;
-import com.mycompany.SkySong.identity.shared.domain.UserId;
+import com.mycompany.SkySong.identity.authentication.domain.UserId;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 
@@ -15,24 +16,24 @@ class SessionMapper {
                 session.userId().asInt(),
                 session.issuedAt().getEpochSecond(),
                 session.expiresAt().getEpochSecond(),
-                session.authzVersionAtIssue());
+                session.accessVersionAtIssue().asInt());
     }
 
     static Result<Session> toDomain(final SessionEntry entry) {
-        final Instant issued;
-        final Instant expires;
+        return Result.combineM(
+                UserId.restore(entry.userId()),
+                epochToInstant(entry.issuedAt()),
+                epochToInstant(entry.expiresAt()),
+                AccessVersion.restore(entry.accessVersionAtIssue()),
+                Session::fromStored
+                );
+    }
 
+    private static Result<Instant> epochToInstant(final long epochSeconds) {
         try {
-            issued = Instant.ofEpochSecond(entry.issuedAt());
-            expires = Instant.ofEpochSecond(entry.expiresAt());
-        } catch (DateTimeException | ArithmeticException ex)  {
-            return Result.failure("Invalid epoch seconds in cache payload", ErrorType.PERSISTENCE_ERROR);
+            return Result.success(Instant.ofEpochSecond(epochSeconds));
+        } catch (DateTimeException | ArithmeticException ex) {
+            return Result.failure("Invalid epoch seconds in cache payload", ErrorType.DATA_INTEGRITY_ERROR);
         }
-
-        return UserId.of(entry.userId())
-                .flatMap(id -> Session.create(id,
-                        issued,
-                        expires,
-                        entry.authzVersionAtIssue()));
     }
 }
