@@ -84,4 +84,8 @@ public sealed interface Result<T> permits Success, Failure {
             TriFunction<? super A, ? super B, ? super C, ? extends R> f) {
         return ra.flatMap(a -> rb.flatMap(b -> rc.map(c -> f.apply(a, b, c))));
     }
+
+    static <A, B, R> Result<R> combineM(Result<A> ra, Result<B> rb, BiFnM<A, B, R> fn) {
+        return ra.flatMap(a -> rb.flatMap(b -> fn.apply(a, b)));
+    }
 }
