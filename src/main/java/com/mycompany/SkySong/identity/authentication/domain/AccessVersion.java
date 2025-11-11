@@ -10,7 +10,7 @@ public final class AccessVersion {
         this.value = value;
     }
 
-    public static Result<AccessVersion> restore(final int value) {
+    public static Result<AccessVersion> fromStored(final int value) {
         if (value < INITIAL_VALUE) {
             return Result.failure("Access version must be positive", ErrorType.DATA_INTEGRITY_ERROR);
         }
@@ -21,7 +21,7 @@ public final class AccessVersion {
         return new AccessVersion(INITIAL_VALUE);
     }
 
-    public int value() {
+    public int asInt() {
         return value;
     }
     public AccessVersion bump() {

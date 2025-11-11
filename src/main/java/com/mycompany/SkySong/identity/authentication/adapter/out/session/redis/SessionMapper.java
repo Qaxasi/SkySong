@@ -24,7 +24,7 @@ class SessionMapper {
                 UserId.restore(entry.userId()),
                 epochToInstant(entry.issuedAt()),
                 epochToInstant(entry.expiresAt()),
-                AccessVersion.restore(entry.accessVersionAtIssue()),
+                AccessVersion.fromStored(entry.accessVersionAtIssue()),
                 Session::fromStored
                 );
     }
