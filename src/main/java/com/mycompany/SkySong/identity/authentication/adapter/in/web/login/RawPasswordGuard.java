@@ -12,7 +12,7 @@ public class RawPasswordGuard {
     public <R> Result<R> useAndZeroize(final char[] source,
                                        final Function<RawPassword, Result<R>> function) {
         try {
-            return RawPassword.of(source)
+            return RawPassword.fromInput(source)
                     .flatMap(pwd -> {
                         try(pwd) {
                             return function.apply(pwd);
