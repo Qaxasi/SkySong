@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.identity.authentication.application.login.port;
+package com.mycompany.SkySong.identity.authentication.application.port;
 
-import com.mycompany.SkySong.identity.authentication.application.login.dto.UserAccessSnapshot;
+import com.mycompany.SkySong.identity.authentication.application.dto.UserAccessSnapshot;
 import com.mycompany.SkySong.identity.authentication.domain.UserId;
 import com.mycompany.SkySong.shared.result.Result;
 
