@@ -6,10 +6,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties({AccessTokenProperties.class, SessionProperties.class})
+@EnableConfigurationProperties({AccessTokenProperties.class,
+                                SessionProperties.class,
+                                AuthCookieProperties.class})
 class AuthTokenPropsConfig {
-    @Bean
-    CookieProperties cookieProperties(final SessionProperties properties) {
-        return properties.cookie();
+    @Bean("refreshTokenCookieProperties")
+    CookieProperties refreshToken(final AuthCookieProperties properties) {
+        return properties.refreshToken();
+    }
+
+    @Bean("userTagCookieProperties")
+    CookieProperties userTag(final AuthCookieProperties properties) {
+        return properties.userTag();
     }
 }
