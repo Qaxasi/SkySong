@@ -12,10 +12,8 @@ class RedisSessionKeyBuilder {
     String prefix(final UserTag userTag) {
         return properties.namespace() + ":v" + properties.version() + ":{" + userTag.asString() + "}:";
     }
-    String refreshTokenSessionKey(final UserTag userTag, final String tokenHash) {
-        return prefix(userTag) + tokenHash;
-    }
-    String refreshTokenHashesKey(final UserTag userTag) {
-        return prefix(userTag) + "hashes";
+
+    String sessionKey(final UserTag userTag, final String refreshTokenHash) {
+        return prefix(userTag) + "rt:" + refreshTokenHash;
     }
 }
