@@ -5,5 +5,5 @@ import org.springframework.core.io.Resource;
 
 @ConfigurationProperties(prefix = "redis.script.session")
 public record RedisScriptsProperties(Resource save,
-                                     Resource refresh) {
+                                     Resource rotate) {
 }

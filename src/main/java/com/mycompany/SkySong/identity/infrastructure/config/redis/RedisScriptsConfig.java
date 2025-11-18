@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.infrastructure.config.redis;
+package com.mycompany.SkySong.identity.infrastructure.config.redis;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -8,29 +8,21 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 @Configuration
-@EnableConfigurationProperties(RedisScriptProperties.class)
+@EnableConfigurationProperties(RedisScriptsProperties.class)
 public class RedisScriptsConfig {
 
     @Bean
-    public DefaultRedisScript<Long> rotateRefreshTokenScript(final RedisScriptProperties properties) {
+    public DefaultRedisScript<Long> rotateSession(final RedisScriptsProperties properties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
-        script.setLocation(properties.rotateRefreshToken());
+        script.setLocation(properties.rotate());
         script.setResultType(Long.class);
         return script;
     }
 
     @Bean
-    public DefaultRedisScript<Long> saveSessionScript(final RedisScriptProperties properties) {
+    public DefaultRedisScript<Long> saveSession(final RedisScriptsProperties properties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
         script.setLocation(properties.save());
-        script.setResultType(Long.class);
-        return script;
-    }
-
-    @Bean
-    public DefaultRedisScript<Long> deleteUserSessions(final RedisScriptProperties properties) {
-        final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
-        script.setLocation(properties.deleteUserSessions());
         script.setResultType(Long.class);
         return script;
     }
