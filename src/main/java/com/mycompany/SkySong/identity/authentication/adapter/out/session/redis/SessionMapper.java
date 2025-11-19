@@ -25,6 +25,7 @@ class SessionMapper {
                 epochToInstant(entry.issuedAt()),
                 epochToInstant(entry.expiresAt()),
                 AccessVersion.fromStored(entry.accessVersionAtIssue()),
+
                 Session::fromStored
                 );
     }
