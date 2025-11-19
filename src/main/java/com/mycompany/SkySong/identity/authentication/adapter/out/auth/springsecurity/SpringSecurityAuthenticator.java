@@ -4,8 +4,8 @@ import com.mycompany.SkySong.identity.authentication.domain.RawPassword;
 import com.mycompany.SkySong.identity.authentication.domain.UserId;
 import com.mycompany.SkySong.identity.authentication.domain.Username;
 import com.mycompany.SkySong.identity.infrastructure.authentication.security.springboot.CustomUserDetails;
-import com.mycompany.SkySong.identity.authentication.application.login.dto.AuthenticatedIdentity;
-import com.mycompany.SkySong.identity.authentication.application.login.port.Authenticator;
+import com.mycompany.SkySong.identity.authentication.application.dto.AuthenticatedIdentity;
+import com.mycompany.SkySong.identity.authentication.application.port.Authenticator;
 import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Result;
 import org.slf4j.Logger;
@@ -28,14 +28,17 @@ public class SpringSecurityAuthenticator implements Authenticator {
     }
 
     @Override
-    public Result<AuthenticatedIdentity> authenticate(final Username username, final RawPassword password) {
+    public Result<AuthenticatedIdentity> authenticate(final Username username,
+                                                      final RawPassword password) {
         try (password) {
             final Authentication authentication = authManager.authenticate(
-                    UsernamePasswordAuthenticationToken.unauthenticated(username.asString(), password.charSequenceView()));
+                    UsernamePasswordAuthenticationToken.unauthenticated(
+                            username.asString(),
+                            password.charSequenceView()));
 
             final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            return UserId.of(userDetails.getId())
+            return UserId.fromStored(userDetails.getId())
                     .map(AuthenticatedIdentity::new);
 
         } catch (BadCredentialsException | UsernameNotFoundException ex) {
@@ -45,10 +48,14 @@ public class SpringSecurityAuthenticator implements Authenticator {
         } catch (DisabledException ex) {
             return Result.failure("Account is disabled", ErrorType.ACCOUNT_DISABLED);
         } catch (AuthenticationServiceException ex) {
-            log.error("authentication service error {}", kv("op", "user.authentication"), ex);
+            log.error("authentication service error {}",
+                    kv("op", "user.authentication"),
+                    ex);
             return Result.failure("Authentication failed", ErrorType.AUTHENTICATION_SERVICE_ERROR);
         } catch (AuthenticationException ex) {
-            log.error("unexpected authentication error {}", kv("op", "user.authentication"), ex);
+            log.error("unexpected authentication error {}",
+                    kv("op", "user.authentication"),
+                    ex);
             return Result.failure("Authentication failed", ErrorType.AUTHENTICATION_FAILED);
         }
     }
