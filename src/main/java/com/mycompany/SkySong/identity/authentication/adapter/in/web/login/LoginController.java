@@ -1,13 +1,15 @@
 package com.mycompany.SkySong.identity.authentication.adapter.in.web.login;
 
+import com.mycompany.SkySong.identity.authentication.application.service.UserAuthenticator;
 import com.mycompany.SkySong.infrastructure.web.contract.ResponsePayload;
 import com.mycompany.SkySong.identity.authentication.domain.Username;
 import com.mycompany.SkySong.infrastructure.web.HttpErrorMapper;
-import com.mycompany.SkySong.identity.infrastructure.authentication.config.token.RefreshTokenProperties;
 import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
-import com.mycompany.SkySong.identity.authentication.application.login.service.UserAuthenticator;
+import com.mycompany.SkySong.shared.error.ErrorType;
 import com.mycompany.SkySong.shared.result.Failure;
+import com.mycompany.SkySong.shared.web.cookie.CookieProperties;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -22,25 +24,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     private final UserAuthenticator authenticator;
     private final CookieUtils cookieUtils;
-    private final RefreshTokenProperties refreshTokenProperties;
+    private final CookieProperties refreshTokenCookieProps;
+    private final CookieProperties userTagCookieProps;
     private final HttpErrorMapper errorMapper;
     private final RawPasswordGuard passwordGuard;
 
-    public LoginController(final UserAuthenticator authenticator,
+    public LoginController(@Qualifier("refreshTokenCookieProperties")
+                           final CookieProperties refreshTokenCookieProps,
+                           @Qualifier("userTagCookieProperties")
+                           final CookieProperties userTagCookieProps,
+                           final UserAuthenticator authenticator,
                            final CookieUtils cookieUtils,
-                           final RefreshTokenProperties refreshTokenProperties,
                            final HttpErrorMapper errorMapper,
                            final RawPasswordGuard passwordGuard) {
         this.authenticator = authenticator;
         this.cookieUtils = cookieUtils;
-        this.refreshTokenProperties = refreshTokenProperties;
+        this.refreshTokenCookieProps = refreshTokenCookieProps;
+        this.userTagCookieProps = userTagCookieProps;
         this.errorMapper = errorMapper;
         this.passwordGuard = passwordGuard;
     }
 
     @PostMapping("/login")
     public ResponseEntity<ResponsePayload<AuthResponse>> login(@Valid @RequestBody final LoginRequest request) {
-        return Username.of(request.username())
+        return Username.fromInput(request.username())
                 .flatMap(username ->
                         passwordGuard.useAndZeroize(request.password(),
                         pwd -> authenticator.login(username, pwd)))
@@ -48,17 +55,23 @@ public class LoginController {
                         this::maskLoginFailure,
 
                         accessGrant -> {
-                            final ResponseCookie cookie = cookieUtils.generateCookie(
-                                    refreshTokenProperties.cookie(),
+                            final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
+                                    refreshTokenCookieProps,
                                     accessGrant.refreshToken().value(),
-                                    accessGrant.refreshTokenTtl());
+                                    accessGrant.sessionTtl());
+
+                            final ResponseCookie userTagCookie = cookieUtils.generateCookie(
+                                    userTagCookieProps,
+                                    accessGrant.userTag().asString(),
+                                    accessGrant.sessionTtl());
 
                             final AuthResponse response = new AuthResponse(
                                     accessGrant.accessToken().value(),
-                                    accessGrant.accessTokenTtl().getSeconds());
+                                    accessGrant.accessTokenExpiresInSec());
 
                             return ResponseEntity.ok()
-                                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                                    .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                                    .header(HttpHeaders.SET_COOKIE, userTagCookie.toString())
                                     .header(HttpHeaders.CACHE_CONTROL, "no-store")
                                     .body(ResponsePayload.ok(response));
                         });
@@ -68,13 +81,8 @@ public class LoginController {
         final HttpStatus status = f.errorType().getHttpStatus();
 
         if (status.is4xxClientError()) {
-            return switch (f.errorType()) {
-                case ACCOUNT_LOCKED, ACCOUNT_DISABLED ->
-                        errorMapper.failure("Login not allowed", f.errorType());
-                default ->
-                        errorMapper.failure("Invalid login credentials", f.errorType());
-            };
+            return errorMapper.failure("Invalid login credentials", ErrorType.INVALID_LOGIN_CREDENTIALS);
         }
-        return errorMapper.failure("Service temporarily unavailable", f.errorType());
+        return errorMapper.failure("Internal service error", f.errorType());
     }
 }
