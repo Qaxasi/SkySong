@@ -83,7 +83,7 @@ public class RefreshSessionController {
         final HttpStatus status = f.errorType().getHttpStatus();
         if (status.is4xxClientError()) {
             return switch (f.errorType()) {
-                case SESSION_NOT_FOUND, VALIDATION_ERROR ->
+                case SESSION_NOT_FOUND, VALIDATION_ERROR, INVALID_SESSION  ->
                         errorMapper.failure("Session expired, please log in again", ErrorType.SESSION_NOT_FOUND);
                 case CONFLICT ->
                         errorMapper.failure("Request conflict. Please retry", ErrorType.CONFLICT);
