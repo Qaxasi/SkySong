@@ -5,13 +5,10 @@ import com.mycompany.SkySong.infrastructure.web.contract.ResponsePayload;
 import com.mycompany.SkySong.identity.authentication.domain.Username;
 import com.mycompany.SkySong.infrastructure.web.HttpErrorMapper;
 import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Failure;
 import com.mycompany.SkySong.shared.web.cookie.CookieProperties;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +49,7 @@ public class LoginController {
                         passwordGuard.useAndZeroize(request.password(),
                         pwd -> authenticator.login(username, pwd)))
                 .fold(
-                        this::maskLoginFailure,
+                        errorMapper::mapLoginFailure,
 
                         accessGrant -> {
                             final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
@@ -75,14 +72,5 @@ public class LoginController {
                                     .header(HttpHeaders.CACHE_CONTROL, "no-store")
                                     .body(ResponsePayload.ok(response));
                         });
-    }
-
-    private ResponseEntity<ResponsePayload<AuthResponse>> maskLoginFailure(final Failure<?> f) {
-        final HttpStatus status = f.errorType().getHttpStatus();
-
-        if (status.is4xxClientError()) {
-            return errorMapper.failure("Invalid login credentials", ErrorType.INVALID_LOGIN_CREDENTIALS);
-        }
-        return errorMapper.failure("Internal service error", f.errorType());
     }
 }

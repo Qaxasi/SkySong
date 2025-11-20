@@ -7,14 +7,11 @@ import com.mycompany.SkySong.identity.authentication.domain.UserTag;
 import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
 import com.mycompany.SkySong.infrastructure.web.HttpErrorMapper;
 import com.mycompany.SkySong.infrastructure.web.contract.ResponsePayload;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Failure;
 import com.mycompany.SkySong.shared.result.Result;
 import com.mycompany.SkySong.shared.web.cookie.CookieProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,7 +51,7 @@ public class RefreshSessionController {
 
                 sessionRefresher::refresh
         ).fold(
-                this::maskRefreshFailure,
+                errorMapper::mapRefreshSessionFailure,
 
                 accessGrant -> {
                     final ResponseCookie rtCookie = cookieUtils.generateCookie(
@@ -77,21 +74,6 @@ public class RefreshSessionController {
                             .header(HttpHeaders.CACHE_CONTROL, "no-store")
                             .body(ResponsePayload.ok(response));
                 });
-    }
-
-    private ResponseEntity<ResponsePayload<AuthResponse>> maskRefreshFailure(final Failure<?> f) {
-        final HttpStatus status = f.errorType().getHttpStatus();
-        if (status.is4xxClientError()) {
-            return switch (f.errorType()) {
-                case SESSION_NOT_FOUND, VALIDATION_ERROR, INVALID_SESSION  ->
-                        errorMapper.failure("Session expired, please log in again", ErrorType.SESSION_NOT_FOUND);
-                case CONFLICT ->
-                        errorMapper.failure("Request conflict. Please retry", ErrorType.CONFLICT);
-                default ->
-                        errorMapper.failure("Couldn't process your request", f.errorType());
-            };
-        }
-        return errorMapper.failure("Internal service error", f.errorType());
     }
 }
 
