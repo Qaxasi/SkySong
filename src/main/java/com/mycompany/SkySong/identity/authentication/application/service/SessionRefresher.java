@@ -17,7 +17,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 
-public class TokenPairRefresher {
+public class SessionRefresher {
     private final AccessTokenGenerator accessTokenGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
     private final UserAccessSnapshotReader snapshotReader;
@@ -25,12 +25,12 @@ public class TokenPairRefresher {
     private final Clock clock;
     private final Duration ttl;
 
-    public TokenPairRefresher(final AccessTokenGenerator accessTokenGenerator,
-                              final RefreshTokenGenerator refreshTokenGenerator,
-                              final UserAccessSnapshotReader snapshotReader,
-                              final SessionStore sessionStore,
-                              final Clock clock,
-                              final SessionProperties properties) {
+    public SessionRefresher(final AccessTokenGenerator accessTokenGenerator,
+                            final RefreshTokenGenerator refreshTokenGenerator,
+                            final UserAccessSnapshotReader snapshotReader,
+                            final SessionStore sessionStore,
+                            final Clock clock,
+                            final SessionProperties properties) {
         this.accessTokenGenerator = accessTokenGenerator;
         this.refreshTokenGenerator = refreshTokenGenerator;
         this.snapshotReader = snapshotReader;
@@ -47,7 +47,7 @@ public class TokenPairRefresher {
                             snapshotReader.load(session.userId())
                                     .flatMap(snapshot -> {
                                         if (session.isAccessVersionOutdated(snapshot.accessVersion())) {
-                                            return Result.failure("Session outdated", ErrorType.INVALID_SESSION);
+                                            return Result.failure("Session revoked", ErrorType.INVALID_SESSION);
                                         }
                                         if (session.isExpired(now)) {
                                             return Result.failure("Session expired", ErrorType.INVALID_SESSION);
@@ -58,15 +58,15 @@ public class TokenPairRefresher {
                                                                 .flatMap(newRt -> {
                                                                     final Duration sessionTtl = newSession.ttl(now);
 
-                                                                    return sessionStore.refresh(
+                                                                    return sessionStore.rotateSession(
                                                                                     snapshot.userTag(),
                                                                                     oldRt,
                                                                                     newRt,
-                                                                                    session,
+                                                                                    newSession,
                                                                                     sessionTtl)
                                                                             .map(ignored -> {
                                                                                 final AccessTokenClaims claims = new AccessTokenClaims(
-                                                                                        session.userId(),
+                                                                                        newSession.userId(),
                                                                                         snapshot.roles(),
                                                                                         newSession.accessVersionAtIssue());
                                                                                 final AccessToken newAt = accessTokenGenerator.generate(claims);
@@ -75,7 +75,7 @@ public class TokenPairRefresher {
                                                                                         newAt.expiresInSeconds(now),
                                                                                         newRt,
                                                                                         sessionTtl,
-                                                                                        userTag);
+                                                                                        snapshot.userTag());
                                                                             });
                                                                 })
                                                 );
