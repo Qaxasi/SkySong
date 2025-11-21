@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.security.handler;
+package com.mycompany.SkySong.infrastructure.security.handler;
 
-import com.mycompany.SkySong.security.exception.TokenExpiredException;
+import com.mycompany.SkySong.infrastructure.security.exception.TokenExpiredException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;

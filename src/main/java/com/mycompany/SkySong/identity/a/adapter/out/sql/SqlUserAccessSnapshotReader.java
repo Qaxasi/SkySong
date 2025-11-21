@@ -4,7 +4,6 @@ import com.mycompany.SkySong.identity.authentication.application.dto.UserAccessS
 import com.mycompany.SkySong.identity.authentication.application.port.UserAccessSnapshotReader;
 import com.mycompany.SkySong.identity.authentication.domain.AccessVersion;
 import com.mycompany.SkySong.identity.authentication.domain.UserTag;
-import com.mycompany.SkySong.identity.infrastructure.authentication.persistence.dao.UserAccessSnapshotView;
 import com.mycompany.SkySong.identity.infrastructure.authentication.persistence.dao.UserIdentityDAO;
 import com.mycompany.SkySong.identity.authentication.domain.UserId;
 import com.mycompany.SkySong.identity.authentication.domain.UserRole;

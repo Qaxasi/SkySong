@@ -1,8 +1,9 @@
 package com.mycompany.SkySong.infrastructure.config.security;
 
-import com.mycompany.SkySong.adapter.security.handler.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.adapter.security.handler.CustomAuthenticationEntryPoint;
-import com.mycompany.SkySong.adapter.security.filter.JwtAuthenticationFilter;
+import com.mycompany.SkySong.infrastructure.security.filter.SessionVersionValidationFilter;
+import com.mycompany.SkySong.infrastructure.security.handler.CustomAccessDeniedHandler;
+import com.mycompany.SkySong.infrastructure.security.handler.CustomAuthenticationEntryPoint;
+import com.mycompany.SkySong.infrastructure.security.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,16 +21,19 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final SessionVersionValidationFilter sessionVersionValidationFilter;
     private final SecurityProperties securityProperties;
 
     public SecurityConfig(CustomAuthenticationEntryPoint authenticationEntryPoint,
                           CustomAccessDeniedHandler accessDeniedHandler,
                           JwtAuthenticationFilter jwtAuthenticationFilter,
+                          SessionVersionValidationFilter sessionVersionValidationFilter,
                           SecurityProperties securityProperties) {
 
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.sessionVersionValidationFilter = sessionVersionValidationFilter;
         this.securityProperties = securityProperties;
     }
 
@@ -50,7 +54,8 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(sessionVersionValidationFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }

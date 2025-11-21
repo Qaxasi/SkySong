@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.security.handler;
+package com.mycompany.SkySong.infrastructure.security.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

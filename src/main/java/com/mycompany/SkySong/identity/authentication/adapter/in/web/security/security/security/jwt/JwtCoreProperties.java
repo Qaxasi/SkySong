@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.config.jwt;
+package com.mycompany.SkySong.infrastructure.security.jwt;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;

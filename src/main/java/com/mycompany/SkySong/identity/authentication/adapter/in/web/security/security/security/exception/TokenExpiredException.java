@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.security.exception;
+package com.mycompany.SkySong.infrastructure.security.exception;
 
 
 import org.springframework.security.core.AuthenticationException;
