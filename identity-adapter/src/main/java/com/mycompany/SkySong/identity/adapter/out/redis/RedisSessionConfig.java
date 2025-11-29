@@ -8,7 +8,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 @Configuration
-@EnableConfigurationProperties(RedisScriptsProperties.class)
+@EnableConfigurationProperties({
+        RedisScriptsProperties.class,
+        RedisSessionKeyProperties.class})
 public class RedisScriptsConfig {
     @Bean
     public DefaultRedisScript<Long> rotateSession(final RedisScriptsProperties properties) {

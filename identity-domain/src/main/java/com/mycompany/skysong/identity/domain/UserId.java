@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.domain;
+package com.mycompany.skysong.identity.domain;
 
 import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;

@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.shared.web.cookie;
+package com.mycompany.SkySong.identity.config;
 
 import jakarta.validation.constraints.NotBlank;
 

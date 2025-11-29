@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.domain;
+package com.mycompany.skysong.identity.domain;
 
 import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;
@@ -16,7 +16,7 @@ public final class RefreshToken {
         return validate(value, ErrorType.VALIDATION_ERROR);
     }
 
-    public static Result<RefreshToken> ofGenerated(final String value) {
+    public static Result<RefreshToken> fromGenerated(final String value) {
         return validate(value, ErrorType.INVARIANT_VIOLATION);
     }
 
