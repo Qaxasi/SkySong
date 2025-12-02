@@ -1,11 +1,11 @@
-package com.mycompany.skysong.app.security.jwt;
+package com.mycompany.SkySong.identity.adapter.out.jwt;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix = "application.security.jwt")
+@ConfigurationProperties(prefix = "identity.authentication.jwt")
 public record JwtCoreProperties(
         @NotBlank String secretKey) {
 }

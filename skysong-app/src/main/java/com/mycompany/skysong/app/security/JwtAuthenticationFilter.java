@@ -1,15 +1,8 @@
 package com.mycompany.skysong.app.security.filter;
 
-import com.mycompany.SkySong.infrastructure.InvalidTokenException;
-import com.mycompany.SkySong.infrastructure.context.UserContext;
+import com.mycompany.SkySong.identity.adapter.out.jwt.JwtTokenVerifier;
 import com.mycompany.skysong.app.security.exception.TokenExpiredException;
 import com.mycompany.skysong.app.security.handler.CustomAuthenticationEntryPoint;
-import com.mycompany.SkySong.infrastructure.security.jwt.JwtPrincipal;
-import com.mycompany.SkySong.infrastructure.security.jwt.JwtTokenVerifier;
-import com.mycompany.SkySong.identity.authentication.adapter.in.web.security.security.SecurityProperties;
-import com.mycompany.SkySong.infrastructure.security.jwt.VerifiedJwt;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -31,7 +24,6 @@ import java.util.OptionalInt;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
     private final JwtTokenVerifier jwtTokenVerifier;
     private final CustomAuthenticationEntryPoint authEntryPoint;
     private final SecurityProperties securityProperties;

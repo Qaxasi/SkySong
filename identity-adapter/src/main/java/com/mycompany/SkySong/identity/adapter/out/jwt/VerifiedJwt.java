@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.OptionalInt;
 
+// do usunięcia ??
 public final class VerifiedJwt {
     private final Claims claims;
 

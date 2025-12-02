@@ -1,9 +1,9 @@
 package com.mycompany.skysong.app.security.exception;
 
-import com.mycompany.SkySong.infrastructure.security.filter.SessionVersionValidationFilter;
-import com.mycompany.SkySong.infrastructure.security.handler.CustomAccessDeniedHandler;
-import com.mycompany.SkySong.infrastructure.security.handler.CustomAuthenticationEntryPoint;
-import com.mycompany.SkySong.infrastructure.security.filter.JwtAuthenticationFilter;
+import com.mycompany.skysong.app.security.filter.JwtAuthenticationFilter;
+import com.mycompany.skysong.app.security.filter.SessionVersionValidationFilter;
+import com.mycompany.skysong.app.security.handler.CustomAccessDeniedHandler;
+import com.mycompany.skysong.app.security.handler.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,18 +17,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final SessionVersionValidationFilter sessionVersionValidationFilter;
     private final SecurityProperties securityProperties;
 
-    public SecurityConfig(CustomAuthenticationEntryPoint authenticationEntryPoint,
-                          CustomAccessDeniedHandler accessDeniedHandler,
-                          JwtAuthenticationFilter jwtAuthenticationFilter,
-                          SessionVersionValidationFilter sessionVersionValidationFilter,
-                          SecurityProperties securityProperties) {
+    public SecurityConfig(final CustomAuthenticationEntryPoint authenticationEntryPoint,
+                          final CustomAccessDeniedHandler accessDeniedHandler,
+                          final JwtAuthenticationFilter jwtAuthenticationFilter,
+                          final SessionVersionValidationFilter sessionVersionValidationFilter,
+                          final SecurityProperties securityProperties) {
 
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
