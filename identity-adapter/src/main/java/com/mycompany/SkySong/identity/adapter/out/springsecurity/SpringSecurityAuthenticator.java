@@ -1,12 +1,12 @@
-package com.mycompany.SkySong.identity.a.adapter.out.springsecurity;
+package com.mycompany.SkySong.identity.adapter.out.springsecurity;
 
-import com.mycompany.SkySong.identity.a.domain.RawPassword;
-import com.mycompany.SkySong.identity.a.domain.UserId;
-import com.mycompany.SkySong.identity.a.domain.Username;
-import com.mycompany.SkySong.identity.authentication.application.dto.AuthenticatedIdentity;
-import com.mycompany.SkySong.identity.authentication.application.port.Authenticator;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.SkySong.identity.application.dto.AuthenticatedIdentity;
+import com.mycompany.SkySong.identity.application.port.Authenticator;
+import com.mycompany.skysong.identity.domain.RawPassword;
+import com.mycompany.skysong.identity.domain.UserId;
+import com.mycompany.skysong.identity.domain.Username;
+import com.mycompany.skysong.core.error.ErrorType;
+import com.mycompany.skysong.core.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.*;
@@ -42,10 +42,6 @@ public class SpringSecurityAuthenticator implements Authenticator {
 
         } catch (BadCredentialsException | UsernameNotFoundException ex) {
             return Result.failure("Invalid login credentials", ErrorType.INVALID_LOGIN_CREDENTIALS);
-        } catch (LockedException ex ) {
-            return Result.failure("Account is locked", ErrorType.ACCOUNT_LOCKED);
-        } catch (DisabledException ex) {
-            return Result.failure("Account is disabled", ErrorType.ACCOUNT_DISABLED);
         } catch (AuthenticationServiceException ex) {
             log.error("authentication service error {}",
                     kv("op", "user.authentication"),

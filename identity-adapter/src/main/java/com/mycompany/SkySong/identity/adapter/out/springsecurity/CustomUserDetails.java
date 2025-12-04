@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.a.adapter.out.springsecurity;
+package com.mycompany.SkySong.identity.adapter.out.springsecurity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,15 +10,13 @@ public class CustomUserDetails implements UserDetails {
     private final int id;
     private final String username;
     private final String password;
-    private final boolean enabled;
-    private final boolean accountNonLocked;
 
-    public CustomUserDetails(int id, String username, String password, boolean enabled, boolean accountNonLocked) {
+    public CustomUserDetails(final int id,
+                             final String username,
+                             final String password) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.enabled = enabled;
-        this.accountNonLocked = accountNonLocked;
     }
     public int getId() {
         return id;
@@ -39,16 +37,17 @@ public class CustomUserDetails implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
     @Override
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-    @Override
     public boolean isEnabled() {
-        return enabled;
+        return false;
     }
 }
