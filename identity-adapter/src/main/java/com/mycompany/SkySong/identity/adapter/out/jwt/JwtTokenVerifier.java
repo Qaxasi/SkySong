@@ -1,31 +1,35 @@
-package com.mycompany.skysong.app.security.jwt;
+package com.mycompany.SkySong.identity.adapter.out.jwt;
 
+import com.mycompany.skysong.core.error.ErrorType;
+import com.mycompany.skysong.core.result.Result;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 
 @Component
 public class JwtTokenVerifier  {
     private final Key signKey;
-    public JwtTokenVerifier(JwtCoreProperties jwtProperties) {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.secretKey());
-        this.signKey = Keys.hmacShaKeyFor(keyBytes);
+    public JwtTokenVerifier(final SecretKey signKey){
+        this.signKey = signKey;
     }
 
-    public Result<VerifiedJwt> verify(String jwt) {
+    public Result<VerifiedJwt> verify(final String jwt) {
+        if (jwt == null || jwt.isEmpty()) {
+            return Result.failure("Missing token", ErrorType.INVALID_JWT_TOKEN);
+        }
+
         try {
-            Jws<Claims> jws = Jwts.parserBuilder()
+            final Jws<Claims> claimsJws = Jwts.parserBuilder()
                     .setSigningKey(signKey)
                     .build()
                     .parseClaimsJws(jwt);
 
-            return Result.success(new VerifiedJwt(jws.getBody()));
+            return VerifiedJwt.fromClaims(claimsJws.getBody());
 
         } catch (ExpiredJwtException e) {
-            return Result.failure("Access token expired", ErrorType.EXPIRED_JWT_TOKEN);
+            return Result.failure("Expired token", ErrorType.EXPIRED_JWT_TOKEN);
         } catch (IllegalArgumentException | JwtException e) {
             return Result.failure("Invalid token", ErrorType.INVALID_JWT_TOKEN);
         }

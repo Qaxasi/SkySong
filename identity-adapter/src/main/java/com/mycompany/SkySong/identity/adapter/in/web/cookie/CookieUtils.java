@@ -13,15 +13,19 @@ import java.time.Duration;
 
 @Component
 public class CookieUtils {
-    public Result<String> getCookieValue(final HttpServletRequest request, final CookieProperties properties) {
+    public Result<String> getCookieValue(final HttpServletRequest request,
+                                         final CookieProperties properties) {
+
         final Cookie cookie = WebUtils.getCookie(request, properties.name());
         if (cookie == null || cookie.getValue() == null || cookie.getValue().isBlank()) {
-            return Result.failure("Cookie is missing or empty", ErrorType.VALIDATION_ERROR);
+            return Result.failure("Cookie is missing or empty", ErrorType.INVALID_COOKIE);
         } else {
             return Result.success(cookie.getValue());
         }
     }
-    public ResponseCookie generateCookie(final CookieProperties properties, final String value, final Duration ttl) {
+    public ResponseCookie generateCookie(final CookieProperties properties,
+                                         final String value,
+                                         final Duration ttl) {
         final long seconds = (ttl == null) ? 0 : ttl.getSeconds();
         final int maxAge = Math.toIntExact(seconds);
 

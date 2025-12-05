@@ -1,6 +1,6 @@
-package com.mycompany.SkySong.identity.a.adapter.out.redis;
+package com.mycompany.SkySong.identity.adapter.out.redis;
 
-import com.mycompany.SkySong.identity.a.domain.UserTag;
+import com.mycompany.skysong.identity.domain.UserTag;
 
 class RedisSessionKeyBuilder {
     private final RedisSessionKeyProperties properties;

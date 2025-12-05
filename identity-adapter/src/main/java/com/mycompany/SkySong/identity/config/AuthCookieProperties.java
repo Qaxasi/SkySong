@@ -1,6 +1,5 @@
-package com.mycompany.SkySong.identity.a.adapter.in.web.security.config;
+package com.mycompany.SkySong.identity.config;
 
-import com.mycompany.SkySong.shared.web.cookie.CookieProperties;
 import jakarta.validation.Valid;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;

@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.identity.a.adapter.out.redis;
+package com.mycompany.SkySong.identity.adapter.out.redis;
 
-import com.mycompany.SkySong.identity.a.domain.RefreshToken;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.skysong.identity.domain.RefreshToken;
+import com.mycompany.skysong.core.error.ErrorType;
+import com.mycompany.skysong.core.result.Result;
 import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;

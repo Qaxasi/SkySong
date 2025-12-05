@@ -1,10 +1,10 @@
-package com.mycompany.SkySong.identity.a.adapter.out.redis;
+package com.mycompany.SkySong.identity.adapter.out.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.SkySong.identity.a.domain.Session;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.skysong.identity.domain.Session;
+import com.mycompany.skysong.core.error.ErrorType;
+import com.mycompany.skysong.core.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

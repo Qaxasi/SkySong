@@ -6,6 +6,6 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "identity.authentication.jwt")
-public record JwtCoreProperties(
+public record JwtKeyProperties(
         @NotBlank String secretKey) {
 }

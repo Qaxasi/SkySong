@@ -1,14 +1,17 @@
-package com.mycompany.SkySong.identity.a.adapter.in.web.authentication;
+package com.mycompany.SkySong.identity.adapter.in.web.authentication;
 
-import com.mycompany.SkySong.identity.a.application.authentication.UserAuthenticator;
-import com.mycompany.SkySong.infrastructure.web.contract.ResponsePayload;
-import com.mycompany.SkySong.identity.a.domain.Username;
-import com.mycompany.SkySong.infrastructure.web.HttpErrorMapper;
-import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
-import com.mycompany.SkySong.shared.web.cookie.CookieProperties;
+import com.mycompany.SkySong.identity.adapter.in.web.cookie.CookieUtils;
+import com.mycompany.SkySong.identity.application.dto.AccessGrant;
+import com.mycompany.SkySong.identity.application.service.UserAuthenticator;
+import com.mycompany.SkySong.identity.config.CookieProperties;
+import com.mycompany.skysong.core.result.Failure;
+import com.mycompany.skysong.identity.domain.Username;
+import com.mycompany.skysong.web.error.ErrorTypeToHttpStatusMapper;
+import com.mycompany.skysong.web.response.ResponsePayload;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +26,6 @@ public class LoginController {
     private final CookieUtils cookieUtils;
     private final CookieProperties refreshTokenCookieProps;
     private final CookieProperties userTagCookieProps;
-    private final HttpErrorMapper errorMapper;
     private final RawPasswordGuard passwordGuard;
 
     public LoginController(@Qualifier("refreshTokenCookieProperties")
@@ -32,13 +34,11 @@ public class LoginController {
                            final CookieProperties userTagCookieProps,
                            final UserAuthenticator authenticator,
                            final CookieUtils cookieUtils,
-                           final HttpErrorMapper errorMapper,
                            final RawPasswordGuard passwordGuard) {
         this.authenticator = authenticator;
         this.cookieUtils = cookieUtils;
         this.refreshTokenCookieProps = refreshTokenCookieProps;
         this.userTagCookieProps = userTagCookieProps;
-        this.errorMapper = errorMapper;
         this.passwordGuard = passwordGuard;
     }
 
@@ -47,9 +47,9 @@ public class LoginController {
         return Username.fromInput(request.username())
                 .flatMap(username ->
                         passwordGuard.useAndZeroize(request.password(),
-                        pwd -> authenticator.login(username, pwd)))
+                        password -> authenticator.login(username, password)))
                 .fold(
-                        errorMapper::mapLoginFailure,
+                        this::mapLoginFailure,
 
                         accessGrant -> {
                             final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
@@ -72,5 +72,14 @@ public class LoginController {
                                     .header(HttpHeaders.CACHE_CONTROL, "no-store")
                                     .body(ResponsePayload.ok(response));
                         });
+    }
+
+    private ResponseEntity<ResponsePayload<AuthResponse>> mapLoginFailure(final Failure<AccessGrant> failure) {
+        final HttpStatus status = ErrorTypeToHttpStatusMapper.toHttpStatus(failure.errorType());
+
+        if (status.is4xxClientError()) {
+            return LoginErrorResponses.unauthorizedErrorResponse();
+        }
+        return LoginErrorResponses.internalErrorResponse();
     }
 }

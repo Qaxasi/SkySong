@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.a.adapter.out.persistence.jdbi;
+package com.mycompany.SkySong.identity.adapter.out.persistence.jdbi;
 
 import org.jdbi.v3.core.result.RowReducer;
 import org.jdbi.v3.core.result.RowView;
@@ -19,7 +19,6 @@ public class UserAccessSnapshotReducer implements RowReducer<UserAccessSnapshotR
         if (!b.initialized) {
             b.userId = view.getColumn("userId", Integer.class);
             b.userTag = view.getColumn("userTag", String.class);
-            b.accessVersion = view.getColumn("accessVersion", Integer.class);
             b.initialized = true;
         }
         String role = view.getColumn("roleCode", String.class);
@@ -37,11 +36,10 @@ public class UserAccessSnapshotReducer implements RowReducer<UserAccessSnapshotR
         boolean initialized;
         int userId;
         String userTag;
-        int accessVersion;
         final Set<String> roleCodes = new LinkedHashSet<>();
 
         UserAccessSnapshotView build() {
-            return new UserAccessSnapshotView(userId, userTag, accessVersion, roleCodes);
+            return new UserAccessSnapshotView(userId, userTag, roleCodes);
         }
 
     }

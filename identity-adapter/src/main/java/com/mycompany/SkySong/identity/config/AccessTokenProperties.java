@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.adapter.out.jwt;
+package com.mycompany.SkySong.identity.config;
 
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.time.DurationMin;

@@ -1,10 +1,6 @@
-package com.mycompany.SkySong.identity.a.adapter.in.web.authentication;
+package com.mycompany.SkySong.identity.adapter.in.web.authentication;
 
-import com.mycompany.SkySong.identity.a.adapter.in.web.authentication.AuthResponse;
-import com.mycompany.SkySong.identity.a.adapter.in.web.authentication.LoginController;
-import com.mycompany.SkySong.infrastructure.web.HttpErrorMapper;
-import com.mycompany.SkySong.infrastructure.web.contract.ResponsePayload;
-import com.mycompany.SkySong.shared.error.ErrorType;
+import com.mycompany.skysong.web.response.ResponsePayload;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,17 +9,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(assignableTypes = LoginController.class)
 public class LoginControllerAdvice {
-    private final HttpErrorMapper mapper;
-
-    public LoginControllerAdvice(final HttpErrorMapper mapper) {
-        this.mapper = mapper;
-    }
-
     @ExceptionHandler({
             MethodArgumentNotValidException.class,
             HttpMessageNotReadableException.class
     })
     public ResponseEntity<ResponsePayload<AuthResponse>> maskLoginInputErrors() {
-        return mapper.failure("Invalid login credentials", ErrorType.INVALID_LOGIN_CREDENTIALS);
+        return LoginErrorResponses.unauthorizedErrorResponse();
     }
 }

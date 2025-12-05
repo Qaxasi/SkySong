@@ -1,9 +1,10 @@
-package com.mycompany.SkySong.identity.a.adapter.out.jwt;
+package com.mycompany.SkySong.identity.adapter.out.jwt;
 
-import com.mycompany.SkySong.identity.authentication.application.port.AccessTokenGenerator;
-import com.mycompany.SkySong.identity.authentication.application.dto.AccessToken;
-import com.mycompany.SkySong.identity.authentication.application.dto.AccessTokenClaims;
-import com.mycompany.SkySong.identity.a.domain.UserRole;
+import com.mycompany.SkySong.identity.application.dto.AccessToken;
+import com.mycompany.SkySong.identity.application.dto.AccessTokenClaims;
+import com.mycompany.SkySong.identity.application.port.AccessTokenGenerator;
+import com.mycompany.SkySong.identity.config.AccessTokenProperties;
+import com.mycompany.skysong.identity.domain.UserRole;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
@@ -45,8 +46,7 @@ public class JwtTokenGenerator implements AccessTokenGenerator {
                 .collect(Collectors.toUnmodifiableSet());
 
         final Map<String, Object> extraClaims = Map.of(
-                "roles", roles,
-                "access_version", claims.accessVersion()
+                "roles", roles
         );
 
         final String jwt = Jwts.builder()

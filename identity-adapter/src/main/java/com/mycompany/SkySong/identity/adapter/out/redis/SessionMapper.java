@@ -1,10 +1,9 @@
-package com.mycompany.SkySong.identity.a.adapter.out.redis;
+package com.mycompany.SkySong.identity.adapter.out.redis;
 
-import com.mycompany.SkySong.identity.a.domain.AccessVersion;
-import com.mycompany.SkySong.identity.a.domain.Session;
-import com.mycompany.SkySong.identity.a.domain.UserId;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.skysong.identity.domain.Session;
+import com.mycompany.skysong.identity.domain.UserId;
+import com.mycompany.skysong.core.error.ErrorType;
+import com.mycompany.skysong.core.result.Result;
 
 import java.time.DateTimeException;
 import java.time.Instant;
@@ -15,8 +14,7 @@ class SessionMapper {
         return new SessionEntry(
                 session.userId().asInt(),
                 session.issuedAt().getEpochSecond(),
-                session.expiresAt().getEpochSecond(),
-                session.accessVersionAtIssue().asInt());
+                session.expiresAt().getEpochSecond());
     }
 
     static Result<Session> toDomain(final SessionEntry entry) {
@@ -24,7 +22,6 @@ class SessionMapper {
                 UserId.fromStored(entry.userId()),
                 epochToInstant(entry.issuedAt()),
                 epochToInstant(entry.expiresAt()),
-                AccessVersion.fromStored(entry.accessVersionAtIssue()),
 
                 Session::fromStored
                 );

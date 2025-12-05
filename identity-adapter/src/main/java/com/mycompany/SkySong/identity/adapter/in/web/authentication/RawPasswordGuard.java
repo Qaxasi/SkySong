@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.identity.a.adapter.in.web.authentication;
+package com.mycompany.SkySong.identity.adapter.in.web.authentication;
 
-import com.mycompany.SkySong.identity.a.domain.RawPassword;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.skysong.identity.domain.RawPassword;
+import com.mycompany.skysong.core.result.Result;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

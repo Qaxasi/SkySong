@@ -1,9 +1,8 @@
-package com.mycompany.SkySong.identity.a.adapter.out.redis;
+package com.mycompany.SkySong.identity.adapter.out.redis;
 
 record SessionEntry(
         int userId,
         long issuedAt,
-        long expiresAt,
-        int accessVersionAtIssue
+        long expiresAt
 ) {
 }

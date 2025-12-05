@@ -1,16 +1,19 @@
-package com.mycompany.SkySong.identity.a.adapter.in.web.authentication;
+package com.mycompany.SkySong.identity.adapter.in.web.authentication;
 
-import com.mycompany.SkySong.identity.a.application.authentication.SessionRefresher;
-import com.mycompany.SkySong.identity.a.domain.RefreshToken;
-import com.mycompany.SkySong.identity.a.domain.UserTag;
-import com.mycompany.SkySong.infrastructure.cookie.CookieUtils;
-import com.mycompany.SkySong.infrastructure.web.HttpErrorMapper;
-import com.mycompany.SkySong.infrastructure.web.contract.ResponsePayload;
-import com.mycompany.SkySong.shared.result.Result;
-import com.mycompany.SkySong.shared.web.cookie.CookieProperties;
+import com.mycompany.SkySong.identity.adapter.in.web.cookie.CookieUtils;
+import com.mycompany.SkySong.identity.application.dto.AccessGrant;
+import com.mycompany.SkySong.identity.application.service.SessionRefresher;
+import com.mycompany.SkySong.identity.config.CookieProperties;
+import com.mycompany.skysong.core.result.Failure;
+import com.mycompany.skysong.core.result.Result;
+import com.mycompany.skysong.identity.domain.RefreshToken;
+import com.mycompany.skysong.identity.domain.UserTag;
+import com.mycompany.skysong.web.error.ErrorTypeToHttpStatusMapper;
+import com.mycompany.skysong.web.response.ResponsePayload;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,20 +25,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class RefreshSessionController {
     private final SessionRefresher sessionRefresher;
     private final CookieUtils cookieUtils;
-    private final HttpErrorMapper errorMapper;
     private final CookieProperties refreshTokenCookieProperties;
     private final CookieProperties userTagCookieProperties;
 
     public RefreshSessionController(final SessionRefresher sessionRefresher,
                                     final CookieUtils cookieUtils,
-                                    final HttpErrorMapper errorMapper,
                                     @Qualifier("refreshTokenCookieProperties")
                                     final CookieProperties refreshTokenCookieProperties,
                                     @Qualifier("userTagCookieProperties")
                                     final CookieProperties userTagCookieProperties) {
         this.sessionRefresher = sessionRefresher;
         this.cookieUtils = cookieUtils;
-        this.errorMapper = errorMapper;
         this.refreshTokenCookieProperties = refreshTokenCookieProperties;
         this.userTagCookieProperties = userTagCookieProperties;
     }
@@ -50,7 +50,7 @@ public class RefreshSessionController {
 
                 sessionRefresher::refresh
         ).fold(
-                errorMapper::mapRefreshSessionFailure,
+                this::mapRefreshSessionFailure,
 
                 accessGrant -> {
                     final ResponseCookie rtCookie = cookieUtils.generateCookie(
@@ -73,6 +73,15 @@ public class RefreshSessionController {
                             .header(HttpHeaders.CACHE_CONTROL, "no-store")
                             .body(ResponsePayload.ok(response));
                 });
+    }
+
+    private ResponseEntity<ResponsePayload<AuthResponse>> mapRefreshSessionFailure(final Failure<AccessGrant> failure) {
+        final HttpStatus status = ErrorTypeToHttpStatusMapper.toHttpStatus(failure.errorType());
+
+        if (status.is4xxClientError()) {
+            return RefreshSessionErrorResponses.unauthorizedErrorResponse();
+        }
+        return RefreshSessionErrorResponses.internalErrorResponse();
     }
 }
 

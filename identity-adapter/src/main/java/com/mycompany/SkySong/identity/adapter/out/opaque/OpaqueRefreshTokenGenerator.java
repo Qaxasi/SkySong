@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.identity.a.adapter.out.opaque;
+package com.mycompany.SkySong.identity.adapter.out.opaque;
 
-import com.mycompany.SkySong.identity.authentication.application.port.RefreshTokenGenerator;
-import com.mycompany.SkySong.identity.a.domain.RefreshToken;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.SkySong.identity.application.port.RefreshTokenGenerator;
+import com.mycompany.skysong.identity.domain.RefreshToken;
+import com.mycompany.skysong.core.result.Result;
 import org.springframework.stereotype.Component;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -23,6 +23,6 @@ public class OpaqueRefreshTokenGenerator implements RefreshTokenGenerator {
         random.nextBytes(rnd);
 
         final String token = encoder.encodeToString(rnd);
-        return RefreshToken.ofGenerated(token);
+        return RefreshToken.fromGenerated(token);
     }
 }

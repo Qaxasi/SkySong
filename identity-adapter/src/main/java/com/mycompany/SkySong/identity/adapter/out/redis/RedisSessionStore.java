@@ -1,12 +1,12 @@
-package com.mycompany.SkySong.identity.a.adapter.out.redis;
+package com.mycompany.SkySong.identity.adapter.out.redis;
 
-import com.mycompany.SkySong.identity.a.domain.RefreshToken;
-import com.mycompany.SkySong.identity.a.domain.Session;
-import com.mycompany.SkySong.identity.authentication.application.port.SessionStore;
-import com.mycompany.SkySong.identity.a.domain.UserTag;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
-import com.mycompany.SkySong.shared.result.Unit;
+import com.mycompany.SkySong.identity.application.port.SessionStore;
+import com.mycompany.skysong.identity.domain.RefreshToken;
+import com.mycompany.skysong.identity.domain.Session;
+import com.mycompany.skysong.identity.domain.UserTag;
+import com.mycompany.skysong.core.error.ErrorType;
+import com.mycompany.skysong.core.result.Result;
+import com.mycompany.skysong.core.result.Unit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -138,7 +138,7 @@ public class RedisSessionStore implements SessionStore {
                                                 return Result.failure("Session not found", ErrorType.SESSION_NOT_FOUND);
                                             }
                                             if (res == 2L) {
-                                                return Result.failure("Rotate session conflict", ErrorType.CONFLICT);
+                                                return Result.failure("Rotate session conflict", ErrorType.SESSION_ROTATION_CONFLICT);
                                             }
 
                                             log.error("unexpected lua result {} {}",
@@ -158,12 +158,6 @@ public class RedisSessionStore implements SessionStore {
     }
 
     private static String convertToTtlSecondsAsString(final Duration ttl) {
-        long seconds = ttl.getSeconds();
-        if (seconds < 1) {
-            log.error("Invalid TTL < 1 {}",
-                    kv("ttl", String.valueOf(ttl)));
-            seconds = 1;
-        }
-        return Long.toString(seconds);
+        return Long.toString(ttl.toSeconds());
     }
 }

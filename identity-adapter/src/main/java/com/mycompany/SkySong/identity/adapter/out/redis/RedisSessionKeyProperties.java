@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.a.adapter.out.redis;
+package com.mycompany.SkySong.identity.adapter.out.redis;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

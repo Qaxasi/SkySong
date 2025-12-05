@@ -9,11 +9,11 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 @Configuration
 @EnableConfigurationProperties({
-        RedisScriptsProperties.class,
+        RedisSessionScriptsProperties.class,
         RedisSessionKeyProperties.class})
-public class RedisScriptsConfig {
+public class RedisSessionConfig {
     @Bean
-    public DefaultRedisScript<Long> rotateSession(final RedisScriptsProperties properties) {
+    public DefaultRedisScript<Long> rotateSession(final RedisSessionScriptsProperties properties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
         script.setLocation(properties.rotate());
         script.setResultType(Long.class);
@@ -21,7 +21,7 @@ public class RedisScriptsConfig {
     }
 
     @Bean
-    public DefaultRedisScript<Long> saveSession(final RedisScriptsProperties properties) {
+    public DefaultRedisScript<Long> saveSession(final RedisSessionScriptsProperties properties) {
         final DefaultRedisScript<Long> script = new DefaultRedisScript<>();
         script.setLocation(properties.save());
         script.setResultType(Long.class);

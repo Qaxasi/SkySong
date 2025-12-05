@@ -1,13 +1,12 @@
-package com.mycompany.SkySong.identity.a.adapter.out.persistence.jdbi;
+package com.mycompany.SkySong.identity.adapter.out.persistence.jdbi;
 
-import com.mycompany.SkySong.identity.authentication.application.dto.UserAccessSnapshot;
-import com.mycompany.SkySong.identity.authentication.application.port.UserAccessSnapshotReader;
-import com.mycompany.SkySong.identity.a.domain.AccessVersion;
-import com.mycompany.SkySong.identity.a.domain.UserTag;
-import com.mycompany.SkySong.identity.a.domain.UserId;
-import com.mycompany.SkySong.identity.a.domain.UserRole;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.SkySong.identity.application.dto.UserAccessSnapshot;
+import com.mycompany.SkySong.identity.application.port.UserAccessSnapshotReader;
+import com.mycompany.skysong.identity.domain.UserId;
+import com.mycompany.skysong.identity.domain.UserRole;
+import com.mycompany.skysong.identity.domain.UserTag;
+import com.mycompany.skysong.core.error.ErrorType;
+import com.mycompany.skysong.core.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -33,7 +32,6 @@ class JdbiUserAccessSnapshotReader implements UserAccessSnapshotReader {
             return dao.findAccessSnapshotByUserId(userId.asInt())
                     .map(view -> Result.combine(
                             UserTag.fromStored(view.userTag()),
-                            AccessVersion.fromStored(view.accessVersion()),
                             mapRoleCodesToUserRoles(view.roles()),
 
                             UserAccessSnapshot::new))

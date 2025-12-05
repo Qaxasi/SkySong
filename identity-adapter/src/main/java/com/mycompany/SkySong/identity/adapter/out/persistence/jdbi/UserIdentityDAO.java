@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.a.adapter.out.persistence.jdbi;
+package com.mycompany.SkySong.identity.adapter.out.persistence.jdbi;
 
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
@@ -14,20 +14,17 @@ public interface UserIdentityDAO {
     @SqlQuery("""
             SELECT id AS userId,
             username,
-            passwordHash,
-            enabled,
-            locked
+            passwordHash
             FROM users
             WHERE username = :username
             """)
-    Optional<UserAuthView> findAuthCredentialsByUsername(@Bind String username);
+    Optional<UserAuthView> findAuthByUsername(@Bind String username);
 
     @UseRowReducer(UserAccessSnapshotReducer.class)
     @SqlQuery("""
             SELECT
             u.id            AS userId,
             u.user_tag      AS userTag,
-            u.access_version AS accessVersion,
             ur.role_code    AS roleCode
             FROM users u
             LEFT JOIN user_roles ur ON ur.user_id = u.id
