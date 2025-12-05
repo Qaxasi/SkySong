@@ -1,9 +1,9 @@
-package com.mycompany.SkySong.identity.application.service;
+package com.mycompany.skysong.identity.application.authentication.service;
 
-import com.mycompany.SkySong.identity.application.model.AccessGrant;
-import com.mycompany.SkySong.identity.application.model.AccessToken;
-import com.mycompany.SkySong.identity.application.model.AccessTokenClaims;
-import com.mycompany.SkySong.identity.application.port.*;
+import com.mycompany.skysong.identity.application.authentication.model.AccessGrant;
+import com.mycompany.skysong.identity.application.authentication.model.AccessToken;
+import com.mycompany.skysong.identity.application.authentication.model.AccessTokenClaims;
+import com.mycompany.skysong.identity.application.authentication.port.*;
 import com.mycompany.skysong.identity.domain.RawPassword;
 import com.mycompany.skysong.identity.domain.Session;
 import com.mycompany.skysong.identity.domain.Username;

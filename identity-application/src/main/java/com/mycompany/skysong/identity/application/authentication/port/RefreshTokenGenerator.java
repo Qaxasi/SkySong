@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.application.port;
+package com.mycompany.skysong.identity.application.authentication.port;
 
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.core.result.Result;

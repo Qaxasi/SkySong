@@ -1,12 +1,12 @@
-package com.mycompany.SkySong.identity.application.service;
+package com.mycompany.skysong.identity.application.authentication.service;
 
-import com.mycompany.SkySong.identity.application.model.AccessGrant;
-import com.mycompany.SkySong.identity.application.model.AccessToken;
-import com.mycompany.SkySong.identity.application.model.AccessTokenClaims;
-import com.mycompany.SkySong.identity.application.port.AccessTokenGenerator;
-import com.mycompany.SkySong.identity.application.port.RefreshTokenGenerator;
-import com.mycompany.SkySong.identity.application.port.SessionStore;
-import com.mycompany.SkySong.identity.application.port.UserAccessSnapshotReader;
+import com.mycompany.skysong.identity.application.authentication.model.AccessGrant;
+import com.mycompany.skysong.identity.application.authentication.model.AccessToken;
+import com.mycompany.skysong.identity.application.authentication.model.AccessTokenClaims;
+import com.mycompany.skysong.identity.application.authentication.port.AccessTokenGenerator;
+import com.mycompany.skysong.identity.application.authentication.port.RefreshTokenGenerator;
+import com.mycompany.skysong.identity.application.authentication.port.SessionStore;
+import com.mycompany.skysong.identity.application.authentication.port.UserAccessSnapshotReader;
 import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;
 import com.mycompany.skysong.identity.domain.RefreshToken;
@@ -38,39 +38,39 @@ public class SessionRefresher {
         this.ttl = ttl;
     }
 
-    public Result<AccessGrant> refresh(final RefreshToken oldRt, final UserTag userTag) {
+    public Result<AccessGrant> refresh(final RefreshToken oldRefreshToken, final UserTag userTag) {
         final Instant now = clock.instant();
 
-        return sessionStore.findBy(userTag, oldRt)
+        return sessionStore.findBy(userTag, oldRefreshToken)
                         .flatMap(session ->
                             snapshotReader.load(session.userId())
-                                    .flatMap(snapshot -> {
+                                    .flatMap(userAccessSnapshot -> {
                                         if (session.isExpired(now)) {
                                             return Result.failure("Session expired", ErrorType.INVALID_SESSION);
                                         }
                                         return session.reissue(now, ttl)
                                                 .flatMap(newSession ->
                                                         refreshTokenGenerator.generate()
-                                                                .flatMap(newRt -> {
+                                                                .flatMap(newRefreshToken -> {
                                                                     final Duration sessionTtl = newSession.ttl(now);
 
                                                                     return sessionStore.rotateSession(
-                                                                                    snapshot.userTag(),
-                                                                                    oldRt,
-                                                                                    newRt,
+                                                                                    userAccessSnapshot.userTag(),
+                                                                                    oldRefreshToken,
+                                                                                    newRefreshToken,
                                                                                     newSession,
                                                                                     sessionTtl)
                                                                             .map(ignored -> {
                                                                                 final AccessTokenClaims claims = new AccessTokenClaims(
                                                                                         newSession.userId(),
-                                                                                        snapshot.roles());
+                                                                                        userAccessSnapshot.roles());
                                                                                 final AccessToken newAt = accessTokenGenerator.generate(claims);
                                                                                 return new AccessGrant(
                                                                                         newAt,
                                                                                         newAt.expiresInSeconds(now),
-                                                                                        newRt,
+                                                                                        newRefreshToken,
                                                                                         sessionTtl,
-                                                                                        snapshot.userTag());
+                                                                                        userAccessSnapshot.userTag());
                                                                             });
                                                                 })
                                                 );

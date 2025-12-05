@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.application.port;
+package com.mycompany.skysong.identity.application.authentication.port;
 
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.identity.domain.Session;
@@ -12,7 +12,7 @@ public interface SessionStore {
     Result<Unit> saveSession(UserTag userTag,
                              RefreshToken token,
                              Session session,
-                             Duration ttlSeconds);
+                             Duration ttl);
     Result<Session> findBy(UserTag userTag,
                            RefreshToken token);
     Result<Unit> rotateSession(UserTag userTag,

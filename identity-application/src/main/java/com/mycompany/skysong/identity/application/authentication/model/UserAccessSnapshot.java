@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.application.model;
+package com.mycompany.skysong.identity.application.authentication.model;
 
 import com.mycompany.skysong.identity.domain.UserRole;
 import com.mycompany.skysong.identity.domain.UserTag;

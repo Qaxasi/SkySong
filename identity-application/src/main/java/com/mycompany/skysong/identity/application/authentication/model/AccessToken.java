@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.application.model;
+package com.mycompany.skysong.identity.application.authentication.model;
 
 import java.time.Duration;
 import java.time.Instant;
