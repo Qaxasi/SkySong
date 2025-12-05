@@ -1,0 +1,9 @@
+package com.mycompany.SkySong.identity.application.model;
+
+import com.mycompany.skysong.identity.domain.UserRole;
+import com.mycompany.skysong.identity.domain.UserTag;
+
+import java.util.Set;
+
+public record UserAccessSnapshot(UserTag userTag, Set<UserRole> roles) {
+}
