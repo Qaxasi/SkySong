@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-@RegisterConstructorMapper(UserAuthView.class)
 public interface UserIdentityDAO {
     @SqlQuery("""
             SELECT id AS userId,
@@ -18,6 +17,7 @@ public interface UserIdentityDAO {
             FROM users
             WHERE username = :username
             """)
+    @RegisterConstructorMapper(UserAuthView.class)
     Optional<UserAuthView> findAuthByUsername(@Bind String username);
 
     @UseRowReducer(UserAccessSnapshotReducer.class)
@@ -31,4 +31,13 @@ public interface UserIdentityDAO {
             WHERE u.id = :userId
             """)
     Optional<UserAccessSnapshotView> findAccessSnapshotByUserId(@Bind int userId);
+
+    @SqlQuery("""
+            SELECT 
+                EXISTS (SELECT 1 FROM users WHERE username = :username) AS usernameExists,
+                EXISTS (SELECT 1 FROM users WHERE email = :email) AS emailExists
+             """)
+    @RegisterConstructorMapper(UniquenessStatusView.class)
+    UniquenessStatusView checkUniqueness(@Bind("username") String username,
+                                          @Bind("email") String email);
 }
