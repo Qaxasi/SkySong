@@ -21,9 +21,9 @@ public class UserAccessSnapshotReducer implements RowReducer<UserAccessSnapshotR
             b.userTag = view.getColumn("userTag", String.class);
             b.initialized = true;
         }
-        String role = view.getColumn("roleCode", String.class);
-        if (role != null) {
-            b.roleCodes.add(role);
+        String roleCode = view.getColumn("roleCode", String.class);
+        if (roleCode != null) {
+            b.roleCodes.add(roleCode);
         }
     }
 
@@ -39,7 +39,7 @@ public class UserAccessSnapshotReducer implements RowReducer<UserAccessSnapshotR
         final Set<String> roleCodes = new LinkedHashSet<>();
 
         UserAccessSnapshotView build() {
-            return new UserAccessSnapshotView(userId, userTag, roleCodes);
+            return new UserAccessSnapshotView(userId, userTag, Set.copyOf(roleCodes));
         }
 
     }
