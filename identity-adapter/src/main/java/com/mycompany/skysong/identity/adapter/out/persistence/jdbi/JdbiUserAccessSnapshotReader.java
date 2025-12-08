@@ -1,7 +1,7 @@
 package com.mycompany.skysong.identity.adapter.out.persistence.jdbi;
 
-import com.mycompany.skysong.identity.application.model.UserAccessSnapshot;
-import com.mycompany.skysong.identity.application.port.UserAccessSnapshotReader;
+import com.mycompany.skysong.identity.application.authentication.model.UserAccessSnapshot;
+import com.mycompany.skysong.identity.application.authentication.port.UserAccessSnapshotReader;
 import com.mycompany.skysong.identity.domain.UserId;
 import com.mycompany.skysong.identity.domain.UserRole;
 import com.mycompany.skysong.identity.domain.UserTag;

@@ -1,6 +1,8 @@
-package com.mycompany.skysong.identity.adapter.out.redis;
+package com.mycompany.skysong.identity.adapter.out.persistence.redis;
 
-import com.mycompany.skysong.identity.application.port.SessionStore;
+import com.mycompany.skysong.identity.adapter.out.redis.RefreshTokenHasher;
+import com.mycompany.skysong.identity.adapter.out.redis.SessionJsonSerde;
+import com.mycompany.skysong.identity.application.authentication.port.SessionStore;
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.identity.domain.Session;
 import com.mycompany.skysong.identity.domain.UserTag;

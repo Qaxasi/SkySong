@@ -1,5 +1,6 @@
-package com.mycompany.skysong.identity.adapter.out.redis;
+package com.mycompany.skysong.identity.adapter.out.persistence.redis;
 
+import com.mycompany.skysong.identity.adapter.out.persistence.redis.SessionEntry;
 import com.mycompany.skysong.identity.domain.Session;
 import com.mycompany.skysong.identity.domain.UserId;
 import com.mycompany.skysong.core.error.ErrorType;

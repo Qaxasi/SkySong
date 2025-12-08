@@ -1,8 +1,8 @@
-package com.mycompany.skysong.identity.adapter.out.jwt;
+package com.mycompany.skysong.identity.adapter.out.security.jwt;
 
-import com.mycompany.skysong.identity.application.model.AccessToken;
-import com.mycompany.skysong.identity.application.model.AccessTokenClaims;
-import com.mycompany.skysong.identity.application.port.AccessTokenGenerator;
+import com.mycompany.skysong.identity.application.authentication.model.AccessToken;
+import com.mycompany.skysong.identity.application.authentication.model.AccessTokenClaims;
+import com.mycompany.skysong.identity.application.authentication.port.AccessTokenGenerator;
 import com.mycompany.skysong.identity.config.AccessTokenProperties;
 import com.mycompany.skysong.identity.domain.UserRole;
 import io.jsonwebtoken.*;

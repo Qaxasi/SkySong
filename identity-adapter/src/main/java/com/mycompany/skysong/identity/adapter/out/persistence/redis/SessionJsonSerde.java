@@ -1,7 +1,8 @@
-package com.mycompany.skysong.identity.adapter.out.redis;
+package com.mycompany.skysong.identity.adapter.out.persistence.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.skysong.identity.adapter.out.redis.SessionMapper;
 import com.mycompany.skysong.identity.domain.Session;
 import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;

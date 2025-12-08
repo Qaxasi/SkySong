@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.adapter.out.springsecurity;
+package com.mycompany.skysong.identity.adapter.out.security.spring;
 
 import com.mycompany.skysong.identity.application.authentication.model.AuthenticatedIdentity;
 import com.mycompany.skysong.identity.application.authentication.port.Authenticator;

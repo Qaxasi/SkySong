@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.adapter.out.redis;
+package com.mycompany.skysong.identity.adapter.out.persistence.redis;
 
 import com.mycompany.skysong.identity.domain.UserTag;
 

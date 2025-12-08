@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.adapter.out.redis;
+package com.mycompany.skysong.identity.adapter.out.persistence.redis;
 
 record SessionEntry(
         int userId,

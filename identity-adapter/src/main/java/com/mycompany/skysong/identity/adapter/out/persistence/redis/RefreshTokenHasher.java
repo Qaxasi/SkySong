@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.adapter.out.redis;
+package com.mycompany.skysong.identity.adapter.out.persistence.redis;
 
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.core.error.ErrorType;
@@ -17,7 +17,7 @@ final class RefreshTokenHasher {
     Result<String> hash(final RefreshToken refreshToken) {
         final byte[] raw;
         try {
-            raw = B64_DEC.decode(refreshToken.value());
+            raw = B64_DEC.decode(refreshToken.raw());
         } catch (IllegalArgumentException ex) {
             return Result.failure("Invalid refresh token", ErrorType.INVALID_REFRESH_TOKEN);
         }

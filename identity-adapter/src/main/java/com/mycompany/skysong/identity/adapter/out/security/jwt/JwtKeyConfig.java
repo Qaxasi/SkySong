@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.adapter.out.jwt;
+package com.mycompany.skysong.identity.adapter.out.security.jwt;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

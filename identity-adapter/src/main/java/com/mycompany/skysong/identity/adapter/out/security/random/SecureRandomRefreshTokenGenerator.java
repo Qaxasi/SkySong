@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.adapter.out.opaque;
+package com.mycompany.skysong.identity.adapter.out.security.random;
 
 import com.mycompany.skysong.identity.application.authentication.port.RefreshTokenGenerator;
 import com.mycompany.skysong.identity.domain.RefreshToken;

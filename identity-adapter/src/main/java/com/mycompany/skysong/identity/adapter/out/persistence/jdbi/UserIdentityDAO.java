@@ -39,5 +39,5 @@ public interface UserIdentityDAO {
              """)
     @RegisterConstructorMapper(UniquenessStatusView.class)
     UniquenessStatusView checkUniqueness(@Bind("username") String username,
-                                          @Bind("email") String email);
+                                         @Bind("email") String email);
 }

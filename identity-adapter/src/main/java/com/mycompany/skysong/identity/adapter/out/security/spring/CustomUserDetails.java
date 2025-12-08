@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.adapter.out.springsecurity;
+package com.mycompany.skysong.identity.adapter.out.security.spring;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

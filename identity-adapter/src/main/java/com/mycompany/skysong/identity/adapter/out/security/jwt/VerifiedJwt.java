@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.adapter.out.jwt;
+package com.mycompany.skysong.identity.adapter.out.security.jwt;
 
 import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;

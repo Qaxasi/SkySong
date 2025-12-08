@@ -1,8 +1,8 @@
-package com.mycompany.SkySong.identity.registration.adapter.out;
+package com.mycompany.skysong.identity.adapter.out.security.random;
 
-import com.mycompany.SkySong.identity.registration.application.port.UserTagGenerator;
-import com.mycompany.SkySong.identity.a.domain.UserTag;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.skysong.core.result.Result;
+import com.mycompany.skysong.identity.application.registration.port.UserTagGenerator;
+import com.mycompany.skysong.identity.domain.UserTag;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
