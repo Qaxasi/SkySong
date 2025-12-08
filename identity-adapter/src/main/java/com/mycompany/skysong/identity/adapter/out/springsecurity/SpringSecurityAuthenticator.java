@@ -1,7 +1,7 @@
 package com.mycompany.skysong.identity.adapter.out.springsecurity;
 
-import com.mycompany.skysong.identity.application.model.AuthenticatedIdentity;
-import com.mycompany.skysong.identity.application.port.Authenticator;
+import com.mycompany.skysong.identity.application.authentication.model.AuthenticatedIdentity;
+import com.mycompany.skysong.identity.application.authentication.port.Authenticator;
 import com.mycompany.skysong.identity.domain.RawPassword;
 import com.mycompany.skysong.identity.domain.UserId;
 import com.mycompany.skysong.identity.domain.Username;
@@ -29,11 +29,11 @@ public class SpringSecurityAuthenticator implements Authenticator {
     @Override
     public Result<AuthenticatedIdentity> authenticate(final Username username,
                                                       final RawPassword password) {
-        try (password) {
+        try {
             final Authentication authentication = authManager.authenticate(
                     UsernamePasswordAuthenticationToken.unauthenticated(
                             username.asString(),
-                            password.charSequenceView()));
+                            password.asCharSequenceView()));
 
             final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
