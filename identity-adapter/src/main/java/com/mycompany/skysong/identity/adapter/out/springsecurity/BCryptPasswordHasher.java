@@ -1,12 +1,12 @@
-package com.mycompany.SkySong.identity.registration.adapter.out.security;
+package com.mycompany.skysong.identity.adapter.out.springsecurity;
 
-import com.mycompany.SkySong.identity.registration.application.port.PasswordHasher;
+import com.mycompany.skysong.identity.application.registration.port.PasswordHasher;
+import com.mycompany.skysong.identity.domain.RawPassword;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 class BCryptPasswordHasher implements PasswordHasher {
-
     private final BCryptPasswordEncoder bcrypt;
 
     BCryptPasswordHasher(final BCryptPasswordEncoder encoder) {
@@ -14,7 +14,7 @@ class BCryptPasswordHasher implements PasswordHasher {
     }
 
     @Override
-    public String hash(final CharSequence password) {
-        return bcrypt.encode(password);
+    public String hash(final RawPassword password) {
+        return bcrypt.encode(password.asCharSequenceView());
     }
 }

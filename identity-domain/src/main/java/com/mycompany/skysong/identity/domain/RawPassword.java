@@ -19,7 +19,7 @@ public final class RawPassword implements AutoCloseable {
         return Result.success(new RawPassword(rawValue));
     }
 
-    public CharSequence charSequenceView() {
+    public CharSequence asCharSequenceView() {
         return CharBuffer.wrap(value);
     }
 
