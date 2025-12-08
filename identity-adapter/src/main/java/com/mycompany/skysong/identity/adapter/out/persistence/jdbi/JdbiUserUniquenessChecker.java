@@ -25,8 +25,8 @@ class JdbiUserUniquenessChecker implements UserUniquenessChecker {
     }
 
     @Override
-    public Result<UniquenessStatus> checkUniqueness(final Username username,
-                                                    final Email email) {
+    public Result<UniquenessStatus> check(final Username username,
+                                          final Email email) {
         try {
             final UniquenessStatusView view = dao.checkUniqueness(
                     username.asString(),

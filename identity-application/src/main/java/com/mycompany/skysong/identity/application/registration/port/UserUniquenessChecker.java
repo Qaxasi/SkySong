@@ -6,5 +6,5 @@ import com.mycompany.skysong.identity.domain.Email;
 import com.mycompany.skysong.identity.domain.Username;
 
 public interface UserUniquenessChecker {
-    Result<UniquenessStatus> checkUniqueness(Username username, Email email);
+    Result<UniquenessStatus> check(Username username, Email email);
 }
