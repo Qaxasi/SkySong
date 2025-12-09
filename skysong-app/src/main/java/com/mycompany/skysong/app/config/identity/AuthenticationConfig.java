@@ -4,14 +4,12 @@ import com.mycompany.skysong.identity.application.authentication.port.*;
 import com.mycompany.skysong.identity.application.authentication.service.SessionRefresher;
 import com.mycompany.skysong.identity.application.authentication.service.UserAuthenticator;
 import com.mycompany.skysong.app.config.identity.properties.SessionProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
 
 @Configuration
-@EnableConfigurationProperties({AccessTokenProperties.class, SessionProperties.class})
 class AuthenticationConfig {
     @Bean
     UserAuthenticator userAuthenticator(final Authenticator authenticator,
