@@ -61,7 +61,7 @@ public final class Username {
         return s.equals(normalize(s));
     }
 
-    public String asString() {
+    public String value() {
         return value;
     }
     @Override
