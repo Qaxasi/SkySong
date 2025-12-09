@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RegistrationConfig {
+class UserRegistrationConfig {
 
     @Bean
-    public UserRegistration userRegistration(final UserUniquenessChecker uniquenessChecker,
+    UserRegistration userRegistration(final UserUniquenessChecker uniquenessChecker,
                                              final PasswordHasher passwordHasher,
                                              final UserTagGenerator userTagGenerator,
                                              final UserStore userStore) {
