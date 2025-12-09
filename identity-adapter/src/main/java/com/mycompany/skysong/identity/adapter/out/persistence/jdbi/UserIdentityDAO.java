@@ -2,7 +2,10 @@ package com.mycompany.skysong.identity.adapter.out.persistence.jdbi;
 
 import org.jdbi.v3.sqlobject.config.RegisterConstructorMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.BindBean;
+import org.jdbi.v3.sqlobject.statement.GetGeneratedKeys;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.jdbi.v3.sqlobject.statement.UseRowReducer;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +13,20 @@ import java.util.Optional;
 
 @Repository
 public interface UserIdentityDAO {
+
+    @SqlUpdate("""
+          INSERT INTO users (username, email, password_hash, user_tag) 
+          VALUES (:username, : email, :passwordHash, :userTag)
+           """)
+    @GetGeneratedKeys("id")
+    int saveUser(@BindBean UserInsertRow row);
+
+    @SqlUpdate("""
+            INSERT INTO user_roles (user_id, role_code)
+            VALUES (:userId, :roleCode)
+            """)
+    void assignRole(@BindBean RoleAssignmentRow row);
+
     @SqlQuery("""
             SELECT id AS userId,
             username,
