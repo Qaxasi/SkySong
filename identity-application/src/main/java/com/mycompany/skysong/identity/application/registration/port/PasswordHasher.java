@@ -1,5 +1,7 @@
-package com.mycompany.SkySong.identity.registration.application.port;
+package com.mycompany.skysong.identity.application.registration.port;
+
+import com.mycompany.skysong.identity.domain.RawPassword;
 
 public interface PasswordHasher {
-    String hash(CharSequence password);
+    String hash(RawPassword password);
 }
