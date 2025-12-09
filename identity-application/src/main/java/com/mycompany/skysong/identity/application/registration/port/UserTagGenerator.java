@@ -1,7 +1,7 @@
-package com.mycompany.SkySong.identity.registration.application.port;
+package com.mycompany.skysong.identity.application.registration.port;
 
-import com.mycompany.SkySong.identity.a.domain.UserTag;
-import com.mycompany.SkySong.shared.result.Result;
+import com.mycompany.skysong.core.result.Result;
+import com.mycompany.skysong.identity.domain.UserTag;
 
 public interface UserTagGenerator {
     Result<UserTag> generate();

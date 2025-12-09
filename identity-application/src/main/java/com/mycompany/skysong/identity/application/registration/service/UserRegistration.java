@@ -1,52 +1,65 @@
-package com.mycompany.SkySong.identity.registration.application.service;
+package com.mycompany.skysong.identity.application.registration.service;
 
-import com.mycompany.SkySong.identity.registration.application.dto.UserRegistrationData;
-import com.mycompany.SkySong.identity.registration.application.port.PasswordHasher;
-import com.mycompany.SkySong.identity.registration.domain.User;
-import com.mycompany.SkySong.identity.registration.domain.UserRole;
-import com.mycompany.SkySong.shared.error.ErrorType;
-import com.mycompany.SkySong.identity.registration.application.port.UserSaver;
-import com.mycompany.SkySong.identity.registration.application.validator.UserRegistrationValidator;
-import com.mycompany.SkySong.shared.result.Result;
-
-import java.util.Set;
+import com.mycompany.skysong.core.error.ErrorType;
+import com.mycompany.skysong.core.result.Result;
+import com.mycompany.skysong.core.result.Unit;
+import com.mycompany.skysong.identity.application.registration.port.PasswordHasher;
+import com.mycompany.skysong.identity.application.registration.port.UserStore;
+import com.mycompany.skysong.identity.application.registration.port.UserTagGenerator;
+import com.mycompany.skysong.identity.application.registration.port.UserUniquenessChecker;
+import com.mycompany.skysong.identity.domain.*;
 
 public class UserRegistration {
-    private final UserRegistrationValidator validation;
+    private final UserUniquenessChecker uniquenessChecker;
     private final PasswordHasher passwordHasher;
-    private final UserSaver userSaver;
+    private final UserTagGenerator tagGenerator;
+    private final UserStore userStore;
 
-    public UserRegistration(final UserRegistrationValidator validation,
+    public UserRegistration(final UserUniquenessChecker uniquenessChecker,
                             final PasswordHasher passwordHasher,
-                            final UserSaver userSaver) {
-        this.validation = validation;
+                            final UserTagGenerator tagGenerator,
+                            final UserStore userStore) {
         this.passwordHasher = passwordHasher;
-        this.userSaver = userSaver;
+        this.tagGenerator = tagGenerator;
+        this.userStore = userStore;
+        this.uniquenessChecker = uniquenessChecker;
     }
 
-    public Result<Void> register(final UserRegistrationData data) {
-        return validatePresent(data)
-                .flatMap(ignored -> validation.validateFormatAndUniqueness(data))
-                .flatMap(ignored2 -> createUser(data))
-                .flatMap(userSaver::saveUser);
-    }
-
-    private Result<User> createUser(final UserRegistrationData data) {
-        final String hashedPassword = passwordHasher.hash(data.password());
-        return new User.Builder()
-                .withUsername(data.username())
-                .withEmail(data.email())
-                .withPassword(hashedPassword)
-                .withRoles(Set.of(UserRole.ROLE_USER))
-                .build();
-    }
-
-    private Result<Void> validatePresent(final UserRegistrationData data) {
-        if (data.username() == null || data.username().isBlank()
-                || data.email() == null || data.email().isBlank()
-                || data.password() == null || data.password().isBlank()) {
-            return Result.failure("Missing registration data", ErrorType.VALIDATION_ERROR);
+    public Result<Unit> register(final Username username, final Email email, final RawPassword rawPassword) {
+        try (rawPassword) {
+            return PasswordPolicy.validateForRegistration(rawPassword)
+                    .flatMap(ignored -> validateUniqueness(username, email))
+                    .flatMap(ignored2 -> createUser(username, email, rawPassword))
+                    .flatMap(userStore::save);
         }
-        return Result.success();
+    }
+
+    private Result<Unit> validateUniqueness(final Username username, final Email email) {
+        return uniquenessChecker.check(username, email)
+                .flatMap(status -> {
+                    if (status.usernameExists()) {
+                        return Result.failure("Username already exists", ErrorType.VALIDATION_ERROR);
+                    }
+                    if (status.emailExists()) {
+                        return Result.failure("Email already exists", ErrorType.VALIDATION_ERROR);
+                    }
+                    return Result.success();
+                });
+    }
+
+    private Result<User> createUser(final Username username,
+                                    final Email email,
+                                    final RawPassword rawPassword) {
+        final String hashedPassword = passwordHasher.hash(rawPassword);
+
+        return tagGenerator.generate()
+                .flatMap(userTag ->
+                        new User.Builder()
+                                .withUsername(username)
+                                .withEmail(email)
+                                .withPassword(hashedPassword)
+                                .withDefaultRole()
+                                .withUserTag(userTag)
+                                .build());
     }
 }
