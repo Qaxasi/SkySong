@@ -36,7 +36,7 @@ public final class UserTag {
         return Result.success(new UserTag(userTag));
     }
 
-    public String asString() {
+    public String value() {
         return value;
     }
     @Override
