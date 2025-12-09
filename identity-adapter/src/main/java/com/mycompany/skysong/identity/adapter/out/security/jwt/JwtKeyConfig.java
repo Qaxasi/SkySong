@@ -11,7 +11,7 @@ import javax.crypto.SecretKey;
 @Configuration
 @EnableConfigurationProperties(JwtKeyProperties.class)
 class JwtKeyConfig {
-    @Bean("jwtSigningKey")
+    @Bean("accessTokenSigningKey")
     SecretKey jwtSigningKey(final JwtKeyProperties properties) {
         final byte[] keyBytes;
         try {
