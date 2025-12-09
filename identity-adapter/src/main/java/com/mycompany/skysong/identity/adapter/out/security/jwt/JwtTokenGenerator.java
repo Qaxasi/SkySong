@@ -3,10 +3,8 @@ package com.mycompany.skysong.identity.adapter.out.security.jwt;
 import com.mycompany.skysong.identity.application.authentication.model.AccessToken;
 import com.mycompany.skysong.identity.application.authentication.model.AccessTokenClaims;
 import com.mycompany.skysong.identity.application.authentication.port.AccessTokenGenerator;
-import com.mycompany.skysong.identity.config.AccessTokenProperties;
 import com.mycompany.skysong.identity.domain.UserRole;
 import io.jsonwebtoken.*;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.Duration;
@@ -17,17 +15,16 @@ import java.time.Clock;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 public class JwtTokenGenerator implements AccessTokenGenerator {
     private final SecretKey signKey;
     private final Duration ttl;
     private final Clock clock;
 
     public JwtTokenGenerator(final SecretKey signKey,
-                             final AccessTokenProperties accessTokenProperties,
+                             final Duration ttl,
                              final Clock clock) {
         this.signKey = signKey;
-        this.ttl = accessTokenProperties.ttl();
+        this.ttl = ttl;
         if (ttl.isZero() || ttl.isNegative()) {
             throw new IllegalStateException("access token TTL must be positive");
         }
