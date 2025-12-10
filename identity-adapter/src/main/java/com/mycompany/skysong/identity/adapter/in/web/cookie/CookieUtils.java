@@ -1,6 +1,5 @@
 package com.mycompany.skysong.identity.adapter.in.web.cookie;
 
-import com.mycompany.skysong.identity.config.CookieProperties;
 import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;
 import jakarta.servlet.http.Cookie;

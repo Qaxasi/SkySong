@@ -1,15 +1,15 @@
 package com.mycompany.skysong.identity.adapter.in.web.authentication;
 
+import com.mycompany.skysong.identity.adapter.in.web.common.RawPasswordGuard;
+import com.mycompany.skysong.identity.adapter.in.web.cookie.AuthCookieProperties;
 import com.mycompany.skysong.identity.adapter.in.web.cookie.CookieUtils;
-import com.mycompany.skysong.identity.application.model.AccessGrant;
-import com.mycompany.skysong.identity.application.service.UserAuthenticator;
-import com.mycompany.skysong.identity.config.CookieProperties;
+import com.mycompany.skysong.identity.application.authentication.model.AccessGrant;
+import com.mycompany.skysong.identity.application.authentication.service.UserAuthenticator;
 import com.mycompany.skysong.core.result.Failure;
 import com.mycompany.skysong.identity.domain.Username;
 import com.mycompany.skysong.web.error.ErrorTypeToHttpStatusMapper;
 import com.mycompany.skysong.web.response.ResponsePayload;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -24,21 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     private final UserAuthenticator authenticator;
     private final CookieUtils cookieUtils;
-    private final CookieProperties refreshTokenCookieProps;
-    private final CookieProperties userTagCookieProps;
+    private final AuthCookieProperties properties;
     private final RawPasswordGuard passwordGuard;
 
-    public LoginController(@Qualifier("refreshTokenCookieProperties")
-                           final CookieProperties refreshTokenCookieProps,
-                           @Qualifier("userTagCookieProperties")
-                           final CookieProperties userTagCookieProps,
-                           final UserAuthenticator authenticator,
+    public LoginController(final UserAuthenticator authenticator,
                            final CookieUtils cookieUtils,
+                           final AuthCookieProperties properties,
                            final RawPasswordGuard passwordGuard) {
         this.authenticator = authenticator;
         this.cookieUtils = cookieUtils;
-        this.refreshTokenCookieProps = refreshTokenCookieProps;
-        this.userTagCookieProps = userTagCookieProps;
+        this.properties = properties;
         this.passwordGuard = passwordGuard;
     }
 
@@ -53,13 +48,13 @@ public class LoginController {
 
                         accessGrant -> {
                             final ResponseCookie refreshTokenCookie = cookieUtils.generateCookie(
-                                    refreshTokenCookieProps,
+                                    properties.refreshToken(),
                                     accessGrant.refreshToken().value(),
                                     accessGrant.sessionTtl());
 
                             final ResponseCookie userTagCookie = cookieUtils.generateCookie(
-                                    userTagCookieProps,
-                                    accessGrant.userTag().asString(),
+                                    properties.userTag(),
+                                    accessGrant.userTag().value(),
                                     accessGrant.sessionTtl());
 
                             final AuthResponse response = new AuthResponse(

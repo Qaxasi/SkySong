@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.config;
+package com.mycompany.skysong.identity.adapter.in.web.cookie;
 
 import jakarta.validation.constraints.NotBlank;
 
