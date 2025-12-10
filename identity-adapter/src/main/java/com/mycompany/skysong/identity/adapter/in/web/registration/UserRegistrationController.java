@@ -1,37 +1,55 @@
-package com.mycompany.SkySong.identity.registration.adapter.in;
+package com.mycompany.skysong.identity.adapter.in.web.registration;
 
-import com.mycompany.SkySong.identity.registration.application.dto.UserRegistrationData;
-import com.mycompany.SkySong.identity.registration.application.service.UserRegistration;
-import com.mycompany.SkySong.infrastructure.web.BaseResponse;
-import com.mycompany.SkySong.infrastructure.web.SuccessResponse;
+import com.mycompany.skysong.identity.adapter.in.web.common.RawPasswordGuard;
+import com.mycompany.skysong.identity.application.registration.service.UserRegistration;
+import com.mycompany.skysong.identity.domain.Email;
+import com.mycompany.skysong.identity.domain.Username;
+import com.mycompany.skysong.web.error.ErrorResponse;
+import com.mycompany.skysong.web.error.ErrorTypeToHttpStatusMapper;
+import com.mycompany.skysong.web.response.ResponsePayload;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class UserRegistrationController {
     private final UserRegistration userRegistration;
+    private final RawPasswordGuard passwordGuard;
     public UserRegistrationController(final UserRegistration userRegistration,
-                                      final RegistrationRequestMapper mapper) {
+                                      final RawPasswordGuard passwordGuard) {
         this.userRegistration = userRegistration;
-        this.mapper = mapper;
+        this.passwordGuard = passwordGuard;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<BaseResponse> register(@Valid @RequestBody final RegistrationRequest request) {
-        final UserRegistrationData dto = mapper.toDto(request);
-
-        return userRegistration.register(dto)
-                .fold(
-                        error -> ResponseEntity
-                                .status(error.errorType().getHttpStatus())
-                                .body(error.toErrorResponse()),
-
-                        success -> ResponseEntity
-                                .status(HttpStatus.CREATED)
-                                .body(new SuccessResponse("Your registration was successful!"))
+    public ResponseEntity<ResponsePayload<RegistrationResponse>> register(@Valid @RequestBody final RegistrationRequest request) {
+        return Username.fromInput(request.username())
+                .flatMap(username -> Email.fromInput(request.email())
+                        .flatMap(email ->
+                                        passwordGuard.useAndZeroize(
+                                                request.password(),
+                                                password -> userRegistration.register(username, email, password))
+                        )
+                )
+                .fold(error -> {
+                    final HttpStatus status = ErrorTypeToHttpStatusMapper.toHttpStatus(error.errorType());
+                    return ResponseEntity
+                            .status(status)
+                            .body(ResponsePayload.error(
+                                    new ErrorResponse(
+                                            error.message(),
+                                            status.name(),
+                                            status.value(),
+                                            Map.of())));
+                    },
+                        success ->
+                                ResponseEntity
+                                        .status(HttpStatus.CREATED)
+                                        .body(ResponsePayload.ok(new RegistrationResponse("Registration successful")))
                 );
     }
 }
