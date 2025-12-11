@@ -1,4 +1,4 @@
-package com.mycompany.SkySong.identity.infrastructure.config.time;
+package com.mycompany.skysong.app.config.time;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
