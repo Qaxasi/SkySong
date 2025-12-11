@@ -1,12 +1,12 @@
-package com.mycompany.skysong.identity.application.authentication.service;
+package com.mycompany.skysong.identity.application.user.authentication.service;
 
-import com.mycompany.skysong.identity.application.authentication.model.AccessGrant;
-import com.mycompany.skysong.identity.application.authentication.model.AccessToken;
-import com.mycompany.skysong.identity.application.authentication.model.AccessTokenClaims;
-import com.mycompany.skysong.identity.application.authentication.port.AccessTokenGenerator;
-import com.mycompany.skysong.identity.application.authentication.port.RefreshTokenGenerator;
-import com.mycompany.skysong.identity.application.authentication.port.SessionStore;
-import com.mycompany.skysong.identity.application.authentication.port.UserAccessSnapshotReader;
+import com.mycompany.skysong.identity.application.user.authentication.model.AccessGrant;
+import com.mycompany.skysong.identity.application.user.authentication.model.AccessToken;
+import com.mycompany.skysong.identity.application.user.authentication.model.AccessTokenClaims;
+import com.mycompany.skysong.identity.application.user.authentication.port.AccessTokenGenerator;
+import com.mycompany.skysong.identity.application.user.authentication.port.RefreshTokenGenerator;
+import com.mycompany.skysong.identity.application.user.authentication.port.SessionStore;
+import com.mycompany.skysong.identity.application.user.authentication.port.UserAccessSnapshotReader;
 import com.mycompany.skysong.core.result.Result;
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.identity.domain.UserTag;

@@ -1,4 +1,4 @@
-package com.mycompany.skysong.identity.application.registration.port;
+package com.mycompany.skysong.identity.application.user.registration.port;
 
 import com.mycompany.skysong.core.result.Result;
 import com.mycompany.skysong.core.result.Unit;

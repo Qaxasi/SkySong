@@ -1,12 +1,12 @@
-package com.mycompany.skysong.identity.application.registration.service;
+package com.mycompany.skysong.identity.application.user.registration.service;
 
 import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;
 import com.mycompany.skysong.core.result.Unit;
-import com.mycompany.skysong.identity.application.registration.port.PasswordHasher;
-import com.mycompany.skysong.identity.application.registration.port.UserStore;
-import com.mycompany.skysong.identity.application.registration.port.UserTagGenerator;
-import com.mycompany.skysong.identity.application.registration.port.UserUniquenessChecker;
+import com.mycompany.skysong.identity.application.user.registration.port.PasswordHasher;
+import com.mycompany.skysong.identity.application.user.registration.port.UserStore;
+import com.mycompany.skysong.identity.application.user.registration.port.UserTagGenerator;
+import com.mycompany.skysong.identity.application.user.registration.port.UserUniquenessChecker;
 import com.mycompany.skysong.identity.domain.*;
 
 public class UserRegistration {
