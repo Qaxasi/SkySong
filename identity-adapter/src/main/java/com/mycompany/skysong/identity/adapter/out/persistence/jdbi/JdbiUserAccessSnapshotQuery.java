@@ -1,7 +1,7 @@
 package com.mycompany.skysong.identity.adapter.out.persistence.jdbi;
 
-import com.mycompany.skysong.identity.application.authentication.model.UserAccessSnapshot;
-import com.mycompany.skysong.identity.application.authentication.port.UserAccessSnapshotReader;
+import com.mycompany.skysong.identity.application.user.authentication.model.UserAccessSnapshot;
+import com.mycompany.skysong.identity.application.user.authentication.port.UserAccessSnapshotQuery;
 import com.mycompany.skysong.identity.domain.UserId;
 import com.mycompany.skysong.identity.domain.UserRole;
 import com.mycompany.skysong.identity.domain.UserTag;
@@ -19,15 +19,15 @@ import static net.logstash.logback.argument.StructuredArguments.kv;
 
 @Component
 @Transactional(readOnly = true)
-class JdbiUserAccessSnapshotReader implements UserAccessSnapshotReader {
-    private static final Logger log = LoggerFactory.getLogger(JdbiUserAccessSnapshotReader.class);
+class JdbiUserAccessSnapshotQuery implements UserAccessSnapshotQuery {
+    private static final Logger log = LoggerFactory.getLogger(JdbiUserAccessSnapshotQuery.class);
     private final UserIdentityDAO dao;
-    JdbiUserAccessSnapshotReader(final UserIdentityDAO dao) {
+    JdbiUserAccessSnapshotQuery(final UserIdentityDAO dao) {
         this.dao = dao;
     }
 
     @Override
-    public Result<UserAccessSnapshot> load(final UserId userId) {
+    public Result<UserAccessSnapshot> fetch(final UserId userId) {
         try {
             return dao.findAccessSnapshotByUserId(userId.asInt())
                     .map(view -> Result.combine(

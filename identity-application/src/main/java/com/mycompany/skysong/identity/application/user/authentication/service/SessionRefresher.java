@@ -6,7 +6,7 @@ import com.mycompany.skysong.identity.application.user.authentication.model.Acce
 import com.mycompany.skysong.identity.application.user.authentication.port.AccessTokenGenerator;
 import com.mycompany.skysong.identity.application.user.authentication.port.RefreshTokenGenerator;
 import com.mycompany.skysong.identity.application.user.authentication.port.SessionStore;
-import com.mycompany.skysong.identity.application.user.authentication.port.UserAccessSnapshotReader;
+import com.mycompany.skysong.identity.application.user.authentication.port.UserAccessSnapshotQuery;
 import com.mycompany.skysong.core.result.Result;
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.identity.domain.UserTag;
@@ -18,20 +18,20 @@ import java.time.Instant;
 public class SessionRefresher {
     private final AccessTokenGenerator accessTokenGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
-    private final UserAccessSnapshotReader snapshotReader;
+    private final UserAccessSnapshotQuery userAccessSnapshotQuery;
     private final SessionStore sessionStore;
     private final Clock clock;
     private final Duration sessionLifetime;
 
     public SessionRefresher(final AccessTokenGenerator accessTokenGenerator,
                             final RefreshTokenGenerator refreshTokenGenerator,
-                            final UserAccessSnapshotReader snapshotReader,
+                            final UserAccessSnapshotQuery userAccessSnapshotQuery,
                             final SessionStore sessionStore,
                             final Clock clock,
                             final Duration sessionLifetime) {
         this.accessTokenGenerator = accessTokenGenerator;
         this.refreshTokenGenerator = refreshTokenGenerator;
-        this.snapshotReader = snapshotReader;
+        this.userAccessSnapshotQuery = userAccessSnapshotQuery;
         this.sessionStore = sessionStore;
         this.clock = clock;
         this.sessionLifetime = sessionLifetime;
@@ -42,7 +42,7 @@ public class SessionRefresher {
 
         return sessionStore.findBy(userTag, oldRefreshToken)
                 .flatMap(session -> session.reissueIfActive(now, sessionLifetime)
-                        .flatMap(newSession -> snapshotReader.load(newSession.userId())
+                        .flatMap(newSession -> userAccessSnapshotQuery.fetch(newSession.userId())
                                 .flatMap(userAccessSnapshot -> refreshTokenGenerator.generate()
                                         .flatMap(newRefreshToken -> {
                                             final Duration sessionTtl = newSession.ttl(now);

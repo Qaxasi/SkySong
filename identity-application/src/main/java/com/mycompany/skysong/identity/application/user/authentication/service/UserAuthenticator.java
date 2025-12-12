@@ -18,7 +18,7 @@ public class UserAuthenticator {
     private final AccessTokenGenerator accessTokenGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
     private final SessionStore sessionStore;
-    private final UserAccessSnapshotReader snapshotReader;
+    private final UserAccessSnapshotQuery userAccessSnapshotQuery;
     private final Clock clock;
     private final Duration sessionLifetime;
 
@@ -26,14 +26,14 @@ public class UserAuthenticator {
                              final AccessTokenGenerator accessTokenGenerator,
                              final RefreshTokenGenerator refreshTokenGenerator,
                              final SessionStore sessionStore,
-                             final UserAccessSnapshotReader snapshotReader,
+                             final UserAccessSnapshotQuery userAccessSnapshotQuery,
                              final Clock clock,
                              final Duration sessionLifetime) {
         this.authenticator = authenticator;
         this.accessTokenGenerator = accessTokenGenerator;
         this.refreshTokenGenerator = refreshTokenGenerator;
         this.sessionStore = sessionStore;
-        this.snapshotReader = snapshotReader;
+        this.userAccessSnapshotQuery = userAccessSnapshotQuery;
         this.clock = clock;
         this.sessionLifetime = sessionLifetime;
     }
@@ -43,7 +43,7 @@ public class UserAuthenticator {
             final Instant now = clock.instant();
 
             return authenticator.authenticate(username, password)
-                    .flatMap(user -> snapshotReader.load(user.id())
+                    .flatMap(user -> userAccessSnapshotQuery.fetch(user.id())
                             .flatMap(userAccessSnapshot -> Session.issue(
                                             user.id(),
                                             now,
