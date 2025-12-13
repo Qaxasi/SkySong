@@ -1,7 +1,7 @@
 package com.mycompany.skysong.identity.adapter.out.persistence.jdbi;
 
 import com.mycompany.skysong.identity.application.user.authentication.model.UserAccessSnapshot;
-import com.mycompany.skysong.identity.application.user.authentication.port.UserAccessSnapshotQuery;
+import com.mycompany.skysong.identity.application.user.authentication.port.UserAccessSnapshotReader;
 import com.mycompany.skysong.identity.domain.UserId;
 import com.mycompany.skysong.identity.domain.UserRole;
 import com.mycompany.skysong.identity.domain.UserTag;
@@ -11,23 +11,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 import static net.logstash.logback.argument.StructuredArguments.kv;
 
 @Component
-@Transactional(readOnly = true)
-class JdbiUserAccessSnapshotQuery implements UserAccessSnapshotQuery {
-    private static final Logger log = LoggerFactory.getLogger(JdbiUserAccessSnapshotQuery.class);
+class JdbiUserAccessSnapshotReader implements UserAccessSnapshotReader {
+    private static final Logger log = LoggerFactory.getLogger(JdbiUserAccessSnapshotReader.class);
     private final UserIdentityDAO dao;
-    JdbiUserAccessSnapshotQuery(final UserIdentityDAO dao) {
+    JdbiUserAccessSnapshotReader(final UserIdentityDAO dao) {
         this.dao = dao;
     }
 
     @Override
-    public Result<UserAccessSnapshot> fetch(final UserId userId) {
+    public Result<UserAccessSnapshot> read(final UserId userId) {
         try {
             return dao.findAccessSnapshotByUserId(userId.asInt())
                     .map(view -> Result.combine(
@@ -37,16 +35,16 @@ class JdbiUserAccessSnapshotQuery implements UserAccessSnapshotQuery {
                             UserAccessSnapshot::new))
                     .orElseGet(() -> {
                         log.error("Missing access snapshot {} {}",
-                                kv("op", "access_snapshot.load"),
+                                kv("op", "access_snapshot.read"),
                                 kv("userId", userId.asInt()));
 
                         return Result.failure("User access snapshot missing", ErrorType.ACCESS_SNAPSHOT_NOT_FOUND);
                     });
         } catch (DataAccessException ex) {
             log.error("sql read failed {}",
-                    kv("op", "access_snapshot.load"),
+                    kv("op", "access_snapshot.read"),
                     ex);
-            return Result.failure("Internal persistence error", ErrorType.PERSISTENCE_ERROR);
+            return Result.failure("Persistence error", ErrorType.PERSISTENCE_ERROR);
         }
     }
 
