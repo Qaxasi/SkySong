@@ -19,5 +19,5 @@ public interface SessionStore {
                                RefreshToken oldToken,
                                RefreshToken newToken,
                                Session session,
-                               Duration ttlSeconds);
+                               Duration ttl);
 }
