@@ -9,16 +9,16 @@ import com.mycompany.skysong.identity.application.user.registration.port.UserTag
 import com.mycompany.skysong.identity.application.user.registration.port.UserUniquenessChecker;
 import com.mycompany.skysong.identity.domain.*;
 
-public class UserRegistration {
+public class RegisterUser {
     private final UserUniquenessChecker uniquenessChecker;
     private final PasswordHasher passwordHasher;
     private final UserTagGenerator tagGenerator;
     private final UserStore userStore;
 
-    public UserRegistration(final UserUniquenessChecker uniquenessChecker,
-                            final PasswordHasher passwordHasher,
-                            final UserTagGenerator tagGenerator,
-                            final UserStore userStore) {
+    public RegisterUser(final UserUniquenessChecker uniquenessChecker,
+                        final PasswordHasher passwordHasher,
+                        final UserTagGenerator tagGenerator,
+                        final UserStore userStore) {
         this.passwordHasher = passwordHasher;
         this.tagGenerator = tagGenerator;
         this.userStore = userStore;

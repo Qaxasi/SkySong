@@ -1,7 +1,7 @@
 package com.mycompany.skysong.identity.adapter.in.web.registration;
 
 import com.mycompany.skysong.identity.adapter.in.web.common.RawPasswordGuard;
-import com.mycompany.skysong.identity.application.registration.service.UserRegistration;
+import com.mycompany.skysong.identity.application.user.registration.service.RegisterUser;
 import com.mycompany.skysong.identity.domain.Email;
 import com.mycompany.skysong.identity.domain.Username;
 import com.mycompany.skysong.web.error.ErrorResponse;
@@ -17,11 +17,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class UserRegistrationController {
-    private final UserRegistration userRegistration;
+    private final RegisterUser registerUser;
     private final RawPasswordGuard passwordGuard;
-    public UserRegistrationController(final UserRegistration userRegistration,
+    public UserRegistrationController(final RegisterUser registerUser,
                                       final RawPasswordGuard passwordGuard) {
-        this.userRegistration = userRegistration;
+        this.registerUser = registerUser;
         this.passwordGuard = passwordGuard;
     }
 
@@ -32,7 +32,7 @@ public class UserRegistrationController {
                         .flatMap(email ->
                                         passwordGuard.useAndZeroize(
                                                 request.password(),
-                                                password -> userRegistration.register(username, email, password))
+                                                password -> registerUser.register(username, email, password))
                         )
                 )
                 .fold(error -> {
