@@ -3,8 +3,8 @@ package com.mycompany.skysong.identity.adapter.in.web.authentication;
 import com.mycompany.skysong.identity.adapter.in.web.common.RawPasswordGuard;
 import com.mycompany.skysong.identity.adapter.in.web.cookie.AuthCookieProperties;
 import com.mycompany.skysong.identity.adapter.in.web.cookie.CookieUtils;
-import com.mycompany.skysong.identity.application.authentication.model.AccessGrant;
-import com.mycompany.skysong.identity.application.authentication.service.UserAuthenticator;
+import com.mycompany.skysong.identity.application.user.authentication.model.AccessGrant;
+import com.mycompany.skysong.identity.application.user.authentication.service.LoginUser;
 import com.mycompany.skysong.core.result.Failure;
 import com.mycompany.skysong.identity.domain.Username;
 import com.mycompany.skysong.web.error.ErrorTypeToHttpStatusMapper;
@@ -21,17 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class LoginController {
-    private final UserAuthenticator authenticator;
+public class UserLoginController {
+    private final LoginUser loginUser;
     private final CookieUtils cookieUtils;
     private final AuthCookieProperties properties;
     private final RawPasswordGuard passwordGuard;
 
-    public LoginController(final UserAuthenticator authenticator,
-                           final CookieUtils cookieUtils,
-                           final AuthCookieProperties properties,
-                           final RawPasswordGuard passwordGuard) {
-        this.authenticator = authenticator;
+    public UserLoginController(final LoginUser loginUser,
+                               final CookieUtils cookieUtils,
+                               final AuthCookieProperties properties,
+                               final RawPasswordGuard passwordGuard) {
+        this.loginUser = loginUser;
         this.cookieUtils = cookieUtils;
         this.properties = properties;
         this.passwordGuard = passwordGuard;
@@ -42,7 +42,7 @@ public class LoginController {
         return Username.fromInput(request.username())
                 .flatMap(username ->
                         passwordGuard.useAndZeroize(request.password(),
-                        password -> authenticator.login(username, password)))
+                        password -> loginUser.login(username, password)))
                 .fold(
                         this::mapLoginFailure,
 

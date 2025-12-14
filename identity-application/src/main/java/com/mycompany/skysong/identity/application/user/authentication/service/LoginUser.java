@@ -13,27 +13,27 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 
-public class UserAuthenticator {
+public class LoginUser {
     private final Authenticator authenticator;
     private final AccessTokenGenerator accessTokenGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
     private final SessionStore sessionStore;
-    private final UserAccessSnapshotReader userAccessSnapshotQuery;
+    private final UserAccessSnapshotReader userAccessSnapshotReader;
     private final Clock clock;
     private final Duration sessionLifetime;
 
-    public UserAuthenticator(final Authenticator authenticator,
-                             final AccessTokenGenerator accessTokenGenerator,
-                             final RefreshTokenGenerator refreshTokenGenerator,
-                             final SessionStore sessionStore,
-                             final UserAccessSnapshotReader userAccessSnapshotQuery,
-                             final Clock clock,
-                             final Duration sessionLifetime) {
+    public LoginUser(final Authenticator authenticator,
+                     final AccessTokenGenerator accessTokenGenerator,
+                     final RefreshTokenGenerator refreshTokenGenerator,
+                     final SessionStore sessionStore,
+                     final UserAccessSnapshotReader userAccessSnapshotReader,
+                     final Clock clock,
+                     final Duration sessionLifetime) {
         this.authenticator = authenticator;
         this.accessTokenGenerator = accessTokenGenerator;
         this.refreshTokenGenerator = refreshTokenGenerator;
         this.sessionStore = sessionStore;
-        this.userAccessSnapshotQuery = userAccessSnapshotQuery;
+        this.userAccessSnapshotReader = userAccessSnapshotReader;
         this.clock = clock;
         this.sessionLifetime = sessionLifetime;
     }
@@ -43,7 +43,7 @@ public class UserAuthenticator {
             final Instant now = clock.instant();
 
             return authenticator.authenticate(username, password)
-                    .flatMap(user -> userAccessSnapshotQuery.read(user.id())
+                    .flatMap(user -> userAccessSnapshotReader.read(user.id())
                             .flatMap(userAccessSnapshot -> Session.issue(
                                             user.id(),
                                             now,
