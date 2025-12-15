@@ -1,6 +1,6 @@
 package com.mycompany.skysong.identity.application.user.authentication.service;
 
-import com.mycompany.skysong.identity.application.user.authentication.model.AccessGrant;
+import com.mycompany.skysong.identity.application.user.authentication.model.AuthGrant;
 import com.mycompany.skysong.identity.application.user.authentication.model.AccessToken;
 import com.mycompany.skysong.identity.application.user.authentication.model.AccessTokenClaims;
 import com.mycompany.skysong.identity.application.user.authentication.port.*;
@@ -38,7 +38,7 @@ public class LoginUser {
         this.sessionLifetime = sessionLifetime;
     }
 
-    public Result<AccessGrant> login(final Username username, final RawPassword password) {
+    public Result<AuthGrant> login(final Username username, final RawPassword password) {
         try (password) {
             final Instant now = clock.instant();
 
@@ -62,7 +62,7 @@ public class LoginUser {
                                                                     final AccessToken accessToken = accessTokenGenerator.generate(claims);
 
                                                                     final long expiresIn = accessToken.expiresInSeconds(now);
-                                                                    return new AccessGrant(
+                                                                    return new AuthGrant(
                                                                             accessToken,
                                                                             expiresIn,
                                                                             refreshToken,

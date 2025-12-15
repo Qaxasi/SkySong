@@ -5,7 +5,7 @@ import com.mycompany.skysong.identity.domain.UserTag;
 
 import java.time.Duration;
 
-public record AccessGrant(AccessToken accessToken, long accessTokenExpiresInSec,
-                          RefreshToken refreshToken, Duration sessionTtl,
-                          UserTag userTag) {
+public record AuthGrant(AccessToken accessToken, long accessTokenExpiresInSec,
+                        RefreshToken refreshToken, Duration sessionTtl,
+                        UserTag userTag) {
 }

@@ -1,12 +1,9 @@
 package com.mycompany.skysong.identity.application.user.authentication.service;
 
-import com.mycompany.skysong.identity.application.user.authentication.model.AccessGrant;
+import com.mycompany.skysong.identity.application.user.authentication.model.AuthGrant;
 import com.mycompany.skysong.identity.application.user.authentication.model.AccessToken;
 import com.mycompany.skysong.identity.application.user.authentication.model.AccessTokenClaims;
-import com.mycompany.skysong.identity.application.user.authentication.port.AccessTokenGenerator;
-import com.mycompany.skysong.identity.application.user.authentication.port.RefreshTokenGenerator;
-import com.mycompany.skysong.identity.application.user.authentication.port.SessionStore;
-import com.mycompany.skysong.identity.application.user.authentication.port.UserAccessSnapshotReader;
+import com.mycompany.skysong.identity.application.user.authentication.port.*;
 import com.mycompany.skysong.core.result.Result;
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.identity.domain.UserTag;
@@ -37,7 +34,7 @@ public class SessionRefresher {
         this.sessionLifetime = sessionLifetime;
     }
 
-    public Result<AccessGrant> refresh(final RefreshToken oldRefreshToken, final UserTag userTag) {
+    public Result<AuthGrant> refresh(final RefreshToken oldRefreshToken, final UserTag userTag) {
         final Instant now = clock.instant();
 
         return sessionStore.findBy(userTag, oldRefreshToken)
@@ -56,7 +53,7 @@ public class SessionRefresher {
                                                     .map(ignored -> {
                                                         final AccessTokenClaims claims = userAccessSnapshot.toClaims(newSession.userId());
                                                         final AccessToken newAt = accessTokenGenerator.generate(claims);
-                                                        return new AccessGrant(
+                                                        return new AuthGrant(
                                                                 newAt,
                                                                 newAt.expiresInSeconds(now),
                                                                 newRefreshToken,
