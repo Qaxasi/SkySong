@@ -5,6 +5,6 @@ import com.mycompany.skysong.identity.domain.RawPassword;
 import com.mycompany.skysong.identity.domain.Username;
 import com.mycompany.skysong.core.result.Result;
 
-public interface UserCredentialsAuthenticator {
+public interface CredentialsAuthenticator {
     Result<AuthenticatedPrincipal> authenticate(Username username, RawPassword password);
 }

@@ -12,7 +12,7 @@ import java.time.Clock;
 @Configuration
 class LoginUserConfig {
     @Bean
-    LoginUser login(final UserCredentialsAuthenticator authenticator,
+    LoginUser login(final CredentialsAuthenticator authenticator,
                     final AccessTokenGenerator accessTokenGenerator,
                     final RefreshTokenGenerator refreshTokenGenerator,
                     final SessionStore sessionStore,
