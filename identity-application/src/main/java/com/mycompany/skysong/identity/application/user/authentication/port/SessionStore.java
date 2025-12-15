@@ -13,11 +13,11 @@ public interface SessionStore {
                              RefreshToken token,
                              Session session,
                              Duration ttl);
-    Result<Session> findBy(UserTag userTag,
-                           RefreshToken token);
+    Result<Session> findSession(UserTag userTag,
+                                RefreshToken token);
     Result<Unit> rotateSession(UserTag userTag,
                                RefreshToken oldToken,
                                RefreshToken newToken,
-                               Session session,
+                               Session newSession,
                                Duration ttl);
 }

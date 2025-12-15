@@ -37,7 +37,7 @@ public class SessionRefresher {
     public Result<AuthGrant> refresh(final RefreshToken oldRefreshToken, final UserTag userTag) {
         final Instant now = clock.instant();
 
-        return sessionStore.findBy(userTag, oldRefreshToken)
+        return sessionStore.findSession(userTag, oldRefreshToken)
                 .flatMap(session -> session.reissueIfActive(now, sessionLifetime)
                         .flatMap(newSession -> userAccessSnapshotReader.read(newSession.userId())
                                 .flatMap(userAccessSnapshot -> refreshTokenGenerator.generate()

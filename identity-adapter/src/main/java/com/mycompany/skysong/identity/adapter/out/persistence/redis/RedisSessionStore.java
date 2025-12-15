@@ -85,7 +85,7 @@ class RedisSessionStore implements SessionStore {
     }
 
     @Override
-    public Result<Session> findBy(final UserTag userTag, final RefreshToken refreshToken) {
+    public Result<Session> findSession(final UserTag userTag, final RefreshToken refreshToken) {
         return refreshTokenHasher.hash(refreshToken)
                 .flatMap(hash ->  {
                     try {
@@ -108,14 +108,14 @@ class RedisSessionStore implements SessionStore {
     public Result<Unit> rotateSession(final UserTag userTag,
                                       final RefreshToken oldToken,
                                       final RefreshToken newToken,
-                                      final Session session,
+                                      final Session newSession,
                                       final Duration ttl) {
         return Result
                 .combineM(
                         refreshTokenHasher.hash(oldToken),
                         refreshTokenHasher.hash(newToken),
                         (oldHash, newHash) ->
-                                serde.serialize(session)
+                                serde.serialize(newSession)
                                     .flatMap(json -> {
                                         try {
                                             final Long res = redis.execute(
