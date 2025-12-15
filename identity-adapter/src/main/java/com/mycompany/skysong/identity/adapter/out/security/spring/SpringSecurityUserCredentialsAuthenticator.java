@@ -1,7 +1,7 @@
 package com.mycompany.skysong.identity.adapter.out.security.spring;
 
-import com.mycompany.skysong.identity.application.authentication.model.AuthenticatedIdentity;
-import com.mycompany.skysong.identity.application.authentication.port.Authenticator;
+import com.mycompany.skysong.identity.application.user.authentication.model.AuthenticatedPrincipal;
+import com.mycompany.skysong.identity.application.user.authentication.port.UserCredentialsAuthenticator;
 import com.mycompany.skysong.identity.domain.RawPassword;
 import com.mycompany.skysong.identity.domain.UserId;
 import com.mycompany.skysong.identity.domain.Username;
@@ -18,27 +18,27 @@ import org.springframework.stereotype.Component;
 import static net.logstash.logback.argument.StructuredArguments.*;
 
 @Component
-public class SpringSecurityAuthenticator implements Authenticator {
-    private static final Logger log = LoggerFactory.getLogger(SpringSecurityAuthenticator.class);
+public class SpringSecurityUserCredentialsAuthenticator implements UserCredentialsAuthenticator {
+    private static final Logger log = LoggerFactory.getLogger(SpringSecurityUserCredentialsAuthenticator.class);
     private final AuthenticationManager authManager;
 
-    public SpringSecurityAuthenticator(final AuthenticationManager authManager) {
+    public SpringSecurityUserCredentialsAuthenticator(final AuthenticationManager authManager) {
         this.authManager = authManager;
     }
 
     @Override
-    public Result<AuthenticatedIdentity> authenticate(final Username username,
-                                                      final RawPassword password) {
+    public Result<AuthenticatedPrincipal> authenticate(final Username username,
+                                                       final RawPassword password) {
         try {
             final Authentication authentication = authManager.authenticate(
                     UsernamePasswordAuthenticationToken.unauthenticated(
-                            username.asString(),
+                            username.value(),
                             password.asCharSequenceView()));
 
             final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
             return UserId.fromStored(userDetails.getId())
-                    .map(AuthenticatedIdentity::new);
+                    .map(AuthenticatedPrincipal::new);
 
         } catch (BadCredentialsException | UsernameNotFoundException ex) {
             return Result.failure("Invalid login credentials", ErrorType.INVALID_LOGIN_CREDENTIALS);

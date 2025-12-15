@@ -14,7 +14,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class LoginUser {
-    private final Authenticator authenticator;
+    private final UserCredentialsAuthenticator authenticator;
     private final AccessTokenGenerator accessTokenGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
     private final SessionStore sessionStore;
@@ -22,7 +22,7 @@ public class LoginUser {
     private final Clock clock;
     private final Duration sessionLifetime;
 
-    public LoginUser(final Authenticator authenticator,
+    public LoginUser(final UserCredentialsAuthenticator authenticator,
                      final AccessTokenGenerator accessTokenGenerator,
                      final RefreshTokenGenerator refreshTokenGenerator,
                      final SessionStore sessionStore,
