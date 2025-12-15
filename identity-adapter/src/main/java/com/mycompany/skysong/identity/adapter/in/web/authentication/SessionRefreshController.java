@@ -2,10 +2,8 @@ package com.mycompany.skysong.identity.adapter.in.web.authentication;
 
 import com.mycompany.skysong.identity.adapter.in.web.cookie.AuthCookieProperties;
 import com.mycompany.skysong.identity.adapter.in.web.cookie.CookieUtils;
-import com.mycompany.skysong.identity.application.authentication.model.AccessGrant;
-import com.mycompany.skysong.identity.application.authentication.service.SessionRefresher;
-import com.mycompany.skysong.core.result.Failure;
 import com.mycompany.skysong.core.result.Result;
+import com.mycompany.skysong.identity.application.user.authentication.service.RefreshSession;
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.identity.domain.UserTag;
 import com.mycompany.skysong.web.error.ErrorTypeToHttpStatusMapper;
@@ -21,12 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class RefreshSessionController {
-    private final SessionRefresher sessionRefresher;
+public class SessionRefreshController {
+    private final RefreshSession sessionRefresher;
     private final CookieUtils cookieUtils;
     private final AuthCookieProperties properties;
 
-    public RefreshSessionController(final SessionRefresher sessionRefresher,
+    public SessionRefreshController(final RefreshSession sessionRefresher,
                                     final CookieUtils cookieUtils,
                                     final AuthCookieProperties properties) {
         this.sessionRefresher = sessionRefresher;

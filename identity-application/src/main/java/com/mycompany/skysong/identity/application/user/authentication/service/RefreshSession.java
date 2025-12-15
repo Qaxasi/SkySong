@@ -12,7 +12,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 
-public class SessionRefresher {
+public class RefreshSession {
     private final AccessTokenGenerator accessTokenGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
     private final UserAccessSnapshotReader userAccessSnapshotReader;
@@ -20,12 +20,12 @@ public class SessionRefresher {
     private final Clock clock;
     private final Duration sessionLifetime;
 
-    public SessionRefresher(final AccessTokenGenerator accessTokenGenerator,
-                            final RefreshTokenGenerator refreshTokenGenerator,
-                            final UserAccessSnapshotReader userAccessSnapshotReader,
-                            final SessionStore sessionStore,
-                            final Clock clock,
-                            final Duration sessionLifetime) {
+    public RefreshSession(final AccessTokenGenerator accessTokenGenerator,
+                          final RefreshTokenGenerator refreshTokenGenerator,
+                          final UserAccessSnapshotReader userAccessSnapshotReader,
+                          final SessionStore sessionStore,
+                          final Clock clock,
+                          final Duration sessionLifetime) {
         this.accessTokenGenerator = accessTokenGenerator;
         this.refreshTokenGenerator = refreshTokenGenerator;
         this.userAccessSnapshotReader = userAccessSnapshotReader;
