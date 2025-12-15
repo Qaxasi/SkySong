@@ -9,7 +9,7 @@ local RESPONSE_NOT_FOUND = 0
 local RESPONSE_CONFLICT = 2
 
 if (#KEYS ~= 2 or #ARGV ~= 2) then
-    return redis.error_reply("session.refresh wrong arity")
+    return redis.error_reply("session.rotate wrong arity")
 end
 
 local oldKey = KEYS[1]
@@ -19,7 +19,7 @@ local ttl = tonumber(ARGV[2]) or 0
 
 ttl = math.floor(ttl)
 if ttl <= 0 then
-    return redis.error_reply("session.refresh bad ttl")
+    return redis.error_reply("session.rotate bad ttl")
 end
 
 if oldKey == newKey then
