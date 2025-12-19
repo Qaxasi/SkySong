@@ -54,8 +54,8 @@ public interface UserIdentityDAO {
             FROM users
             WHERE username = :username
             """)
-    @RegisterConstructorMapper(UserAuthView.class)
-    Optional<UserAuthView> findAuthByUsername(@Bind String username);
+    @RegisterConstructorMapper(UserAuthProjection.class)
+    Optional<UserAuthProjection> findAuthByUsername(@Bind String username);
 
     @UseRowReducer(UserAccessSnapshotReducer.class)
     @SqlQuery("""
