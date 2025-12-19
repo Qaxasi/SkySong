@@ -36,7 +36,7 @@ public interface UserIdentityDAO {
 
     @SqlUpdate("""
           INSERT INTO users (username, email, password_hash, user_tag) 
-          VALUES (:username, : email, :passwordHash, :userTag)
+          VALUES (:username, :email, :passwordHash, :userTag)
            """)
     @GetGeneratedKeys("id")
     int saveUser(@BindBean UserInsertRow row);
