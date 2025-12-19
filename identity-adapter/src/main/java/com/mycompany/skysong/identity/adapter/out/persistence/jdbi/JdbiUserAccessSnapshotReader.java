@@ -7,9 +7,9 @@ import com.mycompany.skysong.identity.domain.UserRole;
 import com.mycompany.skysong.identity.domain.UserTag;
 import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;
+import org.jdbi.v3.core.JdbiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -27,22 +27,22 @@ class JdbiUserAccessSnapshotReader implements UserAccessSnapshotReader {
     @Override
     public Result<UserAccessSnapshot> read(final UserId userId) {
         try {
-            return dao.findAccessSnapshotByUserId(userId.asInt())
-                    .map(view -> Result.combine(
-                            UserTag.fromStored(view.userTag()),
-                            mapRoleCodesToUserRoles(view.roles()),
+            return dao.findUserAccessSnapshotByUserId(userId.asInt())
+                    .map(projection -> Result.combine(
+                            UserTag.fromStored(projection.userTag()),
+                            mapRoleCodesToUserRoles(projection.roles()),
 
                             UserAccessSnapshot::new))
                     .orElseGet(() -> {
                         log.error("Missing access snapshot {} {}",
-                                kv("op", "access_snapshot.read"),
+                                kv("op", "user_access_snapshot.read"),
                                 kv("userId", userId.asInt()));
 
                         return Result.failure("User access snapshot missing", ErrorType.ACCESS_SNAPSHOT_NOT_FOUND);
                     });
-        } catch (DataAccessException ex) {
+        } catch (JdbiException ex) {
             log.error("sql read failed {}",
-                    kv("op", "access_snapshot.read"),
+                    kv("op", "user_access_snapshot.read"),
                     ex);
             return Result.failure("Persistence error", ErrorType.PERSISTENCE_ERROR);
         }

@@ -67,7 +67,7 @@ public interface UserIdentityDAO {
             LEFT JOIN user_roles ur ON ur.user_id = u.id
             WHERE u.id = :userId
             """)
-    Optional<UserAccessSnapshotView> findAccessSnapshotByUserId(@Bind int userId);
+    Optional<UserAccessSnapshotProjection> findUserAccessSnapshotByUserId(@Bind int userId);
 
     @SqlQuery("""
             SELECT

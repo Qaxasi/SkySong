@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class UserAccessSnapshotReducer implements RowReducer<UserAccessSnapshotReducer.Builder, UserAccessSnapshotView> {
+public class UserAccessSnapshotReducer implements RowReducer<UserAccessSnapshotReducer.Builder, UserAccessSnapshotProjection> {
 
     @Override
     public Builder container() {
@@ -28,7 +28,7 @@ public class UserAccessSnapshotReducer implements RowReducer<UserAccessSnapshotR
     }
 
     @Override
-    public Stream<UserAccessSnapshotView> stream(Builder b) {
+    public Stream<UserAccessSnapshotProjection> stream(Builder b) {
         return b.initialized ? Stream.of(b.build()) : Stream.empty();
     }
 
@@ -38,8 +38,8 @@ public class UserAccessSnapshotReducer implements RowReducer<UserAccessSnapshotR
         String userTag;
         final Set<String> roleCodes = new LinkedHashSet<>();
 
-        UserAccessSnapshotView build() {
-            return new UserAccessSnapshotView(userId, userTag, Set.copyOf(roleCodes));
+        UserAccessSnapshotProjection build() {
+            return new UserAccessSnapshotProjection(userId, userTag, Set.copyOf(roleCodes));
         }
 
     }
