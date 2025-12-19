@@ -1,6 +1,6 @@
 package com.mycompany.skysong.identity.adapter.out.security.random;
 
-import com.mycompany.skysong.identity.application.authentication.port.RefreshTokenGenerator;
+import com.mycompany.skysong.identity.application.user.authentication.port.RefreshTokenGenerator;
 import com.mycompany.skysong.identity.domain.RefreshToken;
 import com.mycompany.skysong.core.result.Result;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 @Component
-public class SecureRandomRefreshTokenGenerator implements RefreshTokenGenerator {
+class SecureRandomRefreshTokenGenerator implements RefreshTokenGenerator {
     private static final int RAW_LENGTH = 32;
     private static final Base64.Encoder encoder = Base64.getUrlEncoder().withoutPadding();
     private final SecureRandom random;
