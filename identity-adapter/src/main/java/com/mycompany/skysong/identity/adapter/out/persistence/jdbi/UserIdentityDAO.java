@@ -13,31 +13,26 @@ import java.util.Optional;
 
 @Repository
 public interface UserIdentityDAO {
-
     @SqlQuery("""
-    SELECT
-      EXISTS (
-        SELECT 1
-        FROM users u
-        WHERE u.id = :userId
-      ) AS user_exists,
-
-      (
-        EXISTS (
-          SELECT 1
-          FROM user_roles ur
-          WHERE ur.user_id = :userId
-            AND ur.role_code = 'ADMIN'
-        )
-        AND NOT EXISTS (
-          SELECT 1
-          FROM user_roles ur2
-          WHERE ur2.role_code = 'ADMIN'
-            AND ur2.user_id <> :userId
-        )
-      ) AS is_last_admin
-    """)
-    UserDeletionPrecheckView fetchUserDeletionPrecheck(@Bind("userId") int userId);
+          SELECT
+            (
+             EXISTS (
+               SELECT 1
+               FROM user_roles ur
+               WHERE ur.user_id = u.id
+                 AND ur.role_code = 'ADMIN'
+              )
+              AND NOT EXISTS (
+                SELECT 1
+                FROM user_roles ur2
+                WHERE ur2.role_code = 'ADMIN'
+                AND ur2.user_id <> u.id
+              )
+            ) AS is_last_admin
+          FROM users u
+          WHERE u.id = :userId
+          """)
+    Optional<LastAdminProjection> isLastAdminByUserId(@Bind("userId") int userId);
 
     @SqlUpdate("""
           INSERT INTO users (username, email, password_hash, user_tag) 
@@ -75,7 +70,7 @@ public interface UserIdentityDAO {
     Optional<UserAccessSnapshotView> findAccessSnapshotByUserId(@Bind int userId);
 
     @SqlQuery("""
-            SELECT 
+            SELECT
                 EXISTS (SELECT 1 FROM users WHERE username = :username) AS usernameExists,
                 EXISTS (SELECT 1 FROM users WHERE email = :email) AS emailExists
              """)

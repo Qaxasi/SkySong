@@ -24,14 +24,9 @@ class JdbiUserDeletionPrecheckReader implements UserDeletionPrecheckReader {
     @Override
     public Result<UserDeletionPrecheck> read(final UserId userId) {
         try {
-            final UserDeletionPrecheckView view =
-                    dao.fetchUserDeletionPrecheck(userId.asInt());
-
-            return Result.success(
-                    new UserDeletionPrecheck(
-                            view.userExists(),
-                            view.isLastAdmin()));
-
+            return dao.isLastAdminByUserId(userId.asInt())
+                    .map(projection -> Result.success(new UserDeletionPrecheck(projection.isLastAdmin())))
+                    .orElseGet(() -> Result.failure("User not found", ErrorType.USER_NOT_FOUND));
         } catch (JdbiException ex) {
             log.error("sql read failed {}",
                     kv("op", "user_deletion_precheck.read"),
