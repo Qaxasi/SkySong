@@ -39,13 +39,13 @@ public interface UserIdentityDAO {
           VALUES (:username, :email, :passwordHash, :userTag)
            """)
     @GetGeneratedKeys("id")
-    int saveUser(@BindBean UserInsertRow row);
+    int saveUser(@BindBean NewUserParams row);
 
     @SqlUpdate("""
             INSERT INTO user_roles (user_id, role_code)
             VALUES (:userId, :roleCode)
             """)
-    void assignRole(@BindBean RoleAssignmentRow row);
+    void assignRole(@BindBean RoleAssignmentParams row);
 
     @SqlQuery("""
             SELECT id AS userId,
