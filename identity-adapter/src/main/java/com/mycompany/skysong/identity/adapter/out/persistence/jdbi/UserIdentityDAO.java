@@ -28,14 +28,14 @@ public interface UserIdentityDAO {
                 WHERE ur2.role_code = 'ADMIN'
                 AND ur2.user_id <> u.id
               )
-            ) AS is_last_admin
+            ) AS isLastAdmin
           FROM users u
           WHERE u.id = :userId
           """)
     Optional<LastAdminProjection> isLastAdminByUserId(@Bind("userId") int userId);
 
     @SqlUpdate("""
-          INSERT INTO users (username, email, password_hash, user_tag) 
+          INSERT INTO users (username, email, password_hash, user_tag)
           VALUES (:username, :email, :passwordHash, :userTag)
            """)
     @GetGeneratedKeys("id")
