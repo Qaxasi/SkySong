@@ -13,6 +13,10 @@ import java.util.Optional;
 
 @Repository
 public interface UserIdentityDAO {
+
+    @SqlUpdate("DELETE FROM users WHERE id = :id")
+    int deleteUserById(@Bind("id") int id);
+
     @SqlQuery("""
           SELECT
             (
