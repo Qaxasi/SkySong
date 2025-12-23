@@ -14,8 +14,8 @@ import java.util.Optional;
 @Repository
 public interface UserIdentityDAO {
 
-    @SqlUpdate("DELETE FROM users WHERE id = :id")
-    int deleteUserById(@Bind("id") int id);
+    @SqlUpdate("DELETE FROM users WHERE id = :userId")
+    int deleteUserById(@Bind("userId") int userId);
 
     @SqlUpdate("DELETE FROM user_roles WHERE user_id = :userId")
     void deleteUserRolesByUserId(@Bind("userId") int userId);
