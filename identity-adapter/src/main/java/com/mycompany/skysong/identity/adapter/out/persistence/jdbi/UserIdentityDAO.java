@@ -17,6 +17,9 @@ public interface UserIdentityDAO {
     @SqlUpdate("DELETE FROM users WHERE id = :id")
     int deleteUserById(@Bind("id") int id);
 
+    @SqlUpdate("DELETE FROM user_roles WHERE user_id = :userId")
+    void deleteUserRolesByUserId(@Bind("userId") int userId);
+
     @SqlQuery("""
           SELECT
             (
