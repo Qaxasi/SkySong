@@ -4,6 +4,7 @@ import com.mycompany.skysong.core.error.ErrorType;
 import com.mycompany.skysong.core.result.Result;
 import com.mycompany.skysong.core.result.Unit;
 import com.mycompany.skysong.identity.application.user.deletion.port.UserDeleter;
+import com.mycompany.skysong.identity.domain.UserId;
 import org.jdbi.v3.core.JdbiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,19 +20,21 @@ class JdbiUserDeleter implements UserDeleter {
         this.userDAO = userDAO;
     }
     @Override
-    public Result<Unit> deleteEverythingById(final int id) {
+    public Result<Unit> deleteById(final UserId id) {
         try {
-            userDAO.deleteUserRoles(id);
-            userDAO.delete(id);
+            userDAO.deleteUserRolesByUserId(id.asInt());
 
+            final int deleted = userDAO.deleteUserById(id.asInt());
+            if (deleted == 0) {
+                return Result.failure("User not found", ErrorType.USER_NOT_FOUND);
+            }
             return Result.success();
-
         } catch (JdbiException ex) {
             log.error("unexpected database error {} {}",
                     kv("op", "user.delete"),
                     kv("userId", id),
                     ex);
-            return Result.failure("Unexpected persistence error during user deletion", ErrorType.PERSISTENCE_ERROR);
+            return Result.failure("Persistence error", ErrorType.PERSISTENCE_ERROR);
         }
     }
 }
