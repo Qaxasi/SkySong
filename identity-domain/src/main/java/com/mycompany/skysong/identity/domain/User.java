@@ -73,7 +73,7 @@ public final class User {
                     .map(ignored -> new User(this));
         }
 
-        private Result<Void> validate() {
+        private Result<Unit> validate() {
             if (username == null) {
                 return Result.failure("Username cannot be null or empty", ErrorType.VALIDATION_ERROR);
             }
