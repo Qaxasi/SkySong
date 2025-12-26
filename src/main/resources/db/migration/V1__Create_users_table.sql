@@ -3,8 +3,5 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(25) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    enabled TINYINT(1) NOT NULL DEFAULT 1,
-    locked TINYINT(1) NOT NULL DEFAULT 0,
-    user_tag VARCHAR(22) NOT NULL UNIQUE,
-    access_version INT NOT NULL DEFAULT 1,
-);
+    user_tag VARCHAR(22) NOT NULL UNIQUE
+) ENGINE=InnoDB;
