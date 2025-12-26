@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS user_roles (
    PRIMARY KEY (user_id, role_code),
    CONSTRAINT fk_user_roles_user
        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
