@@ -58,6 +58,10 @@ public final class User {
             this.roles.add(role);
             return this;
         }
+        public Builder withDefaultRole() {
+            this.roles = Set.of(UserRole.USER);
+            return this;
+        }
 
         public Builder withRoles(Set<UserRole> roles) {
             this.roles.addAll(roles);
