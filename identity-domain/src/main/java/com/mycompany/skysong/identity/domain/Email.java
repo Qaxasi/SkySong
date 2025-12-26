@@ -14,7 +14,7 @@ public class Email {
 
     public static Result<Email> fromInput(final String raw) {
         if (raw == null || raw.isBlank()) {
-            return Result.failure("Invalid username format", ErrorType.VALIDATION_ERROR);
+            return Result.failure("Invalid email format", ErrorType.VALIDATION_ERROR);
         }
 
         final String normalized = raw.trim().toLowerCase(Locale.ROOT);
