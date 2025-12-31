@@ -13,6 +13,13 @@ import java.util.Optional;
 
 @Repository
 public interface UserIdentityDAO {
+    @SqlQuery("""
+            SELECT id
+            FROM admin_delete_guard
+            WHERE id = 1
+            FOR UPDATE
+            """)
+    void lockLastAdminInvariantGuard();
 
     @SqlUpdate("DELETE FROM users WHERE id = :userId")
     int deleteUserById(@Bind("userId") int userId);
