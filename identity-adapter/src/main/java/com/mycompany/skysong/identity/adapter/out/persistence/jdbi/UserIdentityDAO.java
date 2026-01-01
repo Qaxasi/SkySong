@@ -24,26 +24,25 @@ public interface UserIdentityDAO {
     @SqlUpdate("DELETE FROM users WHERE id = :userId")
     int deleteUserById(@Bind("userId") int userId);
 
+    @RegisterConstructorMapper(DeleteUserPrecheckProjection.class)
     @SqlQuery("""
           SELECT
-            (
-             EXISTS (
-               SELECT 1
-               FROM user_roles ur
-               WHERE ur.user_id = u.id
-                 AND ur.role_code = 'ADMIN'
-              )
-              AND NOT EXISTS (
-                SELECT 1
-                FROM user_roles ur2
-                WHERE ur2.role_code = 'ADMIN'
-                AND ur2.user_id <> u.id
-              )
-            ) AS isLastAdmin
-          FROM users u
-          WHERE u.id = :userId
+            EXISTS (
+              SELECT 1 FROM users
+              WHERE id = :userId
+              ) AS userExists,
+            EXISTS (
+              SELECT 1 FROM user_roles
+              WHERE user_id = :userId
+                AND role_code = 'ADMIN'
+                ) AS isAdmin,
+            EXISTS (
+              SELECT 1 FROM user_roles
+              WHERE role_code = 'ADMIN'
+                AND user_id <> :userId
+                ) AS otherAdminExists
           """)
-    Optional<LastAdminProjection> isLastAdminByUserId(@Bind("userId") int userId);
+    DeleteUserPrecheckProjection getDeleteUserPrecheck(@Bind("userId") int userId);
 
     @SqlUpdate("""
           INSERT INTO users (username, email, password_hash, user_tag)
