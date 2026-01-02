@@ -12,6 +12,6 @@ public class DeleteUser {
     }
 
     public Result<Unit> delete(final UserId userId) {
-        return userDeleter.deleteWithGuard(userId);
+        return userDeleter.delete(userId);
     }
 }

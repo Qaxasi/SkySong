@@ -26,7 +26,7 @@ final class JdbiUserDeleter implements UserDeleter {
     }
 
     @Override
-    public Result<Unit> deleteWithGuard(final UserId id) {
+    public Result<Unit> delete(final UserId id) {
         return transactionTemplate.execute(status -> {
             try {
                 dao.lockLastAdminInvariantGuard();

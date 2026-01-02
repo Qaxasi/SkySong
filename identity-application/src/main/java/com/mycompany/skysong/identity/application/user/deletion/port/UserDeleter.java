@@ -5,5 +5,5 @@ import com.mycompany.skysong.core.result.Unit;
 import com.mycompany.skysong.identity.domain.UserId;
 
 public interface UserDeleter {
-    Result<Unit> deleteWithGuard(UserId id);
+    Result<Unit> delete(UserId id);
 }
