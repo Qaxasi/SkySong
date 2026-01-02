@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface UserIdentityDAO {
     @SqlQuery("""
             SELECT id
-            FROM admin_delete_guard
+            FROM last_admin_delete_guard
             WHERE id = 1
             FOR UPDATE
             """)
