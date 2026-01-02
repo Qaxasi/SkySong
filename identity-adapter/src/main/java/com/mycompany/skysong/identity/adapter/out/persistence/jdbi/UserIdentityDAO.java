@@ -84,7 +84,7 @@ public interface UserIdentityDAO {
                 EXISTS (SELECT 1 FROM users WHERE username = :username) AS usernameExists,
                 EXISTS (SELECT 1 FROM users WHERE email = :email) AS emailExists
              """)
-    @RegisterConstructorMapper(UniquenessStatusView.class)
-    UniquenessStatusView checkUniqueness(@Bind("username") String username,
-                                         @Bind("email") String email);
+    @RegisterConstructorMapper(UniquenessStatusProjection.class)
+    UniquenessStatusProjection fetchUniquenessStatus(@Bind("username") String username,
+                                                     @Bind("email") String email);
 }
